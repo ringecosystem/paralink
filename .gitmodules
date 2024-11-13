@@ -1,0 +1,6 @@
+[submodule "src/assets/external/projects-info"]
+	path = src/assets/external/projects-info
+	url = https://github.com/subscan-explorer/projects-info
+[submodule "src/assets/external/assets-info"]
+	path = src/assets/external/assets-info
+	url = https://github.com/subscan-explorer/assets-info
