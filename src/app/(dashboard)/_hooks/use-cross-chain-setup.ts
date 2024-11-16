@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 import useChainsStore from '@/store/chains';
-import { getDestinationParaChains } from '@/lib/registry';
+import { getFromChains, getToChains } from '@/utils/xcm-chain-registry';
 import type { ChainInfoWithXcAssetsData } from '@/store/chains';
 
 type SwapChainsParams = {
@@ -42,10 +42,10 @@ export function useCrossChainSetup(): UseCrossChainSetupReturn {
 
   const setupCrossChainConfig = useCallback(
     (chains: ChainInfoWithXcAssetsData[], initialFromId?: string) => {
-      const fromChains = chains?.filter((v) => v.xcAssetsData?.length);
+      const fromChains = getFromChains(chains);
       const fromChainId = initialFromId ? initialFromId : fromChains?.[0]?.id;
 
-      const toChains = getDestinationParaChains(chains, fromChainId);
+      const toChains = getToChains(chains, fromChainId);
       const toChainId = toChains?.[0]?.id ?? '';
 
       setFromChainId(fromChainId);
@@ -67,10 +67,7 @@ export function useCrossChainSetup(): UseCrossChainSetupReturn {
     ({ chains, fromChainId, toChainId }: SwapChainsParams) => {
       const newFromChainId = toChainId;
       const newToChainId = fromChainId;
-      const newDestParachains = getDestinationParaChains(
-        chains,
-        newFromChainId
-      );
+      const newDestParachains = getToChains(chains, newFromChainId);
       setToChains(newDestParachains);
       setFromChainId(newFromChainId);
       setToChainId(newToChainId);

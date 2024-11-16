@@ -3,14 +3,16 @@
 import { useCallback, useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { FallbackImage } from '@/components/ui/fallback-image';
-import { TokenSelectDialog } from './token-select-dialog';
 import { useNumberInput } from '@/hooks/number-input';
 import { cn } from '@/lib/utils';
-import { TokenWithBalance } from '@/types/token';
+import { TokenSelectDialog } from './token-select-dialog';
+import type { TokenWithBalance } from '@/types/token';
+import FormattedNumberTooltip from './formatted-number-tooltip';
 
 interface TokenSelectProps {
   token?: TokenWithBalance;
   tokens?: TokenWithBalance[];
+  isLoading?: boolean;
   onChangeToken?: (token: TokenWithBalance) => void;
   onChangeAmount?: (value: string) => void;
 }
@@ -18,11 +20,11 @@ interface TokenSelectProps {
 export function TokenSelect({
   token,
   tokens,
+  isLoading,
   onChangeToken,
   onChangeAmount
 }: TokenSelectProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-
   const { value, handleChange, handleBlur } = useNumberInput({
     // maxDecimals: 6,
     // maxValue: 1000000,
@@ -76,11 +78,16 @@ export function TokenSelect({
                 </span>
                 <ChevronDown className="h-4 w-4" />
               </div>
-              <span className="text-[12px] font-normal leading-normal text-[#12161950]">
+              <span className="flex items-center text-[12px] font-normal leading-normal text-[#12161950]">
                 Balance:
-                <span className="font-mono tabular-nums">
-                  {token?.balance || '0.00'}
-                </span>
+                {token?.balance ? (
+                  <FormattedNumberTooltip
+                    value={token.balance}
+                    decimals={token.decimals ?? 0}
+                  />
+                ) : (
+                  <span className="font-mono tabular-nums">0.000</span>
+                )}
               </span>
             </div>
             <div className="flex flex-col items-end">
@@ -90,17 +97,22 @@ export function TokenSelect({
                   'md:text-[24px]',
                   value && 'text-[#121619]'
                 )}
-                placeholder="0.00"
+                placeholder="0.000"
                 type="number"
                 value={value}
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
-              <span className="text-[12px] font-normal leading-normal text-[#12161950]">
+              <span className="flex items-center text-[12px] font-normal leading-normal text-[#12161950]">
                 ≈ ${' '}
-                <span className="font-mono tabular-nums">
-                  {token?.balance || '0.00'}
-                </span>
+                {token?.balance ? (
+                  <FormattedNumberTooltip
+                    value={token.balance}
+                    decimals={token.decimals ?? 0}
+                  />
+                ) : (
+                  <span className="font-mono tabular-nums">0.000</span>
+                )}
               </span>
             </div>
           </div>
@@ -113,6 +125,7 @@ export function TokenSelect({
 
       <TokenSelectDialog
         isOpen={isDialogOpen}
+        isLoading={isLoading}
         onClose={() => setIsDialogOpen(false)}
         onSelect={handleSelect}
         tokens={tokens || []}

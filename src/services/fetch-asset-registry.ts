@@ -4,7 +4,12 @@ import type { ChainConfig } from '@/types/asset-registry';
 
 export async function fetchPolkadotAssetRegistry(): Promise<ChainConfig> {
   // const res = await fetch(
-  //   'https://raw.githubusercontent.com/paritytech/asset-transfer-api-registry/refs/heads/main/docs/registry.json'
+  //   'https://raw.githubusercontent.com/paritytech/asset-transfer-api-registry/refs/heads/main/docs/registry.json',
+  //   {
+  //     next: {
+  //       revalidate: 60 * 60 * 24 // 24 hours
+  //     }
+  //   }
   // );
   // const result = await res.json();
   // return result?.polkadot;

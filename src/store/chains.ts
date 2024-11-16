@@ -1,10 +1,16 @@
 import { create } from 'zustand';
 import type { ChainInfo } from '@/types/chains-info';
-import type { XcAssetData } from '@/types/asset-registry';
+import type { ParaChainConfig, XcAssetData } from '@/types/asset-registry';
 
 export interface ChainInfoWithXcAssetsData extends ChainInfo {
   id: string;
   xcAssetsData?: XcAssetData[];
+  assetsInfo?: ParaChainConfig['assetsInfo'];
+  foreignAssetsInfo?: ParaChainConfig['foreignAssetsInfo'];
+  nativeToken: {
+    symbol: string;
+    decimals: number;
+  };
   isEvmChain?: boolean;
 }
 

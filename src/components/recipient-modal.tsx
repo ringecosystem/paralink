@@ -134,16 +134,18 @@ export function RecipientModal({
               />
             </div>
 
-            <div className="flex flex-col gap-[10px]">
-              <p className="text-[14px] font-normal leading-[24px] text-[#242A2E]">
+            <div className="flex w-full flex-col gap-[10px] md:w-auto">
+              <p className="text-center text-[14px] font-normal leading-[24px] text-[#242A2E] md:text-left">
                 Connect your wallet to select a destination address
               </p>
               <Button
                 variant="secondary"
                 onClick={onClose}
+                disabled
                 className="flex-1 bg-[#FF00831A] font-bold text-[#FF0083] transition-opacity hover:bg-[#FF00831A] hover:opacity-80"
               >
-                Connect Now
+                {/* Connect Now */}
+                Coming Soon 🚀
               </Button>
             </div>
           </div>

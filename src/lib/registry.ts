@@ -1,4 +1,3 @@
-import type { ChainInfoWithXcAssetsData } from '@/store/chains';
 import type { ChainConfig, XcAssetData } from '@/types/asset-registry';
 import type { Asset } from '@/types/assets-info';
 
@@ -27,21 +26,21 @@ export function getSupportedParaChains(polkadot: ChainConfig) {
   }));
 }
 
-export function getDestinationParaChains(
-  chains: ChainInfoWithXcAssetsData[],
-  sourceParaId: string
-) {
-  if (!chains?.length) return [];
-  const sourceChain = chains?.find((v) => v.id === sourceParaId) as
-    | ChainInfoWithXcAssetsData
-    | undefined;
-  if (!sourceChain) return [];
+// export function getDestinationParaChains(
+//   chains: ChainInfoWithXcAssetsData[],
+//   sourceParaId: string
+// ) {
+//   if (!chains?.length) return [];
+//   const sourceChain = chains?.find((v) => v.id === sourceParaId) as
+//     | ChainInfoWithXcAssetsData
+//     | undefined;
+//   if (!sourceChain) return [];
 
-  const destParaIds = new Set(
-    sourceChain?.xcAssetsData?.map((x) => x.paraID?.toString()) ?? []
-  );
-  return chains.filter((v) => destParaIds.has(v.id));
-}
+//   const destParaIds = new Set(
+//     sourceChain?.xcAssetsData?.map((x) => x.paraID?.toString()) ?? []
+//   );
+//   return chains.filter((v) => destParaIds.has(v.id));
+// }
 
 export interface XcAssetWithMatch extends XcAssetData {
   icon?: string;

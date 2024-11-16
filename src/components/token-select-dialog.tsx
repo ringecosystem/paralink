@@ -13,10 +13,13 @@ import { FallbackImage } from '@/components/ui/fallback-image';
 import { Empty } from './empty';
 
 import type { TokenWithBalance } from '@/types/token';
+import { Skeleton } from './ui/skeleton';
+import FormattedNumberTooltip from './formatted-number-tooltip';
 
 interface TokenSelectDialogProps {
   isOpen: boolean;
   onClose: () => void;
+  isLoading?: boolean;
   onSelect: (token: TokenWithBalance) => void;
   tokens: TokenWithBalance[];
 }
@@ -24,6 +27,7 @@ interface TokenSelectDialogProps {
 export function TokenSelectDialog({
   isOpen,
   onClose,
+  isLoading,
   onSelect,
   tokens
 }: TokenSelectDialogProps) {
@@ -120,10 +124,14 @@ export function TokenSelectDialog({
                               ) : null}
                             </div>
                           </div>
-                          {token?.balance ? (
-                            <span className="text-right font-mono text-[16px] font-bold tabular-nums">
-                              {token.balance}
-                            </span>
+                          {isLoading ? (
+                            <Skeleton className="h-[20px] w-[60px] bg-[#F2F3F5]" />
+                          ) : token?.balance ? (
+                            <FormattedNumberTooltip
+                              value={token.balance}
+                              className="text-right font-mono text-[16px] font-bold tabular-nums"
+                              decimals={token.decimals ?? 0}
+                            />
                           ) : null}
                         </div>
                       </div>

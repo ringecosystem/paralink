@@ -1,4 +1,5 @@
 import type { XcAssetData } from './asset-registry';
+import type { BN } from '@polkadot/util';
 
 export type Token = {
   symbol: string;
@@ -7,8 +8,9 @@ export type Token = {
 };
 
 export type TokenWithBalance = Token & {
-  balance?: string;
+  balance?: BN;
   price?: string;
   address?: string;
   xcAssetData?: XcAssetData;
+  decimals?: number;
 };

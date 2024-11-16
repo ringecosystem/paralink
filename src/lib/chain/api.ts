@@ -1,3 +1,4 @@
+import { getAcceptablePaymentAssets } from '@/services/xcm/polkadot-xcm';
 import { ApiPromise, WsProvider } from '@polkadot/api';
 
 export interface ConnectOptions {
@@ -9,6 +10,8 @@ export async function connectToChain({
   wsEndpoint,
   onDisconnect
 }: ConnectOptions): Promise<ApiPromise> {
+  console.log('wsEndpoint1', wsEndpoint);
+
   try {
     const provider = new WsProvider(wsEndpoint);
 

@@ -20,6 +20,7 @@ export function useApiConnection({ fromChain }: UseApiConnectionProps) {
     const initFromChainApi = async () => {
       if (!fromChain?.providers) return;
       const bestEndpoint = await findBestWssEndpoint(fromChain.providers);
+
       if (bestEndpoint) connectFromChainApi(bestEndpoint);
     };
     initFromChainApi();

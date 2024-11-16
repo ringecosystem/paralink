@@ -1,16 +1,14 @@
-import { BN } from '@polkadot/util';
-
 import { getTokenFromXcAsset } from '@/lib/registry';
 import { getAssetBalance } from '@/lib/chain/balance';
 import type { ChainInfoWithXcAssetsData } from '@/store/chains';
 import type { ApiPromise } from '@polkadot/api';
 import type { Asset } from '@/types/assets-info';
 import type { TokenWithBalance } from '@/types/token';
-import { validateTokenFetch } from '@/utils/validators';
+import { getTokenList } from '@/utils/xcm-chain-registry';
 
 interface GetTokensParams {
   fromChain: ChainInfoWithXcAssetsData;
-  toChainId: string;
+  toChain: ChainInfoWithXcAssetsData;
   assets: Asset[];
   address?: string;
   api?: ApiPromise;
@@ -24,22 +22,22 @@ interface UpdateTokenBalanceParams {
 
 function getTokensWithoutBalance({
   fromChain,
-  toChainId,
+  toChain,
   assets
 }: GetTokensParams): TokenWithBalance[] {
-  return (fromChain?.xcAssetsData || [])
-    ?.filter((v) => v?.paraID?.toString() === toChainId)
-    ?.map((v) => {
-      const data = getTokenFromXcAsset({ xcAssetData: v, assets });
-      return {
-        symbol: data?.symbol,
-        icon: data?.icon ?? '/images/default-token.svg',
-        name: data?.name ?? data?.symbol,
-        xcAssetData: v,
-        isNative: fromChain?.substrateInfo?.symbol === v?.symbol,
-        balance: undefined
-      };
-    });
+  const tokens = getTokenList({ fromChain, toChain });
+  return tokens?.map((v) => {
+    const data = getTokenFromXcAsset({ xcAssetData: v, assets });
+    return {
+      symbol: data?.symbol,
+      decimals: data?.decimals,
+      icon: data?.icon ?? '/images/default-token.svg',
+      name: data?.name ?? data?.symbol,
+      xcAssetData: v,
+      isNative: fromChain?.substrateInfo?.symbol === v?.symbol,
+      balance: undefined
+    };
+  });
 }
 
 export async function updateTokenBalance({
@@ -53,13 +51,9 @@ export async function updateTokenBalance({
     assetId: token.xcAssetData?.asset ?? undefined
   });
 
-  const decimals = token.xcAssetData?.decimals ?? 0;
-  const divisor = new BN(10).pow(new BN(decimals));
-  const transferrableBalance = balance.div(divisor).toNumber().toFixed(4);
-
   return {
     ...token,
-    balance: transferrableBalance
+    balance
   };
 }
 
@@ -80,36 +74,26 @@ export async function getTokensWithBalance(
 
 export async function getTokensWithBalanceForChain({
   fromChain,
-  toChainId,
+  toChain,
   fromChainApi,
   assets,
   evmAddress,
   substrateAddress
 }: {
   fromChain: ChainInfoWithXcAssetsData;
-  toChainId: string;
+  toChain: ChainInfoWithXcAssetsData;
   fromChainApi: ApiPromise | null;
   assets: Asset[];
   evmAddress?: string;
   substrateAddress?: string;
 }): Promise<TokenWithBalance[]> {
-  const validation = validateTokenFetch({
-    fromChain,
-    toChainId,
-    assets,
-    evmAddress,
-    substrateAddress
-  });
-  if (!validation.isValid) {
-    console.log('error', validation.error);
-    return [];
-  }
+  const address = fromChain.isEvmChain ? evmAddress : substrateAddress;
 
   const tokens = await getTokensWithBalance({
     fromChain,
-    toChainId,
+    toChain,
     assets,
-    address: validation.address,
+    address,
     api: fromChainApi ?? undefined
   });
 
