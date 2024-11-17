@@ -1,5 +1,9 @@
 import type { ChainInfoWithXcAssetsData } from '@/store/chains';
-import type { XcAssetData } from '@/types/asset-registry';
+import type {
+  AssetType,
+  ReserveType,
+  XcAssetData
+} from '@/types/asset-registry';
 
 export function hasParachainInLocation({
   multiLocationStr,
@@ -117,7 +121,7 @@ export function getToChains(
   const fromChain = chains.find((chain) => chain.id === fromChainId);
   if (!fromChain) return [];
 
-  // 首先过滤掉来源链自身
+  // 首先过滤掉���源链自身
   const filteredChains = chains.filter((chain) => chain.id !== fromChainId);
 
   // AssetHub (Statemint) 的特殊处理
@@ -213,6 +217,7 @@ export const getTokenList = ({
           decimals: toChain.nativeToken.decimals,
           paraID: Number(toChain.id),
           nativeChainID: toChain.name.toLowerCase().replace(/\s/g, '-'),
+          reserveType: 'foreign',
           xcmV1MultiLocation: foreignAsset.multiLocation || '',
           asset: { ForeignAsset: assetId },
           assetHubReserveLocation: foreignAsset.assetHubReserveLocation,
@@ -247,7 +252,34 @@ export const getTokenList = ({
     });
 
     if (destAssetsInfo && destAssetsInfo.length > 0) {
-      tokenList.push(...destAssetsInfo);
+      const processedAssets = destAssetsInfo.map((asset) => {
+        const generalIndex = getGeneralIndex(asset.xcmV1MultiLocation);
+        const assetInfo = fromChain.assetsInfo?.[generalIndex || ''];
+
+        return {
+          ...asset,
+          // 使用 AssetHub (fromChain) 中的资产信息
+          symbol: assetInfo || asset.symbol,
+          decimals: asset.decimals,
+          paraID: Number(fromChain.id),
+          nativeChainID: fromChain.name.toLowerCase().replace(/\s/g, '-'),
+          reserveType: 'local' as ReserveType,
+          asset: generalIndex as AssetType,
+          xcmV1MultiLocation: JSON.stringify({
+            v1: {
+              parents: 1,
+              interior: {
+                x3: [
+                  { parachain: fromChain.id },
+                  { palletInstance: 50 },
+                  { generalIndex }
+                ]
+              }
+            }
+          })
+        };
+      });
+      tokenList.push(...processedAssets);
     }
   } else {
     // 1. 检查目标链是否支持源链的原生代币
@@ -261,32 +293,55 @@ export const getTokenList = ({
           fromChain.nativeToken.symbol.toLowerCase()
     );
 
+    supportedNativeToken = {
+      ...supportedNativeToken,
+      symbol: supportedNativeToken?.symbol || '',
+      decimals: supportedNativeToken?.decimals || 0,
+      paraID: Number(fromChain.id),
+      nativeChainID: fromChain.name.toLowerCase().replace(/\s/g, '-'),
+      reserveType: 'local' as ReserveType,
+      asset: 'Native' as AssetType,
+      xcmV1MultiLocation: JSON.stringify({
+        v1: {
+          parents: 1,
+          interior: {
+            x1: { parachain: fromChain.id }
+          }
+        }
+      })
+    };
+
     // 2. 获取源链上可以转到目标链的资产
     const otherAssets =
-      fromChain.xcAssetsData?.filter((asset) => {
-        const hasDestParachain = hasParachainInLocation({
-          multiLocationStr: asset.xcmV1MultiLocation,
-          paraId: toChain.id
-        });
+      fromChain.xcAssetsData
+        ?.filter((asset) => {
+          const hasDestParachain = hasParachainInLocation({
+            multiLocationStr: asset.xcmV1MultiLocation,
+            paraId: toChain.id
+          });
 
-        if (
-          supportedNativeToken &&
-          asset.symbol.toLowerCase() ===
-            fromChain.nativeToken.symbol.toLowerCase()
-        ) {
-          // 只在找到 supportedNativeToken 的情况下修正它并移除原生代币
-          supportedNativeToken = {
-            ...supportedNativeToken,
-            paraID: Number(fromChain.id),
-            nativeChainID: fromChain.name.toLowerCase().replace(/\s/g, '-'),
-            decimals: asset.decimals,
-            originChainReserveLocation: asset.originChainReserveLocation
-          };
-          return false;
-        }
+          if (
+            supportedNativeToken &&
+            asset.symbol.toLowerCase() ===
+              fromChain.nativeToken.symbol.toLowerCase()
+          ) {
+            // 只在找到 supportedNativeToken 的情况下修正它并移除原生代币
+            supportedNativeToken = {
+              ...supportedNativeToken,
+              paraID: Number(fromChain.id),
+              nativeChainID: fromChain.name.toLowerCase().replace(/\s/g, '-'),
+              decimals: asset.decimals,
+              originChainReserveLocation: asset.originChainReserveLocation
+            };
+            return false;
+          }
 
-        return hasDestParachain;
-      }) ?? [];
+          return hasDestParachain;
+        })
+        ?.map((v) => ({
+          ...v,
+          reserveType: 'foreign' as ReserveType
+        })) ?? [];
 
     return supportedNativeToken
       ? [supportedNativeToken, ...otherAssets]
@@ -295,3 +350,7 @@ export const getTokenList = ({
 
   return tokenList;
 };
+
+// 未验证
+// clover
+//

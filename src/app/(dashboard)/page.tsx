@@ -1,6 +1,9 @@
-import { fetchPolkadotAssetRegistry } from '@/services/fetch-asset-registry';
+import {
+  fetchPolkadotAssetRegistry,
+  fetchAssetsInfo,
+  fetchChainsInfo
+} from '@/services/fetch-chain-resources';
 import Dashboard from './_components/dashboard';
-import { fetchAssetsInfo, fetchChainsInfo } from '@/services/fetch-assets';
 
 export default async function Page() {
   const [polkadotAsset, chainAssets, assetsInfo] = await Promise.all([

@@ -1,10 +1,10 @@
 import { getTokenFromXcAsset } from '@/lib/registry';
 import { getAssetBalance } from '@/lib/chain/balance';
+import { getTokenList } from '@/utils/xcm-chain-registry';
 import type { ChainInfoWithXcAssetsData } from '@/store/chains';
 import type { ApiPromise } from '@polkadot/api';
 import type { Asset } from '@/types/assets-info';
 import type { TokenWithBalance } from '@/types/token';
-import { getTokenList } from '@/utils/xcm-chain-registry';
 
 interface GetTokensParams {
   fromChain: ChainInfoWithXcAssetsData;
@@ -48,7 +48,7 @@ export async function updateTokenBalance({
   const balance = await getAssetBalance({
     api,
     account: address,
-    assetId: token.xcAssetData?.asset ?? undefined
+    xcAssetData: token.xcAssetData
   });
 
   return {

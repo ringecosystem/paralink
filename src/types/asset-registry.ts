@@ -39,14 +39,16 @@ export type AssetType =
   | { VToken2: string }
   | { VSToken2: string };
 
+export type ReserveType = 'local' | 'foreign';
 export interface XcAssetData {
   paraID: number;
   nativeChainID: string | null;
+  reserveType: ReserveType;
   symbol: string;
   decimals: number;
   xcmV1MultiLocation: string;
   asset: AssetType;
-  assetHubReserveLocation: string;
+  assetHubReserveLocation?: string;
   originChainReserveLocation?: string;
 }
 export interface PoolPairInfo {
