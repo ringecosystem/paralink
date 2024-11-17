@@ -19,7 +19,7 @@ const jsonLoader = createJsonResourceLoader({
   preferredCDN: 'github-raw'
 });
 
-export function createAssetRegistryService() {
+export async function createAssetRegistryService() {
   async function getAssetRegistry() {
     return jsonLoader.fetchJson({
       owner: 'paritytech',
@@ -45,7 +45,7 @@ async function fetchResource<T>(options: {
   };
   localFallback: T;
 }): Promise<T> {
-  // 首先尝试从 CDN 获取
+  // cdn fetch
   try {
     const res = await fetch(options.cdnUrl, {
       next: { revalidate: API_CACHE_TIME }
@@ -55,7 +55,7 @@ async function fetchResource<T>(options: {
     console.warn(`CDN fetch failed (${options.cdnUrl}):`, error);
   }
 
-  // 然后尝试从 GitHub 获取
+  // github fetch
   try {
     const data = await jsonLoader.fetchJson<T>(options.resourceLoader);
     return data;
@@ -63,14 +63,14 @@ async function fetchResource<T>(options: {
     console.warn('GitHub fetch failed:', error);
   }
 
-  // 最后使用本地数据
+  // local fallback
   console.warn('Falling back to local data');
   return options.localFallback;
 }
 
 export async function fetchPolkadotAssetRegistry(): Promise<ChainConfig> {
   try {
-    const assetRegistryService = createAssetRegistryService();
+    const assetRegistryService = await createAssetRegistryService();
     const remoteRegistry =
       (await assetRegistryService.getAssetRegistry()) as Registry;
     return remoteRegistry?.polkadot as ChainConfig;

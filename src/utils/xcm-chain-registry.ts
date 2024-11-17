@@ -16,7 +16,6 @@ export function hasParachainInLocation({
     const multiLocation = JSON.parse(multiLocationStr);
     const interior = multiLocation.v1.interior;
     const locationArray = interior.x1 || interior.x2 || interior.x3 || [];
-    // 处理数组和单个对象的情况
     return Array.isArray(locationArray)
       ? locationArray.some(
           (v: { [key: string]: string | number }) =>
@@ -83,20 +82,16 @@ export function getFromChains(
   chains: ChainInfoWithXcAssetsData[]
 ): ChainInfoWithXcAssetsData[] {
   return chains.filter((chain) => {
-    // AssetHub (Statemint) 总是可以作为来源链
     if (chain.id === '1000') return true;
 
-    // 检查该链是否有指向其他链的 xcAssetsData
     const hasXcAssets = chain?.xcAssetsData?.some((asset) => {
       const targetParaId = chain.id;
-      // 确保资产不是指向自身的
       return !hasParachainInLocation({
         multiLocationStr: asset.xcmV1MultiLocation,
         paraId: targetParaId
       });
     });
 
-    // 检查其他链是否支持该链的原生代币
     const isNativeTokenSupported = chains.some((otherChain) =>
       otherChain.xcAssetsData?.some(
         (asset) =>
@@ -108,12 +103,10 @@ export function getFromChains(
       )
     );
 
-    // 如果链有 xcAssets 或其原生代币被其他链支持，则可以作为来源链
     return hasXcAssets || isNativeTokenSupported;
   });
 }
 
-// 获取目标链列表
 export function getToChains(
   chains: ChainInfoWithXcAssetsData[],
   fromChainId: string
@@ -121,13 +114,10 @@ export function getToChains(
   const fromChain = chains.find((chain) => chain.id === fromChainId);
   if (!fromChain) return [];
 
-  // 首先过滤掉���源链自身
   const filteredChains = chains.filter((chain) => chain.id !== fromChainId);
 
-  // AssetHub (Statemint) 的特殊处理
   if (fromChain.id === '1000') {
     return filteredChains.filter((chain) => {
-      // 检查目标链是否支持来自 AssetHub 的资产
       const hasValidXcAsset = chain.xcAssetsData?.some((asset) => {
         const hasParachain = hasParachainInLocation({
           multiLocationStr: asset.xcmV1MultiLocation,
@@ -136,15 +126,12 @@ export function getToChains(
 
         if (!hasParachain) return false;
 
-        // 检查generalIndex是否与assetsInfo中的资产匹配
         const generalIndex = getGeneralIndex(asset.xcmV1MultiLocation);
         if (!generalIndex) return false;
 
-        // 确保在AssetHub的assetsInfo中存在对应的资产
         return Object.keys(fromChain.assetsInfo || {}).includes(generalIndex);
       });
 
-      // 检查 AssetHub 是否有目标链的外部资产
       const hasForeignAsset = fromChain.foreignAssetsInfo
         ? Object.entries(fromChain.foreignAssetsInfo).some(([, asset]) =>
             matchesParachainAndSymbol({
@@ -160,9 +147,7 @@ export function getToChains(
     });
   }
 
-  // 对于其他链的处理保持不变
   return filteredChains.filter((chain) => {
-    // 检查目标链是否支持源链的原生代币
     const supportsNativeToken = chain.xcAssetsData?.some(
       (asset) =>
         hasParachainInLocation({
@@ -172,8 +157,6 @@ export function getToChains(
         asset.symbol.toLowerCase() ===
           fromChain.nativeToken.symbol.toLowerCase()
     );
-
-    // 检查源链是否有可以转到目标链的资产
     const hasTransferableAssets = fromChain.xcAssetsData?.some((asset) =>
       hasParachainInLocation({
         multiLocationStr: asset.xcmV1MultiLocation,
@@ -226,7 +209,6 @@ export const getTokenList = ({
         tokenList.push(foreignAssetInfo);
       }
     }
-    // 根据 toChain 的 xcAssetsData 过滤
     const destAssetsInfo = toChain?.xcAssetsData?.filter((asset) => {
       const hasParachain = hasParachainInLocation({
         multiLocationStr: asset.xcmV1MultiLocation,
@@ -235,7 +217,6 @@ export const getTokenList = ({
 
       if (!hasParachain) return false;
 
-      // 如果有foreignAssetInfo，检查symbol不重复
       if (
         foreignAssetInfo &&
         foreignAssetInfo.symbol.toLowerCase() === asset.symbol.toLowerCase()
@@ -243,11 +224,9 @@ export const getTokenList = ({
         return false;
       }
 
-      // 检查generalIndex是否与assetsInfo中的资产匹配
       const generalIndex = getGeneralIndex(asset.xcmV1MultiLocation);
       if (!generalIndex) return false;
 
-      // 确保在fromChain的assetsInfo中存在对应的资产
       return Object.keys(fromChain.assetsInfo || {}).includes(generalIndex);
     });
 
@@ -258,7 +237,6 @@ export const getTokenList = ({
 
         return {
           ...asset,
-          // 使用 AssetHub (fromChain) 中的资产信息
           symbol: assetInfo || asset.symbol,
           decimals: asset.decimals,
           paraID: Number(fromChain.id),
@@ -282,7 +260,6 @@ export const getTokenList = ({
       tokenList.push(...processedAssets);
     }
   } else {
-    // 1. 检查目标链是否支持源链的原生代币
     let supportedNativeToken = toChain.xcAssetsData?.find(
       (asset) =>
         hasParachainInLocation({
@@ -311,7 +288,6 @@ export const getTokenList = ({
       })
     };
 
-    // 2. 获取源链上可以转到目标链的资产
     const otherAssets =
       fromChain.xcAssetsData
         ?.filter((asset) => {
@@ -325,7 +301,6 @@ export const getTokenList = ({
             asset.symbol.toLowerCase() ===
               fromChain.nativeToken.symbol.toLowerCase()
           ) {
-            // 只在找到 supportedNativeToken 的情况下修正它并移除原生代币
             supportedNativeToken = {
               ...supportedNativeToken,
               paraID: Number(fromChain.id),
@@ -351,6 +326,4 @@ export const getTokenList = ({
   return tokenList;
 };
 
-// 未验证
 // clover
-//

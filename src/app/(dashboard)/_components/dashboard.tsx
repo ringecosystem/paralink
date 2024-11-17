@@ -20,6 +20,7 @@ import { ChainSwitcher } from './chain-switcher';
 import type { ChainConfig } from '@/types/asset-registry';
 import type { ChainInfo } from '@/types/chains-info';
 import type { Asset } from '@/types/assets-info';
+import { validateHrmpConnection } from '@/utils/hrmp-validation';
 
 interface DashboardProps {
   polkadotAssetRegistry: ChainConfig;
@@ -124,12 +125,19 @@ export default function Dashboard({
   }, [setSelectedToken, swapChains, chains, fromChainId, toChainId]);
 
   const handleClick = useCallback(async () => {
+    if (!fromChainId || !toChainId) return;
+    const validationResult = await validateHrmpConnection({
+      fromChainId,
+      toChainId,
+      chainsInfo
+    });
+    console.log('validationResult', validationResult);
     if (!fromChainApi) return;
     console.log('fromChainApi', fromChainApi);
     const crossTokenLocation = await getAcceptablePaymentAsset(fromChainApi);
     console.log('crossTokenLocation', crossTokenLocation);
     console.log('amount', amount);
-  }, [amount, fromChainApi]);
+  }, [amount, fromChainApi, fromChainId, toChainId, chainsInfo]);
 
   useEffect(() => {
     fetchTokens();

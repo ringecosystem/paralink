@@ -7,7 +7,7 @@ export default function Loading() {
       <div className="mx-auto flex w-full flex-col gap-[20px] rounded-[var(--radius)] bg-white p-[15px] shadow-sm md:w-[460px] md:rounded-[var(--radius-lg)] md:p-[20px]">
         <Skeleton className="h-[64px] w-full rounded-[10px] bg-[#F2F3F5]" />
 
-        <Skeleton className="h-[60px] w-full rounded-[10px] bg-[#F2F3F5]" />
+        <Skeleton className="h-[74px] w-full rounded-[10px] bg-[#F2F3F5]" />
 
         <Skeleton className="h-[44px] w-full rounded-[10px] bg-[#F2F3F5]" />
         <Skeleton className="h-[44px] w-full rounded-[10px] bg-[#F2F3F5]" />
