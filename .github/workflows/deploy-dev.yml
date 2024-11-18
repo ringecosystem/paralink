@@ -1,0 +1,27 @@
+name: Deploy development
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  deploy-package:
+    name: Deploy package
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: darwinia-network/devops/actions/smart-vercel@main
+        name: Deploy app
+        with:
+          vercel_token: ${{ secrets.VERCEL_TOKEN }}
+          vercel_group: itering
+          preview_output: true
+          alias_domain: "paralink-dev"
+          project_name: "paralink"
+          script_run: false
+          dist_path: .
+          enable_notify_comment: true
+          enable_notify_slack: true
+          slack_channel: public-ringdao-apps
+          slack_webhook: ${{ secrets.SLACK_INCOMING_WEBHOOK_URL }}

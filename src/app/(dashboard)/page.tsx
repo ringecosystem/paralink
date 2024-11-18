@@ -1,4 +1,4 @@
-export const dynamic = 'force-dynamic'
+export const dynamic = 'force-dynamic';
 
 import {
   fetchPolkadotAssetRegistry,
@@ -13,7 +13,6 @@ export default async function Page() {
     fetchChainsInfo(),
     fetchAssetsInfo()
   ]);
-
   return (
     <Dashboard
       polkadotAssetRegistry={polkadotAsset}
