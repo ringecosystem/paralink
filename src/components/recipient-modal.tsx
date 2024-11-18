@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import Image from 'next/image';
+// import Image from 'next/image';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 import { Button } from './ui/button';
 import { cn, isValidAddress } from '@/lib/utils';
@@ -105,7 +105,7 @@ export function RecipientModal({
             </Button>
           </div>
 
-          <div className="flex items-center gap-[20px] rounded-[10px] bg-[#FF00831A] p-[20px]">
+          {/* <div className="flex items-center gap-[20px] rounded-[10px] bg-[#FF00831A] p-[20px]">
             <div className="hidden grid-cols-2 gap-[10px] md:grid">
               <Image
                 src="/images/wallet/metamask.png"
@@ -144,11 +144,10 @@ export function RecipientModal({
                 disabled
                 className="flex-1 bg-[#FF00831A] font-bold text-[#FF0083] transition-opacity hover:bg-[#FF00831A] hover:opacity-80"
               >
-                {/* Connect Now */}
                 Coming Soon 🚀
               </Button>
             </div>
-          </div>
+          </div> */}
         </div>
       </DialogContent>
     </Dialog>

@@ -10,7 +10,7 @@ import { ConnectOrActionButton } from '@/components/connect-or-action-button';
 import useChainsStore from '@/store/chains';
 import useTokensStore from '@/store/tokens';
 import { getTokensWithBalanceForChain } from '@/services/tokens';
-import { getAcceptablePaymentAsset } from '@/services/xcm/polkadot-xcm';
+// import { getAcceptablePaymentAsset } from '@/services/xcm/polkadot-xcm';
 import { useWalletConnection } from '@/hooks/use-wallet-connection';
 
 import { useChainInitialization } from '../_hooks/use-chain-initlization';
@@ -132,11 +132,11 @@ export default function Dashboard({
       chainsInfo
     });
     console.log('validationResult', validationResult);
-    if (!fromChainApi) return;
-    console.log('fromChainApi', fromChainApi);
-    const crossTokenLocation = await getAcceptablePaymentAsset(fromChainApi);
-    console.log('crossTokenLocation', crossTokenLocation);
-    console.log('amount', amount);
+    // if (!fromChainApi) return;
+    // console.log('fromChainApi', fromChainApi);
+    // const crossTokenLocation = await getAcceptablePaymentAsset(fromChainApi);
+    // console.log('crossTokenLocation', crossTokenLocation);
+    // console.log('amount', amount);
   }, [amount, fromChainApi, fromChainId, toChainId, chainsInfo]);
 
   useEffect(() => {

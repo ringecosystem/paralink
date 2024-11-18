@@ -1,4 +1,3 @@
-import { getAcceptablePaymentAssets } from '@/services/xcm/polkadot-xcm';
 import { ApiPromise, WsProvider } from '@polkadot/api';
 
 export interface ConnectOptions {

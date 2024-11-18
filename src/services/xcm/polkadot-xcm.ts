@@ -268,17 +268,18 @@ export const getAcceptablePaymentAsset = async (api: ApiPromise) => {
         defaultXcmVersion
       );
 
-    return allowedAssets?.toJSON()?.ok?.[0];
+    // return allowedAssets?.toJSON()?.ok?.[0];
+    return allowedAssets;
   } catch (error) {
     console.error('fetch acceptable payment asset failed', error);
     return null;
   }
 };
 
-const calculateExecutionWeight = async (api: ApiPromise, xcmMessage: any) => {
-  const weight = await api.query.xcmPaymentApi.queryXcmWeight(xcmMessage);
-  return weight;
-};
+// const calculateExecutionWeight = async (api: ApiPromise, xcmMessage: any) => {
+//   const weight = await api.query.xcmPaymentApi.queryXcmWeight(xcmMessage);
+//   return weight;
+// };
 
 // // 获取cross token info
 // const getCrossTokenInfo = async (api: ApiPromise) => {
