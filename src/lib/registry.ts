@@ -1,3 +1,4 @@
+import { BLACKLISTED_PARA_IDS } from '@/config/token';
 import type { ChainConfig, XcAssetData } from '@/types/asset-registry';
 import type { Asset } from '@/types/assets-info';
 
@@ -20,10 +21,36 @@ export interface ParachainInfo {
 }
 
 export function getSupportedParaChains(polkadot: ChainConfig) {
-  return Object.entries(polkadot)?.map(([id, data]) => ({
-    id,
-    ...data
-  }));
+  return Object.entries(polkadot)
+    ?.map(([id, data]) => ({
+      id,
+      ...data,
+      xcAssetsData: data.xcAssetsData
+        ? data.xcAssetsData
+            ?.map((asset) => {
+              if (!asset.paraID && asset.originChainReserveLocation) {
+                try {
+                  const reserveLocation = JSON.parse(
+                    asset.originChainReserveLocation
+                  );
+                  const paraID = reserveLocation?.interior?.X1?.Parachain;
+                  return { ...asset, paraID: Number(paraID) || 0 };
+                } catch {
+                  return asset;
+                }
+              }
+              return asset;
+            })
+            .filter(
+              (asset) =>
+                !BLACKLISTED_PARA_IDS.includes(asset?.paraID?.toString())
+            )
+        : undefined
+    }))
+    ?.filter((v) => {
+      // blacklist
+      return !BLACKLISTED_PARA_IDS.includes(v.id);
+    });
 }
 
 // export function getDestinationParaChains(

@@ -2,6 +2,7 @@ import { ApiPromise, WsProvider } from '@polkadot/api';
 import { findBestWssEndpoint } from '@/utils/rpc-endpoint';
 import type { ChainInfo } from '@/types/chains-info';
 import type { BN } from '@polkadot/util';
+import type { ChainConfig } from '@/types/asset-registry';
 
 interface HrmpChannel {
   sender: number;
@@ -19,12 +20,6 @@ interface HrmpChannel {
 interface ValidationResult {
   isValid: boolean;
   error?: string;
-}
-
-interface ValidateHrmpConnectionParams {
-  fromChainId: string;
-  toChainId: string;
-  chainsInfo: ChainInfo[];
 }
 
 async function createPolkadotApi(
@@ -96,35 +91,50 @@ function validateChannels(
 
   return { isValid: true };
 }
+interface FilterHrmpConnectionsParams {
+  polkadotAssetRegistry: ChainConfig;
+  chainsInfo: ChainInfo[];
+}
 
-export async function validateHrmpConnection({
-  fromChainId,
-  toChainId,
+export async function filterHrmpConnections({
+  polkadotAssetRegistry,
   chainsInfo
-}: ValidateHrmpConnectionParams): Promise<ValidationResult> {
+}: FilterHrmpConnectionsParams): Promise<ChainConfig> {
   try {
     const polkadotChain = chainsInfo.find((chain) => chain.name === 'Polkadot');
     if (!polkadotChain || !polkadotChain.providers)
       throw new Error('Polkadot chain information or providers not found');
 
     const api = await createPolkadotApi(polkadotChain.providers);
-
     const hrmpChannels = await getHrmpChannels(api);
 
-    const validationResult = validateChannels(
-      Number(fromChainId),
-      Number(toChainId),
-      hrmpChannels
-    );
+    // 过滤有效的 paraId 连接
+    const filteredRegistry: ChainConfig = {};
 
-    // 6. 清理资源
+    for (const [paraId, chainData] of Object.entries(polkadotAssetRegistry)) {
+      const otherParaIds = Object.keys(polkadotAssetRegistry).filter(
+        (id) => id !== paraId
+      );
+
+      const hasValidConnections = otherParaIds.some((otherParaId) => {
+        const validationResult = validateChannels(
+          Number(paraId),
+          Number(otherParaId),
+          hrmpChannels
+        );
+        return validationResult.isValid;
+      });
+
+      if (hasValidConnections) {
+        filteredRegistry[paraId] = chainData;
+      }
+    }
+
     await api.disconnect();
-
-    return validationResult;
+    return filteredRegistry;
   } catch (error) {
-    return {
-      isValid: false,
-      error: `HRMP connection validation failed: ${error instanceof Error ? error.message : String(error)}`
-    };
+    throw new Error(
+      `Failed to filter HRMP connections: ${error instanceof Error ? error.message : String(error)}`
+    );
   }
 }

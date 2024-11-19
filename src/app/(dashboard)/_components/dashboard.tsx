@@ -20,7 +20,6 @@ import { ChainSwitcher } from './chain-switcher';
 import type { ChainConfig } from '@/types/asset-registry';
 import type { ChainInfo } from '@/types/chains-info';
 import type { Asset } from '@/types/assets-info';
-import { validateHrmpConnection } from '@/utils/hrmp-validation';
 
 interface DashboardProps {
   polkadotAssetRegistry: ChainConfig;
@@ -94,6 +93,10 @@ export default function Dashboard({
     if (tokens?.length) {
       setTokens(tokens);
       setSelectedToken(tokens[0]);
+    } else {
+      console.log('no tokens');
+      setTokens([]);
+      setSelectedToken(undefined);
     }
   }, [
     fromChain,
@@ -126,12 +129,12 @@ export default function Dashboard({
 
   const handleClick = useCallback(async () => {
     if (!fromChainId || !toChainId) return;
-    const validationResult = await validateHrmpConnection({
-      fromChainId,
-      toChainId,
-      chainsInfo
-    });
-    console.log('validationResult', validationResult);
+    // const validationResult = await validateHrmpConnection({
+    //   fromChainId,
+    //   toChainId,
+    //   chainsInfo
+    // });
+    // console.log('validationResult', validationResult);
     // if (!fromChainApi) return;
     // console.log('fromChainApi', fromChainApi);
     // const crossTokenLocation = await getAcceptablePaymentAsset(fromChainApi);

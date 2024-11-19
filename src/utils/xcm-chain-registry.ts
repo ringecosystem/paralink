@@ -81,91 +81,14 @@ export function getGeneralIndex(multiLocationStr: string): string | null {
 export function getFromChains(
   chains: ChainInfoWithXcAssetsData[]
 ): ChainInfoWithXcAssetsData[] {
-  return chains.filter((chain) => {
-    if (chain.id === '1000') return true;
-
-    const hasXcAssets = chain?.xcAssetsData?.some((asset) => {
-      const targetParaId = chain.id;
-      return !hasParachainInLocation({
-        multiLocationStr: asset.xcmV1MultiLocation,
-        paraId: targetParaId
-      });
-    });
-
-    const isNativeTokenSupported = chains.some((otherChain) =>
-      otherChain.xcAssetsData?.some(
-        (asset) =>
-          hasParachainInLocation({
-            multiLocationStr: asset.xcmV1MultiLocation,
-            paraId: chain.id
-          }) &&
-          asset.symbol.toLowerCase() === chain.nativeToken.symbol.toLowerCase()
-      )
-    );
-
-    return hasXcAssets || isNativeTokenSupported;
-  });
+  return chains;
 }
 
 export function getToChains(
   chains: ChainInfoWithXcAssetsData[],
   fromChainId: string
 ): ChainInfoWithXcAssetsData[] {
-  const fromChain = chains.find((chain) => chain.id === fromChainId);
-  if (!fromChain) return [];
-
-  const filteredChains = chains.filter((chain) => chain.id !== fromChainId);
-
-  if (fromChain.id === '1000') {
-    return filteredChains.filter((chain) => {
-      const hasValidXcAsset = chain.xcAssetsData?.some((asset) => {
-        const hasParachain = hasParachainInLocation({
-          multiLocationStr: asset.xcmV1MultiLocation,
-          paraId: fromChain.id
-        });
-
-        if (!hasParachain) return false;
-
-        const generalIndex = getGeneralIndex(asset.xcmV1MultiLocation);
-        if (!generalIndex) return false;
-
-        return Object.keys(fromChain.assetsInfo || {}).includes(generalIndex);
-      });
-
-      const hasForeignAsset = fromChain.foreignAssetsInfo
-        ? Object.entries(fromChain.foreignAssetsInfo).some(([, asset]) =>
-            matchesParachainAndSymbol({
-              multiLocationStr: asset.multiLocation,
-              paraId: chain?.substrateInfo?.paraId?.toString() || '',
-              symbol: asset?.symbol || '',
-              targetSymbol: chain?.nativeToken?.symbol || ''
-            })
-          )
-        : false;
-
-      return hasValidXcAsset || hasForeignAsset;
-    });
-  }
-
-  return filteredChains.filter((chain) => {
-    const supportsNativeToken = chain.xcAssetsData?.some(
-      (asset) =>
-        hasParachainInLocation({
-          multiLocationStr: asset.xcmV1MultiLocation,
-          paraId: fromChain.id
-        }) &&
-        asset.symbol.toLowerCase() ===
-          fromChain.nativeToken.symbol.toLowerCase()
-    );
-    const hasTransferableAssets = fromChain.xcAssetsData?.some((asset) =>
-      hasParachainInLocation({
-        multiLocationStr: asset.xcmV1MultiLocation,
-        paraId: chain.id
-      })
-    );
-
-    return supportsNativeToken || hasTransferableAssets;
-  });
+  return chains?.filter((chain) => chain.id !== fromChainId);
 }
 
 export const getTokenList = ({
@@ -260,15 +183,48 @@ export const getTokenList = ({
       tokenList.push(...processedAssets);
     }
   } else {
-    let supportedNativeToken = toChain.xcAssetsData?.find(
-      (asset) =>
-        hasParachainInLocation({
-          multiLocationStr: asset.xcmV1MultiLocation,
-          paraId: fromChain.id
-        }) &&
-        asset.symbol.toLowerCase() ===
-          fromChain.nativeToken.symbol.toLowerCase()
-    );
+    let supportedNativeToken: XcAssetData | undefined =
+      toChain.id === '1000'
+        ? (() => {
+            const [, asset] =
+              Object.entries(toChain.foreignAssetsInfo || {}).find(
+                ([, asset]) =>
+                  matchesParachainAndSymbol({
+                    multiLocationStr: asset.multiLocation,
+                    paraId: fromChain.id,
+                    symbol: asset.symbol,
+                    targetSymbol: fromChain.nativeToken.symbol
+                  })
+              ) || [];
+
+            return asset
+              ? {
+                  ...asset,
+                  paraID: Number(toChain.id),
+                  nativeChainID: fromChain.name
+                    .toLowerCase()
+                    .replace(/\s/g, '-'),
+                  reserveType: 'local' as ReserveType,
+                  xcmV1MultiLocation: JSON.stringify({
+                    v1: {
+                      parents: 1,
+                      interior: { x1: { parachain: toChain.id } }
+                    }
+                  }),
+                  decimals: fromChain.nativeToken.decimals,
+                  asset: 'Native' as AssetType
+                }
+              : undefined;
+          })()
+        : toChain.xcAssetsData?.find(
+            (asset) =>
+              hasParachainInLocation({
+                multiLocationStr: asset.xcmV1MultiLocation,
+                paraId: fromChain.id
+              }) &&
+              asset.symbol.toLowerCase() ===
+                fromChain.nativeToken.symbol.toLowerCase()
+          );
     if (supportedNativeToken) {
       supportedNativeToken = {
         ...supportedNativeToken,
@@ -318,6 +274,8 @@ export const getTokenList = ({
           ...v,
           reserveType: 'foreign' as ReserveType
         })) ?? [];
+
+    console.log('otherAssets', otherAssets);
 
     return supportedNativeToken
       ? [supportedNativeToken, ...otherAssets]

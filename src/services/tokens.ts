@@ -26,6 +26,7 @@ function getTokensWithoutBalance({
   assets
 }: GetTokensParams): TokenWithBalance[] {
   const tokens = getTokenList({ fromChain, toChain });
+  console.log('tokens', tokens);
   return tokens?.map((v) => {
     const data = getTokenFromXcAsset({ xcAssetData: v, assets });
     return {
