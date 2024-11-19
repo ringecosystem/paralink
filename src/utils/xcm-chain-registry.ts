@@ -269,24 +269,25 @@ export const getTokenList = ({
         asset.symbol.toLowerCase() ===
           fromChain.nativeToken.symbol.toLowerCase()
     );
-
-    supportedNativeToken = {
-      ...supportedNativeToken,
-      symbol: supportedNativeToken?.symbol || '',
-      decimals: supportedNativeToken?.decimals || 0,
-      paraID: Number(fromChain.id),
-      nativeChainID: fromChain.name.toLowerCase().replace(/\s/g, '-'),
-      reserveType: 'local' as ReserveType,
-      asset: 'Native' as AssetType,
-      xcmV1MultiLocation: JSON.stringify({
-        v1: {
-          parents: 1,
-          interior: {
-            x1: { parachain: fromChain.id }
+    if (supportedNativeToken) {
+      supportedNativeToken = {
+        ...supportedNativeToken,
+        symbol: supportedNativeToken?.symbol || '',
+        decimals: supportedNativeToken?.decimals || 0,
+        paraID: Number(fromChain.id),
+        nativeChainID: fromChain.name.toLowerCase().replace(/\s/g, '-'),
+        reserveType: 'local' as ReserveType,
+        asset: 'Native' as AssetType,
+        xcmV1MultiLocation: JSON.stringify({
+          v1: {
+            parents: 1,
+            interior: {
+              x1: { parachain: fromChain.id }
+            }
           }
-        }
-      })
-    };
+        })
+      };
+    }
 
     const otherAssets =
       fromChain.xcAssetsData
