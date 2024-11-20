@@ -1,5 +1,8 @@
 # ParaLink
+
 ParaLink is an asset exchange hub integrated with [XCM](https://wiki.polkadot.network/docs/learn/xcm/overview-summary) within the Polkadot parachains. It automatically supports parachains and assets, so if you are part of a parachain or token team, no additional action is required. Your parachain and its assets will be supported by ParaLink, simplifying the integration process and enhancing the efficiency of asset exchanges.
+
+## Support Requirements
 
 ParaLink will automatically support chains that meet the following criteria:
 
@@ -13,7 +16,7 @@ Assets within your parachains will be automatically supported if they meet the f
 As long as your parachain and assets meet these requirements, they will be automatically supported by ParaLink. Enjoy the seamless integration!
 
 
-# Tech Stack
+## Tech Stack
 
 - Next.js 15 (App Router)
 - TypeScript
@@ -22,12 +25,12 @@ As long as your parachain and assets meet these requirements, they will be autom
 - Viem v2
 - Wagmi v2
 
-## Prerequisites
+### Prerequisites
 
 - Node.js 18+
 - pnpm 8+
 
-## Installation
+### Installation
 
 1. Clone the repository
 
@@ -48,7 +51,7 @@ git submodule update --init --recursive
 pnpm install
 ```
 
-## Development
+### Development
 
 Start the development server:
 
