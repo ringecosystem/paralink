@@ -8,6 +8,7 @@ import type { ChainConfig } from '@/types/asset-registry';
 import type { ChainInfo } from '@/types/chains-info';
 import { filterHrmpConnections } from '@/utils/hrmp-validation';
 import { findBestWssEndpoint } from '@/utils/rpc-endpoint';
+import { SUPPORTED_XCM_PARA_IDS } from '@/config/token';
 
 interface UseChainInitializationProps {
   polkadotAssetRegistry: ChainConfig;
@@ -73,12 +74,24 @@ export function useChainInitialization({
           };
         })
         ?.filter((v): v is NonNullable<typeof v> => !!v);
-      console.log('supportedChains', supportedChains);
+      console.log(
+        'supportedChains',
+        supportedChains?.map((v) => {
+          return {
+            id: v?.substrateInfo?.paraId,
+            name: v.name
+          };
+        })
+      );
       function isValidWsEndpoint(endpoint: string): boolean {
         return endpoint.startsWith('ws://') || endpoint.startsWith('wss://');
       }
 
       const validateChain = async (chain: (typeof supportedChains)[0]) => {
+        if (SUPPORTED_XCM_PARA_IDS.includes(chain.id)) {
+          return chain;
+        }
+
         const providers = Object.values(chain.providers);
         const validProviders = providers.filter(isValidWsEndpoint);
 
@@ -89,7 +102,13 @@ export function useChainInitialization({
           return null;
         }
         try {
-          const provider = new WsProvider(findBestWssEndpoint(chain.providers));
+          const WsProviderUrl = await findBestWssEndpoint(chain.providers);
+
+          if (!WsProviderUrl) {
+            console.log('no WsProviderUrl');
+            return null;
+          }
+          const provider = new WsProvider(WsProviderUrl);
           console.log('provider', provider);
           const api = await ApiPromise.create({ provider });
           console.log('api', api);
@@ -104,7 +123,7 @@ export function useChainInitialization({
           });
 
           const hasXcmPayment = typeof api?.call?.xcmPaymentApi !== 'undefined';
-          console.log('hasXcmPayment', hasXcmPayment);
+          console.log(hasXcmPayment ? chain.id : undefined);
           if (!hasXcmPayment) {
             console.warn(`Chain ${chain.id} does not support xcmPaymentApi`);
             await api.disconnect();
