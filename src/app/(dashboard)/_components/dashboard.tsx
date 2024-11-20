@@ -21,6 +21,7 @@ import type { ChainConfig } from '@/types/asset-registry';
 import type { ChainInfo } from '@/types/chains-info';
 import type { Asset } from '@/types/assets-info';
 import Loading from './loading';
+import { calculateExecutionWeight } from '@/services/xcm/xcm-weight';
 
 interface DashboardProps {
   polkadotAssetRegistry: ChainConfig;
@@ -33,7 +34,9 @@ export default function Dashboard({
   assetsInfo
 }: DashboardProps) {
   const [amount, setAmount] = useState<string>('');
-  const [recipientAddress, setRecipientAddress] = useState<string>('');
+  const [recipientAddress, setRecipientAddress] = useState<string>(
+    '0x3d6d656c1bf92f7028Ce4C352563E1C363C58ED5'
+  );
 
   const {
     chains,
@@ -136,12 +139,30 @@ export default function Dashboard({
     //   chainsInfo
     // });
     // console.log('validationResult', validationResult);
-    // if (!fromChainApi) return;
+    if (!fromChainApi || !selectedToken?.xcAssetData || !toChain) return;
+
+    const weight = await calculateExecutionWeight({
+      api: fromChainApi,
+      token: selectedToken.xcAssetData,
+      amount,
+      toChain,
+      recipientAddress
+    });
+    console.log('weight', weight);
     // console.log('fromChainApi', fromChainApi);
     // const crossTokenLocation = await getAcceptablePaymentAsset(fromChainApi);
     // console.log('crossTokenLocation', crossTokenLocation);
     // console.log('amount', amount);
-  }, [amount, fromChainApi, fromChainId, toChainId, chainsInfo]);
+  }, [
+    amount,
+    fromChainApi,
+    fromChainId,
+    toChainId,
+    // chainsInfo,
+    recipientAddress,
+    selectedToken?.xcAssetData,
+    toChain
+  ]);
 
   useEffect(() => {
     fetchTokens();

@@ -88,64 +88,53 @@ export function useChainInitialization({
       }
 
       const validateChain = async (chain: (typeof supportedChains)[0]) => {
+        const result = {
+          ...chain,
+          hasXcmPayment: false
+        };
         if (SUPPORTED_XCM_PARA_IDS.includes(chain.id)) {
-          return chain;
+          result.hasXcmPayment = true;
+          return result;
+        } else {
+          return result;
         }
 
-        const providers = Object.values(chain.providers);
-        const validProviders = providers.filter(isValidWsEndpoint);
+        // const providers = Object.values(chain.providers);
+        // const validProviders = providers.filter(isValidWsEndpoint);
 
-        if (!validProviders.length) {
-          console.warn(
-            `No valid WebSocket endpoints found for chain ${chain.id}`
-          );
-          return null;
-        }
-        try {
-          const WsProviderUrl = await findBestWssEndpoint(chain.providers);
+        // if (!validProviders.length) {
+        //   console.warn(
+        //     `No valid WebSocket endpoints found for chain ${chain.id}`
+        //   );
+        //   return result;
+        // }
+        // try {
+        //   const WsProviderUrl = await findBestWssEndpoint(chain.providers);
 
-          if (!WsProviderUrl) {
-            console.log('no WsProviderUrl');
-            return null;
-          }
-          const provider = new WsProvider(WsProviderUrl);
-          console.log('provider', provider);
-          const api = await ApiPromise.create({ provider });
-          console.log('api', api);
-          api.on('connected', () => {
-            console.log(`Connected to chain ${chain.id}`);
-          });
-          api.on('disconnected', () => {
-            console.log(`Disconnected from chain ${chain.id}`);
-          });
-          api.on('error', (error) => {
-            console.error(`Error on chain ${chain.id}:`, error);
-          });
+        //   if (!WsProviderUrl) {
+        //     console.log('no WsProviderUrl');
+        //     return result;
+        //   }
+        //   const provider = new WsProvider(WsProviderUrl);
+        //   const api = await ApiPromise.create({ provider });
+        //   result.hasXcmPayment =
+        //     typeof api?.call?.xcmPaymentApi !== 'undefined';
 
-          const hasXcmPayment = typeof api?.call?.xcmPaymentApi !== 'undefined';
-          console.log(hasXcmPayment ? chain.id : undefined);
-          if (!hasXcmPayment) {
-            console.warn(`Chain ${chain.id} does not support xcmPaymentApi`);
-            await api.disconnect();
-            return null;
-          }
+        //   console.log(
+        //     `Chain ${chain.id} xcmPayment support: ${result.hasXcmPayment}`
+        //   );
+        //   await api.disconnect();
 
-          await api.disconnect();
-          return chain;
-        } catch (error) {
-          console.error(`Error validating chain ${chain.id}:`, error);
-          return null;
-        }
+        //   return result;
+        // } catch (error) {
+        //   console.error(`Error validating chain ${chain.id}:`, error);
+        //   return result;
+        // }
       };
 
-      // const validatedChains = await Promise.allSettled(
-      //   supportedChains.map(validateChain)
-      // ).then((chains) =>
-      //   chains.filter((chain): chain is NonNullable<typeof chain> => !!chain)
-      // );
-      const validatedChains = (
-        await Promise.all(supportedChains?.map(validateChain))
-      )?.filter((chain): chain is NonNullable<typeof chain> => !!chain);
+      const validatedChains = await Promise.all(
+        supportedChains?.map(validateChain)
+      );
 
       console.log('validatedChains', validatedChains);
       setChains(validatedChains);
