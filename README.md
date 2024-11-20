@@ -4,7 +4,7 @@ ParaLink is an asset exchange hub integrated with [XCM](https://wiki.polkadot.ne
 ParaLink will automatically support chains that meet the following criteria:
 
 1. The parachain is connected to another parachain via [HRMP](https://wiki.polkadot.network/docs/build-hrmp-channels), and the channel is active.
-2. The parachain supports XCM, and the XcmPaymentRuntimeApi is available. For more details, refer to [this guide](https://github.com/paritytech/polkadot-sdk/pull/3607).
+2. The parachain supports XCM, and the `XcmPaymentRuntimeApi` is available. For more details, refer to [this guide](https://github.com/paritytech/polkadot-sdk/pull/3607).
 
 Assets within your parachains will be automatically supported if they meet the following requirement:
 
