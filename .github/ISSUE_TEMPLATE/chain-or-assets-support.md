@@ -7,7 +7,7 @@ assignees: boundless-forest
 
 ---
 
-Have you read the [requirements](../../README.md#support-requirements) for the parachain and asset support?
+Have you read the [requirements](https://github.com/ringecosystem/paralink?tab=readme-ov-file#support-requirements) for the parachain and asset support?
 
 If you believe your parachain and assets meet the requirements but are not supported by ParaLink, please provide:
 
