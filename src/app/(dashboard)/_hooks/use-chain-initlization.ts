@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import ss58 from '@substrate/ss58-registry';
 import { WsProvider, ApiPromise } from '@polkadot/api';
 
@@ -17,6 +17,7 @@ export function useChainInitialization({
   polkadotAssetRegistry,
   chainsInfo
 }: UseChainInitializationProps) {
+  const [isLoading, setIsLoading] = useState(false);
   const { setupCrossChainConfig, setChains } = useCrossChainSetup();
 
   useEffect(() => {
@@ -24,6 +25,8 @@ export function useChainInitialization({
       if (!polkadotAssetRegistry || !chainsInfo?.length) {
         return;
       }
+      setIsLoading(true);
+
       const filteredPolkadotAssetRegistry = await filterHrmpConnections({
         polkadotAssetRegistry,
         chainsInfo
@@ -126,9 +129,12 @@ export function useChainInitialization({
       console.log('validatedChains', validatedChains);
       setChains(validatedChains);
       setupCrossChainConfig(validatedChains);
+      setIsLoading(false);
     };
     init();
   }, [setChains, setupCrossChainConfig, polkadotAssetRegistry, chainsInfo]);
+
+  return { isLoading };
 }
 
 export type ChainInitializationReturn = ReturnType<

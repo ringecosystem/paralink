@@ -20,6 +20,7 @@ import { ChainSwitcher } from './chain-switcher';
 import type { ChainConfig } from '@/types/asset-registry';
 import type { ChainInfo } from '@/types/chains-info';
 import type { Asset } from '@/types/assets-info';
+import Loading from './loading';
 
 interface DashboardProps {
   polkadotAssetRegistry: ChainConfig;
@@ -62,7 +63,7 @@ export default function Dashboard({
   const { setupCrossChainConfig, swapChains } = useCrossChainSetup();
 
   // init chains and setup cross chain config
-  useChainInitialization({
+  const { isLoading } = useChainInitialization({
     polkadotAssetRegistry,
     chainsInfo
   });
@@ -169,48 +170,52 @@ export default function Dashboard({
           closable={true}
         />
       </div>
-      <div className="container flex flex-col gap-[30px] pt-[min(120px,15vh)] md:pt-[min(100px,12vh)]">
-        <div className="mx-auto flex w-full flex-col gap-[20px] rounded-[var(--radius)] bg-white p-[15px] shadow-sm md:w-[460px] md:rounded-[var(--radius-lg)] md:p-[20px]">
-          <ChainSwitcher
-            fromChainId={fromChainId}
-            fromChain={fromChain}
-            toChainId={toChainId}
-            toChain={toChain}
-            fromParachains={fromChains}
-            toParachains={toChains}
-            onChangeFromChain={handleChangeFromChainId}
-            onChangeToChain={setToChainId}
-            onSwitch={handleSwitch}
-          />
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <div className="container flex flex-col gap-[30px] pt-[min(120px,15vh)] md:pt-[min(100px,12vh)]">
+          <div className="mx-auto flex w-full flex-col gap-[20px] rounded-[var(--radius)] bg-white p-[15px] shadow-sm md:w-[460px] md:rounded-[var(--radius-lg)] md:p-[20px]">
+            <ChainSwitcher
+              fromChainId={fromChainId}
+              fromChain={fromChain}
+              toChainId={toChainId}
+              toChain={toChain}
+              fromParachains={fromChains}
+              toParachains={toChains}
+              onChangeFromChain={handleChangeFromChainId}
+              onChangeToChain={setToChainId}
+              onSwitch={handleSwitch}
+            />
 
-          <TokenSelect
-            token={selectedToken}
-            onChangeToken={setSelectedToken}
-            onChangeAmount={setAmount}
-            tokens={tokens}
-            isLoading={false}
-          />
+            <TokenSelect
+              token={selectedToken}
+              onChangeToken={setSelectedToken}
+              onChangeAmount={setAmount}
+              tokens={tokens}
+              isLoading={false}
+            />
 
-          <AddressInput
-            value={recipientAddress}
-            chain={toChain}
-            onChange={setRecipientAddress}
-          />
-          <FeeBreakdown
-            amount={100}
-            networkFee={0.01}
-            crossChainFee={0.02}
-            finalAmount={99.97}
-          />
-          <div className="h-[1px] w-full bg-[#F2F3F5]"></div>
+            <AddressInput
+              value={recipientAddress}
+              chain={toChain}
+              onChange={setRecipientAddress}
+            />
+            <FeeBreakdown
+              amount={100}
+              networkFee={0.01}
+              crossChainFee={0.02}
+              finalAmount={99.97}
+            />
+            <div className="h-[1px] w-full bg-[#F2F3F5]"></div>
 
-          <ConnectOrActionButton onAction={handleClick}>
-            Confirm Transaction
-          </ConnectOrActionButton>
+            <ConnectOrActionButton onAction={handleClick}>
+              Confirm Transaction
+            </ConnectOrActionButton>
+          </div>
+
+          {/* <TransactionDetail isOpen={true} onClose={() => {}} /> */}
         </div>
-
-        {/* <TransactionDetail isOpen={true} onClose={() => {}} /> */}
-      </div>
+      )}
     </>
   );
 }

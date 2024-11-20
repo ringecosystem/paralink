@@ -13,6 +13,11 @@ export default async function Page() {
     fetchChainsInfo(),
     fetchAssetsInfo()
   ]);
+
+  console.log('polkadotAsset', polkadotAsset);
+  console.log('chainAssets', chainAssets);
+  console.log('assetsInfo', assetsInfo);
+
   return (
     <Dashboard
       polkadotAssetRegistry={polkadotAsset}

@@ -57,6 +57,7 @@ export function createJsonResourceLoader(options?: {
           config.branch,
           config.path
         );
+        console.log('get url', url);
         const response = await fetch(url, {
           next: {
             revalidate: API_CACHE_TIME

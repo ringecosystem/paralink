@@ -9,18 +9,17 @@ import type { Asset } from '@/types/assets-info';
 import type { ChainConfig, Registry } from '@/types/asset-registry';
 
 const CHAIN_INFO_CDN = 'https://content.subwallet.app/api/list/chain';
-const CHAIN_INFO_GITHUB =
-  'https://raw.githubusercontent.com/Koniverse/SubWallet-ChainList/refs/heads/master/packages/chain-list/src/data/ChainInfo.json';
+// const CHAIN_INFO_GITHUB =
+//   'https://raw.githubusercontent.com/Koniverse/SubWallet-ChainList/refs/heads/master/packages/chain-list/src/data/ChainInfo.json';
 const ASSETS_CDN = 'https://content.subwallet.app/api/list/chain-asset';
-const ASSETS_GITHUB =
-  'https://raw.githubusercontent.com/Koniverse/SubWallet-ChainList/refs/heads/master/packages/chain-list/src/data/ChainAsset.json';
-
-const jsonLoader = createJsonResourceLoader({
-  preferredCDN: 'github-raw'
-});
+// const ASSETS_GITHUB =
+//   'https://raw.githubusercontent.com/Koniverse/SubWallet-ChainList/refs/heads/master/packages/chain-list/src/data/ChainAsset.json';
 
 export async function createAssetRegistryService() {
   async function getAssetRegistry() {
+    const jsonLoader = createJsonResourceLoader({
+      preferredCDN: 'github-raw'
+    });
     return jsonLoader.fetchJson({
       owner: 'paritytech',
       repo: 'asset-transfer-api-registry',
@@ -36,7 +35,6 @@ export async function createAssetRegistryService() {
 
 async function fetchResource<T>(options: {
   cdnUrl: string;
-  githubUrl: string;
   resourceLoader: {
     owner: string;
     repo: string;
@@ -57,6 +55,10 @@ async function fetchResource<T>(options: {
 
   // github fetch
   try {
+    const jsonLoader = createJsonResourceLoader({
+      preferredCDN: 'github-raw'
+    });
+
     const data = await jsonLoader.fetchJson<T>(options.resourceLoader);
     return data;
   } catch (error) {
@@ -86,7 +88,6 @@ export async function fetchPolkadotAssetRegistry(): Promise<ChainConfig> {
 export async function fetchChainsInfo(): Promise<ChainInfo[]> {
   return fetchResource<ChainInfo[]>({
     cdnUrl: CHAIN_INFO_CDN,
-    githubUrl: CHAIN_INFO_GITHUB,
     resourceLoader: {
       owner: 'Koniverse',
       repo: 'SubWallet-ChainList',
@@ -100,7 +101,6 @@ export async function fetchChainsInfo(): Promise<ChainInfo[]> {
 export async function fetchAssetsInfo(): Promise<Asset[]> {
   return fetchResource<Asset[]>({
     cdnUrl: ASSETS_CDN,
-    githubUrl: ASSETS_GITHUB,
     resourceLoader: {
       owner: 'Koniverse',
       repo: 'SubWallet-ChainList',
