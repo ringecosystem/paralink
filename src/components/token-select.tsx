@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils';
 import { TokenSelectDialog } from './token-select-dialog';
 import type { TokenWithBalance } from '@/types/token';
 import FormattedNumberTooltip from './formatted-number-tooltip';
+import { BN_ZERO } from '@polkadot/util';
 
 interface TokenSelectProps {
   token?: TokenWithBalance;
@@ -105,9 +106,10 @@ export function TokenSelect({
               />
               <span className="flex items-center text-[12px] font-normal leading-normal text-[#12161950]">
                 ≈ ${' '}
-                {token?.balance ? (
+                {token?.price ? (
                   <FormattedNumberTooltip
-                    value={token.balance}
+                    // value={token.price ?? BN_ZERO}
+                    value={BN_ZERO}
                     decimals={token.decimals ?? 0}
                   />
                 ) : (

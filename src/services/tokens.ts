@@ -18,6 +18,7 @@ interface UpdateTokenBalanceParams {
   token: TokenWithBalance;
   address: string;
   api: ApiPromise;
+  chainInfo?: ChainInfoWithXcAssetsData;
 }
 
 function getTokensWithoutBalance({
@@ -26,7 +27,6 @@ function getTokensWithoutBalance({
   assets
 }: GetTokensParams): TokenWithBalance[] {
   const tokens = getTokenList({ fromChain, toChain });
-  console.log('tokens', tokens);
   return tokens?.map((v) => {
     const data = getTokenFromXcAsset({ xcAssetData: v, assets });
     return {
@@ -44,12 +44,14 @@ function getTokensWithoutBalance({
 export async function updateTokenBalance({
   token,
   address,
-  api
+  api,
+  chainInfo
 }: UpdateTokenBalanceParams): Promise<TokenWithBalance> {
   const balance = await getAssetBalance({
     api,
     account: address,
-    xcAssetData: token.xcAssetData
+    xcAssetData: token.xcAssetData,
+    chainInfo
   });
 
   return {
@@ -61,14 +63,14 @@ export async function updateTokenBalance({
 export async function getTokensWithBalance(
   params: GetTokensParams
 ): Promise<TokenWithBalance[]> {
-  const { address, api } = params;
+  const { address, api, fromChain } = params;
   if (!address || !api) return getTokensWithoutBalance(params);
 
   const tokensWithoutBalance = getTokensWithoutBalance(params);
 
   return Promise.all(
     tokensWithoutBalance.map((token) =>
-      updateTokenBalance({ token, address, api })
+      updateTokenBalance({ token, address, api, chainInfo: fromChain })
     )
   );
 }

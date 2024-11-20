@@ -3,6 +3,7 @@ import { BN_ZERO } from '@polkadot/util';
 import type { BN } from '@polkadot/util';
 import type { ApiPromise } from '@polkadot/api';
 import type { XcAssetData } from './../../types/asset-registry';
+import type { ChainInfoWithXcAssetsData } from '@/store/chains';
 
 interface OrmlTokensAccountData {
   free: string | number;
@@ -13,11 +14,13 @@ interface OrmlTokensAccountData {
 export async function getAssetBalance({
   api,
   account,
-  xcAssetData
+  xcAssetData,
+  chainInfo
 }: {
   api: ApiPromise;
   account: string;
   xcAssetData?: XcAssetData;
+  chainInfo?: ChainInfoWithXcAssetsData;
 }): Promise<BN> {
   const assetId = xcAssetData?.asset;
   if (!assetId) {
@@ -28,7 +31,10 @@ export async function getAssetBalance({
       const balancesAll = await api.derive.balances.all(account);
       return balancesAll.availableBalance;
     }
-    if (xcAssetData.paraID === 1000 && xcAssetData.reserveType === 'foreign') {
+    if (
+      chainInfo?.substrateInfo?.paraId === 1000 &&
+      xcAssetData.reserveType === 'foreign'
+    ) {
       const result = await api.query.foreignAssets.account(
         JSON.parse(xcAssetData.xcmV1MultiLocation),
         account
