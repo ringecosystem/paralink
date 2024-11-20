@@ -22,9 +22,11 @@ export function useChainInitialization({
 
   useEffect(() => {
     const init = async () => {
-      if (!polkadotAssetRegistry || !chainsInfo?.length) {
+      if (!polkadotAssetRegistry || !chainsInfo) {
         return;
       }
+      console.log('polkadotAssetRegistry', polkadotAssetRegistry);
+      console.log('chainsInfo', chainsInfo);
       setIsLoading(true);
 
       const filteredPolkadotAssetRegistry = await filterHrmpConnections({
