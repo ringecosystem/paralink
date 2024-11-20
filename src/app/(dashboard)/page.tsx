@@ -27,9 +27,9 @@ export default async function Page() {
 
   return (
     <Dashboard
-      polkadotAssetRegistry={polkadotAsset as ChainConfig}
-      chainsInfo={chainAssets as ChainInfo[]}
-      assetsInfo={assetsInfo as Asset[]}
+      polkadotAssetRegistry={polkadotAsset as unknown as ChainConfig}
+      chainsInfo={chainAssets as unknown as ChainInfo[]}
+      assetsInfo={assetsInfo as unknown as Asset[]}
     />
   );
 }
