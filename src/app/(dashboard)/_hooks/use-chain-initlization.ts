@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import ss58 from '@substrate/ss58-registry';
 import { WsProvider, ApiPromise } from '@polkadot/api';
 
@@ -9,25 +9,33 @@ import type { ChainInfo } from '@/types/chains-info';
 import { filterHrmpConnections } from '@/utils/hrmp-validation';
 import { findBestWssEndpoint } from '@/utils/rpc-endpoint';
 import { SUPPORTED_XCM_PARA_IDS } from '@/config/token';
+import useChainsStore from '@/store/chains';
+import { Asset } from '@/types/assets-info';
 
 interface UseChainInitializationProps {
   polkadotAssetRegistry: ChainConfig;
   chainsInfo: ChainInfo[];
+  assetsInfo: Asset[];
 }
 export function useChainInitialization({
   polkadotAssetRegistry,
-  chainsInfo
+  chainsInfo,
+  assetsInfo
 }: UseChainInitializationProps) {
   const [isLoading, setIsLoading] = useState(false);
-  const { setupCrossChainConfig, setChains } = useCrossChainSetup();
+  const hasInitialized = useRef(false);
+  const { setupCrossChainConfig } = useCrossChainSetup(assetsInfo);
+  const setChains = useChainsStore((state) => state.setChains);
 
   useEffect(() => {
     const init = async () => {
+      if (hasInitialized.current) return;
       if (!polkadotAssetRegistry || !chainsInfo) {
         return;
       }
-      console.log('polkadotAssetRegistry', polkadotAssetRegistry);
-      console.log('chainsInfo', chainsInfo);
+      // console.log('polkadotAssetRegistry', polkadotAssetRegistry);
+      // console.log('chainsInfo', chainsInfo);
+      hasInitialized.current = true;
       setIsLoading(true);
 
       const filteredPolkadotAssetRegistry = await filterHrmpConnections({
@@ -74,15 +82,15 @@ export function useChainInitialization({
           };
         })
         ?.filter((v): v is NonNullable<typeof v> => !!v);
-      console.log(
-        'supportedChains',
-        supportedChains?.map((v) => {
-          return {
-            id: v?.substrateInfo?.paraId,
-            name: v.name
-          };
-        })
-      );
+      // console.log(
+      //   'supportedChains',
+      //   supportedChains?.map((v) => {
+      //     return {
+      //       id: v?.substrateInfo?.paraId,
+      //       name: v.name
+      //     };
+      //   })
+      // );
       function isValidWsEndpoint(endpoint: string): boolean {
         return endpoint.startsWith('ws://') || endpoint.startsWith('wss://');
       }
@@ -136,13 +144,19 @@ export function useChainInitialization({
         supportedChains?.map(validateChain)
       );
 
-      console.log('validatedChains', validatedChains);
+      // console.log('validatedChains', validatedChains);
       setChains(validatedChains);
-      setupCrossChainConfig(validatedChains);
+      await setupCrossChainConfig(validatedChains);
       setIsLoading(false);
     };
     init();
-  }, [setChains, setupCrossChainConfig, polkadotAssetRegistry, chainsInfo]);
+  }, [
+    setChains,
+    setupCrossChainConfig,
+    polkadotAssetRegistry,
+    chainsInfo,
+    assetsInfo
+  ]);
 
   return { isLoading };
 }

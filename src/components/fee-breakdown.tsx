@@ -5,10 +5,17 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
+import { FallbackImage } from './ui/fallback-image';
 
 interface FeeBreakdownProps {
   amount: number;
-  networkFee: number;
+  networkFee:
+    | {
+        fee: string;
+        icon?: string;
+        symbol?: string;
+      }
+    | boolean;
   crossChainFee: number;
   finalAmount: number;
 }
@@ -88,23 +95,33 @@ export function FeeBreakdown({
             <div className="space-y-[10px]">
               <div className="flex items-center justify-between">
                 <span className="leading-[24px]">Network Fee</span>
-                <div className="flex items-center gap-[10px]">
-                  <span className="hidden text-[#12161950] sm:block">
-                    ≈ $
-                    <span className="font-mono tabular-nums">
-                      {networkFee?.toFixed(2)}
+                {typeof networkFee !== 'boolean' ? (
+                  <div className="flex items-center gap-[10px]">
+                    <span className="hidden text-[#12161950] sm:block">
+                      ≈ $
+                      <span className="font-mono tabular-nums">
+                        {networkFee?.fee
+                          ? Number(networkFee?.fee)?.toFixed(3)
+                          : '-'}
+                      </span>
                     </span>
-                  </span>
-                  <span className="font-mono tabular-nums">
-                    {networkFee?.toFixed(3)}
-                  </span>
-                  <Image
-                    src="/images/test3.svg"
-                    alt="info"
-                    width={18}
-                    height={18}
-                  />
-                </div>
+                    <span className="font-mono tabular-nums">
+                      {networkFee?.fee
+                        ? Number(networkFee?.fee)?.toFixed(3)
+                        : '-'}
+                    </span>
+
+                    <FallbackImage
+                      src={networkFee?.icon}
+                      fallbackSrc="/images/default-token.svg"
+                      alt={networkFee?.symbol ?? 'token icon'}
+                      width={18}
+                      height={18}
+                    />
+                  </div>
+                ) : (
+                  '-'
+                )}
               </div>
 
               <div className="flex items-center justify-between">

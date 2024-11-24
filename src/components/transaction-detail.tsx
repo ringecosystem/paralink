@@ -1,12 +1,15 @@
-import Image from 'next/image';
+'use client';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle
 } from '@/components/ui/dialog';
+import { useTransactionDetailStore } from '@/store/transaction-detail';
+import { toShortAddress } from '@/lib/utils';
+import { useShallow } from 'zustand/react/shallow';
+import { FallbackImage } from './ui/fallback-image';
 
-// ... existing code ...
 function ChainTransactionArrow() {
   return (
     <>
@@ -16,15 +19,21 @@ function ChainTransactionArrow() {
   );
 }
 
-// ... existing code ...
-interface TransactionDetailProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
+export function TransactionDetail() {
+  const { isOpen, transaction, close } = useTransactionDetailStore(
+    useShallow((state) => ({
+      isOpen: state.isOpen,
+      transaction: state.transaction,
+      close: state.close
+    }))
+  );
+  console.log('isOpen', isOpen);
+  console.log('transaction', transaction);
 
-export function TransactionDetail({ isOpen, onClose }: TransactionDetailProps) {
+  if (!transaction) return null;
+
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={close}>
       <DialogContent className="w-[calc(100vw-20px)] gap-0 rounded-[10px] p-0 md:w-[600px]">
         <DialogHeader>
           <DialogTitle className="p-[20px] text-[14px] font-bold leading-normal text-[#121619]">
@@ -41,7 +50,7 @@ export function TransactionDetail({ isOpen, onClose }: TransactionDetailProps) {
                   Timestamp
                 </span>
                 <span className="flex-1 text-[14px] font-bold leading-normal text-[#242A2E]">
-                  Mar-10-2024 04:22:08 PM +UTC
+                  {transaction.timestamp}
                 </span>
               </div>
               <div className="flex items-center">
@@ -49,58 +58,68 @@ export function TransactionDetail({ isOpen, onClose }: TransactionDetailProps) {
                   Amount
                 </span>
                 <span className="flex-1 font-mono text-[14px] font-bold tabular-nums leading-normal text-[#242A2E]">
-                  5,000 USDT
+                  {transaction.amount}
                 </span>
               </div>
             </div>
-            <div className="grid w-full grid-cols-3 place-items-center rounded-[10px] bg-[#F2F3F5] p-[20px]">
-              <div className="flex w-[100px] flex-col items-center justify-center gap-[10px]">
-                <div className="relative size-[50px] md:size-[80px]">
-                  <Image
-                    src="/images/test1.svg"
-                    alt="logo"
-                    fill
-                    className="object-contain"
-                  />
-                </div>
 
-                <h4 className="text-center font-mono text-[14px] font-bold tabular-nums leading-normal text-[#242A2E]">
-                  0x092..bb41
-                </h4>
-                <a
-                  href="Tx: 0x092..bb41"
-                  className="self-stretch text-center font-mono text-[12px] font-normal tabular-nums leading-normal text-[#0085FF]"
-                >
-                  0x092..bb41
-                </a>
-              </div>
+            <div className="grid w-full grid-cols-3 place-items-center rounded-[10px] bg-[#F2F3F5] p-[20px]">
+              <ChainInfo
+                logo={transaction.fromChain.icon || '/images/default-chain.svg'}
+                name={transaction.fromChain.name}
+                address={transaction.fromAddress}
+                txHash={transaction.fromTxHash}
+              />
 
               <ChainTransactionArrow />
 
-              <div className="flex w-[100px] flex-col items-center justify-center gap-[10px]">
-                <div className="relative size-[50px] md:size-[80px]">
-                  <Image
-                    src="/images/test1.svg"
-                    alt="logo"
-                    fill
-                    className="object-contain"
-                  />
-                </div>
-
-                <h4 className="text-center font-mono text-[14px] font-bold tabular-nums leading-normal text-[#242A2E]">
-                  0x092..bb41
-                </h4>
-                <a
-                  href="Tx: 0x092..bb41"
-                  className="self-stretch text-center font-mono text-[12px] font-normal tabular-nums leading-normal text-[#0085FF]"
-                >
-                  0x092..bb41
-                </a>
-              </div>
+              <ChainInfo
+                logo={transaction.toChain.icon || '/images/default-chain.svg'}
+                name={transaction.toChain.name}
+                address={transaction.toAddress}
+                txHash={transaction.toTxHash}
+              />
             </div>
           </div>
         </div>
       </DialogContent>
     </Dialog>
+  );
+}
+
+interface ChainInfoProps {
+  logo: string;
+  name: string;
+  address: string;
+  txHash?: string;
+}
+
+function ChainInfo({ logo, name, address, txHash }: ChainInfoProps) {
+  return (
+    <div className="flex w-[100px] flex-col items-center justify-center gap-[10px]">
+      <div className="relative size-[50px] md:size-[80px]">
+        <FallbackImage
+          src={logo}
+          fallbackSrc="/images/default-chain.svg"
+          alt={`${name} logo`}
+          fill
+          className="object-contain"
+        />
+      </div>
+
+      <h4 className="text-center font-mono text-[14px] font-bold tabular-nums leading-normal text-[#242A2E]">
+        {toShortAddress(address)}
+      </h4>
+      {txHash && (
+        <a
+          href={`https://etherscan.io/tx/${txHash}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="self-stretch text-center font-mono text-[12px] font-normal tabular-nums leading-normal text-[#0085FF]"
+        >
+          {toShortAddress(txHash)}
+        </a>
+      )}
+    </div>
   );
 }

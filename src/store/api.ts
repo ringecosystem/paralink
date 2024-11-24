@@ -13,8 +13,8 @@ interface ApiState {
 }
 
 interface ApiActions {
-  connectFromChainApi: (wsEndpoint: string) => Promise<ApiPromise | undefined>;
-  connectToChainApi: (wsEndpoint: string) => Promise<ApiPromise | undefined>;
+  connectFromChainApi: (wsEndpoint: string) => Promise<void>;
+  connectToChainApi: (wsEndpoint: string) => Promise<void>;
   disconnectFromChainApi: () => Promise<void>;
   disconnectToChainApi: () => Promise<void>;
   disconnectAll: () => Promise<void>;
@@ -60,22 +60,23 @@ const useApiStore = create<ApiState & ApiActions>((set, get) => ({
   connectFromChainApi: async (wsEndpoint: string) => {
     if (!wsEndpoint) return;
 
+    get().pendingConnections.from?.abort();
+    const abortController = new AbortController();
+
+    set((state) => ({
+      isConnecting: true,
+      error: null,
+      pendingConnections: {
+        ...state.pendingConnections,
+        from: abortController
+      }
+    }));
+
     try {
-      get().pendingConnections.from?.abort();
-
-      const abortController = new AbortController();
-      set((state) => ({
-        isConnecting: true,
-        error: null,
-        pendingConnections: {
-          ...state.pendingConnections,
-          from: abortController
-        }
-      }));
-
-      await get().disconnectFromChainApi();
-
-      const api = await createApiConnection(wsEndpoint, abortController.signal);
+      const [, api] = await Promise.all([
+        get().disconnectFromChainApi(),
+        createApiConnection(wsEndpoint, abortController.signal)
+      ]);
 
       if (abortController.signal.aborted) {
         await api.disconnect();
@@ -84,14 +85,11 @@ const useApiStore = create<ApiState & ApiActions>((set, get) => ({
 
       api.on('disconnected', () => set({ fromChainApi: null }));
       set({ fromChainApi: api });
-      return api;
     } catch (error) {
-      if (error instanceof Error && error.message !== 'Connection aborted') {
+      if (error instanceof Error && error.message !== 'Connection aborted')
         set({
           error: error instanceof Error ? error : new Error('连接源链失败')
         });
-        console.error('连接源链失败:', error);
-      }
     } finally {
       set((state) => ({
         isConnecting: false,
@@ -106,22 +104,23 @@ const useApiStore = create<ApiState & ApiActions>((set, get) => ({
   connectToChainApi: async (wsEndpoint: string) => {
     if (!wsEndpoint) return;
 
+    get().pendingConnections.to?.abort();
+    const abortController = new AbortController();
+
+    set((state) => ({
+      isConnecting: true,
+      error: null,
+      pendingConnections: {
+        ...state.pendingConnections,
+        to: abortController
+      }
+    }));
+
     try {
-      get().pendingConnections.to?.abort();
-
-      const abortController = new AbortController();
-      set((state) => ({
-        isConnecting: true,
-        error: null,
-        pendingConnections: {
-          ...state.pendingConnections,
-          to: abortController
-        }
-      }));
-
-      await get().disconnectToChainApi();
-
-      const api = await createApiConnection(wsEndpoint, abortController.signal);
+      const [, api] = await Promise.all([
+        get().disconnectToChainApi(),
+        createApiConnection(wsEndpoint, abortController.signal)
+      ]);
 
       if (abortController.signal.aborted) {
         await api.disconnect();
@@ -130,17 +129,11 @@ const useApiStore = create<ApiState & ApiActions>((set, get) => ({
 
       api.on('disconnected', () => set({ toChainApi: null }));
       set({ toChainApi: api });
-      return api;
     } catch (error) {
-      if (error instanceof Error && error.message !== 'Connection aborted') {
+      if (error instanceof Error && error.message !== 'Connection aborted')
         set({
-          error:
-            error instanceof Error
-              ? error
-              : new Error('connect to chain failed')
+          error: error instanceof Error ? error : new Error('连接目标链失败')
         });
-        console.error('connect to chain failed:', error);
-      }
     } finally {
       set((state) => ({
         isConnecting: false,

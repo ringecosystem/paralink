@@ -18,6 +18,16 @@ type XcmTransferParams = {
  * 生成目标链储备(Dest Reserve)场景下的XCM传输消息
  * 适用场景：当资产token在目标链B上注册时的跨链转账（A -> B）
  */
+function calculateAmountWithDecimals(amount: string, decimals: number): string {
+  // 移除所有小数点
+  const cleanAmount = amount.replace('.', '');
+  // 计算需要补充的精度（当前数字的小数位数与目标精度的差值）
+  const currentDecimals = amount.split('.')[1]?.length || 0;
+  const remainingDecimals = decimals - currentDecimals;
+
+  // 补充剩余的精度（添加对应数量的0）
+  return cleanAmount + '0'.repeat(Math.max(0, remainingDecimals));
+}
 export function generateDestReserveXcmMessage({
   token,
   amount,
@@ -25,10 +35,9 @@ export function generateDestReserveXcmMessage({
   recipientAddress
 }: XcmTransferParams) {
   const isToEvm = toChain.isEvmChain;
-  // 利用 amount * decimal
-  const amountBN = new BN(amount);
-  const decimalsBN = new BN(10).pow(new BN(token.decimals));
-  const amountInWei = amountBN.mul(decimalsBN)?.toString();
+
+  const amountInWei = String(Number(amount) * 10 ** token.decimals);
+  console.log('amountInwei', amountInWei);
 
   // 构建WithdrawAsset部分
   const multiLocation = JSON.parse(token.xcmV1MultiLocation);
@@ -37,13 +46,19 @@ export function generateDestReserveXcmMessage({
     id: {
       Concrete: {
         parents: 0,
-        interior: interior
+        interior: {
+          X2: [{ PalletInstance: 50 }, { GeneralIndex: 1984 }]
+        }
       }
     },
     fun: {
       Fungible: amountInWei
     }
   };
+  console.log(
+    'Array.from(decodeAddress(recipientAddress))',
+    Array.from(decodeAddress(recipientAddress))
+  );
 
   // 构建接收地址部分
   const beneficiary = {
@@ -275,13 +290,24 @@ export async function calculateExecutionWeight({
   toChain,
   recipientAddress
 }: CalculateExecutionWeightParams) {
-  const xcmMessage = generateLocalReserveXcmMessage({
+  const xcmMessage = generateDestReserveXcmMessage({
     token,
     amount,
     toChain,
     recipientAddress
   });
   console.log('xcmMessage', xcmMessage);
-  const weight = await api.call.xcmPaymentApi.queryXcmWeight(xcmMessage);
-  return weight;
+  try {
+    const weight = await api.call.xcmPaymentApi.queryXcmWeight(xcmMessage);
+    return {
+      weight,
+      xcmMessage
+    };
+  } catch (error) {
+    console.log('error', error);
+    return {
+      weight: null,
+      xcmMessage
+    };
+  }
 }

@@ -7,6 +7,7 @@ interface WalletConnection {
   isConnected: boolean;
   evmAddress?: `0x${string}`;
   substrateAddress?: string;
+  address?: string;
   isWrongNetwork: boolean;
   currentAddress?: string;
 }
@@ -37,6 +38,7 @@ export function useWalletConnection(): WalletConnection {
     isConnected: getConnectedAddress(),
     evmAddress: address,
     substrateAddress,
+    address: fromChain.isEvmChain ? address : selectedAccount?.address,
     isWrongNetwork,
     currentAddress: fromChain.isEvmChain ? address : selectedAccount?.address
   };

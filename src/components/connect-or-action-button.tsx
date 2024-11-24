@@ -14,10 +14,11 @@ import { useState } from 'react';
 import type { ButtonProps } from '@/components/ui/button';
 
 interface ConnectOrActionButtonProps extends ButtonProps {
-  children: React.ReactNode;
-  disconnectText?: string | boolean;
+  children?: React.ReactNode;
   isDisabled?: boolean;
   isLoading?: boolean;
+  loadingText?: string;
+  connectWalletContent?: React.ReactNode;
   className?: string;
   disabled?: boolean;
   onAction?: () => void;
@@ -25,9 +26,10 @@ interface ConnectOrActionButtonProps extends ButtonProps {
 
 export function ConnectOrActionButton({
   children,
-  disconnectText = 'Disconnect Wallet',
   isDisabled = false,
   isLoading = false,
+  loadingText,
+  connectWalletContent,
   className,
   disabled = false,
   onAction,
@@ -68,6 +70,21 @@ export function ConnectOrActionButton({
 
   const isButtonDisabled = disabled || isLoading || (isConnected && isDisabled);
 
+  function getButtonContent() {
+    if (isLoading) {
+      return (
+        <>
+          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          {loadingText || children}
+        </>
+      );
+    }
+
+    if (!isConnected) return connectWalletContent || 'Connect Wallet';
+
+    return children;
+  }
+
   return (
     <>
       <Button
@@ -76,8 +93,7 @@ export function ConnectOrActionButton({
         disabled={isButtonDisabled}
         {...props}
       >
-        {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-        {!isConnected && !!disconnectText ? 'Connect Wallet' : children}
+        {getButtonContent()}
       </Button>
       <PolkadotWalletConnectDialog
         isOpen={isPolkadotWalletDialogOpen}
