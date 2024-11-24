@@ -10,18 +10,21 @@ import {
 } from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { FallbackImage } from '@/components/ui/fallback-image';
+import { Skeleton } from '@/components/ui/skeleton';
+import { toShortAddress } from '@/lib/utils';
 import { Empty } from './empty';
-
-import type { TokenWithBalance } from '@/types/token';
-import { Skeleton } from './ui/skeleton';
 import FormattedNumberTooltip from './formatted-number-tooltip';
+import type { AvailableTokens } from '@/utils/xcm-token';
+import type { BalanceWithSymbol } from '@/store/tokens';
+import { BN_ZERO } from '@polkadot/util';
 
 interface TokenSelectDialogProps {
   isOpen: boolean;
   onClose: () => void;
   isLoading?: boolean;
-  onSelect: (token: TokenWithBalance) => void;
-  tokens: TokenWithBalance[];
+  onSelect: (token: AvailableTokens) => void;
+  tokens: AvailableTokens[];
+  tokensBalance?: BalanceWithSymbol[];
 }
 
 export function TokenSelectDialog({
@@ -29,7 +32,8 @@ export function TokenSelectDialog({
   onClose,
   isLoading,
   onSelect,
-  tokens
+  tokens,
+  tokensBalance
 }: TokenSelectDialogProps) {
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -39,9 +43,9 @@ export function TokenSelectDialog({
     const query = searchQuery.toLowerCase();
     return tokens.filter(
       (token) =>
-        token.symbol.toLowerCase().includes(query) ||
-        token.name?.toLowerCase().includes(query) ||
-        token?.address?.toLowerCase().includes(query)
+        token?.symbol?.toLowerCase().includes(query) ||
+        token?.name?.toLowerCase().includes(query) ||
+        token?.contractAddress?.toLowerCase().includes(query)
     );
   }, [tokens, searchQuery]);
 
@@ -96,7 +100,7 @@ export function TokenSelectDialog({
                           <FallbackImage
                             src={token?.icon || '/images/default-token.svg'}
                             fallbackSrc="/images/default-token.svg"
-                            alt={token?.symbol}
+                            alt={token?.symbol || ''}
                             fill
                             className="rounded-full"
                           />
@@ -110,11 +114,10 @@ export function TokenSelectDialog({
                               <span className="text-[12px] text-[#121619]">
                                 {token?.name}
                               </span>
-                              {token?.address ? (
+                              {token?.contractAddress ? (
                                 <div className="flex items-center gap-[5px]">
                                   <span className="font-mono text-[12px] tabular-nums text-[#878A92]">
-                                    {token?.address?.slice(0, 6)}...
-                                    {token?.address?.slice(-6)}
+                                    {toShortAddress(token?.contractAddress)}
                                   </span>
                                   <ExternalLink
                                     className="h-3 w-3"
@@ -126,9 +129,15 @@ export function TokenSelectDialog({
                           </div>
                           {isLoading ? (
                             <Skeleton className="h-[20px] w-[60px] bg-[#F2F3F5]" />
-                          ) : token?.balance ? (
+                          ) : tokensBalance?.find(
+                              (balance) => balance.symbol === token.symbol
+                            )?.balance ? (
                             <FormattedNumberTooltip
-                              value={token.balance}
+                              value={
+                                tokensBalance?.find(
+                                  (balance) => balance.symbol === token.symbol
+                                )?.balance ?? BN_ZERO
+                              }
                               className="text-right font-mono text-[16px] font-bold tabular-nums"
                               decimals={token.decimals ?? 0}
                             />

@@ -81,7 +81,7 @@ export function getGeneralIndex(multiLocationStr: string): string | null {
 export function getFromChains(
   chains: ChainInfoWithXcAssetsData[]
 ): ChainInfoWithXcAssetsData[] {
-  return chains;
+  return chains?.filter((chain) => chain.hasXcmPayment);
 }
 
 export function getToChains(
@@ -124,7 +124,9 @@ export const getTokenList = ({
           paraID: Number(toChain.id),
           nativeChainID: toChain.name.toLowerCase().replace(/\s/g, '-'),
           reserveType: 'foreign',
-          xcmV1MultiLocation: foreignAsset.multiLocation || '',
+          xcmV1MultiLocation: JSON.stringify({
+            v1: JSON.parse(foreignAsset.multiLocation)
+          }),
           asset: { ForeignAsset: assetId },
           assetHubReserveLocation: foreignAsset.assetHubReserveLocation,
           originChainReserveLocation: foreignAsset.originChainReserveLocation

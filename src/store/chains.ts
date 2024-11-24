@@ -4,6 +4,7 @@ import type { ParaChainConfig, XcAssetData } from '@/types/asset-registry';
 
 export interface ChainInfoWithXcAssetsData extends ChainInfo {
   id: string;
+  hasXcmPayment?: boolean;
   xcAssetsData?: XcAssetData[];
   assetsInfo?: ParaChainConfig['assetsInfo'];
   foreignAssetsInfo?: ParaChainConfig['foreignAssetsInfo'];

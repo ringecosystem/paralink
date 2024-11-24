@@ -8,6 +8,9 @@ import { BN, BN_ZERO } from '@polkadot/util';
 import { u128 } from '@polkadot/types';
 import { getAssetBalance } from '@/lib/chain/balance';
 import { XcAssetData } from '@/types/asset-registry';
+import type { ChainInfoWithXcAssetsData } from '@/store/chains';
+import { getTokenList } from './xcm-chain-registry';
+import { getTokenFromXcAsset } from '@/lib/registry';
 
 // min的写法：
 // 针对 Asset token，分两种:
@@ -55,3 +58,39 @@ export const getMinAndMaxAmountForNativeToken = async (
 
   return { min: BN_ZERO, max };
 };
+
+type GetAvailableTokensType = {
+  fromChain: ChainInfoWithXcAssetsData;
+  toChain: ChainInfoWithXcAssetsData;
+  assets: Asset[];
+};
+
+export type AvailableTokens = {
+  symbol?: string;
+  decimals?: number;
+  icon: string;
+  name: string;
+  xcAssetData: XcAssetData;
+  balance?: BN;
+  contractAddress?: string;
+};
+
+export function getAvailableTokens({
+  fromChain,
+  toChain,
+  assets
+}: GetAvailableTokensType): AvailableTokens[] {
+  const tokens = getTokenList({ fromChain, toChain });
+  return tokens?.map((v) => {
+    const data = getTokenFromXcAsset({ xcAssetData: v, assets });
+    return {
+      symbol: data?.symbol,
+      decimals: data?.decimals,
+      icon: data?.icon ?? '/images/default-token.svg',
+      name: data?.name ?? data?.symbol,
+      xcAssetData: v,
+      balance: undefined,
+      contractAddress: undefined
+    };
+  });
+}
