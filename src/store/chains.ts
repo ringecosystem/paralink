@@ -7,7 +7,6 @@ export interface ChainInfoWithXcAssetsData extends ChainInfo {
   hasXcmPayment?: boolean;
   xcAssetsData?: XcAssetData[];
   assetsInfo?: ParaChainConfig['assetsInfo'];
-  foreignAssetsInfo?: ParaChainConfig['foreignAssetsInfo'];
   nativeToken: {
     symbol: string;
     decimals: number;
