@@ -16,10 +16,8 @@ export async function queryWeightToAssetFee({
   weight,
   asset
 }: QueryWeightToAssetFeeParams): Promise<bigint> {
-  // 确保输入参数有效
   if (!weight || !asset)
     throw new Error('Weight and asset parameters are required');
 
-  // 调用 RPC 方法
   return api.call.xcmPaymentApi.queryWeightToAssetFee(weight, asset);
 }

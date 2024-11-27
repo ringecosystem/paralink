@@ -128,7 +128,7 @@ export function TokenSelectDialog({
                             </div>
                           </div>
                           {isLoading ? (
-                            <Skeleton className="h-[20px] w-[60px] bg-[#F2F3F5]" />
+                            <Skeleton className="h-[20px] w-[60px]" />
                           ) : tokensBalance?.find(
                               (balance) => balance.symbol === token.symbol
                             )?.balance ? (

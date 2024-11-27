@@ -18,4 +18,4 @@ export const BLACKLISTED_PARA_IDS = [
   '2090'
 ];
 
-export const SUPPORTED_XCM_PARA_IDS = ['1000', '2006', '2004', '2034'];
+export const SUPPORTED_XCM_PARA_IDS = ['1000', '2004', '2006', '2030', '2034'];

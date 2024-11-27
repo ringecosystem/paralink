@@ -1,10 +1,13 @@
 import { decodeAddress } from '@polkadot/util-crypto';
-import { parseUnits } from 'viem';
+import { parseUnits } from '@/utils/format';
 import { XcAssetData } from '@/types/asset-registry';
 import { ChainInfoWithXcAssetsData } from '@/store/chains';
 import { Signer, SubmittableExtrinsic } from '@polkadot/api/types';
-import { formatStringTokenAmount } from '@/utils/number';
 import { ApiPromise } from '@polkadot/api';
+import {
+  createStandardXcmInterior,
+  parseAndNormalizeXcm
+} from '@/utils/xcm-location';
 
 type XcmTransferParams = {
   token: XcAssetData;
@@ -20,18 +23,20 @@ export function createXcmTransfer({
   recipientAddress
 }: XcmTransferParams) {
   const isToEvm = toChain.isEvmChain;
-  const amountInWei = parseUnits(amount, token.decimals);
+  console.log('amount', amount);
 
+  const amountInWei = parseUnits({
+    value: amount,
+    decimals: token.decimals
+  });
+  if (amountInWei.isZero()) return undefined;
   try {
-    // const interior = JSON.parse(token?.xcmV1MultiLocation)?.v1?.interior;
-    // [{\"parachain\":1000},{\"palletInstance\":50},{\"generalIndex\":1337}]
-    const interior = {
-      X3: [
-        { Parachain: toChain?.id },
-        { PalletInstance: 50 },
-        { GeneralIndex: 1984 }
-      ]
-    };
+    const multiLocation = JSON.parse(token.xcmV1MultiLocation);
+    const location = parseAndNormalizeXcm(multiLocation);
+    if (!location) return undefined;
+    const interior = createStandardXcmInterior({
+      interior: location?.interior
+    });
 
     const dest = {
       V3: {

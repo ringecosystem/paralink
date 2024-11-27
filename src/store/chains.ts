@@ -11,6 +11,7 @@ export interface ChainInfoWithXcAssetsData extends ChainInfo {
   nativeToken: {
     symbol: string;
     decimals: number;
+    icon: string;
   };
   isEvmChain?: boolean;
 }

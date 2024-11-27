@@ -1,15 +1,12 @@
+import '@polkadot/api-augment';
+import '@polkadot/types-augment';
+
 import { isFunction, bnToBn } from '@polkadot/util';
 import { BN_ZERO } from '@polkadot/util';
 import type { BN } from '@polkadot/util';
-import type { ApiPromise } from '@polkadot/api';
+import { ApiPromise } from '@polkadot/api';
 import type { XcAssetData } from './../../types/asset-registry';
 import type { ChainInfoWithXcAssetsData } from '@/store/chains';
-
-interface OrmlTokensAccountData {
-  free: string | number;
-  reserved: string | number;
-  frozen: string | number;
-}
 
 export async function getAssetBalance({
   api,
@@ -40,36 +37,34 @@ export async function getAssetBalance({
         account
       );
 
-      const assetAccount = result.toJSON() as unknown as {
+      const assetAccount = result.toJSON() as {
         balance: string | number;
       };
       if (!assetAccount) return BN_ZERO;
-      return bnToBn(assetAccount.balance);
+      return bnToBn(assetAccount?.balance);
     }
 
     if (isFunction(api.query.assets?.account)) {
-      const result = await api.query.assets.account(assetId, account);
-      const assetAccount = result.toJSON() as null | {
-        balance: string | number;
-      };
-
-      if (assetAccount) {
-        return bnToBn(assetAccount.balance);
-      }
+      const result = await api.query.assets.account(
+        assetId as unknown as number,
+        account
+      );
+      const amount = result.isSome ? result.unwrap().balance.toBn() : BN_ZERO;
+      return amount;
     }
 
     if (isFunction(api.query.ormlTokens?.account)) {
       const { free } = (
         await api.query.ormlTokens.account(account, assetId)
-      ).toJSON() as unknown as OrmlTokensAccountData;
+      ).toJSON() as { free?: string };
       return bnToBn(free ?? 0);
     }
 
     if (isFunction(api.query.tokens?.accounts)) {
-      const accountData = (
-        await api.query.tokens.accounts(account, assetId)
-      ).toJSON() as unknown as OrmlTokensAccountData;
-      return bnToBn(accountData?.free ?? 0);
+      const { free } = (
+        await api.query.tokens.accounts(account, assetId as unknown as number)
+      ).toJSON() as { free?: string };
+      return bnToBn(free ?? 0);
     }
 
     console.warn('No suitable asset query method found');

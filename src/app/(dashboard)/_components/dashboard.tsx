@@ -8,7 +8,6 @@ import { TokenSelect } from '@/components/token-select';
 import { ConnectOrActionButton } from '@/components/connect-or-action-button';
 import useChainsStore from '@/store/chains';
 import useTokensStore from '@/store/tokens';
-// import { getAcceptablePaymentAsset } from '@/services/xcm/polkadot-xcm';
 
 import { useChainInitialization } from '../_hooks/use-chain-initlization';
 import { useCrossChainSetup } from '../_hooks/use-cross-chain-setup';
@@ -25,20 +24,26 @@ import {
 } from '@/services/xcm/polkadot-xcm';
 import { useWalletStore } from '@/store/wallet';
 import { useTokensFetchBalance } from '../_hooks/use-tokens-fetch-balance';
-import { useExistentialDeposit } from '@/services/xcm/existential-deposit';
+import { useExistentialDeposit } from '../_hooks/use-existential-deposit';
 import useApiStore from '@/store/api';
 import { AnimatedErrorMessage } from '@/components/animated-error-message';
 import { useWalletConnection } from '@/hooks/use-wallet-connection';
 import { useTransactionDetailStore } from '@/store/transaction-detail';
 import { formatBridgeTransactionTimestamp } from '@/utils/date';
 import { useXcmExtrinsic } from '../_hooks/use-xcm-extrinsic';
-import { formatUnits } from 'viem';
+
+import { useNetworkFee } from '../_hooks/use-network-fee';
+import { useCrossFee } from '../_hooks/use-cross-fee';
+import { BN_ZERO, bnMax, bnToBn } from '@polkadot/util';
+import { useMinBalance } from '../_hooks/use-min-balance';
+import { parseUnits } from '@/utils/format';
 
 interface DashboardProps {
   polkadotAssetRegistry: ChainConfig;
   chainsInfo: ChainInfo[];
   assetsInfo: Asset[];
 }
+
 export default function Dashboard({
   polkadotAssetRegistry,
   chainsInfo,
@@ -47,9 +52,12 @@ export default function Dashboard({
   const [amount, setAmount] = useState<string>('');
   const [isLoadingCrossChain, setIsLoadingCrossChain] = useState(false);
   const { selectedWallet, selectedAccount } = useWalletStore();
-  const [recipientAddress, setRecipientAddress] = useState<string>('');
+  const [recipientAddress, setRecipientAddress] = useState<string>(
+    '12pxLnQcjJqjG4mDaeJoKBLMfsdHZ2p2RxKHNEvicnZwZobx'
+  );
   // 12pxLnQcjJqjG4mDaeJoKBLMfsdHZ2p2RxKHNEvicnZwZobx
   const { address } = useWalletConnection();
+
   const openTransactionDetail = useTransactionDetailStore(
     (state) => state.open
   );
@@ -75,16 +83,6 @@ export default function Dashboard({
     }))
   );
 
-  // init chains and setup cross chain config
-  const { isLoading } = useChainInitialization({
-    polkadotAssetRegistry,
-    chainsInfo,
-    assetsInfo
-  });
-
-  const { setupCrossChainConfig, swapChains, updateToChain } =
-    useCrossChainSetup(assetsInfo);
-
   const {
     tokens,
     selectedToken,
@@ -102,7 +100,6 @@ export default function Dashboard({
     }))
   );
 
-  // init from chain api
   const { fromChainApi, toChainApi } = useApiStore(
     useShallow((state) => ({
       fromChainApi: state.fromChainApi,
@@ -110,13 +107,29 @@ export default function Dashboard({
     }))
   );
 
+  // 初始化
+  const { isLoading } = useChainInitialization({
+    polkadotAssetRegistry,
+    chainsInfo,
+    assetsInfo
+  });
+
+  // 设置跨链配置
+  const { setupCrossChainConfig, swapChains, updateToChain } =
+    useCrossChainSetup(assetsInfo);
+
+  // 请求 tokens 余额
   const { isLoading: isTokensLoading } = useTokensFetchBalance({
     fromChain,
     fromChainApi,
     address
   });
 
-  const { extrinsic, partialFee } = useXcmExtrinsic({
+  const {
+    extrinsic,
+    partialFee,
+    isLoading: isExtrinsicLoading
+  } = useXcmExtrinsic({
     fromChainApi,
     selectedToken,
     toChain,
@@ -125,21 +138,50 @@ export default function Dashboard({
     address
   });
 
-  const networkFee = useMemo(() => {
-    if (!tokens?.length) return false;
-    const nativeToken = tokens.find(
-      (token) =>
-        token.symbol?.toLowerCase() ===
-        fromChain?.nativeToken?.symbol?.toLowerCase()
-    );
-    if (!nativeToken || !partialFee || !nativeToken.decimals) return false;
-    const fee = formatUnits(BigInt(partialFee), nativeToken.decimals);
-    return {
-      fee,
-      icon: nativeToken.icon,
-      symbol: nativeToken.symbol
-    };
-  }, [partialFee, fromChain, tokens]);
+  const { networkFee, isLoading: isNetworkFeeLoading } = useNetworkFee({
+    fromChainApi,
+    asset: selectedToken?.xcAssetData,
+    toChainId,
+    recipientAddress,
+    partialFee
+  });
+
+  const { fee: crossFee, isLoading: isCrossFeeLoading } = useCrossFee({
+    api: toChainApi,
+    asset: selectedToken?.xcAssetData,
+    recipientAddress,
+    paraId: toChain?.id
+  });
+
+  const { balance: minBalance, isLoading: isMinBalanceLoading } = useMinBalance(
+    {
+      api: toChainApi,
+      asset: selectedToken?.xcAssetData,
+      decimals: selectedToken?.decimals
+    }
+  );
+
+  const {
+    isLoading: isFromExistentialDepositLoading,
+    formattedDeposit: formattedFromDeposit,
+    hasEnoughBalance: hasFromEnoughBalance,
+    deposit: fromDeposit
+  } = useExistentialDeposit({ api: fromChainApi, address: address });
+
+  const {
+    isLoading: isToExistentialDepositLoading,
+    formattedDeposit: formattedToDeposit,
+    hasEnoughBalance: hasToEnoughBalance
+  } = useExistentialDeposit({ api: toChainApi, address: recipientAddress });
+
+  const minBalanceBN = bnToBn(minBalance).add(bnToBn(crossFee));
+
+  const maxBalanceBN = bnMax(
+    BN_ZERO,
+    selectedTokenBalance?.balance
+      ?.sub(bnToBn(fromDeposit))
+      ?.sub(networkFee ? bnToBn(networkFee?.fee) : BN_ZERO) ?? BN_ZERO
+  );
 
   const { isInsufficientBalance } = useMemo(() => {
     if (!address || !amount) {
@@ -175,175 +217,64 @@ export default function Dashboard({
     [chains, updateToChain]
   );
 
-  const {
-    isLoading: isExistentialDepositLoading,
-    formattedDeposit,
-    hasEnoughBalance
-  } = useExistentialDeposit({ api: toChainApi, address: recipientAddress });
-
-  const handleSwitch = useCallback(() => {
+  const handleSwitch = useCallback(async () => {
     if (!chains?.length || !fromChainId || !toChainId) return;
+    setIsLoadingCrossChain(true);
+
     setSelectedToken(undefined);
     setAmount('');
-    swapChains({
+    await swapChains({
       chains,
       fromChainId,
       toChainId
     });
+    setIsLoadingCrossChain(false);
   }, [setSelectedToken, swapChains, chains, fromChainId, toChainId]);
 
-  const handleOpenTransactionDetail = useCallback(() => {
-    const timestamp = formatBridgeTransactionTimestamp();
-    if (fromChain && toChain && address && recipientAddress) {
-      openTransactionDetail({
-        timestamp,
-        amount: `${amount} ${selectedToken?.symbol}`,
-        fromAddress: address,
-        toAddress: recipientAddress,
-        fromChain,
-        toChain,
-        fromTxHash: '0x092...bb41',
-        toTxHash: '0x092...bb41'
-      });
-    }
-  }, [
-    amount,
-    address,
-    recipientAddress,
-    fromChain,
-    toChain,
-    selectedToken,
-    openTransactionDetail
-  ]);
+  const handleClick = useCallback(() => {
+    console.log('handleClick');
+  }, []);
 
-  const handleClick = useCallback(async () => {
-    // if (!fromChainId || !toChainId) return;
-    // if (!fromChainApi || !selectedToken?.xcAssetData || !toChain) return;
-    // const { original, acceptableToken } = await checkAcceptablePaymentToken({
-    //   api: fromChainApi,
-    //   token: selectedToken.xcAssetData
-    // });
-    // console.log('original', original);
-    // removeCommasAndConvertToNumber
-    // const { weight, xcmMessage } = await calculateExecutionWeight({
-    //   api: toChainApi,
-    //   token: selectedToken.xcAssetData,
-    //   amount,
-    //   toChain,
-    //   recipientAddress
-    // });
-    // console.log(
-    //   ' fromChainApi.call.xcmPaymentApi.queryDeliveryFees',
-    //   fromChainApi.call.xcmPaymentApi.queryDeliveryFees
-    // );
-    // console.log('weight', weight, weight?.toHuman());
-    // const weightJson = weight.toHuman()?.Ok;
-    // console.log('weightJson', weightJson);
-    // const refTime = removeCommasAndConvertToNumber(weightJson?.refTime);
-    // const proofSize = removeCommasAndConvertToNumber(weightJson?.proofSize);
-    // console.log('refTime', refTime, 'proofSize', proofSize);
-    // const fee = await queryWeightToAssetFee({
-    //   api: toChainApi,
-    //   weight: {
-    //     refTime,
-    //     proofSize
-    //   },
-    //   asset: {
-    //     V3: {
-    //       Concrete: {
-    //         parents: 0,
-    //         interior: {
-    //           // X1: {
-    //           //   Parachain: toChain.id
-    //           // }
-    //           X3: [
-    //             { Parachain: toChain.id },
-    //             { PalletInstance: 50 },
-    //             { GeneralIndex: 1984 }
-    //           ]
-    //         }
-    //       }
-    //     }
-    //   }
-    // })?.catch((error) => {
-    //   console.log('queryWeightToAssetFee error', error);
-    // });
-    // // 2. 计算传输费用
-    // console.log(
-    //   'fromChainApi.call.xcmPaymentApi',
-    //   fromChainApi.call.xcmPaymentApi
-    // );
-    // const deliveryFee = await fromChainApi.call.xcmPaymentApi.queryDeliveryFees(
-    //   {
-    //     V2: {
-    //       parents: 0,
-    //       interior: {
-    //         X3: [
-    //           { Parachain: toChain.id },
-    //           { PalletInstance: 50 },
-    //           { GeneralIndex: 1984 }
-    //         ]
-    //       }
-    //     }
-    //   }, // 目标链的位置
-    //   xcmMessage
-    // );
-    // console.log('fee', fee?.toHuman());
-    // console.log('weight', weight);
-    // console.log('fromChainApi', fromChainApi);
-    // const crossTokenLocation = await getAcceptablePaymentAsset(fromChainApi);
-    // console.log('crossTokenLocation', crossTokenLocation);
-    // console.log('amount', amount);
-    // const { dest, beneficiary, assets, feeAssetItem, weightLimit } =
-    //   createXcmTransfer({
-    //     token: selectedToken.xcAssetData,
-    //     amount,
-    //     toChain,
-    //     // crossAmount: removeCommasAndConvertToNumber(fee?.toHuman()?.Ok),
-    //     crossAmount: '464',
-    //     recipientAddress
-    //   });
-    // const extrinsic =
-    //   await fromChainApi.tx.polkadotXcm.limitedReserveTransferAssets(
-    //     dest,
-    //     beneficiary,
-    //     assets,
-    //     feeAssetItem,
-    //     weightLimit
-    //   );
-    // signAndSendExtrinsic(
-    //   extrinsic,
-    //   selectedWallet?.signer,
-    //   selectedAccount?.address ?? ''
-    // );
-    // handleOpenTransactionDetail();
-    // extrinsic
-    if (!extrinsic || !address || !selectedWallet?.signer) return;
-    signAndSendExtrinsic(extrinsic, selectedWallet?.signer, address);
-  }, [
-    amount,
-    fromChainApi,
-    selectedWallet,
-    selectedAccount,
-    fromChain,
-    toChain,
-    fromChainId,
-    toChainId,
-    recipientAddress,
-    selectedToken?.xcAssetData,
-    toChain,
-    handleOpenTransactionDetail,
-    extrinsic
-  ]);
+  // const handleOpenTransactionDetail = useCallback(() => {
+  //   const timestamp = formatBridgeTransactionTimestamp();
+  //   if (fromChain && toChain && address && recipientAddress) {
+  //     openTransactionDetail({
+  //       timestamp,
+  //       amount: `${amount} ${selectedToken?.symbol}`,
+  //       fromAddress: address,
+  //       toAddress: recipientAddress,
+  //       fromChain,
+  //       toChain,
+  //       fromTxHash: '0x092...bb41',
+  //       toTxHash: '0x092...bb41'
+  //     });
+  //   }
+  // }, [
+  //   amount,
+  //   address,
+  //   recipientAddress,
+  //   fromChain,
+  //   toChain,
+  //   selectedToken,
+  //   openTransactionDetail
+  // ]);
 
   const buttonLoadingText = useMemo(() => {
-    if (isLoadingCrossChain || isExistentialDepositLoading)
+    if (
+      isLoadingCrossChain ||
+      isToExistentialDepositLoading ||
+      isFromExistentialDepositLoading
+    )
       return 'Connecting...';
     return undefined;
-  }, [isLoadingCrossChain, isExistentialDepositLoading]);
+  }, [
+    isLoadingCrossChain,
+    isToExistentialDepositLoading,
+    isFromExistentialDepositLoading
+  ]);
 
   useEffect(() => {
-    setRecipientAddress('');
+    // setRecipientAddress('');
   }, [toChainId]);
 
   return (
@@ -389,6 +320,8 @@ export default function Dashboard({
             <TokenSelect
               token={selectedToken}
               tokenBalance={selectedTokenBalance}
+              minBalance={minBalanceBN}
+              maxBalance={maxBalanceBN}
               tokensBalance={tokensBalance}
               onChangeToken={setSelectedToken}
               onChangeAmount={setAmount}
@@ -410,25 +343,44 @@ export default function Dashboard({
               onChange={setRecipientAddress}
               error={
                 <AnimatedErrorMessage
-                  show={!hasEnoughBalance && !isExistentialDepositLoading}
-                  message={`You need at least ${formattedDeposit} in your recipient account on ${toChain?.name} to keep the account alive.`}
+                  show={!hasToEnoughBalance && !isToExistentialDepositLoading}
+                  message={`You need at least ${formattedToDeposit} in your recipient account on ${toChain?.name} to keep the account alive.`}
                 />
               }
             />
-
-            <FeeBreakdown
-              amount={100}
-              networkFee={networkFee}
-              crossChainFee={0.02}
-              finalAmount={99.97}
-            />
+            {!!selectedToken?.symbol && selectedToken?.decimals && (
+              <FeeBreakdown
+                showValue={amount !== '' && !!address}
+                amount={parseUnits({
+                  value: amount,
+                  decimals: selectedToken?.decimals ?? 3
+                })}
+                networkFee={networkFee}
+                crossFee={crossFee}
+                nativeTokenInfo={fromChain?.nativeToken}
+                loading={
+                  isNetworkFeeLoading || isCrossFeeLoading || isExtrinsicLoading
+                }
+                xcmTokenInfo={{
+                  symbol: selectedToken?.symbol,
+                  decimals: selectedToken?.decimals,
+                  icon: selectedToken?.icon
+                }}
+              />
+            )}
             <div className="h-[1px] w-full bg-[#F2F3F5]"></div>
 
             <ConnectOrActionButton
               onAction={handleClick}
-              isLoading={isLoadingCrossChain || isExistentialDepositLoading}
+              isLoading={
+                isLoadingCrossChain ||
+                isToExistentialDepositLoading ||
+                isFromExistentialDepositLoading
+              }
               loadingText={buttonLoadingText}
-              isDisabled={!hasEnoughBalance || amount === '' || amount === '0'}
+              isDisabled={
+                !hasToEnoughBalance || amount === '' || amount === '0'
+              }
             >
               Confirm Transaction
             </ConnectOrActionButton>

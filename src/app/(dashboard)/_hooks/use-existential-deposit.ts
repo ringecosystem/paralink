@@ -1,5 +1,5 @@
 import { ApiPromise } from '@polkadot/api';
-import { BN, bnToBn } from '@polkadot/util';
+import { BN } from '@polkadot/util';
 import { useEffect, useRef, useState } from 'react';
 import { formatBalance } from '@polkadot/util';
 import { AugmentedConst } from '@polkadot/api/types';
@@ -75,7 +75,7 @@ export function useExistentialDeposit({
         }
 
         const tokenInfo = {
-          deposit: bnToBn(ed),
+          deposit: ed.toBn(),
           tokenInfo: {
             symbol: properties.tokenSymbol.value[0]?.toString() || '',
             decimals: properties.tokenDecimals.value[0]?.toNumber() || 0
@@ -93,7 +93,7 @@ export function useExistentialDeposit({
           (accountInfo: AccountInfo) => {
             setState((prev) => ({
               ...prev,
-              balance: bnToBn(accountInfo.data.free)
+              balance: accountInfo.data.free
             }));
           }
         )) as unknown as Unsubscribe;
@@ -110,7 +110,6 @@ export function useExistentialDeposit({
     return () => {
       if (unsubscribeRef.current) {
         unsubscribeRef.current();
-        setState(DEFAULT_TOKEN_STATE);
       }
     };
   }, [api, address]);
@@ -120,8 +119,7 @@ export function useExistentialDeposit({
       decimals: state.tokenInfo.decimals,
       withUnit: state.tokenInfo.symbol,
       forceUnit: '-',
-      withZero: false,
-      withAll: true
+      withZero: false
     });
 
   return {

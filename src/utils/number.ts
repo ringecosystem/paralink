@@ -1,105 +1,36 @@
-import BN from 'bn.js';
-
-interface FormatNumberResult {
-  number: number;
-  formatted: string;
-  raw: string;
-}
+import { bnToBn } from '@polkadot/util';
+import type { BN } from '@polkadot/util';
 
 /**
- * Format BN to actual value and formatted string
- * @param value - BN object
- * @param decimals - Token decimal places
- * @param displayDecimals - Number of decimal places to display (default 3)
+ * Converts a string containing commas into a string.
+ *
+ * @param numberStr - The string representing a number with commas
+ * @returns The converted number. Returns 0 if the input is invalid.
+ *
+ * @example
+ * ```ts
+ * removeCommasAndConvertToString("1,234,567.89") // returns "1234567.89"
+ * removeCommasAndConvertToString("1234567.89")   // returns "1234567.89"
+ * removeCommasAndConvertToString("")             // returns "0"
+ * removeCommasAndConvertToString("invalid")      // returns "0"
+ * ```
  */
-export function formatTokenAmount({
-  value,
-  decimals,
-  displayDecimals = 3
-}: {
-  value: BN;
-  decimals: number;
-  displayDecimals?: number;
-}): FormatNumberResult {
-  if (!value) return { number: 0, formatted: '0', raw: '0' };
-
-  // Create divisor (10 ** decimals)
-  const base = new BN(10).pow(new BN(decimals));
-
-  // Get integer part and remainder
-  const integer = value.div(base);
-  const fraction = value.mod(base);
-
-  // Convert fraction part
-  const fractionStr = fraction.toString().padStart(decimals, '0');
-  const realNumber = Number(`${integer.toString()}.${fractionStr}`);
-
-  // Format to specified decimal places
-  const formatted = realNumber.toFixed(displayDecimals);
-  const raw = realNumber.toFixed(decimals);
-
-  return {
-    number: realNumber,
-    raw,
-    formatted
-  };
-}
-
-/**
- * Format string amount to actual value and formatted string
- * @param value - String amount (e.g. "1234567890")
- * @param decimals - Token decimal places
- * @param displayDecimals - Number of decimal places to display (default 3)
- */
-export function formatStringTokenAmount({
-  value,
-  decimals,
-  displayDecimals = 3
-}: {
-  value: string;
-  decimals: number;
-  displayDecimals?: number;
-}): FormatNumberResult {
-  if (!value || value === '0') return { number: 0, formatted: '0', raw: '0' };
-
-  // Remove any commas and validate
-  const cleanValue = value.replace(/,/g, '').trim();
-  if (!/^\d*\.?\d+$/.test(cleanValue))
-    return { number: 0, formatted: '0', raw: '0' };
-
-  try {
-    const [integerPart, decimalPart = ''] = cleanValue.split('.');
-    const paddedDecimal = decimalPart.padEnd(decimals, '0');
-    const fullNumber = integerPart + paddedDecimal;
-
-    const bnValue = new BN(fullNumber);
-    return formatTokenAmount({ value: bnValue, decimals, displayDecimals });
-  } catch {
-    return { number: 0, formatted: '0', raw: '0' };
-  }
-}
-
-/**
- * Converts a string containing commas into a number.
- * @param numberStr - The string representing a number with commas (e.g., "76,478,242,000")
- * @returns The converted number. Throws an error if the input is invalid.
- */
-export function removeCommasAndConvertToNumber(numberStr: string): number {
+export function removeCommasAndConvertToString(numberStr: string): string {
   if (typeof numberStr !== 'string') {
-    throw new TypeError('Input must be a string.');
+    return '0';
   }
 
   // Trim whitespace and check for empty string
   const trimmedStr = numberStr.trim();
   if (trimmedStr === '') {
-    return 0;
+    return '0';
   }
 
   // Validate the format of the string
   // The regex allows numbers with or without commas, and optional decimal points
   const validFormat = /^-?(\d+|\d{1,3}(,\d{3})+)(\.\d+)?$/;
   if (!validFormat.test(trimmedStr)) {
-    return 0;
+    return '0';
   }
 
   // Remove all commas
@@ -107,9 +38,43 @@ export function removeCommasAndConvertToNumber(numberStr: string): number {
 
   // Convert to number and verify
   const result = Number(numberWithoutCommas);
-  if (isNaN(result)) {
-    throw new Error('Cannot convert input to a number.');
-  }
+  return isNaN(result) ? '0' : result.toString();
+}
 
-  return result;
+/**
+ * Converts a string containing commas into a number.
+ *
+ * @param numberStr - The string representing a number with commas
+ * @returns The converted number. Returns 0 if the input is invalid.
+ *
+ * @example
+ * ```ts
+ * removeCommasAndConvertToNumber("1,234,567.89") // returns 1234567.89
+ * removeCommasAndConvertToNumber("1234567.89")   // returns 1234567.89
+ * removeCommasAndConvertToNumber("")             // returns 0
+ * removeCommasAndConvertToNumber("invalid")      // returns 0
+ * ```
+ */
+export function removeCommasAndConvertToNumber(numberStr: string): number {
+  return Number(removeCommasAndConvertToString(numberStr));
+}
+
+/**
+ * Converts a string containing commas into a BN (Big Number) instance.
+ * Useful for blockchain calculations where precision is critical.
+ *
+ * @param numberStr - The string representing a number with commas
+ * @returns A BN instance of the converted number. Returns BN(0) if the input is invalid.
+ *
+ * @example
+ * ```ts
+ * removeCommasAndConvertToBN("1,234,567")    // returns BN(1234567)
+ * removeCommasAndConvertToBN("1234567")      // returns BN(1234567)
+ * removeCommasAndConvertToBN("")             // returns BN(0)
+ * removeCommasAndConvertToBN("invalid")      // returns BN(0)
+ * ```
+ */
+export function removeCommasAndConvertToBN(numberStr: string): BN {
+  const number = removeCommasAndConvertToNumber(numberStr);
+  return bnToBn(number);
 }

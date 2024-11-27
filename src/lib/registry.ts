@@ -20,6 +20,27 @@ export interface ParachainInfo {
   xcAssetsData?: ParachainAsset[];
 }
 
+export function findIconBySymbol(symbol: string, assets: Asset[]) {
+  return (
+    assets?.find((asset) => {
+      const assetSymbol = asset.symbol?.toLowerCase();
+      const targetSymbol = symbol.toLowerCase();
+
+      return (
+        assetSymbol === targetSymbol ||
+        assetSymbol === `ah${targetSymbol}` ||
+        assetSymbol === `${targetSymbol}ah` ||
+        targetSymbol === `ah${assetSymbol}` ||
+        targetSymbol === `${assetSymbol}ah` ||
+        assetSymbol === `w${targetSymbol}` ||
+        assetSymbol === `${targetSymbol}w` ||
+        targetSymbol === `w${assetSymbol}` ||
+        targetSymbol === `${assetSymbol}w`
+      );
+    })?.icon || '/images/default-token.svg'
+  );
+}
+
 export function getSupportedParaChains(polkadot: ChainConfig) {
   return Object.entries(polkadot)
     ?.map(([id, data]) => ({
@@ -123,25 +144,6 @@ export function getTokenFromXcAsset({
       assetSymbol === `${targetSymbol}w`
     );
   });
-
-  function findIconBySymbol(symbol: string, assets: Asset[]) {
-    return assets?.find((asset) => {
-      const assetSymbol = asset.symbol?.toLowerCase();
-      const targetSymbol = symbol.toLowerCase();
-
-      return (
-        assetSymbol === targetSymbol ||
-        assetSymbol === `ah${targetSymbol}` ||
-        assetSymbol === `${targetSymbol}ah` ||
-        targetSymbol === `ah${assetSymbol}` ||
-        targetSymbol === `${assetSymbol}ah` ||
-        assetSymbol === `w${targetSymbol}` ||
-        assetSymbol === `${targetSymbol}w` ||
-        targetSymbol === `w${assetSymbol}` ||
-        targetSymbol === `${assetSymbol}w`
-      );
-    })?.icon;
-  }
 
   const bestMatch = exactSymbolMatch || prefixSymbolMatch || slugMatch;
 

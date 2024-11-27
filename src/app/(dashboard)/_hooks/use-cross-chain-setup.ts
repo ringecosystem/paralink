@@ -34,22 +34,16 @@ export function useCrossChainSetup(
   const [previousFromEndpoint, setPreviousFromEndpoint] = useState('');
   const [previousToEndpoint, setPreviousToEndpoint] = useState('');
 
-  const {
-    setFromChainId,
-    setToChainId,
-    setFromChains,
-    setToChains,
-    fromChainId
-  } = useChainsStore(
-    useShallow((state) => ({
-      setChains: state.setChains,
-      setFromChainId: state.setFromChainId,
-      setToChainId: state.setToChainId,
-      setFromChains: state.setFromChains,
-      setToChains: state.setToChains,
-      fromChainId: state.fromChainId
-    }))
-  );
+  const { setFromChainId, setToChainId, setFromChains, setToChains } =
+    useChainsStore(
+      useShallow((state) => ({
+        setChains: state.setChains,
+        setFromChainId: state.setFromChainId,
+        setToChainId: state.setToChainId,
+        setFromChains: state.setFromChains,
+        setToChains: state.setToChains
+      }))
+    );
 
   const {
     setTokens,
@@ -181,8 +175,6 @@ export function useCrossChainSetup(
       try {
         const fromChainId = useChainsStore.getState().fromChainId;
         setToChainId(toChainId);
-
-        console.log('fromChainId', fromChainId);
         if (fromChainId) {
           await setupChainConnections({
             chains,

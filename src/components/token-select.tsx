@@ -7,7 +7,7 @@ import { useNumberInput } from '@/hooks/number-input';
 import { cn } from '@/lib/utils';
 import { TokenSelectDialog } from './token-select-dialog';
 import FormattedNumberTooltip from './formatted-number-tooltip';
-import { BN_ZERO } from '@polkadot/util';
+import { BN, BN_ZERO, bnToBn, formatBalance } from '@polkadot/util';
 import type { AvailableTokens } from '@/utils/xcm-token';
 import type { BalanceWithSymbol } from '@/store/tokens';
 
@@ -16,6 +16,8 @@ interface TokenSelectProps {
   tokenBalance?: BalanceWithSymbol;
   tokens?: AvailableTokens[];
   tokensBalance?: BalanceWithSymbol[];
+  minBalance?: BN;
+  maxBalance?: BN;
   isLoading?: boolean;
   error?: React.ReactNode;
   onChangeToken?: (token: AvailableTokens) => void;
@@ -25,18 +27,24 @@ interface TokenSelectProps {
 export function TokenSelect({
   token,
   tokenBalance,
+  minBalance,
   tokens,
   tokensBalance,
+  maxBalance,
   isLoading,
   error,
   onChangeToken,
   onChangeAmount
 }: TokenSelectProps) {
+  const min = minBalance ? minBalance.toNumber() : 0;
+  const max = maxBalance ? maxBalance.toNumber() : 0;
+  console.log('min', min);
+  console.log('token', token);
   const price = undefined;
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { value, handleChange, handleBlur } = useNumberInput({
-    maxDecimals: 18,
-    minValue: 0,
+    maxDecimals: token?.decimals ?? 18,
+    // minValue: min,
     initialValue: '',
     onChange: onChangeAmount
   });
@@ -124,6 +132,30 @@ export function TokenSelect({
               </div>
             </div>
           </div>
+          {/* 将 min/max 提示移到外部 */}
+          {
+            <div className="flex items-center justify-end gap-2 px-2 text-[11px] text-primary">
+              <span>
+                Min:{' '}
+                {formatBalance(bnToBn(min), {
+                  decimals: token.decimals,
+                  withUnit: false,
+                  forceUnit: '-',
+                  withSi: false
+                })}
+              </span>
+              {<span>•</span>}
+              <span>
+                Max:{' '}
+                {formatBalance(bnToBn(max), {
+                  decimals: token.decimals,
+                  withUnit: false,
+                  forceUnit: '-',
+                  withSi: false
+                })}
+              </span>
+            </div>
+          }
           {error && <div className="mt-1 text-xs">{error}</div>}
         </div>
       ) : (

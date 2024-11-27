@@ -5,30 +5,23 @@ import { MultiLocation } from '@polkadot/types/interfaces/xcm';
 
 type GetCrossTokenParams = {
   api: ApiPromise;
-  token: XcAssetData;
+  asset: XcAssetData;
 };
 
-// 定义 XCM V3 相关的类型
 export interface XcmV3MultiLocation {
   V3?: {
     Concrete?: MultiLocation;
   };
 }
-interface CheckAcceptableTokenResult {
-  original: XcmV3MultiLocation | null;
-  acceptableToken: XcAssetData | null;
-  isAcceptable: boolean;
-}
 
-// 定义 API 返回的响应类型
 interface XcmResponse {
   Ok?: XcmV3MultiLocation[];
 }
 
 export async function checkAcceptablePaymentToken({
   api,
-  token
-}: GetCrossTokenParams): Promise<CheckAcceptableTokenResult> {
+  asset
+}: GetCrossTokenParams): Promise<boolean> {
   const tokenXcm = await api.call.xcmPaymentApi.queryAcceptablePaymentAssets(3);
   const xcmTokens = tokenXcm.toHuman() as XcmResponse;
   const tokens = xcmTokens?.Ok || [];
@@ -37,20 +30,9 @@ export async function checkAcceptablePaymentToken({
     const tokenInfo = tokens[index];
     const isMatch = isXcmLocationMatch(
       tokenInfo?.V3?.Concrete,
-      JSON.parse(token.xcmV1MultiLocation)?.v1
+      JSON.parse(asset.xcmV1MultiLocation)?.v1
     );
-    if (isMatch) {
-      return {
-        original: tokens[index],
-        acceptableToken: token,
-        isAcceptable: true
-      };
-    }
+    return isMatch;
   }
-
-  return {
-    original: null,
-    acceptableToken: null,
-    isAcceptable: false
-  };
+  return false;
 }

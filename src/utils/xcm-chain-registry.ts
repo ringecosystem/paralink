@@ -81,7 +81,7 @@ export function getGeneralIndex(multiLocationStr: string): string | null {
 export function getFromChains(
   chains: ChainInfoWithXcAssetsData[]
 ): ChainInfoWithXcAssetsData[] {
-  return chains?.filter((chain) => chain.hasXcmPayment);
+  return chains;
 }
 
 export function getToChains(
