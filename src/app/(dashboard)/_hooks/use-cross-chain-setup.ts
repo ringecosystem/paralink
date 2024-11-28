@@ -199,7 +199,11 @@ export function useCrossChainSetup(
         setFromChainId(newFromChainId);
         setToChainId(newToChainId);
 
-        await setupChainConnections({ chains, fromChainId, toChainId });
+        await setupChainConnections({
+          chains,
+          fromChainId: newFromChainId,
+          toChainId: newToChainId
+        });
       } catch (error) {
         console.error(error);
       }

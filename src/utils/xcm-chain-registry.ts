@@ -132,18 +132,15 @@ export const getTokenList = ({
           asset: generalIndex as AssetType,
           xcmV1MultiLocation: JSON.stringify({
             v1: {
-              parents: 1,
+              parents: 0,
               interior: {
-                x3: [
-                  { parachain: fromChain.id },
-                  { palletInstance: 50 },
-                  { generalIndex }
-                ]
+                x3: [{ palletInstance: 50 }, { generalIndex }]
               }
             }
           })
         };
       });
+
       tokenList.push(...processedAssets);
     }
   } else {
@@ -169,9 +166,9 @@ export const getTokenList = ({
         asset: 'Native' as AssetType,
         xcmV1MultiLocation: JSON.stringify({
           v1: {
-            parents: 1,
+            parents: 0,
             interior: {
-              x1: { parachain: fromChain.id }
+              Here: ''
             }
           }
         })
@@ -193,8 +190,6 @@ export const getTokenList = ({
           ) {
             supportedNativeToken = {
               ...supportedNativeToken,
-              paraID: Number(fromChain.id),
-              nativeChainID: fromChain.name.toLowerCase().replace(/\s/g, '-'),
               decimals: asset.decimals,
               originChainReserveLocation: asset.originChainReserveLocation
             };
@@ -207,8 +202,6 @@ export const getTokenList = ({
           ...v,
           reserveType: 'foreign' as ReserveType
         })) ?? [];
-
-    console.log('otherAssets', otherAssets);
 
     return supportedNativeToken
       ? [supportedNativeToken, ...otherAssets]
