@@ -27,8 +27,6 @@ export function TransactionDetail() {
       close: state.close
     }))
   );
-  console.log('isOpen', isOpen);
-  console.log('transaction', transaction);
 
   if (!transaction) return null;
 

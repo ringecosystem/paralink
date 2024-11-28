@@ -141,7 +141,9 @@ export function TokenSelectDialog({
                               className="text-right font-mono text-[16px] font-bold tabular-nums"
                               decimals={token.decimals ?? 0}
                             />
-                          ) : null}
+                          ) : (
+                            <span className="font-mono tabular-nums">-</span>
+                          )}
                         </div>
                       </div>
                     ))

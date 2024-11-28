@@ -52,9 +52,7 @@ export default function Dashboard({
   const [amount, setAmount] = useState<string>('');
   const [isLoadingCrossChain, setIsLoadingCrossChain] = useState(false);
   const { selectedWallet, selectedAccount } = useWalletStore();
-  const [recipientAddress, setRecipientAddress] = useState<string>(
-    '12pxLnQcjJqjG4mDaeJoKBLMfsdHZ2p2RxKHNEvicnZwZobx'
-  );
+  const [recipientAddress, setRecipientAddress] = useState<string>('');
   // 12pxLnQcjJqjG4mDaeJoKBLMfsdHZ2p2RxKHNEvicnZwZobx
   const { address } = useWalletConnection();
 
@@ -124,7 +122,6 @@ export default function Dashboard({
     fromChainApi,
     address
   });
-
   const {
     extrinsic,
     partialFee,
@@ -274,7 +271,7 @@ export default function Dashboard({
   ]);
 
   useEffect(() => {
-    // setRecipientAddress('');
+    setRecipientAddress('');
   }, [toChainId]);
 
   return (

@@ -39,19 +39,18 @@ export function useTokensFetchBalance({
     );
 
   useEffect(() => {
-    if (!fromChainApi || !address || !fromChain) return;
-
     const fetchBalances = async () => {
+      if (!fromChainApi || !address || !fromChain?.substrateInfo?.paraId)
+        return;
       try {
         setIsLoading(true);
-
         const balances = await Promise.all(
           tokens.map((token) =>
             getAssetBalance({
               api: fromChainApi,
+              paraId: fromChain?.substrateInfo?.paraId as number,
               account: address,
-              xcAssetData: token.xcAssetData,
-              chainInfo: fromChain
+              xcAssetData: token.xcAssetData
             })
           )
         );
@@ -89,7 +88,7 @@ export function useTokensFetchBalance({
     fetchBalances();
   }, [
     fromChainApi,
-    fromChain,
+    fromChain?.substrateInfo?.paraId,
     tokens,
     selectedToken,
     address,

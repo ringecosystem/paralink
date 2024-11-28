@@ -72,6 +72,14 @@ export function useCrossChainSetup(
     }))
   );
 
+  /**
+   * reset state when setup chain connections
+   */
+  const resetState = useCallback(() => {
+    setSelectedTokenBalance(undefined);
+    setTokensBalance([]);
+  }, [setSelectedTokenBalance, setTokensBalance]);
+
   const setupChainConnections = useCallback(
     async ({
       chains,
@@ -116,10 +124,6 @@ export function useCrossChainSetup(
       }
 
       await Promise.all(connectionPromises);
-
-      // reset balances
-      setSelectedTokenBalance(undefined);
-      setTokensBalance([]);
     },
     [
       connectFromChainApi,
@@ -127,8 +131,6 @@ export function useCrossChainSetup(
       setTokens,
       setSelectedToken,
       assetsInfo,
-      setSelectedTokenBalance,
-      setTokensBalance,
       previousFromEndpoint,
       setPreviousFromEndpoint,
       previousToEndpoint,
@@ -139,6 +141,8 @@ export function useCrossChainSetup(
   const setupCrossChainConfig = useCallback(
     async (chains: ChainInfoWithXcAssetsData[], initialFromId?: string) => {
       try {
+        resetState();
+
         const fromChains = getFromChains(chains);
         const fromChainId = initialFromId ? initialFromId : fromChains?.[0]?.id;
 
@@ -156,6 +160,7 @@ export function useCrossChainSetup(
       }
     },
     [
+      resetState,
       setFromChainId,
       setFromChains,
       setToChainId,

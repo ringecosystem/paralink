@@ -38,8 +38,6 @@ export function TokenSelect({
 }: TokenSelectProps) {
   const min = minBalance ? minBalance.toNumber() : 0;
   const max = maxBalance ? maxBalance.toNumber() : 0;
-  console.log('min', min);
-  console.log('token', token);
   const price = undefined;
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { value, handleChange, handleBlur } = useNumberInput({
@@ -94,13 +92,13 @@ export function TokenSelect({
                 </div>
                 <span className="flex items-center text-[12px] font-normal leading-normal text-[#12161950]">
                   Balance:
-                  {tokenBalance?.balance ? (
+                  {typeof tokenBalance?.balance !== 'undefined' ? (
                     <FormattedNumberTooltip
                       value={tokenBalance.balance}
                       decimals={token.decimals ?? 0}
                     />
                   ) : (
-                    <span className="font-mono tabular-nums">0.000</span>
+                    <span className="font-mono tabular-nums">-</span>
                   )}
                 </span>
               </div>
@@ -132,7 +130,6 @@ export function TokenSelect({
               </div>
             </div>
           </div>
-          {/* 将 min/max 提示移到外部 */}
           {
             <div className="flex items-center justify-end gap-2 px-2 text-[11px] text-primary">
               <span>

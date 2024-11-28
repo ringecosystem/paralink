@@ -74,10 +74,9 @@ export function useChainInitialization({
               decimals: ss58Format?.decimals?.[0],
               icon: findIconBySymbol(ss58Format?.symbols?.[0], assetsInfo)
             },
-            isEvmChain: false
-            // isEvmChain:
-            //   ss58Format?.standardAccount === 'secp256k1' &&
-            //   !!chainAsset?.evmInfo
+            isEvmChain:
+              ss58Format?.standardAccount === 'secp256k1' &&
+              !!chainAsset?.evmInfo
           };
         })
         ?.filter((v): v is NonNullable<typeof v> => !!v);
@@ -123,7 +122,6 @@ export function useChainInitialization({
       const validatedChains = (
         await Promise.all(supportedChains?.map(validateChain))
       )?.filter((v): v is NonNullable<typeof v> => !!v);
-      console.log('validatedChains', validatedChains);
 
       setChains(validatedChains);
       await setupCrossChainConfig(validatedChains);
