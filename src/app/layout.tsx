@@ -44,7 +44,8 @@ export default function RootLayout({
         <DAppProvider>
           <Toaster
             toastOptions={{
-              className: 'font-sans antialiased text-[14px]'
+              className: 'font-sans antialiased text-[14px]',
+              duration: 3_000
             }}
           />
           <TooltipProvider>

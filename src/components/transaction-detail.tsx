@@ -67,6 +67,11 @@ export function TransactionDetail() {
                 name={transaction.fromChain.name}
                 address={transaction.fromAddress}
                 txHash={transaction.fromTxHash}
+                explorerUrl={
+                  transaction.fromChain?.substrateInfo?.blockExplorer as
+                    | string
+                    | undefined
+                }
               />
 
               <ChainTransactionArrow />
@@ -90,9 +95,16 @@ interface ChainInfoProps {
   name: string;
   address: string;
   txHash?: string;
+  explorerUrl?: string;
 }
 
-function ChainInfo({ logo, name, address, txHash }: ChainInfoProps) {
+function ChainInfo({
+  logo,
+  name,
+  address,
+  txHash,
+  explorerUrl
+}: ChainInfoProps) {
   return (
     <div className="flex w-[100px] flex-col items-center justify-center gap-[10px]">
       <div className="relative size-[50px] md:size-[80px]">
@@ -110,7 +122,7 @@ function ChainInfo({ logo, name, address, txHash }: ChainInfoProps) {
       </h4>
       {txHash && (
         <a
-          href={`https://etherscan.io/tx/${txHash}`}
+          href={`${explorerUrl}/tx/${txHash}`}
           target="_blank"
           rel="noopener noreferrer"
           className="self-stretch text-center font-mono text-[12px] font-normal tabular-nums leading-normal text-[#0085FF]"

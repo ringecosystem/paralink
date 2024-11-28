@@ -134,13 +134,25 @@ export const createXcmTransferExtrinsic = async ({
   return extrinsic;
 };
 
-export const signAndSendExtrinsic = async (
-  extrinsic: SubmittableExtrinsic<'promise'>,
-  signer: Signer,
-  sender: string
-) => {
+type SignAndSendExtrinsicParams = {
+  extrinsic: SubmittableExtrinsic<'promise'>;
+  signer: Signer;
+  sender: string;
+  onPending?: (txHash: string) => void;
+  onSuccess?: (txHash: string) => void;
+  onError?: (txHash: string) => void;
+};
+export const signAndSendExtrinsic = async ({
+  extrinsic,
+  signer,
+  sender,
+  onPending,
+  onSuccess,
+  onError
+}: SignAndSendExtrinsicParams) => {
   try {
     const unsub = await extrinsic.signAndSend(sender, { signer }, (result) => {
+      onPending?.(result.txHash.toHex());
       if (result.isCompleted) {
         unsub();
       }
@@ -150,13 +162,13 @@ export const signAndSendExtrinsic = async (
           .filter(({ event: { section } }) => section === 'system')
           .forEach(({ event: { method } }): void => {
             if (method === 'ExtrinsicFailed') {
-              console.log('notifyExtrinsic failed', result.txHash.toHex());
+              onError?.(result.txHash.toHex());
             } else if (method === 'ExtrinsicSuccess') {
-              console.log('notifyExtrinsic success', result.txHash.toHex());
+              onSuccess?.(result.txHash.toHex());
             }
           });
       } else if (result.isError) {
-        console.log('notifyExtrinsic error', result.txHash.toHex());
+        onError?.(result.txHash.toHex());
       }
     });
   } catch (err) {

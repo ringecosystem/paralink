@@ -61,14 +61,14 @@ export function useExistentialDeposit({
 
         const section = 'balances';
         const method = 'existentialDeposit';
-        const ed = api.consts[section]?.[method] as u128 &
+        const ed = (await api.consts[section]?.[method]) as u128 &
           AugmentedConst<'promise'>;
 
         if (!ed) {
           console.error('Failed to fetch existential deposit');
           return;
         }
-        const properties = api.registry.getChainProperties();
+        const properties = await api.registry.getChainProperties();
         if (!properties) {
           console.error('Failed to fetch chain properties');
           return;

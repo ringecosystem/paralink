@@ -147,17 +147,19 @@ const useApiStore = create<ApiState & ApiActions>((set, get) => ({
 
   disconnectFromChainApi: async () => {
     const { fromChainApi } = get();
+    set({ fromChainApi: null });
+
     if (fromChainApi?.isConnected) {
-      await fromChainApi.disconnect();
-      set({ fromChainApi: null });
+      Promise.resolve(fromChainApi.disconnect()).catch(console.error);
     }
   },
 
   disconnectToChainApi: async () => {
     const { toChainApi } = get();
+    set({ toChainApi: null });
+
     if (toChainApi?.isConnected) {
-      await toChainApi.disconnect();
-      set({ toChainApi: null });
+      Promise.resolve(toChainApi.disconnect()).catch(console.error);
     }
   },
 
@@ -165,10 +167,19 @@ const useApiStore = create<ApiState & ApiActions>((set, get) => ({
     get().pendingConnections.from?.abort();
     get().pendingConnections.to?.abort();
 
-    await Promise.all([
+    set({
+      fromChainApi: null,
+      toChainApi: null,
+      pendingConnections: {
+        from: null,
+        to: null
+      }
+    });
+
+    Promise.all([
       get().disconnectFromChainApi(),
       get().disconnectToChainApi()
-    ]);
+    ]).catch(console.error);
   },
 
   clearError: () => set({ error: null })

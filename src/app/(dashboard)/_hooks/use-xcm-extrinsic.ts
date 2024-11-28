@@ -56,13 +56,10 @@ export function useXcmExtrinsic({
       }
     };
 
-    getExtrinsic()
-      .then((result) => {
-        if (result) setExtrinsic(result);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    getExtrinsic().then((result) => {
+      if (result) setExtrinsic(result);
+    });
+
     return () => {
       setExtrinsic(undefined);
       setIsLoading(false);

@@ -17,19 +17,11 @@ import type { ChainInfo } from '@/types/chains-info';
 import type { Asset } from '@/types/assets-info';
 import Loading from './loading';
 
-import {
-  createXcmTransfer,
-  createXcmTransferExtrinsic,
-  signAndSendExtrinsic
-} from '@/services/xcm/polkadot-xcm';
-import { useWalletStore } from '@/store/wallet';
 import { useTokensFetchBalance } from '../_hooks/use-tokens-fetch-balance';
 import { useExistentialDeposit } from '../_hooks/use-existential-deposit';
 import useApiStore from '@/store/api';
 import { AnimatedErrorMessage } from '@/components/animated-error-message';
 import { useWalletConnection } from '@/hooks/use-wallet-connection';
-import { useTransactionDetailStore } from '@/store/transaction-detail';
-import { formatBridgeTransactionTimestamp } from '@/utils/date';
 import { useXcmExtrinsic } from '../_hooks/use-xcm-extrinsic';
 
 import { useNetworkFee } from '../_hooks/use-network-fee';
@@ -37,6 +29,8 @@ import { useCrossFee } from '../_hooks/use-cross-fee';
 import { BN_ZERO, bnMax, bnToBn } from '@polkadot/util';
 import { useMinBalance } from '../_hooks/use-min-balance';
 import { parseUnits } from '@/utils/format';
+import { useTransactionExecution } from '@/hooks/use-transaction-execution';
+import toast from 'react-hot-toast';
 
 interface DashboardProps {
   polkadotAssetRegistry: ChainConfig;
@@ -51,14 +45,9 @@ export default function Dashboard({
 }: DashboardProps) {
   const [amount, setAmount] = useState<string>('');
   const [isLoadingCrossChain, setIsLoadingCrossChain] = useState(false);
-  const { selectedWallet, selectedAccount } = useWalletStore();
   const [recipientAddress, setRecipientAddress] = useState<string>('');
   // 12pxLnQcjJqjG4mDaeJoKBLMfsdHZ2p2RxKHNEvicnZwZobx
   const { address } = useWalletConnection();
-
-  const openTransactionDetail = useTransactionDetailStore(
-    (state) => state.open
-  );
 
   const {
     chains,
@@ -228,33 +217,24 @@ export default function Dashboard({
     setIsLoadingCrossChain(false);
   }, [setSelectedToken, swapChains, chains, fromChainId, toChainId]);
 
-  const handleClick = useCallback(() => {
-    console.log('handleClick');
-  }, []);
+  const { executeTransaction } = useTransactionExecution({
+    fromChain,
+    toChain,
+    selectedToken,
+    amount,
+    recipientAddress
+  });
 
-  // const handleOpenTransactionDetail = useCallback(() => {
-  //   const timestamp = formatBridgeTransactionTimestamp();
-  //   if (fromChain && toChain && address && recipientAddress) {
-  //     openTransactionDetail({
-  //       timestamp,
-  //       amount: `${amount} ${selectedToken?.symbol}`,
-  //       fromAddress: address,
-  //       toAddress: recipientAddress,
-  //       fromChain,
-  //       toChain,
-  //       fromTxHash: '0x092...bb41',
-  //       toTxHash: '0x092...bb41'
-  //     });
-  //   }
-  // }, [
-  //   amount,
-  //   address,
-  //   recipientAddress,
-  //   fromChain,
-  //   toChain,
-  //   selectedToken,
-  //   openTransactionDetail
-  // ]);
+  const handleClick = useCallback(async () => {
+    if (!extrinsic || !address) return;
+    try {
+      await executeTransaction({ extrinsic, address });
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : 'Transaction failed'
+      );
+    }
+  }, [extrinsic, address, executeTransaction]);
 
   const buttonLoadingText = useMemo(() => {
     if (
@@ -376,7 +356,10 @@ export default function Dashboard({
               }
               loadingText={buttonLoadingText}
               isDisabled={
-                !hasToEnoughBalance || amount === '' || amount === '0'
+                !hasToEnoughBalance ||
+                amount === '' ||
+                amount === '0' ||
+                recipientAddress === ''
               }
             >
               Confirm Transaction
