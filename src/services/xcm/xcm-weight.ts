@@ -12,7 +12,7 @@ import {
   removeCommasAndConvertToBN,
   removeCommasAndConvertToNumber
 } from '@/utils/number';
-import { BN_ZERO } from '@polkadot/util';
+import { BN_ZERO, bnToBn } from '@polkadot/util';
 
 type GetCrossTokenParams = {
   api: ApiPromise;
@@ -352,8 +352,8 @@ export async function calculateExecutionWeight({
 
     return {
       weight: {
-        refTime: Number(humanWeight.refTime.replace(/,/g, '')),
-        proofSize: Number(humanWeight.proofSize.replace(/,/g, ''))
+        refTime: removeCommasAndConvertToNumber(humanWeight.refTime),
+        proofSize: removeCommasAndConvertToNumber(humanWeight.proofSize)
       },
       xcmMessage
     };
@@ -417,17 +417,10 @@ export async function calculateWeightFee({
     );
 
     const humanFee = fee.toJSON() as {
-      Ok: {
-        refTime: string;
-        proofSize: string;
-      };
+      ok: number;
     };
     if (!humanFee || typeof humanFee !== 'object') return null;
-    if ('Ok' in humanFee)
-      return {
-        refTime: removeCommasAndConvertToNumber(humanFee.Ok.refTime),
-        proofSize: removeCommasAndConvertToNumber(humanFee.Ok.proofSize)
-      };
+    if ('ok' in humanFee) return bnToBn(humanFee.ok);
     return null;
   } catch (error) {
     console.log('calculateWeightFee error:', error);
@@ -554,7 +547,7 @@ export const getXcmWeightFee = async ({
     weight,
     asset
   })) as Record<string, any>;
-
+  console.log('fee', fee?.toString());
   if (!fee) {
     errMsg = 'Failed to calculate weight fee';
     return {
@@ -567,10 +560,10 @@ export const getXcmWeightFee = async ({
     const quote = await quotePriceTokensForExactTokens({
       api,
       asset,
-      amount: fee?.replace(/,/g, ''),
+      amount: fee?.toString(),
       includeFee: true
     });
-
+    console.log('quote', quote?.toString());
     return {
       fee: !quote ? BN_ZERO : removeCommasAndConvertToBN(quote?.toString()),
       errMsg: ''

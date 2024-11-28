@@ -65,7 +65,8 @@ export function FeeBreakdown({
   loading
 }: FeeBreakdownProps) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const finalAmount = bnMax(amount.sub(networkFee).sub(crossFee), BN_ZERO);
+  const finalAmount = bnMax(amount.sub(crossFee), BN_ZERO);
+
   return (
     <div className="flex w-full flex-col gap-[10px] rounded-[10px] bg-[#F2F3F5] p-[10px] text-[14px] font-normal">
       <motion.div
@@ -88,7 +89,7 @@ export function FeeBreakdown({
               isExpanded && 'text-[#242A2E]'
             )}
           >
-            {formatTokenBalance(amount, {
+            {formatTokenBalance(finalAmount, {
               decimals: xcmTokenInfo?.decimals ?? 3,
               displayDecimals: 3
             })}

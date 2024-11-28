@@ -14,17 +14,20 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { toShortAddress } from '@/lib/utils';
 import { Empty } from './empty';
 import FormattedNumberTooltip from './formatted-number-tooltip';
+import { BN, BN_ZERO } from '@polkadot/util';
 import type { AvailableTokens } from '@/utils/xcm-token';
-import type { BalanceWithSymbol } from '@/store/tokens';
-import { BN_ZERO } from '@polkadot/util';
 
+export type BalanceWithSymbol = {
+  balance: BN;
+  symbol?: string;
+};
 interface TokenSelectDialogProps {
   isOpen: boolean;
   onClose: () => void;
   isLoading?: boolean;
   onSelect: (token: AvailableTokens) => void;
   tokens: AvailableTokens[];
-  tokensBalance?: BalanceWithSymbol[];
+  tokenBalances?: BalanceWithSymbol[];
 }
 
 export function TokenSelectDialog({
@@ -33,7 +36,7 @@ export function TokenSelectDialog({
   isLoading,
   onSelect,
   tokens,
-  tokensBalance
+  tokenBalances
 }: TokenSelectDialogProps) {
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -129,12 +132,12 @@ export function TokenSelectDialog({
                           </div>
                           {isLoading ? (
                             <Skeleton className="h-[20px] w-[60px]" />
-                          ) : tokensBalance?.find(
+                          ) : tokenBalances?.find(
                               (balance) => balance.symbol === token.symbol
                             )?.balance ? (
                             <FormattedNumberTooltip
                               value={
-                                tokensBalance?.find(
+                                tokenBalances?.find(
                                   (balance) => balance.symbol === token.symbol
                                 )?.balance ?? BN_ZERO
                               }

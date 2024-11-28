@@ -3,11 +3,8 @@ import { useShallow } from 'zustand/react/shallow';
 import useChainsStore from '@/store/chains';
 import { getFromChains, getToChains } from '@/utils/xcm-chain-registry';
 import type { ChainInfoWithXcAssetsData } from '@/store/chains';
-import useTokensStore from '@/store/tokens';
 import useApiStore from '@/store/api';
 import { findBestWssEndpoint } from '@/utils/rpc-endpoint';
-import { getAvailableTokens } from '@/utils/xcm-token';
-import { Asset } from '@/types/assets-info';
 
 type SwapChainsParams = {
   chains: ChainInfoWithXcAssetsData[];
@@ -28,9 +25,7 @@ interface UseCrossChainSetupReturn {
     toChainId: string;
   }) => void;
 }
-export function useCrossChainSetup(
-  assetsInfo: Asset[]
-): UseCrossChainSetupReturn {
+export function useCrossChainSetup(): UseCrossChainSetupReturn {
   const [previousFromEndpoint, setPreviousFromEndpoint] = useState('');
   const [previousToEndpoint, setPreviousToEndpoint] = useState('');
 
@@ -45,22 +40,6 @@ export function useCrossChainSetup(
       }))
     );
 
-  const {
-    setTokens,
-    setSelectedToken,
-    setTokensBalance,
-    setSelectedTokenBalance
-  } = useTokensStore(
-    useShallow((state) => ({
-      setTokens: state.setTokens,
-      tokens: state.tokens,
-      setSelectedToken: state.setSelectedToken,
-      selectedToken: state.selectedToken,
-      setTokensBalance: state.setTokensBalance,
-      setSelectedTokenBalance: state.setSelectedTokenBalance
-    }))
-  );
-
   const { connectFromChainApi, connectToChainApi } = useApiStore(
     useShallow((state) => ({
       fromChainApi: state.fromChainApi,
@@ -71,14 +50,6 @@ export function useCrossChainSetup(
       disconnectToChainApi: state.disconnectToChainApi
     }))
   );
-
-  /**
-   * reset state when setup chain connections
-   */
-  const resetState = useCallback(() => {
-    setSelectedTokenBalance(undefined);
-    setTokensBalance([]);
-  }, [setSelectedTokenBalance, setTokensBalance]);
 
   const setupChainConnections = useCallback(
     async ({
@@ -93,19 +64,9 @@ export function useCrossChainSetup(
       const fromChain = chains?.find((chain) => chain.id === fromChainId);
       const toChain = chains?.find((chain) => chain.id === toChainId);
 
-      if (!fromChain || !toChain || !assetsInfo.length) return;
+      if (!fromChain || !toChain) return;
 
       const connectionPromises: Promise<void>[] = [];
-
-      const tokens = getAvailableTokens({
-        fromChain,
-        toChain,
-        assets: assetsInfo
-      });
-      if (tokens.length) {
-        setTokens(tokens);
-        setSelectedToken(tokens[0]);
-      }
 
       if (fromChain?.providers) {
         const fromBestEndpoint = await findBestWssEndpoint(fromChain.providers);
@@ -128,9 +89,6 @@ export function useCrossChainSetup(
     [
       connectFromChainApi,
       connectToChainApi,
-      setTokens,
-      setSelectedToken,
-      assetsInfo,
       previousFromEndpoint,
       setPreviousFromEndpoint,
       previousToEndpoint,
@@ -141,8 +99,6 @@ export function useCrossChainSetup(
   const setupCrossChainConfig = useCallback(
     async (chains: ChainInfoWithXcAssetsData[], initialFromId?: string) => {
       try {
-        resetState();
-
         const fromChains = getFromChains(chains);
         const fromChainId = initialFromId ? initialFromId : fromChains?.[0]?.id;
 
@@ -160,7 +116,6 @@ export function useCrossChainSetup(
       }
     },
     [
-      resetState,
       setFromChainId,
       setFromChains,
       setToChainId,

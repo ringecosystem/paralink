@@ -5,17 +5,17 @@ import { ChevronDown } from 'lucide-react';
 import { FallbackImage } from '@/components/ui/fallback-image';
 import { useNumberInput } from '@/hooks/number-input';
 import { cn } from '@/lib/utils';
-import { TokenSelectDialog } from './token-select-dialog';
+import { BalanceWithSymbol, TokenSelectDialog } from './token-select-dialog';
 import FormattedNumberTooltip from './formatted-number-tooltip';
 import { BN, BN_ZERO, bnToBn, formatBalance } from '@polkadot/util';
 import type { AvailableTokens } from '@/utils/xcm-token';
-import type { BalanceWithSymbol } from '@/store/tokens';
+import { formatTokenBalance } from '@/utils/format';
 
 interface TokenSelectProps {
   token?: AvailableTokens;
   tokenBalance?: BalanceWithSymbol;
   tokens?: AvailableTokens[];
-  tokensBalance?: BalanceWithSymbol[];
+  tokenBalances?: BalanceWithSymbol[];
   minBalance?: BN;
   maxBalance?: BN;
   isLoading?: boolean;
@@ -26,10 +26,10 @@ interface TokenSelectProps {
 
 export function TokenSelect({
   token,
-  tokenBalance,
-  minBalance,
   tokens,
-  tokensBalance,
+  tokenBalance,
+  tokenBalances,
+  minBalance,
   maxBalance,
   isLoading,
   error,
@@ -61,6 +61,10 @@ export function TokenSelect({
     },
     [onChangeToken]
   );
+
+  const handleCloseDialog = useCallback(() => {
+    setIsDialogOpen(false);
+  }, []);
 
   return (
     <>
@@ -94,7 +98,7 @@ export function TokenSelect({
                   Balance:
                   {typeof tokenBalance?.balance !== 'undefined' ? (
                     <FormattedNumberTooltip
-                      value={tokenBalance.balance}
+                      value={tokenBalance?.balance}
                       decimals={token.decimals ?? 0}
                     />
                   ) : (
@@ -134,21 +138,17 @@ export function TokenSelect({
             <div className="flex items-center justify-end gap-2 px-2 text-[11px] text-primary">
               <span>
                 Min:{' '}
-                {formatBalance(bnToBn(min), {
+                {formatTokenBalance(minBalance ?? BN_ZERO, {
                   decimals: token.decimals,
-                  withUnit: false,
-                  forceUnit: '-',
-                  withSi: false
+                  symbol: token?.symbol
                 })}
               </span>
               {<span>•</span>}
               <span>
                 Max:{' '}
-                {formatBalance(bnToBn(max), {
+                {formatTokenBalance(maxBalance ?? BN_ZERO, {
                   decimals: token.decimals,
-                  withUnit: false,
-                  forceUnit: '-',
-                  withSi: false
+                  symbol: token?.symbol
                 })}
               </span>
             </div>
@@ -164,8 +164,8 @@ export function TokenSelect({
       <TokenSelectDialog
         isOpen={isDialogOpen}
         isLoading={isLoading}
-        tokensBalance={tokensBalance}
-        onClose={() => setIsDialogOpen(false)}
+        tokenBalances={tokenBalances}
+        onClose={handleCloseDialog}
         onSelect={handleSelect}
         tokens={tokens || []}
       />

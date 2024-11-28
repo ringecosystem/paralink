@@ -4,8 +4,7 @@ import type { ApiPromise } from '@polkadot/api';
 import { ChainInfoWithXcAssetsData } from '@/store/chains';
 import { AvailableTokens } from '@/utils/xcm-token';
 import { SubmittableExtrinsic } from '@polkadot/api/types';
-import { BN, BN_ZERO } from '@polkadot/util';
-import { removeCommasAndConvertToBN } from '@/utils/number';
+import { BN, BN_ZERO, bnToBn } from '@polkadot/util';
 
 interface UseXcmExtrinsicParams {
   fromChainApi: ApiPromise | null;
@@ -78,10 +77,11 @@ export function useXcmExtrinsic({
       try {
         if (!extrinsic || !address) return;
         const paymentInfo = await extrinsic.paymentInfo(address);
-        const fee = paymentInfo?.toJSON()?.partialFee;
+        console.log('paymentInfo', paymentInfo?.toJSON());
+
+        const fee = paymentInfo?.toJSON()?.partialFee as number;
         if (fee) {
-          const cleanFee = removeCommasAndConvertToBN(fee as string);
-          setPartialFee(cleanFee);
+          setPartialFee(bnToBn(fee));
         }
       } catch (error) {
         console.error(error);

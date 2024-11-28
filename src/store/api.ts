@@ -17,7 +17,6 @@ interface ApiActions {
   connectToChainApi: (wsEndpoint: string) => Promise<void>;
   disconnectFromChainApi: () => Promise<void>;
   disconnectToChainApi: () => Promise<void>;
-  disconnectAll: () => Promise<void>;
   clearError: () => void;
 }
 
@@ -73,17 +72,18 @@ const useApiStore = create<ApiState & ApiActions>((set, get) => ({
     }));
 
     try {
-      const [, api] = await Promise.all([
-        get().disconnectFromChainApi(),
-        createApiConnection(wsEndpoint, abortController.signal)
-      ]);
+      await get().disconnectFromChainApi();
+      const api = await createApiConnection(wsEndpoint, abortController.signal);
 
       if (abortController.signal.aborted) {
         await api.disconnect();
         return;
       }
 
-      api.on('disconnected', () => set({ fromChainApi: null }));
+      api.on('disconnected', async () => {
+        console.log('fromChainApi disconnected');
+      });
+
       set({ fromChainApi: api });
     } catch (error) {
       if (error instanceof Error && error.message !== 'Connection aborted')
@@ -117,17 +117,18 @@ const useApiStore = create<ApiState & ApiActions>((set, get) => ({
     }));
 
     try {
-      const [, api] = await Promise.all([
-        get().disconnectToChainApi(),
-        createApiConnection(wsEndpoint, abortController.signal)
-      ]);
+      await get().disconnectToChainApi();
+      const api = await createApiConnection(wsEndpoint, abortController.signal);
 
       if (abortController.signal.aborted) {
         await api.disconnect();
         return;
       }
 
-      api.on('disconnected', () => set({ toChainApi: null }));
+      api.on('disconnected', async () => {
+        console.log('toChainApi disconnected');
+      });
+
       set({ toChainApi: api });
     } catch (error) {
       if (error instanceof Error && error.message !== 'Connection aborted')
@@ -150,7 +151,11 @@ const useApiStore = create<ApiState & ApiActions>((set, get) => ({
     set({ fromChainApi: null });
 
     if (fromChainApi?.isConnected) {
-      Promise.resolve(fromChainApi.disconnect()).catch(console.error);
+      try {
+        await fromChainApi.disconnect();
+      } catch (error) {
+        console.error('Error disconnecting from chain:', error);
+      }
     }
   },
 
@@ -159,27 +164,12 @@ const useApiStore = create<ApiState & ApiActions>((set, get) => ({
     set({ toChainApi: null });
 
     if (toChainApi?.isConnected) {
-      Promise.resolve(toChainApi.disconnect()).catch(console.error);
-    }
-  },
-
-  disconnectAll: async () => {
-    get().pendingConnections.from?.abort();
-    get().pendingConnections.to?.abort();
-
-    set({
-      fromChainApi: null,
-      toChainApi: null,
-      pendingConnections: {
-        from: null,
-        to: null
+      try {
+        await toChainApi.disconnect();
+      } catch (error) {
+        console.error('Error disconnecting to chain:', error);
       }
-    });
-
-    Promise.all([
-      get().disconnectFromChainApi(),
-      get().disconnectToChainApi()
-    ]).catch(console.error);
+    }
   },
 
   clearError: () => set({ error: null })

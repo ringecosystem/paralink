@@ -17,7 +17,6 @@ import type { ChainInfo } from '@/types/chains-info';
 import type { Asset } from '@/types/assets-info';
 import Loading from './loading';
 
-import { useTokensFetchBalance } from '../_hooks/use-tokens-fetch-balance';
 import { useExistentialDeposit } from '../_hooks/use-existential-deposit';
 import useApiStore from '@/store/api';
 import { AnimatedErrorMessage } from '@/components/animated-error-message';
@@ -28,9 +27,11 @@ import { useNetworkFee } from '../_hooks/use-network-fee';
 import { useCrossFee } from '../_hooks/use-cross-fee';
 import { BN_ZERO, bnMax, bnToBn } from '@polkadot/util';
 import { useMinBalance } from '../_hooks/use-min-balance';
-import { parseUnits } from '@/utils/format';
+import { formatTokenBalance, parseUnits } from '@/utils/format';
 import { useTransactionExecution } from '@/hooks/use-transaction-execution';
 import toast from 'react-hot-toast';
+import { getAvailableTokens } from '@/utils/xcm-token';
+import { useTokenBalances } from '../_hooks/use-token-balances';
 
 interface DashboardProps {
   polkadotAssetRegistry: ChainConfig;
@@ -70,20 +71,12 @@ export default function Dashboard({
     }))
   );
 
-  const {
-    tokens,
-    selectedToken,
-    setSelectedToken,
-    selectedTokenBalance,
-    tokensBalance
-  } = useTokensStore(
+  const { tokens, selectedToken, setSelectedToken, setTokens } = useTokensStore(
     useShallow((state) => ({
       tokens: state.tokens,
       selectedToken: state.selectedToken,
-      selectedTokenBalance: state.selectedTokenBalance,
-      tokensBalance: state.tokenBalance,
       setSelectedToken: state.setSelectedToken,
-      setTokensBalance: state.setTokensBalance
+      setTokens: state.setTokens
     }))
   );
 
@@ -103,14 +96,40 @@ export default function Dashboard({
 
   // 设置跨链配置
   const { setupCrossChainConfig, swapChains, updateToChain } =
-    useCrossChainSetup(assetsInfo);
+    useCrossChainSetup();
 
-  // 请求 tokens 余额
-  const { isLoading: isTokensLoading } = useTokensFetchBalance({
-    fromChain,
-    fromChainApi,
-    address
-  });
+  // 设置 tokens
+  useEffect(() => {
+    if (!fromChain || !toChain || !assetsInfo.length) return;
+    const tokens = getAvailableTokens({
+      fromChain,
+      toChain,
+      assets: assetsInfo
+    });
+    if (tokens.length) {
+      setTokens(tokens);
+      setSelectedToken(tokens[0]);
+    }
+    return () => {
+      setTokens([]);
+      setSelectedToken(undefined);
+    };
+  }, [fromChain, toChain, assetsInfo, setTokens, setSelectedToken]);
+
+  // 获取 token 余额
+  const { data: updatedBalances, isLoading: isBalancesLoading } =
+    useTokenBalances({
+      address,
+      tokens,
+      fromChain,
+      fromChainApi
+    });
+
+  // 获取选中的 token 余额
+  const selectedTokenBalance = updatedBalances?.find(
+    (t) => t.symbol === selectedToken?.symbol
+  );
+
   const {
     extrinsic,
     partialFee,
@@ -147,16 +166,14 @@ export default function Dashboard({
     }
   );
 
-  const {
-    isLoading: isFromExistentialDepositLoading,
-    formattedDeposit: formattedFromDeposit,
-    hasEnoughBalance: hasFromEnoughBalance,
-    deposit: fromDeposit
-  } = useExistentialDeposit({ api: fromChainApi, address: address });
+  const { isLoading: isFromExistentialDepositLoading, deposit: fromDeposit } =
+    useExistentialDeposit({ api: fromChainApi, address: address });
 
   const {
     isLoading: isToExistentialDepositLoading,
-    formattedDeposit: formattedToDeposit,
+    deposit: toDeposit,
+    decimals: toDepositDecimals,
+    symbol: toDepositSymbol,
     hasEnoughBalance: hasToEnoughBalance
   } = useExistentialDeposit({ api: toChainApi, address: recipientAddress });
 
@@ -254,6 +271,15 @@ export default function Dashboard({
     setRecipientAddress('');
   }, [toChainId]);
 
+  console.log(
+    'amount',
+    amount,
+    parseUnits({
+      value: amount,
+      decimals: selectedToken?.decimals ?? 3
+    })?.toString()
+  );
+
   return (
     <>
       <div className="container absolute left-0 right-0 top-[calc(var(--header-height)+10px)]">
@@ -296,14 +322,14 @@ export default function Dashboard({
 
             <TokenSelect
               token={selectedToken}
+              tokens={tokens}
               tokenBalance={selectedTokenBalance}
+              tokenBalances={updatedBalances}
               minBalance={minBalanceBN}
               maxBalance={maxBalanceBN}
-              tokensBalance={tokensBalance}
               onChangeToken={setSelectedToken}
               onChangeAmount={setAmount}
-              tokens={tokens}
-              isLoading={isTokensLoading}
+              isLoading={isBalancesLoading}
               error={
                 <>
                   <AnimatedErrorMessage
@@ -321,7 +347,10 @@ export default function Dashboard({
               error={
                 <AnimatedErrorMessage
                   show={!hasToEnoughBalance && !isToExistentialDepositLoading}
-                  message={`You need at least ${formattedToDeposit} in your recipient account on ${toChain?.name} to keep the account alive.`}
+                  message={`You need at least ${formatTokenBalance(toDeposit, {
+                    decimals: toDepositDecimals,
+                    symbol: toDepositSymbol
+                  })} in your recipient account on ${toChain?.name} to keep the account alive.`}
                 />
               }
             />
@@ -352,7 +381,11 @@ export default function Dashboard({
               isLoading={
                 isLoadingCrossChain ||
                 isToExistentialDepositLoading ||
-                isFromExistentialDepositLoading
+                isFromExistentialDepositLoading ||
+                isExtrinsicLoading ||
+                isNetworkFeeLoading ||
+                isCrossFeeLoading ||
+                isMinBalanceLoading
               }
               loadingText={buttonLoadingText}
               isDisabled={

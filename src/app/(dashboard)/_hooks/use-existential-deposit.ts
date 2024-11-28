@@ -1,7 +1,6 @@
 import { ApiPromise } from '@polkadot/api';
 import { BN } from '@polkadot/util';
 import { useEffect, useRef, useState } from 'react';
-import { formatBalance } from '@polkadot/util';
 import { AugmentedConst } from '@polkadot/api/types';
 import { u128 } from '@polkadot/types';
 import type { AccountInfo } from '@polkadot/types/interfaces';
@@ -10,10 +9,8 @@ interface ExistentialDepositInfo {
   isLoading: boolean;
   deposit: BN;
   balance: BN;
-  formattedDeposit: string;
-  formattedBalance: string;
-  tokenSymbol: string;
-  tokenDecimals: number;
+  symbol: string;
+  decimals: number;
   hasEnoughBalance: boolean;
   error?: Error;
 }
@@ -114,22 +111,12 @@ export function useExistentialDeposit({
     };
   }, [api, address]);
 
-  const formatBalanceWithInfo = (amount: BN) =>
-    formatBalance(amount, {
-      decimals: state.tokenInfo.decimals,
-      withUnit: state.tokenInfo.symbol,
-      forceUnit: '-',
-      withZero: false
-    });
-
   return {
     isLoading,
-    deposit: state.deposit,
     balance: state.balance,
-    formattedDeposit: formatBalanceWithInfo(state.deposit),
-    formattedBalance: formatBalanceWithInfo(state.balance),
-    tokenSymbol: state.tokenInfo.symbol,
-    tokenDecimals: state.tokenInfo.decimals,
+    deposit: state.deposit,
+    symbol: state.tokenInfo.symbol,
+    decimals: state.tokenInfo.decimals,
     hasEnoughBalance: state.balance.gte(state.deposit),
     error
   };
