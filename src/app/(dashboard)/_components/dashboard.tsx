@@ -47,6 +47,7 @@ export default function Dashboard({
   const [amount, setAmount] = useState<string>('');
   const [isLoadingCrossChain, setIsLoadingCrossChain] = useState(false);
   const [recipientAddress, setRecipientAddress] = useState<string>('');
+  const [isTransactionLoading, setIsTransactionLoading] = useState(false);
   // 12pxLnQcjJqjG4mDaeJoKBLMfsdHZ2p2RxKHNEvicnZwZobx
   const { address } = useWalletConnection();
 
@@ -245,11 +246,12 @@ export default function Dashboard({
   const handleClick = useCallback(async () => {
     if (!extrinsic || !address) return;
     try {
+      setIsTransactionLoading(true);
       await executeTransaction({ extrinsic, address });
     } catch (error) {
-      toast.error(
-        error instanceof Error ? error.message : 'Transaction failed'
-      );
+      toast.error((error as unknown as string) ?? 'Transaction failed');
+    } finally {
+      setIsTransactionLoading(false);
     }
   }, [extrinsic, address, executeTransaction]);
 
@@ -385,7 +387,8 @@ export default function Dashboard({
                 isExtrinsicLoading ||
                 isNetworkFeeLoading ||
                 isCrossFeeLoading ||
-                isMinBalanceLoading
+                isMinBalanceLoading ||
+                isTransactionLoading
               }
               loadingText={buttonLoadingText}
               isDisabled={

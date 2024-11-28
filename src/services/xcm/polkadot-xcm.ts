@@ -173,7 +173,7 @@ export const signAndSendExtrinsic = async ({
     });
   } catch (err) {
     console.error(err);
-  } finally {
-    //
+    onError?.(err instanceof Error ? err.message : 'Unknown error');
+    throw new Error('Transaction failed');
   }
 };
