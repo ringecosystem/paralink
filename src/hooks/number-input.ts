@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useState } from 'react';
 
 interface UseNumberInputProps {
   maxDecimals?: number;
@@ -21,8 +21,8 @@ export function useNumberInput({
   maxDecimals = 6,
   maxValue,
   minValue = 0,
-  initialValue = "",
-  onChange,
+  initialValue = '',
+  onChange
 }: UseNumberInputProps): UseNumberInputReturn {
   const [value, setInternalValue] = useState(initialValue);
   const [error, setError] = useState<string>();
@@ -49,7 +49,7 @@ export function useNumberInput({
     const newValue = e.target.value;
 
     if (!newValue) {
-      setValue("");
+      setValue('');
       return;
     }
 
@@ -58,11 +58,11 @@ export function useNumberInput({
 
     let formattedValue = newValue;
     if (
-      newValue.startsWith("0") &&
+      newValue.startsWith('0') &&
       newValue.length > 1 &&
-      !newValue.startsWith("0.")
+      !newValue.startsWith('0.')
     )
-      formattedValue = newValue.replace(/^0+/, "");
+      formattedValue = newValue.replace(/^0+/, '');
 
     const numValue = parseFloat(formattedValue);
     if (!Number.isNaN(numValue) && validateValue(numValue))
@@ -71,13 +71,14 @@ export function useNumberInput({
 
   function handleBlur() {
     if (!value) return;
-
     const numValue = parseFloat(value);
     if (!Number.isNaN(numValue) && validateValue(numValue)) {
-      const formatted = value.includes(".")
-        ? numValue.toFixed(maxDecimals)
-        : value;
-      setValue(formatted);
+      const decimalParts = value.split('.');
+      if (decimalParts.length === 2 && decimalParts[1].length > maxDecimals) {
+        setValue(numValue.toFixed(maxDecimals));
+        return;
+      }
+      setValue(value);
     }
   }
 
@@ -87,24 +88,24 @@ export function useNumberInput({
     handleChange,
     handleBlur,
     isValid: !error,
-    error,
+    error
   };
 }
 
 export const numberUtils = {
   formatWithCommas(value: string): string {
     if (!value) return value;
-    const parts = value.split(".");
-    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    return parts.join(".");
+    const parts = value.split('.');
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return parts.join('.');
   },
 
   removeCommas(value: string): string {
-    return value.replace(/,/g, "");
+    return value.replace(/,/g, '');
   },
 
   formatDecimals(value: string, decimals: number): string {
     const num = parseFloat(value);
-    return Number.isNaN(num) ? "" : num.toFixed(decimals);
-  },
+    return Number.isNaN(num) ? '' : num.toFixed(decimals);
+  }
 };
