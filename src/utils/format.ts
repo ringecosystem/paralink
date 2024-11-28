@@ -3,10 +3,8 @@ import {
   BN_ZERO,
   bnToBn,
   formatBalance,
-  formatDecimal,
-  formatNumber
+  formatDecimal
 } from '@polkadot/util';
-import { removeCommasAndConvertToString } from './number';
 
 interface FormatBalanceOptions {
   decimals?: number;
@@ -59,7 +57,7 @@ export function formatTokenBalance(
 
     if (!amount || !decimals) return '-';
 
-    let formattedAmount = formatBalance(bnToBn(bnToBn(amount)), {
+    let formattedAmount = formatBalance(bnToBn(amount), {
       withSi: symbol ? true : false,
       withZero,
       decimals,
@@ -68,15 +66,21 @@ export function formatTokenBalance(
       forceUnit: '-'
     });
 
-    // 此处有大错误，需要修复。待修复
     if (displayDecimals !== undefined) {
       const [numberPart, ...rest] = formattedAmount.split(' ');
       const unit = rest.join(' ');
+      const cleanNumber = numberPart.replace(/,/g, '');
+      const [integerPart, decimalPart = ''] = cleanNumber.split('.');
 
-      const cleanNumber = removeCommasAndConvertToString(numberPart);
-      const number = parseFloat(cleanNumber);
-      const roundedNumber = formatNumber(number);
-      formattedAmount = unit ? `${roundedNumber} ${unit}` : roundedNumber;
+      const formattedInteger = formatDecimal(integerPart);
+      const formattedDecimal = decimalPart
+        .padEnd(displayDecimals, '0')
+        .slice(0, displayDecimals);
+      const finalNumber =
+        displayDecimals === 0
+          ? formattedInteger
+          : `${formattedInteger}.${formattedDecimal}`;
+      formattedAmount = unit ? `${finalNumber} ${unit}` : finalNumber;
     }
 
     return formattedAmount;
@@ -114,15 +118,27 @@ export function parseUnits({
   value: string;
   decimals: number;
 }): BN {
-  console.log('value', value);
-  console.log('decimals', decimals);
   try {
-    const bn = bnToBn(value);
-    const multiplier = new BN(10).pow(new BN(decimals));
-    const result = bn.mul(multiplier);
+    if (decimals < 0) throw new Error('Decimals must be a positive number');
+
+    if (!value || value === '.') return BN_ZERO;
+
+    if (!/^-?\d*\.?\d*$/.test(value)) throw new Error('Invalid number format');
+
+    const isNegative = value.startsWith('-');
+    const absValue = isNegative ? value.slice(1) : value;
+
+    const [integerPart = '0', decimalPart = ''] = absValue.split('.');
+
+    const fullNumber =
+      integerPart + decimalPart.padEnd(decimals, '0').slice(0, decimals);
+
+    let result = new BN(fullNumber);
+    if (isNegative) result = result.neg();
 
     return result;
-  } catch {
+  } catch (e) {
+    console.error('parseUnits error:', e);
     return BN_ZERO;
   }
 }
