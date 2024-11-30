@@ -1,21 +1,15 @@
 import { create } from 'zustand';
 
-import type { AvailableTokens } from '@/utils/xcm-token';
+import type { AvailableToken } from '@/utils/xcm-token';
 
 interface TokensState {
-  tokens: AvailableTokens[];
-  selectedToken?: AvailableTokens;
-  setTokens: (tokens: AvailableTokens[]) => void;
-  setSelectedToken: (token?: AvailableTokens) => void;
-  reset: () => void;
+  selectedToken?: AvailableToken;
+  setSelectedToken: (token?: AvailableToken) => void;
 }
 
 const useTokensStore = create<TokensState>((set) => ({
-  tokens: [],
   selectedToken: undefined,
-  setTokens: (tokens) => set({ tokens, selectedToken: tokens[0] }),
-  setSelectedToken: (token) => set({ selectedToken: token }),
-  reset: () => set({ tokens: [], selectedToken: undefined })
+  setSelectedToken: (token) => set({ selectedToken: token })
 }));
 
 export default useTokensStore;

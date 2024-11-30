@@ -11,7 +11,7 @@ type GetAvailableTokensType = {
   assets: Asset[];
 };
 
-export type AvailableTokens = {
+export type AvailableToken = {
   symbol?: string;
   decimals?: number;
   icon: string;
@@ -25,7 +25,7 @@ export function getAvailableTokens({
   fromChain,
   toChain,
   assets
-}: GetAvailableTokensType): AvailableTokens[] {
+}: GetAvailableTokensType): AvailableToken[] {
   const tokens = getTokenList({ fromChain, toChain });
   return tokens?.map((v) => {
     const data = getTokenFromXcAsset({ xcAssetData: v, assets });

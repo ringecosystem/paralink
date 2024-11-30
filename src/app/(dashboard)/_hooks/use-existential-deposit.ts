@@ -4,11 +4,14 @@ import { useEffect, useRef, useState } from 'react';
 import { AugmentedConst } from '@polkadot/api/types';
 import { u128 } from '@polkadot/types';
 import type { AccountInfo } from '@polkadot/types/interfaces';
+import { formatTokenBalance } from '@/utils/format';
 
 interface ExistentialDepositInfo {
   isLoading: boolean;
   deposit: BN;
+  formattedDeposit: string;
   balance: BN;
+  formattedBalance: string;
   symbol: string;
   decimals: number;
   hasEnoughBalance: boolean;
@@ -114,7 +117,15 @@ export function useExistentialDeposit({
   return {
     isLoading,
     balance: state.balance,
+    formattedBalance: formatTokenBalance(state.balance, {
+      decimals: state.tokenInfo.decimals,
+      symbol: state.tokenInfo.symbol
+    }),
     deposit: state.deposit,
+    formattedDeposit: formatTokenBalance(state.deposit, {
+      decimals: state.tokenInfo.decimals,
+      symbol: state.tokenInfo.symbol
+    }),
     symbol: state.tokenInfo.symbol,
     decimals: state.tokenInfo.decimals,
     hasEnoughBalance: state.balance.gte(state.deposit),

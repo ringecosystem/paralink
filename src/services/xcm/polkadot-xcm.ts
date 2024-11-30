@@ -8,12 +8,14 @@ import {
   createStandardXcmInterior,
   parseAndNormalizeXcm
 } from '@/utils/xcm-location';
+import { u8aToHex } from '@polkadot/util';
+import { checkTransactionHash } from '../subscan';
 
 type XcmTransferParams = {
   token: XcAssetData;
   amount: string;
   toChain: ChainInfoWithXcAssetsData;
-  recipientAddress: string; // 接收地址
+  recipientAddress: string;
 };
 
 export function createXcmTransfer({
@@ -48,6 +50,7 @@ export function createXcmTransfer({
         }
       }
     };
+    console.log('');
 
     const beneficiary = {
       V3: {
@@ -63,13 +66,14 @@ export function createXcmTransfer({
             : {
                 AccountId32: {
                   network: null,
-                  key: Array.from(decodeAddress(recipientAddress))
+                  id: u8aToHex(decodeAddress(recipientAddress))
                 }
               }
         }
       }
     };
-
+    console.log('recipientAddress', recipientAddress);
+    console.log('beneficiary', beneficiary);
     const assetItems = [
       {
         id: {
@@ -122,7 +126,7 @@ export const createXcmTransferExtrinsic = async ({
     toChain,
     recipientAddress
   });
-  if (!xcmTransferParams) return undefined;
+  if (!xcmTransferParams || !fromChainApi) return undefined;
 
   const extrinsic = fromChainApi.tx.polkadotXcm.limitedReserveTransferAssets(
     xcmTransferParams.dest,
@@ -139,7 +143,7 @@ type SignAndSendExtrinsicParams = {
   signer: Signer;
   sender: string;
   onPending?: (txHash: string) => void;
-  onSuccess?: (txHash: string) => void;
+  onSuccess?: (txHash: string, messageHash?: string) => void;
   onError?: (txHash: string) => void;
 };
 export const signAndSendExtrinsic = async ({
@@ -152,19 +156,44 @@ export const signAndSendExtrinsic = async ({
 }: SignAndSendExtrinsicParams) => {
   try {
     const unsub = await extrinsic.signAndSend(sender, { signer }, (result) => {
+      console.log('result', result?.txHash.toHex());
+
       onPending?.(result.txHash.toHex());
-      if (result.isCompleted) {
-        unsub();
-      }
+
+      if (result.isCompleted) unsub();
 
       if (result.status.isFinalized || result.status.isInBlock) {
+        let messageHash: string | undefined;
+
+        const sentEvent = result.events.find(
+          ({ event }) => event.index.toHex() === '0x6f00'
+        );
+
+        if (sentEvent) {
+          messageHash = sentEvent.event.data[0].toHex();
+          console.log('XCM Message Hash:', messageHash);
+        }
+
         result.events
-          .filter(({ event: { section } }) => section === 'system')
-          .forEach(({ event: { method } }): void => {
-            if (method === 'ExtrinsicFailed') {
+          .filter(({ event }) => event.section === 'system')
+          .forEach(async ({ event }) => {
+            if (event.method === 'ExtrinsicFailed') {
               onError?.(result.txHash.toHex());
-            } else if (method === 'ExtrinsicSuccess') {
-              onSuccess?.(result.txHash.toHex());
+            } else if (event.method === 'ExtrinsicSuccess') {
+              if (messageHash) {
+                const uniqueId = await checkTransactionHash({
+                  hash: messageHash
+                });
+                if (uniqueId) {
+                  console.log(
+                    'XCM Message Hash:',
+                    `https://polkadot.subscan.io/xcm_message/polkadot-${uniqueId}`
+                  );
+                }
+                onSuccess?.(result.txHash.toHex(), uniqueId);
+              } else {
+                onSuccess?.(result.txHash.toHex());
+              }
             }
           });
       } else if (result.isError) {

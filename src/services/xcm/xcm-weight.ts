@@ -6,74 +6,17 @@ import {
 import { ApiPromise } from '@polkadot/api';
 import { decodeAddress } from '@polkadot/util-crypto';
 import { MultiLocation } from '@polkadot/types/interfaces/xcm';
-import { isXcmLocationMatch } from '@/utils/xcm';
 import { parseUnits } from '@/utils/format';
 import {
   removeCommasAndConvertToBN,
   removeCommasAndConvertToNumber
 } from '@/utils/number';
-import { BN_ZERO, bnToBn } from '@polkadot/util';
-
-type GetCrossTokenParams = {
-  api: ApiPromise;
-  asset: XcAssetData;
-};
+import { BN_ZERO, bnToBn, u8aToHex } from '@polkadot/util';
 
 export interface XcmV3MultiLocation {
   V3?: {
     Concrete?: MultiLocation;
   };
-}
-
-interface XcmResponse {
-  Ok?: XcmV3MultiLocation[];
-}
-
-export async function checkAcceptablePaymentToken({
-  api,
-  asset
-}: GetCrossTokenParams): Promise<boolean> {
-  const tokenXcm = await api.call.xcmPaymentApi.queryAcceptablePaymentAssets(3);
-  const xcmTokens = tokenXcm.toHuman() as XcmResponse;
-  const tokens = xcmTokens?.Ok || [];
-
-  for (let index = 0; index < tokens.length; index++) {
-    const tokenInfo = tokens[index];
-    const isMatch = isXcmLocationMatch(
-      tokenInfo?.V3?.Concrete,
-      JSON.parse(asset.xcmV1MultiLocation)?.v1
-    );
-    return isMatch;
-  }
-  return false;
-}
-
-export async function getAssetHubAssetIsSufficient({
-  api,
-  asset
-}: GetCrossTokenParams) {
-  try {
-    const multiLocation = JSON.parse(asset?.xcmV1MultiLocation);
-    const location = parseAndNormalizeXcm(multiLocation);
-    if (location) {
-      const { interior } = location;
-      let assetId;
-      if (Array.isArray(interior)) {
-        assetId = interior?.find((item) => item.GeneralIndex)?.GeneralIndex;
-      } else {
-        assetId = interior?.GeneralIndex;
-      }
-      if (assetId) {
-        const assetIdResult = await api.query.assets.asset(assetId);
-        return (assetIdResult?.toHuman() as Record<string, string | boolean>)
-          ?.isSufficient as boolean;
-      }
-    }
-    return false;
-  } catch (error) {
-    console.log('error', error);
-    return false;
-  }
 }
 
 type XcmTransferParams = {
@@ -123,7 +66,7 @@ export function generateDestReserveXcmMessage({
           : {
               AccountId32: {
                 network: null,
-                id: Array.from(decodeAddress(recipientAddress))
+                id: u8aToHex(decodeAddress(recipientAddress))
               }
             }
       }
@@ -499,32 +442,6 @@ export const getXcmWeightFee = async ({
   paraId
 }: GetXcmWeightFeeParams) => {
   let errMsg = '';
-
-  if (paraId === '1000') {
-    const isAcceptable = await getAssetHubAssetIsSufficient({
-      api,
-      asset
-    });
-    if (!isAcceptable) {
-      errMsg = 'Asset cannot be used as cross-chain payment token';
-      return {
-        fee: BN_ZERO,
-        errMsg
-      };
-    }
-  } else {
-    const isAcceptable = await checkAcceptablePaymentToken({
-      api,
-      asset
-    });
-    if (!isAcceptable) {
-      errMsg = 'Asset cannot be used as cross-chain payment token';
-      return {
-        fee: BN_ZERO,
-        errMsg
-      };
-    }
-  }
 
   // 计算 weight
   const { weight } = await calculateExecutionWeight({

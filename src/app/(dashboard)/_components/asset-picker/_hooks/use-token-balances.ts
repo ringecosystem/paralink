@@ -1,40 +1,46 @@
 import { useQuery } from '@tanstack/react-query';
 import { getAssetBalance } from '@/lib/chain/balance';
-import type { AvailableTokens } from '@/utils/xcm-token';
+import type { AvailableToken } from '@/utils/xcm-token';
 import type { ApiPromise } from '@polkadot/api';
-import type { ChainInfoWithXcAssetsData } from '@/store/chains';
 
 interface UseTokenBalancesProps {
   address?: string;
-  tokens?: AvailableTokens[];
-  fromChain?: ChainInfoWithXcAssetsData;
-  fromChainApi?: ApiPromise | null;
+  tokens?: AvailableToken[];
+  paraId?: string;
+  api?: ApiPromise | null;
 }
 
 export function useTokenBalances({
   address,
   tokens,
-  fromChain,
-  fromChainApi
+  paraId,
+  api
 }: UseTokenBalancesProps) {
   return useQuery({
     queryKey: [
       'token-balances',
       address,
       tokens?.map((t) => t.symbol),
-      fromChain?.substrateInfo?.paraId,
-      fromChainApi?.genesisHash?.toString(),
-      fromChainApi?.isConnected
+      paraId,
+      api?.genesisHash?.toString(),
+      api?.isConnected
     ],
     queryFn: async ({ signal }) => {
-      if (!address || !fromChainApi || !fromChain?.substrateInfo?.paraId)
+      if (!address || !tokens?.length || !paraId || !api) {
         throw new Error('Missing required parameters');
+      }
+      console.log('api.genesisHash.toHex()', api.genesisHash.toHex());
+      console.log('api.runtimeChain.toString()', api.runtimeChain.toString());
+      console.log(
+        'api.rpc.system.properties()',
+        await api.rpc.system.properties()
+      );
 
       const balances = await Promise.all(
         tokens?.map((token) =>
           getAssetBalance({
-            api: fromChainApi,
-            paraId: fromChain?.substrateInfo?.paraId as number,
+            api,
+            paraId: Number(paraId),
             account: address,
             xcAssetData: token.xcAssetData,
             signal
@@ -47,10 +53,6 @@ export function useTokenBalances({
         balance: balances[index]
       }));
     },
-    enabled:
-      !!address &&
-      !!tokens?.length &&
-      !!fromChainApi &&
-      !!fromChain?.substrateInfo?.paraId
+    enabled: !!address && !!tokens?.length && !!api && !!paraId
   });
 }

@@ -134,7 +134,13 @@ export const getTokenList = ({
             v1: {
               parents: 0,
               interior: {
-                x3: [{ palletInstance: 50 }, { generalIndex }]
+                x3: [
+                  {
+                    parachain: Number(fromChain.id)
+                  },
+                  { palletInstance: 50 },
+                  { generalIndex: String(generalIndex) }
+                ]
               }
             }
           })

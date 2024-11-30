@@ -1,10 +1,11 @@
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 import useChainsStore from '@/store/chains';
 import { getFromChains, getToChains } from '@/utils/xcm-chain-registry';
 import type { ChainInfoWithXcAssetsData } from '@/store/chains';
-import useApiStore from '@/store/api';
 import { findBestWssEndpoint } from '@/utils/rpc-endpoint';
+import { ApiPromise } from '@polkadot/api';
+import useApiConnectionsStore from '@/store/api-connections';
 
 type SwapChainsParams = {
   chains: ChainInfoWithXcAssetsData[];
@@ -26,9 +27,6 @@ interface UseCrossChainSetupReturn {
   }) => void;
 }
 export function useCrossChainSetup(): UseCrossChainSetupReturn {
-  const [previousFromEndpoint, setPreviousFromEndpoint] = useState('');
-  const [previousToEndpoint, setPreviousToEndpoint] = useState('');
-
   const { setFromChainId, setToChainId, setFromChains, setToChains } =
     useChainsStore(
       useShallow((state) => ({
@@ -40,14 +38,10 @@ export function useCrossChainSetup(): UseCrossChainSetupReturn {
       }))
     );
 
-  const { connectFromChainApi, connectToChainApi } = useApiStore(
+  const { connectApi } = useApiConnectionsStore(
     useShallow((state) => ({
-      fromChainApi: state.fromChainApi,
-      connectFromChainApi: state.connectFromChainApi,
-      disconnectFromChainApi: state.disconnectFromChainApi,
-      toChainApi: state.toChainApi,
-      connectToChainApi: state.connectToChainApi,
-      disconnectToChainApi: state.disconnectToChainApi
+      connectApi: state.connectApi,
+      disconnectApi: state.disconnectApi
     }))
   );
 
@@ -66,34 +60,25 @@ export function useCrossChainSetup(): UseCrossChainSetupReturn {
 
       if (!fromChain || !toChain) return;
 
-      const connectionPromises: Promise<void>[] = [];
+      const connectionPromises: Promise<ApiPromise | null>[] = [];
 
       if (fromChain?.providers) {
         const fromBestEndpoint = await findBestWssEndpoint(fromChain.providers);
-        if (fromBestEndpoint && fromBestEndpoint !== previousFromEndpoint) {
-          connectionPromises.push(connectFromChainApi(fromBestEndpoint));
-          setPreviousFromEndpoint(fromBestEndpoint);
+        if (fromBestEndpoint) {
+          connectionPromises.push(connectApi(fromChainId, fromBestEndpoint));
         }
       }
 
       if (toChain?.providers) {
         const toBestEndpoint = await findBestWssEndpoint(toChain.providers);
-        if (toBestEndpoint && toBestEndpoint !== previousToEndpoint) {
-          connectionPromises.push(connectToChainApi(toBestEndpoint));
-          setPreviousToEndpoint(toBestEndpoint);
+        if (toBestEndpoint) {
+          connectionPromises.push(connectApi(toChainId, toBestEndpoint));
         }
       }
 
       await Promise.all(connectionPromises);
     },
-    [
-      connectFromChainApi,
-      connectToChainApi,
-      previousFromEndpoint,
-      setPreviousFromEndpoint,
-      previousToEndpoint,
-      setPreviousToEndpoint
-    ]
+    [connectApi]
   );
 
   const setupCrossChainConfig = useCallback(

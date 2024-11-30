@@ -1,49 +1,101 @@
+import { isEqual } from 'lodash-es';
 import type { MultiLocation } from '@polkadot/types/interfaces';
-import { cloneDeep, transform, isObject, isEqual } from 'lodash-es';
-import { removeCommasAndConvertToNumber } from './number';
 
-function normalizeXcmLocation(location) {
-  const normalize = (obj) => {
-    // 如果是数组，需要递归处理数组中的每个元素
-    if (Array.isArray(obj)) return obj.map((item) => normalize(item));
-
-    // 如果不是对象或是 null，需要特殊处理
-    if (!isObject(obj) || obj === null) {
-      const strValue = String(obj).replace(/,/g, '');
-      // 尝试转换为数字
-      const numValue = removeCommasAndConvertToNumber(strValue);
-      return numValue;
-    }
-
-    // 处理对象
-    return transform(obj, (result: any, value: any, key: string) => {
-      const newKey = key.toLowerCase();
-      result[newKey] = isObject(value)
-        ? normalize(value)
-        : (() => {
-            const strValue = String(value).replace(/,/g, '');
-            const numValue = Number(strValue);
-            return !isNaN(numValue) ? numValue : strValue;
-          })();
-    });
-  };
-
-  return normalize(cloneDeep(location));
-}
-/**
- * 比较两个 XCM Location 是否匹配
- * @param location1 第一个 location (通常是从 API 获取的)
- * @param location2 第二个 location (通常是从配置解析的)
- * @returns 是否匹配
- */
 export function isXcmLocationMatch(
+  sourceChainId: number | string,
   location1: MultiLocation | null | undefined,
   location2: MultiLocation | null | undefined
 ): boolean {
-  if (!location1 || !location2) return false;
-  // 先标准化两个位置数据
-  const normalized1 = normalizeXcmLocation(location1);
-  const normalized2 = normalizeXcmLocation(location2);
+  if (!location1 || !location2) {
+    console.log(`One or both locations are empty:`, {
+      location1,
+      location2
+    });
+    return false;
+  }
 
-  return isEqual(normalized1, normalized2);
+  try {
+    const parsed1 =
+      typeof location1 === 'string' ? JSON.parse(location1) : location1;
+    const parsed2 =
+      typeof location2 === 'string' ? JSON.parse(location2) : location2;
+
+    if (
+      !isRelevantToChain(parsed1, sourceChainId) ||
+      !isRelevantToChain(parsed2, sourceChainId)
+    )
+      return false;
+
+    return compareLocations(parsed1, parsed2);
+  } catch (error) {
+    console.log(`JSON parsing error:`, error);
+    return false;
+  }
+}
+
+function compareLocations(item1: any, item2: any): boolean {
+  if (item1 === null || item2 === null) return item1 === item2;
+
+  if ('interior' in item1 || 'interior' in item2) {
+    const array1 = getInteriorArray(item1.interior);
+    const array2 = getInteriorArray(item2.interior);
+
+    if (array1 === null || array2 === null) return false;
+
+    if (array1.length !== array2.length) return false;
+
+    return array1.every((item: any, index: number) => {
+      const a = item;
+      const b = array2[index];
+
+      if ('parachain' in a && 'parachain' in b) {
+        if (Number(a.parachain) !== Number(b.parachain)) return false;
+      }
+
+      const aKeys = Object.keys(a).filter((k) => k !== 'parachain');
+      const bKeys = Object.keys(b).filter((k) => k !== 'parachain');
+
+      if (aKeys.length !== bKeys.length) return false;
+
+      return aKeys.every((key) => {
+        const aValue = a[key];
+        const bValue = b[key];
+
+        if (
+          (typeof aValue === 'object' && aValue !== null) ||
+          (typeof bValue === 'object' && bValue !== null)
+        ) {
+          return isEqual(aValue, bValue);
+        }
+
+        if (
+          (typeof aValue === 'string' || typeof aValue === 'number') &&
+          (typeof bValue === 'string' || typeof bValue === 'number')
+        ) {
+          return String(aValue) === String(bValue);
+        }
+
+        return aValue === bValue;
+      });
+    });
+  }
+
+  return isEqual(item1, item2);
+}
+
+function isRelevantToChain(location: any, chainId: number | string): boolean {
+  if (!location?.interior) return false;
+
+  const interiorArray = getInteriorArray(location.interior);
+  if (!interiorArray) return false;
+  return interiorArray.some((item: any) => item.parachain === Number(chainId));
+}
+
+function getInteriorArray(interior: any) {
+  if ('here' in interior) return [];
+  if ('x1' in interior) return [interior.x1];
+  if ('x2' in interior) return interior.x2;
+  if ('x3' in interior) return interior.x3;
+  if ('x4' in interior) return interior.x4;
+  return null;
 }

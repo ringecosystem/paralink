@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react';
 import { createXcmTransferExtrinsic } from '@/services/xcm/polkadot-xcm';
 import type { ApiPromise } from '@polkadot/api';
 import { ChainInfoWithXcAssetsData } from '@/store/chains';
-import { AvailableTokens } from '@/utils/xcm-token';
+import type { AvailableToken } from '@/utils/xcm-token';
 import { SubmittableExtrinsic } from '@polkadot/api/types';
 import { BN, BN_ZERO, bnToBn } from '@polkadot/util';
 
 interface UseXcmExtrinsicParams {
   fromChainApi: ApiPromise | null;
-  selectedToken?: AvailableTokens;
+  selectedToken?: AvailableToken;
   toChain?: ChainInfoWithXcAssetsData;
   recipientAddress?: string;
   amount: string;

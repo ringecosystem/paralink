@@ -6,7 +6,7 @@ import { parseAndNormalizeXcm } from '@/utils/xcm-location';
 import { BN, BN_ZERO } from '@polkadot/util';
 
 interface UseMinBalanceProps {
-  api: ApiPromise | null;
+  api?: ApiPromise | null;
   asset?: XcAssetData | null;
   decimals?: number | null;
 }
@@ -40,6 +40,7 @@ export const useMinBalance = ({ api, asset, decimals }: UseMinBalanceProps) => {
         assetId,
         decimals
       });
+
       setFormatted(formatted);
       setBalance(balance);
       setIsLoading(false);
@@ -51,7 +52,6 @@ export const useMinBalance = ({ api, asset, decimals }: UseMinBalanceProps) => {
       setIsLoading(false);
     };
   }, [api, assetId, decimals]);
-
   return {
     formatted,
     balance,

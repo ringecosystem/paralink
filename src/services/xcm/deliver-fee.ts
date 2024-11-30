@@ -1,5 +1,5 @@
 import { decodeAddress } from '@polkadot/util-crypto';
-import { BN_ZERO } from '@polkadot/util';
+import { BN_ZERO, u8aToHex } from '@polkadot/util';
 import {
   createStandardXcmInterior,
   parseAndNormalizeXcm
@@ -57,7 +57,7 @@ export function generateDestReserveXcmMessage({
           : {
               AccountId32: {
                 network: null,
-                id: Array.from(decodeAddress(recipientAddress))
+                id: u8aToHex(decodeAddress(recipientAddress))
               }
             }
       }

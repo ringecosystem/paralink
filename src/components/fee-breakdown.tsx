@@ -85,7 +85,7 @@ export function FeeBreakdown({
         <div className="flex items-center gap-2">
           <span
             className={cn(
-              'font-mono text-[14px] font-bold tabular-nums text-[#12161950]',
+              'max-w-[160px] truncate font-mono text-[14px] font-bold tabular-nums text-[#12161950]',
               isExpanded && 'text-[#242A2E]'
             )}
           >
