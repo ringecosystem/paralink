@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getAssetBalance } from '@/lib/chain/balance';
 import type { AvailableToken } from '@/utils/xcm-token';
 import type { ApiPromise } from '@polkadot/api';
@@ -16,25 +16,22 @@ export function useTokenBalances({
   paraId,
   api
 }: UseTokenBalancesProps) {
-  return useQuery({
-    queryKey: [
-      'token-balances',
-      address,
-      tokens?.map((t) => t.symbol),
-      paraId,
-      api?.genesisHash?.toString(),
-      api?.isConnected
-    ],
+  const queryClient = useQueryClient();
+  const queryKey = [
+    'token-balances',
+    address,
+    tokens?.map((t) => t.symbol),
+    paraId,
+    api?.genesisHash?.toString(),
+    api?.isConnected
+  ];
+
+  const result = useQuery({
+    queryKey,
     queryFn: async ({ signal }) => {
       if (!address || !tokens?.length || !paraId || !api) {
         throw new Error('Missing required parameters');
       }
-      console.log('api.genesisHash.toHex()', api.genesisHash.toHex());
-      console.log('api.runtimeChain.toString()', api.runtimeChain.toString());
-      console.log(
-        'api.rpc.system.properties()',
-        await api.rpc.system.properties()
-      );
 
       const balances = await Promise.all(
         tokens?.map((token) =>
@@ -55,4 +52,13 @@ export function useTokenBalances({
     },
     enabled: !!address && !!tokens?.length && !!api && !!paraId
   });
+
+  const refresh = () => {
+    queryClient.invalidateQueries({ queryKey });
+  };
+
+  return {
+    ...result,
+    refresh
+  };
 }

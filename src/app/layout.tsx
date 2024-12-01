@@ -3,6 +3,7 @@ import { Toaster } from 'react-hot-toast';
 import { APP_NAME } from '@/config/site';
 import { DAppProvider } from '@/providers/dapp-provider';
 import { TooltipProvider } from '@/components/ui/tooltip';
+import { Toaster as SonnerToaster } from '@/components/ui/sonner';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
 import { TransactionDetail } from '@/components/transaction-detail';
@@ -58,6 +59,7 @@ export default function RootLayout({
                 <Footer />
               </footer>
             </div>
+            <SonnerToaster richColors duration={30_000} closeButton />
           </TooltipProvider>
         </DAppProvider>
         <TransactionDetail />

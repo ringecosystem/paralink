@@ -128,7 +128,7 @@ export const createXcmTransferExtrinsic = async ({
   });
   if (!xcmTransferParams || !fromChainApi) return undefined;
 
-  const extrinsic = fromChainApi.tx.polkadotXcm.limitedReserveTransferAssets(
+  const extrinsic = fromChainApi.tx.polkadotXcm.transferAssets(
     xcmTransferParams.dest,
     xcmTransferParams.beneficiary,
     xcmTransferParams.assets,
@@ -142,23 +142,44 @@ type SignAndSendExtrinsicParams = {
   extrinsic: SubmittableExtrinsic<'promise'>;
   signer: Signer;
   sender: string;
-  onPending?: (txHash: string) => void;
-  onSuccess?: (txHash: string, messageHash?: string) => void;
-  onError?: (txHash: string) => void;
+  onStart?: ({ txHash }: { txHash: string }) => void;
+  onPending?: ({ txHash }: { txHash: string }) => void;
+  onSuccess?: ({
+    txHash,
+    messageHash,
+    uniqueId
+  }: {
+    txHash: string;
+    messageHash?: string;
+    uniqueId?: string;
+  }) => void;
+  onFailure?: ({ txHash }: { txHash?: string }) => void;
+  onError?: (message: string) => void;
 };
 export const signAndSendExtrinsic = async ({
   extrinsic,
   signer,
   sender,
+  onStart,
   onPending,
   onSuccess,
+  onFailure,
   onError
 }: SignAndSendExtrinsicParams) => {
   try {
-    const unsub = await extrinsic.signAndSend(sender, { signer }, (result) => {
-      console.log('result', result?.txHash.toHex());
+    let hasStarted = false;
 
-      onPending?.(result.txHash.toHex());
+    const unsub = await extrinsic.signAndSend(sender, { signer }, (result) => {
+      if (!hasStarted) {
+        onStart?.({
+          txHash: result.txHash.toHex()
+        });
+        hasStarted = true;
+      }
+
+      onPending?.({
+        txHash: result.txHash.toHex()
+      });
 
       if (result.isCompleted) unsub();
 
@@ -178,7 +199,9 @@ export const signAndSendExtrinsic = async ({
           .filter(({ event }) => event.section === 'system')
           .forEach(async ({ event }) => {
             if (event.method === 'ExtrinsicFailed') {
-              onError?.(result.txHash.toHex());
+              onFailure?.({
+                txHash: result.txHash.toHex()
+              });
             } else if (event.method === 'ExtrinsicSuccess') {
               if (messageHash) {
                 const uniqueId = await checkTransactionHash({
@@ -190,14 +213,24 @@ export const signAndSendExtrinsic = async ({
                     `https://polkadot.subscan.io/xcm_message/polkadot-${uniqueId}`
                   );
                 }
-                onSuccess?.(result.txHash.toHex(), uniqueId);
+                onSuccess?.({
+                  txHash: result.txHash.toHex(),
+                  messageHash,
+                  uniqueId
+                });
               } else {
-                onSuccess?.(result.txHash.toHex());
+                onSuccess?.({
+                  txHash: result.txHash.toHex(),
+                  messageHash: undefined,
+                  uniqueId: undefined
+                });
               }
             }
           });
       } else if (result.isError) {
-        onError?.(result.txHash.toHex());
+        onFailure?.({
+          txHash: result.txHash.toHex()
+        });
       }
     });
   } catch (err) {

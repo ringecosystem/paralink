@@ -1,5 +1,11 @@
 'use client';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from 'react';
 import { useShallow } from 'zustand/react/shallow';
 import { AddressInput } from '@/components/address-input';
 import Alert from '@/components/alert';
@@ -31,6 +37,7 @@ import useApiConnectionsStore from '@/store/api-connections';
 import { cn } from '@/lib/utils';
 import { AssetPicker } from './asset-picker';
 import { BN, BN_ZERO, bnMax } from '@polkadot/util';
+
 interface DashboardProps {
   polkadotAssetRegistry: ChainConfig;
   chainsInfo: ChainInfo[];
@@ -42,6 +49,8 @@ export default function Dashboard({
   chainsInfo,
   assetsInfo
 }: DashboardProps) {
+  const pickerRef = useRef<{ refreshBalances: () => void }>(null);
+
   const [amount, setAmount] = useState<string>('');
   const [tokens, setTokens] = useState<AvailableToken[]>([]);
   const [selectedTokenBalance, setSelectedTokenBalance] = useState<BN>(BN_ZERO);
@@ -223,6 +232,7 @@ export default function Dashboard({
     try {
       setIsTransactionLoading(true);
       await executeTransaction({ extrinsic, address });
+      pickerRef.current?.refreshBalances();
     } catch (error) {
       toast.error((error as unknown as string) ?? 'Transaction failed');
     } finally {
@@ -295,6 +305,7 @@ export default function Dashboard({
             />
             <div className="relative flex flex-col gap-[20px]">
               <AssetPicker
+                ref={pickerRef}
                 tokens={tokens}
                 crossFee={crossFee}
                 isCrossFeeLoading={isCrossFeeLoading}

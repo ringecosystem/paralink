@@ -1,5 +1,7 @@
-import dayjs from 'dayjs';
+import dayjs, { extend, unix } from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
 import utc from 'dayjs/plugin/utc';
+extend(relativeTime);
 dayjs.extend(utc);
 
 export function formatBridgeTransactionTimestamp(): string {
@@ -12,4 +14,8 @@ export function formatShortDate(date: Date): string {
 
 export function formatFullDateTime(date: Date): string {
   return dayjs(date).format('YYYY-MM-DD HH:mm:ss');
+}
+export function formatTimeAgo(timestamp: string) {
+  const date = unix(Number(timestamp));
+  return dayjs().from(date);
 }

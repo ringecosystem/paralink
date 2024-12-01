@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useImperativeHandle, useState } from 'react';
 import { BN, BN_ZERO, bnToBn } from '@polkadot/util';
 import { ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -23,6 +23,7 @@ import type { ApiPromise } from '@polkadot/api';
 import type { AvailableToken } from '@/utils/xcm-token';
 
 export interface PickerProps {
+  ref: React.RefObject<{ refreshBalances: () => void }>;
   tokens?: AvailableToken[];
   tokenBalance?: BalanceWithSymbol;
   tokenBalances?: BalanceWithSymbol[];
@@ -41,6 +42,7 @@ export interface PickerProps {
 }
 
 export function Picker({
+  ref,
   tokens,
   sourceChainId,
   targetChainId,
@@ -65,13 +67,16 @@ export function Picker({
     }))
   );
 
-  const { data: updatedBalances, isLoading: isBalancesLoading } =
-    useTokenBalances({
-      address,
-      tokens: availableTokens,
-      paraId: sourceChainId,
-      api: sourceChainApi
-    });
+  const {
+    data: updatedBalances,
+    isLoading: isBalancesLoading,
+    refresh: refreshBalances
+  } = useTokenBalances({
+    address,
+    tokens: availableTokens,
+    paraId: sourceChainId,
+    api: sourceChainApi
+  });
 
   const tokenBalance = updatedBalances?.find(
     (balance) => balance.symbol === selectedToken?.symbol
@@ -217,6 +222,14 @@ export function Picker({
       handleReset();
     };
   }, [setSelectedToken, handleReset]);
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      refreshBalances
+    }),
+    [refreshBalances]
+  );
 
   if (availableTokensLoading) {
     return <AssetPickerLoading />;
