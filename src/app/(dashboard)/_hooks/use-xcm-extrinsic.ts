@@ -31,23 +31,24 @@ export function useXcmExtrinsic({
 
   useEffect(() => {
     const getExtrinsic = async () => {
+      if (
+        !fromChainApi ||
+        !selectedToken?.xcAssetData ||
+        !toChain ||
+        !recipientAddress
+      )
+        return;
+
       setIsLoading(true);
       try {
-        if (
-          !fromChainApi ||
-          !selectedToken?.xcAssetData ||
-          !toChain ||
-          !recipientAddress
-        )
-          return;
-
-        return createXcmTransferExtrinsic({
+        const result = await createXcmTransferExtrinsic({
           fromChainApi,
           token: selectedToken.xcAssetData,
           amount,
           toChain,
           recipientAddress
         });
+        setExtrinsic(result);
       } catch (error) {
         console.error(error);
       } finally {
@@ -55,14 +56,8 @@ export function useXcmExtrinsic({
       }
     };
 
-    getExtrinsic().then((result) => {
-      if (result) setExtrinsic(result);
-    });
-
-    return () => {
-      setExtrinsic(undefined);
-      setIsLoading(false);
-    };
+    getExtrinsic();
+    return () => setExtrinsic(undefined);
   }, [
     fromChainApi,
     selectedToken?.xcAssetData,
@@ -72,17 +67,14 @@ export function useXcmExtrinsic({
   ]);
 
   useEffect(() => {
-    setIsLoading(true);
-    const getPaymentInfo = async () => {
-      try {
-        if (!extrinsic || !address) return;
-        const paymentInfo = await extrinsic.paymentInfo(address);
-        console.log('paymentInfo', paymentInfo?.toJSON());
+    if (!extrinsic || !address) return;
 
+    const getPaymentInfo = async () => {
+      setIsLoading(true);
+      try {
+        const paymentInfo = await extrinsic.paymentInfo(address);
         const fee = paymentInfo?.toJSON()?.partialFee as number;
-        if (fee) {
-          setPartialFee(bnToBn(fee));
-        }
+        if (fee) setPartialFee(bnToBn(fee));
       } catch (error) {
         console.error(error);
       } finally {
@@ -91,10 +83,7 @@ export function useXcmExtrinsic({
     };
 
     getPaymentInfo();
-    return () => {
-      setPartialFee(BN_ZERO);
-      setIsLoading(false);
-    };
+    return () => setPartialFee(BN_ZERO);
   }, [extrinsic, address]);
 
   return {

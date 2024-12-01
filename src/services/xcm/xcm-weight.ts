@@ -7,11 +7,8 @@ import { ApiPromise } from '@polkadot/api';
 import { decodeAddress } from '@polkadot/util-crypto';
 import { MultiLocation } from '@polkadot/types/interfaces/xcm';
 import { parseUnits } from '@/utils/format';
-import {
-  removeCommasAndConvertToBN,
-  removeCommasAndConvertToNumber
-} from '@/utils/number';
-import { BN_ZERO, bnToBn, u8aToHex } from '@polkadot/util';
+
+import { BN, BN_ZERO, bnToBn, u8aToHex } from '@polkadot/util';
 
 export interface XcmV3MultiLocation {
   V3?: {
@@ -289,15 +286,13 @@ export async function calculateExecutionWeight({
   try {
     const weightResponse =
       await api.call.xcmPaymentApi.queryXcmWeight(xcmMessage);
+
     const humanWeight = (
-      weightResponse.toHuman() as { Ok: { refTime: string; proofSize: string } }
-    ).Ok;
+      weightResponse.toJSON() as { ok: { refTime: number; proofSize: number } }
+    ).ok;
 
     return {
-      weight: {
-        refTime: removeCommasAndConvertToNumber(humanWeight.refTime),
-        proofSize: removeCommasAndConvertToNumber(humanWeight.proofSize)
-      },
+      weight: humanWeight,
       xcmMessage
     };
   } catch (error) {
@@ -422,7 +417,7 @@ export async function quotePriceTokensForExactTokens({
         includeFeeBool
       );
 
-    return quote.toHuman();
+    return quote.toJSON();
   } catch (error) {
     console.error('quotePriceTokens error:', error);
     return null;
@@ -463,8 +458,7 @@ export const getXcmWeightFee = async ({
     paraId,
     weight,
     asset
-  })) as Record<string, any>;
-  console.log('fee', fee?.toString());
+  })) as BN;
   if (!fee) {
     errMsg = 'Failed to calculate weight fee';
     return {
@@ -474,20 +468,19 @@ export const getXcmWeightFee = async ({
   }
 
   if (paraId === '1000') {
-    const quote = await quotePriceTokensForExactTokens({
+    const quote = (await quotePriceTokensForExactTokens({
       api,
       asset,
       amount: fee?.toString(),
       includeFee: true
-    });
-    console.log('quote', quote?.toString());
+    })) as number | null;
     return {
-      fee: !quote ? BN_ZERO : removeCommasAndConvertToBN(quote?.toString()),
+      fee: quote ? bnToBn(quote) : BN_ZERO,
       errMsg: ''
     };
   } else {
     return {
-      fee: !fee ? BN_ZERO : removeCommasAndConvertToBN(fee?.toString()),
+      fee: fee ? fee : BN_ZERO,
       errMsg: ''
     };
   }

@@ -38,8 +38,9 @@ export async function checkAssetHubAcceptablePaymentToken({
     }
 
     const assetIdResult = await api.query.assets.asset(assetId);
+
     const isSufficient = (
-      assetIdResult?.toHuman() as Record<string, string | boolean>
+      assetIdResult?.toJSON() as Record<string, string | boolean>
     )?.isSufficient as boolean;
 
     if (!isSufficient) {

@@ -1,11 +1,10 @@
 import { decodeAddress } from '@polkadot/util-crypto';
-import { BN_ZERO, u8aToHex } from '@polkadot/util';
+import { BN_ZERO, bnToBn, u8aToHex } from '@polkadot/util';
 import {
   createStandardXcmInterior,
   parseAndNormalizeXcm
 } from '@/utils/xcm-location';
 import { parseUnits } from '@/utils/format';
-import { removeCommasAndConvertToBN } from '@/utils/number';
 import type { XcAssetData } from '@/types/asset-registry';
 import type { ApiPromise } from '@polkadot/api';
 
@@ -122,7 +121,6 @@ export async function queryDeliveryFees({
       recipientAddress,
       isEvmChain: false
     });
-    console.log('xcmMessage', xcmMessage);
 
     if (!xcmMessage) return BN_ZERO;
 
@@ -132,19 +130,19 @@ export async function queryDeliveryFees({
     );
 
     const humanReadableFee = deliveryFee.toJSON() as {
-      Ok: {
-        V3: {
-          fun: { Fungible: string };
+      ok: {
+        v3: {
+          fun: { fungible: number };
         }[];
       };
     };
 
-    if (!humanReadableFee?.Ok?.V3 || humanReadableFee.Ok.V3.length === 0)
+    if (!humanReadableFee?.ok?.v3 || humanReadableFee.ok.v3.length === 0)
       return BN_ZERO;
 
-    if (!humanReadableFee.Ok.V3[0]?.fun?.Fungible) return BN_ZERO;
+    if (!humanReadableFee.ok.v3[0]?.fun?.fungible) return BN_ZERO;
 
-    return removeCommasAndConvertToBN(humanReadableFee.Ok.V3[0].fun.Fungible);
+    return bnToBn(humanReadableFee.ok.v3[0].fun.fungible);
   } catch (error) {
     console.error('Failed to query XCM delivery fees:', error);
     return BN_ZERO;

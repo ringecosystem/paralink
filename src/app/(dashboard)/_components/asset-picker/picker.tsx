@@ -209,6 +209,8 @@ export function Picker({
   // clean up state
   useEffect(() => {
     return () => {
+      console.log('clean up');
+
       setSelectedToken(undefined);
       setAvailableTokens([]);
       setAvailableTokensLoading(false);
@@ -278,11 +280,7 @@ export function Picker({
                 placeholder="0.000"
                 type="number"
                 value={value}
-                disabled={
-                  isMinBalanceLoading ||
-                  isCrossFeeLoading ||
-                  isMaxBalanceLoading
-                }
+                disabled={isMinBalanceLoading}
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
@@ -303,7 +301,7 @@ export function Picker({
         </div>
         <div className="mt-1 flex items-center justify-between">
           <div className="text-left">{error}</div>
-          <div className="flex items-center justify-end gap-2 px-2 text-[11px] text-[#242A2E]">
+          <div className="flex items-center gap-2 px-2 text-xs text-gray-500">
             <div className="flex items-center gap-1">
               Min:{' '}
               {isMinBalanceLoading || isCrossFeeLoading ? (
