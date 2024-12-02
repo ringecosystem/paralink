@@ -5,6 +5,7 @@ import { getFromChains, getToChains } from '@/utils/xcm-chain-registry';
 import type { ChainInfoWithXcAssetsData } from '@/store/chains';
 import { ApiPromise } from '@polkadot/api';
 import useApiConnectionsStore from '@/store/api-connections';
+import { findBestWssEndpoint } from '@/utils/rpc-endpoint';
 
 type SwapChainsParams = {
   chains: ChainInfoWithXcAssetsData[];
@@ -62,15 +63,19 @@ export function useCrossChainSetup(): UseCrossChainSetupReturn {
       const connectionPromises: Promise<ApiPromise | null>[] = [];
 
       if (fromChain?.providers) {
-        connectionPromises.push(
-          connectApi(fromChainId, Object.values(fromChain.providers))
-        );
+        const provider = await findBestWssEndpoint(fromChain?.providers);
+
+        if (provider) {
+          connectionPromises.push(connectApi(fromChainId, provider));
+        }
       }
 
       if (toChain?.providers) {
-        connectionPromises.push(
-          connectApi(toChainId, Object.values(toChain.providers))
-        );
+        const provider = await findBestWssEndpoint(toChain?.providers);
+
+        if (provider) {
+          connectionPromises.push(connectApi(toChainId, provider));
+        }
       }
 
       await Promise.all(connectionPromises);

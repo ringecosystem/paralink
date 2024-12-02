@@ -36,7 +36,7 @@ export function TransactionToastDetail({ txHash }: TransactionToastProps) {
   }, [transaction, sourceChain, txHash]);
 
   const isLoading =
-    transaction?.status === 'in-progress' && transaction.uniqueId;
+    transaction?.status === 'in-progress' && !transaction.uniqueId;
 
   return (
     <div className="flex flex-col gap-[5px] rounded-[10px] bg-white">
