@@ -3,7 +3,6 @@ import { useShallow } from 'zustand/react/shallow';
 import useChainsStore from '@/store/chains';
 import { getFromChains, getToChains } from '@/utils/xcm-chain-registry';
 import type { ChainInfoWithXcAssetsData } from '@/store/chains';
-import { findBestWssEndpoint } from '@/utils/rpc-endpoint';
 import { ApiPromise } from '@polkadot/api';
 import useApiConnectionsStore from '@/store/api-connections';
 
@@ -63,17 +62,15 @@ export function useCrossChainSetup(): UseCrossChainSetupReturn {
       const connectionPromises: Promise<ApiPromise | null>[] = [];
 
       if (fromChain?.providers) {
-        const fromBestEndpoint = await findBestWssEndpoint(fromChain.providers);
-        if (fromBestEndpoint) {
-          connectionPromises.push(connectApi(fromChainId, fromBestEndpoint));
-        }
+        connectionPromises.push(
+          connectApi(fromChainId, Object.values(fromChain.providers))
+        );
       }
 
       if (toChain?.providers) {
-        const toBestEndpoint = await findBestWssEndpoint(toChain.providers);
-        if (toBestEndpoint) {
-          connectionPromises.push(connectApi(toChainId, toBestEndpoint));
-        }
+        connectionPromises.push(
+          connectApi(toChainId, Object.values(toChain.providers))
+        );
       }
 
       await Promise.all(connectionPromises);

@@ -20,12 +20,14 @@ type XcmTransferParams = {
   asset: XcAssetData;
   recipientAddress: string;
   isEvmChain: boolean;
+  isAssetHub: boolean;
 };
 
 export function generateDestReserveXcmMessage({
   asset,
   recipientAddress,
-  isEvmChain
+  isEvmChain,
+  isAssetHub
 }: XcmTransferParams) {
   try {
     const multiLocation = JSON.parse(asset.xcmV1MultiLocation);
@@ -36,7 +38,7 @@ export function generateDestReserveXcmMessage({
     const assetId = {
       id: {
         Concrete: {
-          parents: location?.parents === 1 ? 0 : 1,
+          parents: 0,
           interior: createStandardXcmInterior({
             interior: location?.interior
           })
@@ -75,7 +77,24 @@ export function generateDestReserveXcmMessage({
         { ClearOrigin: null },
         {
           BuyExecution: {
-            fees: assetId,
+            fees: isAssetHub
+              ? {
+                  id: {
+                    Concrete: {
+                      parents: 1,
+                      interior: {
+                        Here: null
+                      }
+                    }
+                  },
+                  fun: {
+                    Fungible: parseUnits({
+                      value: '1',
+                      decimals: asset.decimals
+                    })?.toString()
+                  }
+                }
+              : assetId,
             weightLimit: 'Unlimited'
           }
         },
@@ -92,80 +111,94 @@ export function generateDestReserveXcmMessage({
   }
 }
 
+export function generateLocalReserveXcmMessage({
+  asset,
+  recipientAddress,
+  isEvmChain,
+  isAssetHub
+}: XcmTransferParams) {
+  const isToEvm = isEvmChain;
+  const multiLocation = JSON.parse(asset.xcmV1MultiLocation);
+  const location = parseAndNormalizeXcm(multiLocation);
+  if (!location) return null;
+
+  const assetId = {
+    id: {
+      Concrete: {
+        parents: 1,
+        interior: createStandardXcmInterior({
+          interior: location?.interior
+        })
+      }
+    },
+    fun: {
+      Fungible: parseUnits({
+        value: '1',
+        decimals: asset.decimals
+      })?.toString()
+    }
+  };
+
+  const beneficiary = {
+    parents: 0,
+    interior: {
+      X1: isToEvm
+        ? {
+            AccountKey20: {
+              network: null,
+              key: recipientAddress
+            }
+          }
+        : {
+            AccountId32: {
+              network: null,
+              id: u8aToHex(decodeAddress(recipientAddress))
+            }
+          }
+    }
+  };
+
+  return {
+    V3: [
+      { ReserveAssetDeposited: [assetId] },
+      { ClearOrigin: null },
+      {
+        BuyExecution: {
+          fees: isAssetHub
+            ? {
+                id: {
+                  Concrete: {
+                    parents: 1,
+                    interior: {
+                      Here: null
+                    }
+                  }
+                },
+                fun: {
+                  Fungible: parseUnits({
+                    value: '1',
+                    decimals: asset.decimals
+                  })?.toString()
+                }
+              }
+            : assetId,
+          weightLimit: 'Unlimited'
+        }
+      },
+      {
+        DepositAsset: {
+          assets: { Wild: 'All' },
+          beneficiary
+        }
+      }
+    ]
+  };
+}
+
 /**
- * 生成源链储备(Local Reserve)场景下的XCM传输消息
- * 适用场景：当资产token在源链A上注册时的跨链转账（A -> B）
+ * 生成远程储备(Remote Reserve)场景下的XCM传输消息
+ * 适用场景：当资产token在第三方链C上注册时的跨链转账（A -> B）
  */
-// export function generateLocalReserveXcmMessage({
-//   token,
-//   amount,
-//   toChain,
-//   recipientAddress
-// }: XcmTransferParams) {
-//   const isToEvm = toChain.isEvmChain;
-//   // 计算实际转账金额
-//   const amountBN = new BN(amount);
-//   const decimalsBN = new BN(10).pow(new BN(token.decimals));
-//   const amountInWei = amountBN.mul(decimalsBN)?.toString();
-
-//   // 构建WithdrawAsset部分
-//   const assetId = {
-//     id: {
-//       Concrete: {
-//         parents: 1,
-//         interior: JSON.parse(token.xcmV1MultiLocation).v1.interior
-//       }
-//     },
-//     fun: {
-//       Fungible: amountInWei
-//     }
-//   };
-
-//   // 构建接收地址部分
-//   const beneficiary = {
-//     parents: 0,
-//     interior: {
-//       X1: isToEvm
-//         ? {
-//             AccountKey20: {
-//               network: null,
-//               key: recipientAddress
-//             }
-//           }
-//         : {
-//             AccountId32: {
-//               network: null,
-//               id: Array.from(decodeAddress(recipientAddress))
-//             }
-//           }
-//     }
-//   };
-
-//   return {
-//     V3: [
-//       { WithdrawAsset: [assetId] },
-//       { ClearOrigin: null },
-//       {
-//         BuyExecution: {
-//           fees: assetId,
-//           weightLimit: 'Unlimited'
-//         }
-//       },
-//       {
-//         DepositReserveAsset: {
-//           assets: { Wild: 'All' },
-//           dest: beneficiary,
-//           xcm: []
-//         }
-//       }
-//     ]
-//   };
-// }
-
-// /**
-//  * 生成远程储备(Remote Reserve)场景下的XCM传输消息
-//  * 适用场景：当资产token在第三方链C上注册时的跨链转账（A -> B）
-//  */
 // export function generateRemoteReserveXcmMessage({
 //   token,
 //   amount,
@@ -276,14 +309,36 @@ type CalculateExecutionWeightParams = Omit<XcmTransferParams, 'isEvmChain'> & {
 export async function calculateExecutionWeight({
   api,
   asset,
-  recipientAddress
+  recipientAddress,
+  isAssetHub
 }: CalculateExecutionWeightParams) {
-  const xcmMessage = generateDestReserveXcmMessage({
-    asset,
-    recipientAddress,
-    isEvmChain: false
-  });
+  let xcmMessage = null;
+  if (asset?.reserveType === 'local') {
+    console.log('local');
+
+    xcmMessage = generateLocalReserveXcmMessage({
+      asset,
+      recipientAddress,
+      isEvmChain: false,
+      isAssetHub
+    });
+  } else if (asset?.reserveType === 'foreign') {
+    console.log('foreign');
+    xcmMessage = generateDestReserveXcmMessage({
+      asset,
+      recipientAddress,
+      isEvmChain: false,
+      isAssetHub
+    });
+  }
   try {
+    if (!xcmMessage) {
+      console.log('reserveType is not supported');
+      return {
+        weight: null,
+        xcmMessage: null
+      };
+    }
     const weightResponse =
       await api.call.xcmPaymentApi.queryXcmWeight(xcmMessage);
 
@@ -376,8 +431,7 @@ type QuotePriceTokensParams = {
 export async function quotePriceTokensForExactTokens({
   api,
   asset,
-  amount,
-  includeFee = false
+  amount
 }: QuotePriceTokensParams) {
   try {
     const multiLocation = JSON.parse(asset?.xcmV1MultiLocation);
@@ -407,14 +461,13 @@ export async function quotePriceTokensForExactTokens({
       parents: 1,
       interior: 'Here'
     };
-    const includeFeeBool = includeFee ? 'Yes' : 'No';
 
     const quote =
       await api.call.assetConversionApi.quotePriceTokensForExactTokens(
         asset1Location,
         asset2Location,
         amount,
-        includeFeeBool
+        'Yes'
       );
 
     return quote.toJSON();
@@ -442,7 +495,8 @@ export const getXcmWeightFee = async ({
   const { weight } = await calculateExecutionWeight({
     api,
     asset,
-    recipientAddress
+    recipientAddress,
+    isAssetHub: Number(paraId) === 1000
   });
 
   if (!weight) {
@@ -471,8 +525,7 @@ export const getXcmWeightFee = async ({
     const quote = (await quotePriceTokensForExactTokens({
       api,
       asset,
-      amount: fee?.toString(),
-      includeFee: true
+      amount: fee?.toString()
     })) as number | null;
     return {
       fee: quote ? bnToBn(quote) : BN_ZERO,

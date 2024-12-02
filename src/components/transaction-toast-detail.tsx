@@ -35,6 +35,9 @@ export function TransactionToastDetail({ txHash }: TransactionToastProps) {
     return explorer ? `${explorer}/tx/${txHash}` : '';
   }, [transaction, sourceChain, txHash]);
 
+  const isLoading =
+    transaction?.status === 'in-progress' && transaction.uniqueId;
+
   return (
     <div className="flex flex-col gap-[5px] rounded-[10px] bg-white">
       <div className="text-[14px] font-normal leading-[24px] text-[#121619]">
@@ -49,15 +52,21 @@ export function TransactionToastDetail({ txHash }: TransactionToastProps) {
         .
       </div>
       <div>
-        <Link
-          href={blockExplorerUrl}
-          className="flex items-center gap-[10px] font-mono text-[12px] font-normal leading-normal text-[#12161950]"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Tx:{stringShorten(transaction?.uniqueId ?? txHash)}
-          <Image src="/images/link.svg" alt="link" width={8} height={8} />
-        </Link>
+        {isLoading ? (
+          <div className="flex animate-pulse items-center gap-[10px] font-mono text-[12px] font-normal leading-normal text-[#12161950]">
+            Loading transaction details...
+          </div>
+        ) : (
+          <Link
+            href={blockExplorerUrl}
+            className="flex items-center gap-[10px] font-mono text-[12px] font-normal leading-normal text-[#12161950]"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Tx:{stringShorten(transaction?.uniqueId ?? txHash)}
+            <Image src="/images/link.svg" alt="link" width={8} height={8} />
+          </Link>
+        )}
       </div>
     </div>
   );

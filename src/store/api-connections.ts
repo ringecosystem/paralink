@@ -11,7 +11,10 @@ interface ApiConnection {
 
 interface ApiConnectionsStore {
   connections: Record<string, ApiConnection>;
-  connectApi: (paraId: string, endpoint: string) => Promise<ApiPromise | null>;
+  connectApi: (
+    paraId: string,
+    endpoint: string | string[]
+  ) => Promise<ApiPromise | null>;
   getApi: (paraId: string | number | undefined | null) => ApiPromise | null;
   disconnectApi: (paraId: string) => Promise<void>;
 }
@@ -23,7 +26,7 @@ const RECONNECT_DELAY = 1000;
 const useApiConnectionsStore = create<ApiConnectionsStore>((set, get) => ({
   connections: {},
 
-  connectApi: async (paraId: string, endpoint: string) => {
+  connectApi: async (paraId: string, endpoint: string | string[]) => {
     const state = get();
     const existingConnection = state.connections[paraId];
 

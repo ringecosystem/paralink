@@ -84,6 +84,76 @@ export function generateDestReserveXcmMessage({
   }
 }
 
+export function generateLocalReserveXcmMessage({
+  asset,
+  recipientAddress,
+  isEvmChain
+}: XcmTransferParams) {
+  if (!asset.xcmV1MultiLocation) return null;
+  try {
+    const multiLocation = JSON.parse(asset.xcmV1MultiLocation);
+
+    const location = parseAndNormalizeXcm(multiLocation);
+    if (!location) return null;
+
+    const assetId = {
+      id: {
+        Concrete: {
+          parents: 0,
+          interior: createStandardXcmInterior({
+            interior: location?.interior
+          })
+        }
+      },
+      fun: {
+        Fungible: parseUnits({
+          value: '1',
+          decimals: asset.decimals
+        })?.toString()
+      }
+    };
+
+    const beneficiary = {
+      parents: 0,
+      interior: {
+        X1: isEvmChain
+          ? {
+              AccountKey20: {
+                network: null,
+                key: recipientAddress
+              }
+            }
+          : {
+              AccountId32: {
+                network: null,
+                id: u8aToHex(decodeAddress(recipientAddress))
+              }
+            }
+      }
+    };
+    return {
+      V3: [
+        { ReserveAssetDeposited: [assetId] },
+        { ClearOrigin: null },
+        {
+          BuyExecution: {
+            fees: assetId,
+            weightLimit: 'Unlimited'
+          }
+        },
+        {
+          DepositAsset: {
+            assets: { Wild: 'All' },
+            beneficiary
+          }
+        }
+      ]
+    };
+  } catch (error) {
+    console.log('error', error);
+  }
+}
+
 interface QueryDeliveryFeesParams {
   api: ApiPromise;
   asset: XcAssetData;
@@ -115,12 +185,20 @@ export async function queryDeliveryFees({
         }
       }
     };
-
-    const xcmMessage = generateDestReserveXcmMessage({
-      asset,
-      recipientAddress,
-      isEvmChain: false
-    });
+    let xcmMessage = null;
+    if (asset.reserveType === 'foreign') {
+      xcmMessage = generateDestReserveXcmMessage({
+        asset,
+        recipientAddress,
+        isEvmChain: false
+      });
+    } else if (asset.reserveType === 'local') {
+      xcmMessage = generateLocalReserveXcmMessage({
+        asset,
+        recipientAddress,
+        isEvmChain: false
+      });
+    }
 
     if (!xcmMessage) return BN_ZERO;
 
