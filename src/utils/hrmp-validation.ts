@@ -3,6 +3,7 @@ import { findBestWssEndpoint } from '@/utils/rpc-endpoint';
 import type { ChainInfo } from '@/types/chains-info';
 import type { BN } from '@polkadot/util';
 import type { ChainConfig } from '@/types/asset-registry';
+import hrmpJson from '@/assets/hrmp.json';
 
 interface HrmpChannel {
   sender: number;
@@ -101,12 +102,12 @@ export async function filterHrmpConnections({
   chainsInfo
 }: FilterHrmpConnectionsParams): Promise<ChainConfig> {
   try {
-    const polkadotChain = chainsInfo.find((chain) => chain.name === 'Polkadot');
-    if (!polkadotChain || !polkadotChain.providers)
-      throw new Error('Polkadot chain information or providers not found');
+    // const polkadotChain = chainsInfo.find((chain) => chain.name === 'Polkadot');
+    // if (!polkadotChain || !polkadotChain.providers)
+    //   throw new Error('Polkadot chain information or providers not found');
 
-    const api = await createPolkadotApi(polkadotChain.providers);
-    const hrmpChannels = await getHrmpChannels(api);
+    // const api = await createPolkadotApi(polkadotChain.providers);
+    // const hrmpChannels = await getHrmpChannels(api);
 
     // 过滤有效的 paraId 连接
     const filteredRegistry: ChainConfig = {};
@@ -120,7 +121,7 @@ export async function filterHrmpConnections({
         const validationResult = validateChannels(
           Number(paraId),
           Number(otherParaId),
-          hrmpChannels
+          hrmpJson
         );
         return validationResult.isValid;
       });
@@ -130,7 +131,7 @@ export async function filterHrmpConnections({
       }
     }
 
-    await api.disconnect();
+    // await api.disconnect();
     return filteredRegistry;
   } catch (error) {
     throw new Error(

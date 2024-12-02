@@ -11,24 +11,31 @@ interface OrmlTokensAccountData {
 }
 
 export async function getAssetBalance({
+  paraId,
   api,
   account,
-  xcAssetData
+  xcAssetData,
+  signal
 }: {
+  paraId: number;
   api: ApiPromise;
   account: string;
   xcAssetData?: XcAssetData;
+  signal?: AbortSignal;
 }): Promise<BN> {
   const assetId = xcAssetData?.asset;
   if (!assetId) {
     return BN_ZERO;
   }
   try {
+    if (signal?.aborted) throw new Error('Request aborted');
+    signal?.throwIfAborted();
+
     if (assetId === 'Native') {
       const balancesAll = await api.derive.balances.all(account);
       return balancesAll.availableBalance;
     }
-    if (xcAssetData.paraID === 1000 && xcAssetData.reserveType === 'foreign') {
+    if (paraId === 1000 && xcAssetData.reserveType === 'foreign') {
       const result = await api.query.foreignAssets.account(
         JSON.parse(xcAssetData.xcmV1MultiLocation),
         account
