@@ -23,7 +23,7 @@ export function useChainInitialization({
 }: UseChainInitializationProps) {
   const [isLoading, setIsLoading] = useState(false);
   const hasInitialized = useRef(false);
-  const { setupCrossChainConfig } = useCrossChainSetup(assetsInfo);
+  const { setupCrossChainConfig } = useCrossChainSetup();
   const setChains = useChainsStore((state) => state.setChains);
 
   useEffect(() => {

@@ -73,6 +73,7 @@ export function useXcmExtrinsic({
       setIsLoading(true);
       try {
         const paymentInfo = await extrinsic.paymentInfo(address);
+
         const fee = paymentInfo?.toJSON()?.partialFee as number;
         if (fee) setPartialFee(bnToBn(fee));
       } catch (error) {
