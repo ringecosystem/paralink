@@ -25,8 +25,7 @@ export function findIconBySymbol(symbol: string, assets: Asset[]) {
     assets?.find((asset) => {
       const assetSymbol = asset.symbol?.toLowerCase();
       const targetSymbol = symbol.toLowerCase();
-
-      return (
+      const isMatch =
         assetSymbol === targetSymbol ||
         assetSymbol === `ah${targetSymbol}` ||
         assetSymbol === `${targetSymbol}ah` ||
@@ -35,8 +34,10 @@ export function findIconBySymbol(symbol: string, assets: Asset[]) {
         assetSymbol === `w${targetSymbol}` ||
         assetSymbol === `${targetSymbol}w` ||
         targetSymbol === `w${assetSymbol}` ||
-        targetSymbol === `${assetSymbol}w`
-      );
+        targetSymbol === `${assetSymbol}w` ||
+        targetSymbol === `v${assetSymbol}` ||
+        targetSymbol === `${assetSymbol}v`;
+      return isMatch;
     })?.icon || '/images/default-token.svg'
   );
 }
@@ -113,7 +114,9 @@ export function getTokenFromXcAsset({
     `${nativeChainID}-LOCAL-W${symbol}`,
     `${nativeChainID}-LOCAL-${symbol}W`,
     `${nativeChainID}-native-${symbol.toLowerCase()}`,
-    `${nativeChainID}-local-${symbol.toLowerCase()}`
+    `${nativeChainID}-local-${symbol.toLowerCase()}`,
+    `${nativeChainID}-local-v${symbol.toLowerCase()}`,
+    `${nativeChainID}-local-${symbol.toLowerCase()}v`
   ];
 
   const slugMatch = assets?.find((asset) =>
@@ -146,6 +149,8 @@ export function getTokenFromXcAsset({
   });
 
   const bestMatch = exactSymbolMatch || prefixSymbolMatch || slugMatch;
+
+  console.log('没吃过啊', bestMatch?.icon, findIconBySymbol(symbol, assets));
 
   return {
     ...xcAssetData,

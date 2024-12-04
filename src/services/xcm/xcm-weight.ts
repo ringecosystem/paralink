@@ -1,8 +1,5 @@
 import { XcAssetData } from '@/types/asset-registry';
-import {
-  createStandardXcmInterior,
-  parseAndNormalizeXcm
-} from '@/utils/xcm-location';
+import { createStandardXcmInterior } from '@/utils/xcm/interior-params';
 import { ApiPromise } from '@polkadot/api';
 import { decodeAddress } from '@polkadot/util-crypto';
 import { MultiLocation } from '@polkadot/types/interfaces/xcm';
@@ -32,16 +29,11 @@ export function generateDestReserveXcmMessage({
   try {
     const multiLocation = JSON.parse(asset.xcmV1MultiLocation);
 
-    const location = parseAndNormalizeXcm(multiLocation);
-    if (!location) return null;
-
     const assetId = {
       id: {
         Concrete: {
           parents: 0,
-          interior: createStandardXcmInterior({
-            interior: location?.interior
-          })
+          interior: createStandardXcmInterior(multiLocation?.v1?.interior)
         }
       },
       fun: {
@@ -51,6 +43,8 @@ export function generateDestReserveXcmMessage({
         })?.toString()
       }
     };
+
+    console.log('generateDestReserveXcmMessage assetId', assetId);
 
     const beneficiary = {
       parents: 0,
@@ -119,16 +113,12 @@ export function generateLocalReserveXcmMessage({
 }: XcmTransferParams) {
   const isToEvm = isEvmChain;
   const multiLocation = JSON.parse(asset.xcmV1MultiLocation);
-  const location = parseAndNormalizeXcm(multiLocation);
-  if (!location) return null;
 
   const assetId = {
     id: {
       Concrete: {
         parents: 1,
-        interior: createStandardXcmInterior({
-          interior: location?.interior
-        })
+        interior: createStandardXcmInterior(multiLocation?.v1?.interior)
       }
     },
     fun: {
@@ -138,6 +128,7 @@ export function generateLocalReserveXcmMessage({
       })?.toString()
     }
   };
+  console.log('generateLocalReserveXcmMessage assetId', assetId);
 
   const beneficiary = {
     parents: 0,
@@ -313,6 +304,7 @@ export async function calculateExecutionWeight({
   isAssetHub
 }: CalculateExecutionWeightParams) {
   let xcmMessage = null;
+
   if (asset?.reserveType === 'local') {
     console.log('local');
 
@@ -387,21 +379,15 @@ export async function calculateWeightFee({
       };
     } else {
       const multiLocation = JSON.parse(asset?.xcmV1MultiLocation);
-      const location = parseAndNormalizeXcm(multiLocation);
-      if (location) {
-        const { interior } = location;
 
-        assetInfo = {
-          V3: {
-            Concrete: {
-              parents: location?.parents === 1 ? 0 : 1,
-              interior: createStandardXcmInterior({
-                interior
-              })
-            }
+      assetInfo = {
+        V3: {
+          Concrete: {
+            parents: multiLocation?.v1?.parents === 1 ? 0 : 1,
+            interior: createStandardXcmInterior(multiLocation?.v1?.interior)
           }
-        };
-      }
+        }
+      };
     }
 
     const fee = await api.call.xcmPaymentApi.queryWeightToAssetFee(
@@ -435,23 +421,21 @@ export async function quotePriceTokensForExactTokens({
 }: QuotePriceTokensParams) {
   try {
     const multiLocation = JSON.parse(asset?.xcmV1MultiLocation);
-    const location = parseAndNormalizeXcm(multiLocation);
+    const interior = createStandardXcmInterior(multiLocation?.v1?.interior);
     if (!location) return null;
     const asset1Location = {
       parents: 0,
       interior: {
         X2: [
           {
-            PalletInstance: Array.isArray(location?.interior)
-              ? location?.interior?.find((item) => item.PalletInstance)
-                  ?.PalletInstance
-              : location?.interior?.PalletInstance
+            PalletInstance: Array.isArray(interior)
+              ? interior?.find((item) => item.PalletInstance)?.PalletInstance
+              : 50
           },
           {
-            GeneralIndex: Array.isArray(location?.interior)
-              ? location?.interior?.find((item) => item.GeneralIndex)
-                  ?.GeneralIndex
-              : location?.interior?.GeneralIndex
+            GeneralIndex: Array.isArray(interior)
+              ? interior?.find((item) => item.GeneralIndex)?.GeneralIndex
+              : (interior?.GeneralIndex ?? 0)
           }
         ]
       }

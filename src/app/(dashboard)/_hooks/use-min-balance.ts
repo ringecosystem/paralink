@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import type { ApiPromise } from '@polkadot/api';
 import { XcAssetData } from '@/types/asset-registry';
 import { getTargetMinBalance } from '@/services/xcm/target-min-balance';
-import { parseAndNormalizeXcm } from '@/utils/xcm-location';
+import { createStandardXcmInterior } from '@/utils/xcm/interior-params';
 import { BN, BN_ZERO } from '@polkadot/util';
 
 interface UseMinBalanceProps {
@@ -17,9 +17,10 @@ export const useMinBalance = ({ api, asset, decimals }: UseMinBalanceProps) => {
 
   const assetId = useMemo(() => {
     if (!asset) return null;
-    const location = parseAndNormalizeXcm(JSON.parse(asset.xcmV1MultiLocation));
-    if (location) {
-      const { interior } = location;
+    const interior = createStandardXcmInterior(
+      JSON.parse(asset.xcmV1MultiLocation)?.v1?.interior
+    );
+    if (interior) {
       let assetId;
       if (Array.isArray(interior)) {
         assetId = interior?.find((item) => item.GeneralIndex)?.GeneralIndex;

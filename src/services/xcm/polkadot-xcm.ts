@@ -4,10 +4,7 @@ import { XcAssetData } from '@/types/asset-registry';
 import { ChainInfoWithXcAssetsData } from '@/store/chains';
 import { Signer, SubmittableExtrinsic } from '@polkadot/api/types';
 import { ApiPromise } from '@polkadot/api';
-import {
-  createStandardXcmInterior,
-  parseAndNormalizeXcm
-} from '@/utils/xcm-location';
+import { createStandardXcmInterior } from '@/utils/xcm/interior-params';
 import { u8aToHex } from '@polkadot/util';
 import { checkTransactionHash } from '../subscan';
 
@@ -34,11 +31,7 @@ export function createXcmTransfer({
   if (amountInWei.isZero()) return undefined;
   try {
     const multiLocation = JSON.parse(token.xcmV1MultiLocation);
-    const location = parseAndNormalizeXcm(multiLocation);
-    if (!location) return undefined;
-    const interior = createStandardXcmInterior({
-      interior: location?.interior
-    });
+    const interior = createStandardXcmInterior(multiLocation?.v1?.interior);
 
     const dest = {
       V3: {
@@ -50,7 +43,6 @@ export function createXcmTransfer({
         }
       }
     };
-    console.log('');
 
     const beneficiary = {
       V3: {

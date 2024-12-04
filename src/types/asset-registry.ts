@@ -39,7 +39,11 @@ export type AssetType =
   | { VToken2: string }
   | { VSToken2: string };
 
-export type ReserveType = 'local' | 'foreign' | 'external';
+export enum ReserveType {
+  Local = 'local',
+  Foreign = 'foreign',
+  Remote = 'remote'
+}
 export interface XcAssetData {
   paraID: number;
   nativeChainID: string | null;

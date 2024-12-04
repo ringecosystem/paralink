@@ -1,39 +1,30 @@
-import { parseAndNormalizeXcm } from '@/utils/xcm-location';
+import { flattenXcmInterior } from '@/utils/xcm/helper';
 import type { ApiPromise } from '@polkadot/api';
 import type { XcAssetData } from '@/types/asset-registry';
-
 type CheckAssetHubAcceptablePaymentTokenParams = {
   api: ApiPromise;
-  asset: XcAssetData;
+  asset?: XcAssetData;
 };
 export async function checkAssetHubAcceptablePaymentToken({
   api,
   asset
 }: CheckAssetHubAcceptablePaymentTokenParams) {
   try {
+    console.log('asset', asset);
     if (!asset?.xcmV1MultiLocation) {
-      console.log('Asset XCM location is missing or invalid');
+      console.log('Asset XCM location not found', asset);
       return false;
     }
+    const interiorFlattened = flattenXcmInterior(asset?.xcmV1MultiLocation);
+    console.log('interior', interiorFlattened);
+    const assetId = Array.isArray(interiorFlattened)
+      ? interiorFlattened?.find((item) => item.generalIndex)?.generalIndex
+      : null;
 
-    const multiLocation = JSON.parse(asset.xcmV1MultiLocation);
-    const location = parseAndNormalizeXcm(multiLocation);
-
-    if (!location) {
-      console.log('Failed to parse XCM location', { multiLocation });
-      return false;
-    }
-
-    const { interior } = location;
-    let assetId;
-    if (Array.isArray(interior)) {
-      assetId = interior?.find((item) => item.GeneralIndex)?.GeneralIndex;
-    } else {
-      assetId = interior?.GeneralIndex;
-    }
+    console.log('assetId', assetId);
 
     if (!assetId) {
-      console.log('Asset ID not found in XCM location', asset);
+      console.log('Asset ID not found in XCM location', assetId);
       return false;
     }
 
@@ -44,7 +35,7 @@ export async function checkAssetHubAcceptablePaymentToken({
     )?.isSufficient as boolean;
 
     if (!isSufficient) {
-      console.log('Asset is not sufficient for payment', asset);
+      console.log('Asset is not sufficient for payment', assetId);
     }
 
     return isSufficient;

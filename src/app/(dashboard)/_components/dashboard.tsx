@@ -98,6 +98,14 @@ export default function Dashboard({
     return connection?.status === 'CONNECTED' ? connection.api : null;
   }, [connections, toChain?.id]);
 
+  const isApiLoading = useMemo(() => {
+    if (!toChain?.id || !fromChain?.id) return false;
+    const sourceConnectionIsLoading = connections?.[fromChain.id]?.isLoading;
+    const targetConnectionIsLoading = connections?.[toChain.id]?.isLoading;
+
+    return sourceConnectionIsLoading || targetConnectionIsLoading;
+  }, [connections, toChain?.id, fromChain?.id]);
+
   const selectedToken = useTokensStore((state) => state.selectedToken);
 
   // 初始化
@@ -241,10 +249,10 @@ export default function Dashboard({
   }, [extrinsic, address, executeTransaction]);
 
   const buttonLoadingText = useMemo(() => {
-    if (isLoadingCrossChain || isToExistentialDepositLoading)
+    if (isApiLoading || isLoadingCrossChain || isToExistentialDepositLoading)
       return 'Connecting...';
     return undefined;
-  }, [isLoadingCrossChain, isToExistentialDepositLoading]);
+  }, [isApiLoading, isLoadingCrossChain, isToExistentialDepositLoading]);
 
   useEffect(() => {
     setRecipientAddress('');
@@ -374,6 +382,7 @@ export default function Dashboard({
               <ConnectOrActionButton
                 onAction={handleClick}
                 isLoading={
+                  isApiLoading ||
                   isLoadingCrossChain ||
                   isToExistentialDepositLoading ||
                   isNetworkFeeLoading ||

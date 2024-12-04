@@ -27,16 +27,21 @@ interface UseCrossChainSetupReturn {
   }) => void;
 }
 export function useCrossChainSetup(): UseCrossChainSetupReturn {
-  const { setFromChainId, setToChainId, setFromChains, setToChains } =
-    useChainsStore(
-      useShallow((state) => ({
-        setChains: state.setChains,
-        setFromChainId: state.setFromChainId,
-        setToChainId: state.setToChainId,
-        setFromChains: state.setFromChains,
-        setToChains: state.setToChains
-      }))
-    );
+  const {
+    setFromChainId,
+    toChainId,
+    setToChainId,
+    setFromChains,
+    setToChains
+  } = useChainsStore(
+    useShallow((state) => ({
+      setFromChainId: state.setFromChainId,
+      toChainId: state.toChainId,
+      setToChainId: state.setToChainId,
+      setFromChains: state.setFromChains,
+      setToChains: state.setToChains
+    }))
+  );
 
   const { connectApi } = useApiConnectionsStore(
     useShallow((state) => ({
@@ -88,21 +93,33 @@ export function useCrossChainSetup(): UseCrossChainSetupReturn {
       try {
         const fromChains = getFromChains(chains);
         const fromChainId = initialFromId ? initialFromId : fromChains?.[0]?.id;
-
-        const toChains = getToChains(chains, fromChainId);
-        const toChainId = toChains?.[0]?.id ?? '';
-
         setFromChainId(fromChainId);
         setFromChains(fromChains);
-        setToChainId(toChainId);
+        const toChains = getToChains(chains, fromChainId);
         setToChains(toChains);
 
-        await setupChainConnections({ chains, fromChainId, toChainId });
+        let defaultToChainId = toChainId;
+        if (
+          !defaultToChainId ||
+          defaultToChainId === fromChainId ||
+          !toChains?.find((chain) => chain.id === defaultToChainId)
+        ) {
+          defaultToChainId = toChains?.[0]?.id ?? '';
+        }
+
+        setToChainId(defaultToChainId);
+
+        await setupChainConnections({
+          chains,
+          fromChainId,
+          toChainId: defaultToChainId
+        });
       } catch (error) {
         console.error(error);
       }
     },
     [
+      toChainId,
       setFromChainId,
       setFromChains,
       setToChainId,

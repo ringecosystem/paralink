@@ -1,9 +1,7 @@
+import { ReserveType } from '@/types/asset-registry';
 import type { ChainInfoWithXcAssetsData } from '@/store/chains';
-import type {
-  AssetType,
-  ReserveType,
-  XcAssetData
-} from '@/types/asset-registry';
+import type { AssetType, XcAssetData } from '@/types/asset-registry';
+import { determineReserveType } from './xcm';
 
 export function hasParachainInLocation({
   multiLocationStr,
@@ -98,9 +96,6 @@ export const getTokenList = ({
   fromChain: ChainInfoWithXcAssetsData;
   toChain: ChainInfoWithXcAssetsData;
 }) => {
-  console.log('fromChain', fromChain);
-  console.log('toChain', toChain);
-
   const tokenList: XcAssetData[] = [];
   if (fromChain.id === '1000') {
     const destAssetsInfo = toChain?.xcAssetsData?.filter((asset) => {
@@ -128,7 +123,7 @@ export const getTokenList = ({
           decimals: asset.decimals,
           paraID: Number(fromChain.id),
           nativeChainID: fromChain.name.toLowerCase().replace(/\s/g, '-'),
-          reserveType: 'local' as ReserveType,
+          reserveType: ReserveType.Local,
           asset: generalIndex as AssetType,
           xcmV1MultiLocation: JSON.stringify({
             v1: {
@@ -139,14 +134,13 @@ export const getTokenList = ({
                     parachain: Number(fromChain.id)
                   },
                   { palletInstance: 50 },
-                  { generalIndex: String(generalIndex) }
+                  { generalIndex: generalIndex }
                 ]
               }
             }
           })
         };
       });
-
       tokenList.push(...processedAssets);
     }
   } else {
@@ -164,18 +158,13 @@ export const getTokenList = ({
     if (supportedNativeToken) {
       supportedNativeToken = {
         ...supportedNativeToken,
-        symbol: supportedNativeToken?.symbol || '',
-        decimals: supportedNativeToken?.decimals || 0,
-        paraID: Number(fromChain.id),
-        nativeChainID: fromChain.name.toLowerCase().replace(/\s/g, '-'),
-        reserveType: 'local' as ReserveType,
+        reserveType: ReserveType.Local,
         asset: 'Native' as AssetType,
         xcmV1MultiLocation: JSON.stringify({
           v1: {
             parents: 0,
-            interior: {
-              Here: ''
-            }
+            interior: JSON.parse(supportedNativeToken?.xcmV1MultiLocation)?.v1
+              ?.interior
           }
         })
       };
@@ -206,7 +195,11 @@ export const getTokenList = ({
         })
         ?.map((v) => ({
           ...v,
-          reserveType: 'foreign' as ReserveType
+          reserveType: determineReserveType({
+            currentParaId: Number(fromChain.id),
+            paraID: Number(v?.paraID),
+            originChainReserveLocation: v.originChainReserveLocation
+          })
         })) ?? [];
 
     return supportedNativeToken

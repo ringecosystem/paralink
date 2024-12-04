@@ -1,9 +1,6 @@
 import { decodeAddress } from '@polkadot/util-crypto';
 import { BN_ZERO, bnToBn, u8aToHex } from '@polkadot/util';
-import {
-  createStandardXcmInterior,
-  parseAndNormalizeXcm
-} from '@/utils/xcm-location';
+import { createStandardXcmInterior } from '@/utils/xcm/interior-params';
 import { parseUnits } from '@/utils/format';
 import type { XcAssetData } from '@/types/asset-registry';
 import type { ApiPromise } from '@polkadot/api';
@@ -23,16 +20,11 @@ export function generateDestReserveXcmMessage({
   try {
     const multiLocation = JSON.parse(asset.xcmV1MultiLocation);
 
-    const location = parseAndNormalizeXcm(multiLocation);
-    if (!location) return null;
-
     const assetId = {
       id: {
         Concrete: {
           parents: 1,
-          interior: createStandardXcmInterior({
-            interior: location?.interior
-          })
+          interior: createStandardXcmInterior(multiLocation?.v1?.interior)
         }
       },
       fun: {
@@ -93,16 +85,11 @@ export function generateLocalReserveXcmMessage({
   try {
     const multiLocation = JSON.parse(asset.xcmV1MultiLocation);
 
-    const location = parseAndNormalizeXcm(multiLocation);
-    if (!location) return null;
-
     const assetId = {
       id: {
         Concrete: {
           parents: 0,
-          interior: createStandardXcmInterior({
-            interior: location?.interior
-          })
+          interior: createStandardXcmInterior(multiLocation?.v1?.interior)
         }
       },
       fun: {

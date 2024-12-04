@@ -138,6 +138,7 @@ export function Picker({
     const initTokens = async () => {
       if (!tokens?.length || !targetChainApi || !targetChainId) return;
       setAvailableTokensLoading(true);
+
       try {
         if (targetChainId === '1000') {
           const tokenPromises = tokens.map((token) =>
@@ -167,14 +168,16 @@ export function Picker({
           const acceptablePaymentTokens = await getAcceptablePaymentTokens({
             api: targetChainApi
           });
+          console.log('acceptablePaymentTokens', acceptablePaymentTokens);
+          console.log('tokens', tokens);
+
           if (acceptablePaymentTokens?.length) {
             const matchTokens = tokens.filter((asset) => {
               const isSupported = acceptablePaymentTokens.some((tokenInfo) =>
-                isXcmLocationMatch(
-                  Number(sourceChainId),
-                  tokenInfo?.v3?.concrete,
-                  JSON.parse(asset?.xcAssetData?.xcmV1MultiLocation)?.v1
-                )
+                isXcmLocationMatch({
+                  acceptablePaymentLocation: tokenInfo?.v3?.concrete,
+                  asset: asset.xcAssetData
+                })
               );
 
               if (!isSupported) {
