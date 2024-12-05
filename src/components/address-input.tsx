@@ -8,17 +8,23 @@ import type { ChainInfoWithXcAssetsData } from '@/store/chains';
 
 interface AddressInputProps {
   value: string;
+  error?: React.ReactNode;
   chain?: ChainInfoWithXcAssetsData;
   onChange: (address: string) => void;
 }
 
-export function AddressInput({ value, chain, onChange }: AddressInputProps) {
+export function AddressInput({
+  value,
+  chain,
+  onChange,
+  error
+}: AddressInputProps) {
   const [isOpen, setIsOpen] = useState(false);
   function handleEdit() {
     setIsOpen(true);
   }
   return (
-    <>
+    <div>
       <div
         className="flex cursor-pointer items-center justify-between gap-[10px] rounded-[10px] bg-[#F2F3F5] p-[10px] transition-opacity hover:opacity-80"
         onClick={handleEdit}
@@ -38,6 +44,8 @@ export function AddressInput({ value, chain, onChange }: AddressInputProps) {
           <Image src="/images/edit.svg" alt="edit" width={16} height={16} />
         </span>
       </div>
+      {error && <div className="mt-1 text-xs">{error}</div>}
+
       <RecipientModal
         value={value}
         chain={chain}
@@ -45,6 +53,6 @@ export function AddressInput({ value, chain, onChange }: AddressInputProps) {
         onClose={() => setIsOpen(false)}
         onSave={onChange}
       />
-    </>
+    </div>
   );
 }
