@@ -52,6 +52,7 @@ export function useExistentialDeposit({
   useEffect(() => {
     if (!api || !address) {
       setIsLoading(false);
+      setState(DEFAULT_TOKEN_STATE);
       return;
     }
 

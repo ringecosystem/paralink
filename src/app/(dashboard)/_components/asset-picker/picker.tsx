@@ -136,6 +136,9 @@ export function Picker({
   // get available tokens
   useEffect(() => {
     const initTokens = async () => {
+      console.log('initTokens', tokens);
+      console.log('targetChainApi', targetChainApi);
+      console.log('targetChainId', targetChainId);
       if (!tokens?.length || !targetChainApi || !targetChainId) return;
       setAvailableTokensLoading(true);
 
@@ -165,6 +168,7 @@ export function Picker({
             setSelectedToken(validTokens[0]);
           }
         } else {
+          console.log('clean up 1');
           const acceptablePaymentTokens = await getAcceptablePaymentTokens({
             api: targetChainApi
           });
@@ -217,8 +221,7 @@ export function Picker({
   // clean up state
   useEffect(() => {
     return () => {
-      console.log('clean up');
-
+      console.log('clean up 2');
       setSelectedToken(undefined);
       setAvailableTokens([]);
       setAvailableTokensLoading(false);
@@ -233,7 +236,6 @@ export function Picker({
     }),
     [refreshBalances]
   );
-
   if (availableTokensLoading) {
     return <AssetPickerLoading />;
   }

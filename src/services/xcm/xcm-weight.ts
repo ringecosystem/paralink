@@ -1,11 +1,11 @@
 import { XcAssetData } from '@/types/asset-registry';
 import { createStandardXcmInterior } from '@/utils/xcm/interior-params';
 import { ApiPromise } from '@polkadot/api';
-import { decodeAddress } from '@polkadot/util-crypto';
 import { MultiLocation } from '@polkadot/types/interfaces/xcm';
 import { parseUnits } from '@/utils/format';
 
-import { BN, BN_ZERO, bnToBn, u8aToHex } from '@polkadot/util';
+import { BN, BN_ZERO, bnToBn } from '@polkadot/util';
+import { generateBeneficiary } from '@/utils/xcm/helper';
 
 export interface XcmV3MultiLocation {
   V3?: {
@@ -16,14 +16,12 @@ export interface XcmV3MultiLocation {
 type XcmTransferParams = {
   asset: XcAssetData;
   recipientAddress: string;
-  isEvmChain: boolean;
   isAssetHub: boolean;
 };
 
 export function generateDestReserveXcmMessage({
   asset,
   recipientAddress,
-  isEvmChain,
   isAssetHub
 }: XcmTransferParams) {
   try {
@@ -43,27 +41,7 @@ export function generateDestReserveXcmMessage({
         })?.toString()
       }
     };
-
-    console.log('generateDestReserveXcmMessage assetId', assetId);
-
-    const beneficiary = {
-      parents: 0,
-      interior: {
-        X1: isEvmChain
-          ? {
-              AccountKey20: {
-                network: null,
-                key: recipientAddress
-              }
-            }
-          : {
-              AccountId32: {
-                network: null,
-                id: u8aToHex(decodeAddress(recipientAddress))
-              }
-            }
-      }
-    };
+    const beneficiary = generateBeneficiary(recipientAddress);
 
     return {
       V3: [
@@ -108,10 +86,8 @@ export function generateDestReserveXcmMessage({
 export function generateLocalReserveXcmMessage({
   asset,
   recipientAddress,
-  isEvmChain,
   isAssetHub
 }: XcmTransferParams) {
-  const isToEvm = isEvmChain;
   const multiLocation = JSON.parse(asset.xcmV1MultiLocation);
 
   const assetId = {
@@ -128,26 +104,8 @@ export function generateLocalReserveXcmMessage({
       })?.toString()
     }
   };
-  console.log('generateLocalReserveXcmMessage assetId', assetId);
 
-  const beneficiary = {
-    parents: 0,
-    interior: {
-      X1: isToEvm
-        ? {
-            AccountKey20: {
-              network: null,
-              key: recipientAddress
-            }
-          }
-        : {
-            AccountId32: {
-              network: null,
-              id: u8aToHex(decodeAddress(recipientAddress))
-            }
-          }
-    }
-  };
+  const beneficiary = generateBeneficiary(recipientAddress);
 
   return {
     V3: [
@@ -311,7 +269,6 @@ export async function calculateExecutionWeight({
     xcmMessage = generateLocalReserveXcmMessage({
       asset,
       recipientAddress,
-      isEvmChain: false,
       isAssetHub
     });
   } else if (asset?.reserveType === 'foreign') {
@@ -319,7 +276,6 @@ export async function calculateExecutionWeight({
     xcmMessage = generateDestReserveXcmMessage({
       asset,
       recipientAddress,
-      isEvmChain: false,
       isAssetHub
     });
   }

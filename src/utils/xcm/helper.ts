@@ -1,5 +1,7 @@
+import { isAddress } from 'viem';
+import { decodeAddress } from '@polkadot/util-crypto';
+import { u8aToHex } from '@polkadot/util';
 import type { GeneralKeyV3, NormalizedInterior } from './type';
-
 export const isGeneralKeyV3 = (
   key: GeneralKeyV3 | string
 ): key is GeneralKeyV3 => {
@@ -36,4 +38,24 @@ export function flattenXcmInterior(xcmLocationStr: string) {
     console.error('Failed to flatten XCM interior:', error);
     return null;
   }
+}
+
+export function generateBeneficiary(recipientAddress: string) {
+  const accountType = isAddress(recipientAddress)
+    ? 'AccountKey20'
+    : 'AccountId32';
+
+  return {
+    parents: 0,
+    interior: {
+      X1: {
+        [accountType]: {
+          network: null,
+          [accountType === 'AccountKey20' ? 'key' : 'id']: u8aToHex(
+            decodeAddress(recipientAddress)
+          )
+        }
+      }
+    }
+  };
 }

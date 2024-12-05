@@ -1,12 +1,11 @@
-import { decodeAddress } from '@polkadot/util-crypto';
 import { parseUnits } from '@/utils/format';
 import { XcAssetData } from '@/types/asset-registry';
 import { ChainInfoWithXcAssetsData } from '@/store/chains';
 import { Signer, SubmittableExtrinsic } from '@polkadot/api/types';
 import { ApiPromise } from '@polkadot/api';
 import { createStandardXcmInterior } from '@/utils/xcm/interior-params';
-import { u8aToHex } from '@polkadot/util';
 import { checkTransactionHash } from '../subscan';
+import { generateBeneficiary } from '@/utils/xcm/helper';
 
 type XcmTransferParams = {
   token: XcAssetData;
@@ -21,7 +20,6 @@ export function createXcmTransfer({
   toChain,
   recipientAddress
 }: XcmTransferParams) {
-  const isToEvm = toChain.isEvmChain;
   console.log('amount', amount);
 
   const amountInWei = parseUnits({
@@ -44,28 +42,8 @@ export function createXcmTransfer({
       }
     };
 
-    const beneficiary = {
-      V3: {
-        parents: 0,
-        interior: {
-          X1: isToEvm
-            ? {
-                AccountKey20: {
-                  network: null,
-                  key: recipientAddress
-                }
-              }
-            : {
-                AccountId32: {
-                  network: null,
-                  id: u8aToHex(decodeAddress(recipientAddress))
-                }
-              }
-        }
-      }
-    };
-    console.log('recipientAddress', recipientAddress);
-    console.log('beneficiary', beneficiary);
+    const beneficiary = generateBeneficiary(recipientAddress);
+
     const assetItems = [
       {
         id: {
