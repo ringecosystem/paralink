@@ -45,7 +45,6 @@ export async function checkTransactionHash({
   let attempts = 0;
   let initialMessageId: string | undefined;
 
-  // 首次请求获取初始状态
   try {
     const data = await fetchSubscanHash(hash);
     console.log('Initial Subscan response:', data);
@@ -59,7 +58,6 @@ export async function checkTransactionHash({
     console.error('Error getting initial state:', error);
   }
 
-  // 开始轮询检查新消息
   while (attempts < maxRetries) {
     try {
       const data = await fetchSubscanHash(hash);

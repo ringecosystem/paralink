@@ -27,7 +27,7 @@ async function testWssConnection(url: string): Promise<boolean> {
       const timeout = setTimeout(() => {
         ws.close();
         resolve(false);
-      }, 3000); // 3秒超时
+      }, 3000); 
 
       ws.onopen = () => {
         clearTimeout(timeout);

@@ -46,7 +46,6 @@ export interface Asset {
   assetRefs: AssetRef[];
 }
 
-// 常量映射
 export const ASSET_TYPES = {
   ERC20: 'ERC20',
   NATIVE: 'NATIVE',
@@ -60,6 +59,5 @@ export const ASSET_REF_TYPES = {
   SWAP: 'SWAP'
 } as const;
 
-// 辅助类型
 export type AssetType = keyof typeof ASSET_TYPES;
 export type AssetRefType = keyof typeof ASSET_REF_TYPES;

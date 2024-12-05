@@ -145,8 +145,7 @@ export function generateLocalReserveXcmMessage({
 }
 
 /**
- * 生成远程储备(Remote Reserve)场景下的XCM传输消息
- * 适用场景：当资产token在第三方链C上注册时的跨链转账（A -> B）
+
  */
 // export function generateRemoteReserveXcmMessage({
 //   token,
@@ -155,12 +154,10 @@ export function generateLocalReserveXcmMessage({
 //   recipientAddress
 // }: XcmTransferParams) {
 //   const isToEvm = toChain.isEvmChain;
-//   // 计算实际转账金额
 //   const amountBN = new BN(amount);
 //   const decimalsBN = new BN(10).pow(new BN(token.decimals));
 //   const amountInWei = amountBN.mul(decimalsBN)?.toString();
 
-//   // 构建WithdrawAsset部分
 //   const assetId = {
 //     id: {
 //       Concrete: {
@@ -173,7 +170,6 @@ export function generateLocalReserveXcmMessage({
 //     }
 //   };
 
-//   // 构建最内层的 XCM 指令
 //   const innerMostXcm = [
 //     {
 //       BuyExecution: {
@@ -206,7 +202,6 @@ export function generateLocalReserveXcmMessage({
 //     }
 //   ];
 
-//   // 构建中间层的 XCM 指令
 //   const middleXcm = [
 //     {
 //       BuyExecution: {
@@ -431,7 +426,6 @@ export const getXcmWeightFee = async ({
 }: GetXcmWeightFeeParams) => {
   let errMsg = '';
 
-  // 计算 weight
   const { weight } = await calculateExecutionWeight({
     api,
     asset,

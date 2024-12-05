@@ -44,7 +44,6 @@ const Alert = ({ message, closable = false, duration }: AlertProps) => {
           transition={{ duration: 0.35, ease: 'easeOut' }}
           onAnimationComplete={(definition) => {
             if (definition === 'exit') {
-              // 可选：在这里执行额外操作
             }
           }}
         >

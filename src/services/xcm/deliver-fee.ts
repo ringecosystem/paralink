@@ -53,7 +53,7 @@ export function generateDestReserveXcmMessage({
       ]
     };
   } catch (error) {
-    console.error('生成 XCM 消息时出错:', error);
+    console.error('generateDestReserveXcmMessage error:', error);
     return null;
   }
 }
@@ -103,7 +103,7 @@ export function generateLocalReserveXcmMessage({
       ]
     };
   } catch (error) {
-    console.error('生成 XCM 消息时出错:', error);
+    console.error('generateLocalReserveXcmMessage error:', error);
     return null;
   }
 }

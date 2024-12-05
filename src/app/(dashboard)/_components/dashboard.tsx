@@ -108,18 +108,15 @@ export default function Dashboard({
 
   const selectedToken = useTokensStore((state) => state.selectedToken);
 
-  // 初始化
   const { isLoading } = useChainInitialization({
     polkadotAssetRegistry,
     chainsInfo,
     assetsInfo
   });
 
-  // 设置跨链配置
   const { setupCrossChainConfig, swapChains, updateToChain } =
     useCrossChainSetup();
 
-  // 设置 tokens
   useEffect(() => {
     if (!fromChain || !toChain || !assetsInfo.length) return;
     const tokens = getAvailableTokens({

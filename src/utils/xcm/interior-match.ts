@@ -19,7 +19,7 @@ function isBifrostSpecialInteriorMatch(
     b.length === 2
   ) {
     if (a?.[0]?.generalKey && b?.[1]?.generalKey) {
-      console.log('场景一：源链是其他，目标链是 Bifrost (2030)', a, b);
+      console.log('other is target chain', a, b);
       const keyA = normalizeGeneralKey(a?.[0]?.generalKey);
       const keyB = normalizeGeneralKey(b?.[1]?.generalKey);
       return keyA === keyB;
@@ -35,7 +35,7 @@ function isBifrostSpecialInteriorMatch(
     const isSourceBifrost = Number(a[0]?.parachain) === 2030;
 
     if (isSourceBifrost && a[1]?.generalKey && b[1]?.generalKey) {
-      console.log('场景二：源链是 Bifrost (2030)，目标链是其他', a, b);
+      console.log('bifrost is source chain', a, b);
 
       const keyA = normalizeGeneralKey(a[1]?.generalKey);
       const keyB = normalizeGeneralKey(b[1]?.generalKey);

@@ -109,7 +109,6 @@ export async function filterHrmpConnections({
     // const api = await createPolkadotApi(polkadotChain.providers);
     // const hrmpChannels = await getHrmpChannels(api);
 
-    // 过滤有效的 paraId 连接
     const filteredRegistry: ChainConfig = {};
 
     for (const [paraId, chainData] of Object.entries(polkadotAssetRegistry)) {

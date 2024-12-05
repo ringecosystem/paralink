@@ -150,8 +150,6 @@ export function getTokenFromXcAsset({
 
   const bestMatch = exactSymbolMatch || prefixSymbolMatch || slugMatch;
 
-  console.log('没吃过啊', bestMatch?.icon, findIconBySymbol(symbol, assets));
-
   return {
     ...xcAssetData,
     name: bestMatch?.name ?? undefined,
