@@ -49,7 +49,7 @@ export async function getAssetBalance({
         assetId as unknown as number,
         account
       );
-      const amount = result.isSome ? result.unwrap().balance.toBn() : BN_ZERO;
+      const amount = result.unwrapOrDefault().balance.toBn();
       return amount;
     }
 
