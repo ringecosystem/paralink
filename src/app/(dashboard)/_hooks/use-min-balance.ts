@@ -38,7 +38,6 @@ export const useMinBalance = ({
     const fetchMinBalance = async () => {
       if (!chainId || !assetId || !decimals) return;
       setIsLoading(true);
-      console.log('fetchMinBalance', chainId, assetId, decimals);
 
       const api = await getValidApi(chainId);
       const { balance, formatted } = await getTargetMinBalance({
@@ -46,7 +45,6 @@ export const useMinBalance = ({
         assetId,
         decimals
       });
-      console.log('fetchMinBalance', formatted);
 
       setFormatted(formatted);
       setBalance(balance);

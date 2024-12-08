@@ -132,8 +132,6 @@ export function Picker({
   // get available tokens
   useEffect(() => {
     const initTokens = async () => {
-      console.log('initTokens', tokens);
-      console.log('targetChainId', targetChainId);
       if (!tokens?.length || !targetChainId) return;
       setAvailableTokensLoading(true);
       const targetChainApi = await getValidApi(targetChainId);
@@ -151,20 +149,12 @@ export function Picker({
             const result = results[index];
             return result.status === 'fulfilled' && result.value === true;
           });
-          console.log(
-            'all tokens:',
-            tokens.map((t) => t.symbol)
-          );
-          console.log(
-            'Matched tokens:',
-            validTokens.map((t) => t.symbol)
-          );
+
           if (validTokens?.length) {
             setAvailableTokens(validTokens ?? []);
             setSelectedToken(validTokens[0]);
           }
         } else {
-          console.log('clean up 1');
           const acceptablePaymentTokens = await getAcceptablePaymentTokens({
             api: targetChainApi
           });
@@ -179,22 +169,8 @@ export function Picker({
                   asset: asset.xcAssetData
                 })
               );
-
-              if (!isSupported) {
-                console.log('Unsupported token:', {
-                  symbol: asset.symbol,
-                  xcmLocation: JSON.parse(
-                    asset?.xcAssetData?.xcmV1MultiLocation
-                  )?.v1
-                });
-              }
-
               return isSupported;
             });
-            console.log(
-              'all tokens:',
-              tokens.map((t) => t.symbol)
-            );
             console.log(
               'Matched tokens:',
               matchTokens.map((t) => t.symbol)
@@ -239,7 +215,6 @@ export function Picker({
   // clean up state
   useEffect(() => {
     return () => {
-      console.log('clean up 2');
       setIsInvalid(false);
       setSelectedToken(undefined);
       setAvailableTokens([]);

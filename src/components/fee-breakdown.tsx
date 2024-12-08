@@ -68,14 +68,6 @@ export function FeeBreakdown({
   const [isExpanded, setIsExpanded] = useState(false);
   const finalAmount = bnMax(amount.sub(crossFee), BN_ZERO);
 
-  console.log(
-    'crossFee',
-    crossFee?.toString(),
-    formatTokenBalance(crossFee, {
-      decimals: nativeTokenInfo?.decimals ?? 3
-    })
-  );
-
   return (
     <div className="flex w-full flex-col gap-[10px] rounded-[10px] bg-[#F2F3F5] p-[10px] text-[14px] font-normal">
       <motion.div

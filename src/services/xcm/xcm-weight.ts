@@ -89,7 +89,6 @@ export function generateLocalReserveXcmMessage({
   isAssetHub
 }: XcmTransferParams) {
   const multiLocation = JSON.parse(asset.xcmV1MultiLocation);
-  console.log('multiLocation?.v1?.interior', multiLocation?.v1?.interior);
 
   const assetId = {
     id: {
@@ -260,15 +259,12 @@ export async function calculateExecutionWeight({
   let xcmMessage = null;
 
   if (asset?.reserveType === 'local') {
-    console.log('local');
-
     xcmMessage = generateLocalReserveXcmMessage({
       asset,
       recipientAddress,
       isAssetHub
     });
   } else if (asset?.reserveType === 'foreign') {
-    console.log('foreign');
     xcmMessage = generateDestReserveXcmMessage({
       asset,
       recipientAddress,
@@ -277,7 +273,6 @@ export async function calculateExecutionWeight({
   }
   try {
     if (!xcmMessage) {
-      console.log('reserveType is not supported');
       return {
         weight: null,
         xcmMessage: null

@@ -55,8 +55,6 @@ export function normalizeInteriorItem(
 export function createStandardXcmInterior(
   interior: NormalizedInterior | NormalizedInterior[]
 ): XcmRequestInteriorParams | XcmRequestInteriorParams[] | null {
-  console.log('createStandardXcmInterior', interior);
-
   const normalizedInterior = normalizeInterior(interior);
   if (!normalizedInterior) return null;
 

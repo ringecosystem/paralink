@@ -24,8 +24,6 @@ export function createXcmTransfer({
   targetChain,
   recipientAddress
 }: XcmTransferParams) {
-  console.log('amount', amount);
-
   const amountInWei = parseUnits({
     value: amount,
     decimals: token.decimals
@@ -170,7 +168,6 @@ export const signAndSendExtrinsic = async ({
       { signer },
       async (result) => {
         console.log('result', result);
-
         if (!txHash) {
           txHash = result.txHash.toHex();
           onPending?.({
@@ -180,60 +177,11 @@ export const signAndSendExtrinsic = async ({
             handleRegularTransaction(result, onSuccess, onFailure);
             if (result.isCompleted) unsub();
           } else if (result.isError) {
-            console.log('ExtrinsicError', result);
             onFailure?.({
               txHash: result.txHash.toHex()
             });
             if (result.isCompleted) unsub();
           }
-          //   try {
-          //     const xcmResult = await checkXcmTransaction({
-          //       hash: txHash,
-          //       paraId: Number(sourceChainId)
-          //     });
-
-          //     switch (xcmResult.status) {
-          //       case XcmMessageStatus.INVALID_PARA_ID:
-          //         shouldCheckRegularTransaction = true;
-          //         break;
-
-          //       case XcmMessageStatus.SUCCESS:
-          //         onSuccess?.({
-          //           txHash,
-          //           messageHash: xcmResult.hash,
-          //           uniqueId: xcmResult.hash
-          //         });
-          //         if (result.isCompleted) unsub();
-          //         return;
-
-          //       case XcmMessageStatus.EXTRINSIC_FAILED:
-          //       case XcmMessageStatus.TIMEOUT:
-          //       case XcmMessageStatus.UNKNOWN_ERROR:
-          //         onFailure?.({ txHash });
-          //         onError?.(xcmResult.message);
-          //         if (result.isCompleted) unsub();
-          //         return;
-          //     }
-          //   } catch (error) {
-          //     console.error('XCM check error:', error);
-          //     // XCM 检查出错，也标记需要检查常规交易结果
-          //     shouldCheckRegularTransaction = true;
-          //   }
-          // }
-
-          // // 只有在需要检查常规交易时才执行以下逻辑
-          // if (shouldCheckRegularTransaction) {
-          //   if (result.status.isFinalized || result.status.isInBlock) {
-          //     handleRegularTransaction(result, onSuccess, onFailure);
-          //     if (result.isCompleted) unsub();
-          //   } else if (result.isError) {
-          //     console.log('ExtrinsicError', result);
-          //     onFailure?.({
-          //       txHash: result.txHash.toHex()
-          //     });
-          //     if (result.isCompleted) unsub();
-          //   }
-          // }
         }
       }
     );
@@ -261,12 +209,10 @@ function handleRegularTransaction(
     .filter(({ event }: { event: any }) => event.section === 'system')
     .forEach(({ event }: { event: any }) => {
       if (event.method === 'ExtrinsicFailed') {
-        console.log('ExtrinsicFailed', result);
         onFailure?.({
           txHash: result.txHash.toHex()
         });
       } else if (event.method === 'ExtrinsicSuccess') {
-        console.log('ExtrinsicSuccess', result);
         onSuccess?.({
           txHash: result.txHash.toHex(),
           messageHash: undefined,

@@ -32,7 +32,6 @@ import { useCrossFee } from '../_hooks/use-cross-fee';
 import { parseUnits } from '@/utils/format';
 import { useTransactionExecution } from '@/hooks/use-transaction-execution';
 import toast from 'react-hot-toast';
-import { toast as toastify } from 'react-toastify';
 
 import { AvailableToken, getAvailableTokens } from '@/utils/xcm-token';
 import useApiConnectionsStore from '@/store/api-connections';
@@ -66,19 +65,19 @@ export default function Dashboard({
   const {
     chains,
     sourceChainId,
-    fromChains,
+    sourceChains,
     sourceChain,
     targetChainId,
     targetChain,
-    toChains
+    targetChains
   } = useChainsStore(
     useShallow((state) => ({
       chains: state.chains,
       setChains: state.setChains,
       sourceChainId: state.sourceChainId,
       targetChainId: state.targetChainId,
-      fromChains: state.fromChains,
-      toChains: state.toChains,
+      sourceChains: state.sourceChains,
+      targetChains: state.targetChains,
       sourceChain: state.getFromChain(),
       targetChain: state.getToChain()
     }))
@@ -241,31 +240,6 @@ export default function Dashboard({
     setRecipientAddress('');
   }, [targetChainId]);
 
-  useEffect(() => {
-    const toastId = toastify.loading('Loading...', {
-      closeButton: true,
-      autoClose: 4000,
-      hideProgressBar: false
-    });
-    setTimeout(() => {
-      console.log('toastId', toastId);
-      console.log('toastify.isActive(toastId)', toastify.isActive(toastId));
-
-      if (toastId && toastify.isActive(toastId)) {
-        toastify.update(toastId, {
-          render: 'Success!',
-          isLoading: false,
-          type: 'error',
-          autoClose: 4000,
-          closeButton: true,
-          hideProgressBar: false
-        });
-      } else {
-        toastify.success('Success!');
-      }
-    }, 4000);
-  }, []);
-
   return (
     <>
       <div className="container absolute left-0 right-0 top-[calc(var(--header-height)+10px)]">
@@ -304,8 +278,8 @@ export default function Dashboard({
               sourceChain={sourceChain}
               targetChainId={targetChainId}
               targetChain={targetChain}
-              fromParachains={fromChains}
-              toParachains={toChains}
+              fromParachains={sourceChains}
+              toParachains={targetChains}
               onChangeFromChain={handleChangeFromChainId}
               onChangeToChain={handleChangeToChainId}
               onSwitch={handleSwitch}

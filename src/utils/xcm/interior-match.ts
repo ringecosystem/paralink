@@ -19,7 +19,6 @@ function isBifrostSpecialInteriorMatch(
     b.length === 2
   ) {
     if (a?.[0]?.generalKey && b?.[1]?.generalKey) {
-      console.log('other is target chain', a, b);
       const keyA = normalizeGeneralKey(a?.[0]?.generalKey);
       const keyB = normalizeGeneralKey(b?.[1]?.generalKey);
       return keyA === keyB;
@@ -35,14 +34,8 @@ function isBifrostSpecialInteriorMatch(
     const isSourceBifrost = Number(a[0]?.parachain) === 2030;
 
     if (isSourceBifrost && a[1]?.generalKey && b[1]?.generalKey) {
-      console.log('bifrost is source chain', a, b);
-
       const keyA = normalizeGeneralKey(a[1]?.generalKey);
       const keyB = normalizeGeneralKey(b[1]?.generalKey);
-
-      console.log('keyA', keyA);
-      console.log('keyB', keyB);
-
       return keyA.toLowerCase() === keyB.toLowerCase();
     }
   }
@@ -99,7 +92,6 @@ function compareInteriorItems(a: any, b: any): boolean {
   }
 
   if ('generalKey' in a && 'generalKey' in b) {
-    console.log('generalKey', a.generalKey, b.generalKey);
     const keyA = isGeneralKeyV3(a.generalKey)
       ? a.generalKey.data
       : a.generalKey;

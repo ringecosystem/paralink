@@ -251,14 +251,12 @@ export async function checkXcmTransaction({
   maxRetries = POLLING_CONFIG.MAX_RETRIES,
   retryDelay = POLLING_CONFIG.RETRY_DELAY
 }: CheckXcmTransactionParams): Promise<XcmMessageResult> {
-  console.log('checkXcmTransaction', hash, paraId);
   const xcmResult = await getXcmMessageHash({
     hash,
     paraId,
     maxRetries,
     retryDelay
   });
-  console.log('xcmResult', xcmResult);
 
   if (xcmResult.status !== XcmMessageStatus.SUCCESS) {
     return {
@@ -272,7 +270,6 @@ export async function checkXcmTransaction({
     maxRetries,
     retryDelay
   });
-  console.log('uniqueId', uniqueId);
   if (!uniqueId) {
     return {
       status: XcmMessageStatus.TIMEOUT,

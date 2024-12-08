@@ -26,9 +26,14 @@ function TransactionItem({ tx }: TransactionItemProps) {
 
   useEffect(() => {
     async function processTransaction() {
-      console.log('tx', tx);
       const isSubscanSupported = Boolean(getSubscanBaseUrl(tx.sourceChainId));
-
+      if (
+        tx?.status === TransactionStatus.COMPLETED ||
+        tx?.status === TransactionStatus.FAILED
+      ) {
+        return;
+      }
+      console.log('processTransaction', tx);
       if (!toastIdRef.current && tx.status === TransactionStatus.PENDING) {
         const toastId = toast.loading(
           <TransactionToastPending txHash={tx.txHash} />,

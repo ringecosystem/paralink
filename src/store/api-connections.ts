@@ -48,12 +48,9 @@ const useApiConnectionsStore = create<ApiConnectionsStore>((set, get) => ({
 
     const { connections, pendingConnections, clearPendingConnection } = get();
 
-    console.log('pendingConnections', pendingConnections);
-
     if (pendingConnections[paraId]) {
       set({ isLoading: true });
       try {
-        // 添加超时控制
         const timeoutPromise = new Promise<never>((_, reject) => {
           setTimeout(() => {
             reject(new Error('连接超时'));
@@ -74,7 +71,6 @@ const useApiConnectionsStore = create<ApiConnectionsStore>((set, get) => ({
     }
 
     // 2. check existing connection is healthy
-    console.log('connections', connections);
     const existingConnection = connections[paraId];
     if (existingConnection?.api.isConnected) {
       set({ isLoading: true });

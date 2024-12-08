@@ -119,7 +119,6 @@ export async function findBestWssEndpoint(
     return undefined;
   }
   console.log('wssEndpoints', wssEndpoints);
-  // 按照优先级排序端点
   const prioritizedUrls = wssEndpoints.sort((a, b) => {
     const getPriority = (url: string) => {
       if (url.toLowerCase().includes('onfinality')) return 1;
@@ -129,7 +128,6 @@ export async function findBestWssEndpoint(
     return getPriority(a) - getPriority(b);
   });
   console.log('prioritizedUrls', prioritizedUrls);
-  // 使用并发队列，限制最大并发数为 5
   const queue = new PQueue({ concurrency: 5 });
   let foundUrl: string | undefined;
 
@@ -141,7 +139,7 @@ export async function findBestWssEndpoint(
         console.log('isConnectable', url, isConnectable);
         if (isConnectable && !foundUrl) {
           foundUrl = url;
-          queue.clear(); // 停止队列中剩余任务的执行
+          queue.clear();
         }
       })
     )

@@ -10,18 +10,14 @@ export async function checkAssetHubAcceptablePaymentToken({
   asset
 }: CheckAssetHubAcceptablePaymentTokenParams) {
   try {
-    console.log('asset', asset);
     if (!asset?.xcmV1MultiLocation) {
       console.log('Asset XCM location not found', asset);
       return false;
     }
     const interiorFlattened = flattenXcmInterior(asset?.xcmV1MultiLocation);
-    console.log('interior', interiorFlattened);
     const assetId = Array.isArray(interiorFlattened)
       ? interiorFlattened?.find((item) => item.generalIndex)?.generalIndex
       : null;
-
-    console.log('assetId', assetId);
 
     if (!assetId) {
       console.log('Asset ID not found in XCM location', assetId);

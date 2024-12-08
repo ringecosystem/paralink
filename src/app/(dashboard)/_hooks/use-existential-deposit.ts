@@ -1,10 +1,11 @@
+import { useRef, useState } from 'react';
+import { useDebounce } from 'react-use';
 import { BN } from '@polkadot/util';
-import { useEffect, useRef, useState } from 'react';
-import { AugmentedConst } from '@polkadot/api/types';
-import { u128 } from '@polkadot/types';
 import { formatTokenBalance } from '@/utils/format';
 import useApiConnectionsStore from '@/store/api-connections';
 import type { AccountInfo } from '@polkadot/types/interfaces';
+import type { u128 } from '@polkadot/types';
+import type { AugmentedConst } from '@polkadot/api/types';
 
 interface ExistentialDepositInfo {
   isLoading: boolean;
@@ -49,72 +50,80 @@ export function useExistentialDeposit({
   const [error, setError] = useState<Error>();
   const [state, setState] = useState<TokenState>(DEFAULT_TOKEN_STATE);
   const getValidApi = useApiConnectionsStore((state) => state.getValidApi);
-  useEffect(() => {
-    if (!chainId || !address) {
+
+  useDebounce(
+    () => {
       setIsLoading(false);
       setState(DEFAULT_TOKEN_STATE);
-      return;
-    }
-
-    const setupBalanceSubscription = async () => {
-      try {
-        setIsLoading(true);
-
-        const section = 'balances';
-        const method = 'existentialDeposit';
-        const api = await getValidApi(chainId);
-        const ed = (await api.consts[section]?.[method]) as u128 &
-          AugmentedConst<'promise'>;
-
-        if (!ed) {
-          console.error('Failed to fetch existential deposit');
-          return;
-        }
-        const properties = await api.registry.getChainProperties();
-        if (!properties) {
-          console.error('Failed to fetch chain properties');
-          return;
-        }
-
-        const tokenInfo = {
-          deposit: ed.toBn(),
-          tokenInfo: {
-            symbol: properties.tokenSymbol.value[0]?.toString() || '',
-            decimals: properties.tokenDecimals.value[0]?.toNumber() || 0
-          }
-        };
-
-        setState((prev) => ({
-          ...prev,
-          deposit: tokenInfo.deposit,
-          tokenInfo: tokenInfo.tokenInfo
-        }));
-
-        unsubscribeRef.current = (await api.query.system.account(
-          address,
-          (accountInfo: AccountInfo) => {
-            setState((prev) => ({
-              ...prev,
-              balance: accountInfo.data.free
-            }));
-          }
-        )) as unknown as Unsubscribe;
-      } catch (err) {
-        console.error('Balance subscription error:', err);
-        setError(err instanceof Error ? err : new Error('Unknown error'));
-      } finally {
+      setError(undefined);
+      if (!chainId || !address) {
         setIsLoading(false);
+        setState(DEFAULT_TOKEN_STATE);
+        return;
       }
-    };
 
-    setupBalanceSubscription();
+      const setupBalanceSubscription = async () => {
+        try {
+          setIsLoading(true);
 
-    return () => {
-      if (unsubscribeRef.current) {
-        unsubscribeRef.current();
-      }
-    };
-  }, [getValidApi, address, chainId]);
+          const section = 'balances';
+          const method = 'existentialDeposit';
+          const api = await getValidApi(chainId);
+          const ed = (await api.consts[section]?.[method]) as u128 &
+            AugmentedConst<'promise'>;
+
+          if (!ed) {
+            console.error('Failed to fetch existential deposit');
+            return;
+          }
+          const properties = await api.registry.getChainProperties();
+          if (!properties) {
+            console.error('Failed to fetch chain properties');
+            return;
+          }
+
+          const tokenInfo = {
+            deposit: ed.toBn(),
+            tokenInfo: {
+              symbol: properties.tokenSymbol.value[0]?.toString() || '',
+              decimals: properties.tokenDecimals.value[0]?.toNumber() || 0
+            }
+          };
+
+          setState((prev) => ({
+            ...prev,
+            deposit: tokenInfo.deposit,
+            tokenInfo: tokenInfo.tokenInfo
+          }));
+
+          unsubscribeRef.current = (await api.query.system.account(
+            address,
+            (accountInfo: AccountInfo) => {
+              setState((prev) => ({
+                ...prev,
+                balance: accountInfo.data.free
+              }));
+            }
+          )) as unknown as Unsubscribe;
+        } catch (err) {
+          console.error('Balance subscription error:', err);
+          setError(err instanceof Error ? err : new Error('Unknown error'));
+        } finally {
+          setIsLoading(false);
+        }
+      };
+
+      setupBalanceSubscription();
+
+      return () => {
+        if (unsubscribeRef.current) {
+          unsubscribeRef.current();
+        }
+      };
+    },
+    300,
+    [getValidApi, address, chainId]
+  );
 
   return {
     isLoading,

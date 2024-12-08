@@ -19,10 +19,6 @@ export default async function Page() {
   //   fetchAssetsInfo()
   // ]);
 
-  // console.log('polkadotAsset', polkadotAsset);
-  // console.log('chainAssets', chainAssets);
-  // console.log('assetsInfo', assetsInfo);
-
   const polkadotAsset = registry?.polkadot;
 
   return (

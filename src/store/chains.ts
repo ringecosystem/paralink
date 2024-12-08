@@ -18,17 +18,17 @@ export interface ChainInfoWithXcAssetsData extends ChainInfo {
 export type ChainsState = {
   chains: ChainInfoWithXcAssetsData[];
   sourceChainId?: string;
-  fromChains?: ChainInfoWithXcAssetsData[];
+  sourceChains?: ChainInfoWithXcAssetsData[];
   targetChainId?: string;
-  toChains?: ChainInfoWithXcAssetsData[];
+  targetChains?: ChainInfoWithXcAssetsData[];
 };
 
 export type ChainsActions = {
   setChains: (chains: ChainInfoWithXcAssetsData[]) => void;
   setSourceChainId: (chainId: string) => void;
-  setFromChains: (chains: ChainInfoWithXcAssetsData[]) => void;
-  setToChainId: (chainId: string) => void;
-  setToChains: (chains: ChainInfoWithXcAssetsData[]) => void;
+  setSourceChains: (chains: ChainInfoWithXcAssetsData[]) => void;
+  setTargetChainId: (chainId: string) => void;
+  setTargetChains: (chains: ChainInfoWithXcAssetsData[]) => void;
 };
 
 export type ChainsSelectors = {
@@ -44,11 +44,11 @@ const useChainsStore = create<ChainsState & ChainsActions & ChainsSelectors>(
     targetChainId: undefined,
     setChains: (chains: ChainInfoWithXcAssetsData[]) => set({ chains }),
     setSourceChainId: (chainId: string) => set({ sourceChainId: chainId }),
-    setFromChains: (chains: ChainInfoWithXcAssetsData[]) =>
-      set({ fromChains: chains }),
-    setToChainId: (chainId: string) => set({ targetChainId: chainId }),
-    setToChains: (chains: ChainInfoWithXcAssetsData[]) =>
-      set({ toChains: chains }),
+    setSourceChains: (chains: ChainInfoWithXcAssetsData[]) =>
+      set({ sourceChains: chains }),
+    setTargetChainId: (chainId: string) => set({ targetChainId: chainId }),
+    setTargetChains: (chains: ChainInfoWithXcAssetsData[]) =>
+      set({ targetChains: chains }),
     getChainById: (chainId?: string) => {
       if (!chainId) return undefined;
       return get().chains.find((chain) => chain.id === chainId);
