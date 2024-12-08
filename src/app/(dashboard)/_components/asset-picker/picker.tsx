@@ -8,7 +8,7 @@ import { FallbackImage } from '@/components/ui/fallback-image';
 import FormattedNumberTooltip from '@/components/formatted-number-tooltip';
 import { useNumberInput } from '@/hooks/number-input';
 import { useWalletConnection } from '@/hooks/use-wallet-connection';
-import { formatTokenBalance, parseUnits } from '@/utils/format';
+import { parseUnits } from '@/utils/format';
 import { useTokenBalances } from './_hooks/use-token-balances';
 import { getAcceptablePaymentTokens } from '@/services/xcm/get-acceptable-payment-token';
 import { checkAssetHubAcceptablePaymentToken } from '@/services/xcm/check-assethub-acceptable-payment-token';
@@ -325,11 +325,11 @@ export function Picker({
               {isMinBalanceLoading || isCrossFeeLoading ? (
                 <Skeleton className="h-4 w-10" />
               ) : (
-                formatTokenBalance(minBalanceBN ?? BN_ZERO, {
-                  decimals: selectedToken?.decimals,
-                  symbol: selectedToken?.symbol,
-                  displayDecimals: 3
-                })
+                <FormattedNumberTooltip
+                  value={minBalanceBN ?? BN_ZERO}
+                  decimals={selectedToken?.decimals ?? 0}
+                  displayDecimals={3}
+                />
               )}
             </div>
             {<span>•</span>}
@@ -338,11 +338,11 @@ export function Picker({
               {isMaxBalanceLoading ? (
                 <Skeleton className="h-4 w-10" />
               ) : (
-                formatTokenBalance(maxBalanceBN ?? BN_ZERO, {
-                  decimals: selectedToken?.decimals,
-                  symbol: selectedToken?.symbol,
-                  displayDecimals: 3
-                })
+                <FormattedNumberTooltip
+                  value={maxBalanceBN ?? BN_ZERO}
+                  decimals={selectedToken?.decimals ?? 0}
+                  displayDecimals={3}
+                />
               )}
             </div>
           </div>
