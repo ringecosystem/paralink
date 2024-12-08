@@ -7,18 +7,18 @@ import { BN, BN_ZERO, bnToBn } from '@polkadot/util';
 import useApiConnectionsStore from '@/store/api-connections';
 
 interface UseXcmExtrinsicParams {
-  fromChainId?: string;
+  sourceChainId?: string;
   selectedToken?: AvailableToken;
-  toChain?: ChainInfoWithXcAssetsData;
+  targetChain?: ChainInfoWithXcAssetsData;
   recipientAddress?: string;
   amount: string;
   address?: string;
 }
 
 export function useXcmExtrinsic({
-  fromChainId,
+  sourceChainId,
   selectedToken,
-  toChain,
+  targetChain,
   recipientAddress,
   amount,
   address
@@ -34,23 +34,23 @@ export function useXcmExtrinsic({
   useEffect(() => {
     const getExtrinsic = async () => {
       if (
-        !fromChainId ||
+        !sourceChainId ||
         !selectedToken?.xcAssetData ||
-        !toChain ||
+        !targetChain ||
         !recipientAddress
       )
         return;
 
       setIsLoading(true);
       try {
-        const api = await getValidApi(fromChainId);
+        const api = await getValidApi(sourceChainId);
 
         const result = await createXcmTransferExtrinsic({
-          sourceChainId: fromChainId,
+          sourceChainId: sourceChainId,
           fromChainApi: api,
           token: selectedToken.xcAssetData,
           amount,
-          toChain,
+          targetChain,
           recipientAddress
         });
         setExtrinsic(result);
@@ -64,9 +64,9 @@ export function useXcmExtrinsic({
     getExtrinsic();
     return () => setExtrinsic(undefined);
   }, [
-    fromChainId,
+    sourceChainId,
     selectedToken?.xcAssetData,
-    toChain,
+    targetChain,
     recipientAddress,
     amount,
     getValidApi

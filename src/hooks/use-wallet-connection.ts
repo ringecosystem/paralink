@@ -14,24 +14,24 @@ interface WalletConnection {
 }
 
 export function useWalletConnection(): WalletConnection {
-  const fromChain = useChainsStore((state) => state.getFromChain());
+  const sourceChain = useChainsStore((state) => state.getFromChain());
   const { address, chainId } = useAccount();
   const { selectedAccount } = useWalletStore();
 
-  if (!fromChain) return { isConnected: false, isWrongNetwork: false };
+  if (!sourceChain) return { isConnected: false, isWrongNetwork: false };
 
   const isWrongNetwork =
-    fromChain?.isEvmChain && fromChain?.evmInfo
-      ? chainId !== fromChain?.evmInfo?.evmChainId
+    sourceChain?.isEvmChain && sourceChain?.evmInfo
+      ? chainId !== sourceChain?.evmInfo?.evmChainId
       : false;
 
   const substrateAddress = formatSubstrateAddress({
     account: selectedAccount ?? undefined,
-    chain: fromChain
+    chain: sourceChain
   });
 
   const getConnectedAddress = () => {
-    if (fromChain?.isEvmChain) return !!address;
+    if (sourceChain?.isEvmChain) return !!address;
     return !!selectedAccount?.address;
   };
 
@@ -40,8 +40,8 @@ export function useWalletConnection(): WalletConnection {
     evmAddress: address,
     substrateAddress,
     baseSubstrateAddress: selectedAccount?.address,
-    address: fromChain.isEvmChain ? address : selectedAccount?.address,
+    address: sourceChain.isEvmChain ? address : selectedAccount?.address,
     isWrongNetwork,
-    currentAddress: fromChain.isEvmChain ? address : selectedAccount?.address
+    currentAddress: sourceChain.isEvmChain ? address : selectedAccount?.address
   };
 }

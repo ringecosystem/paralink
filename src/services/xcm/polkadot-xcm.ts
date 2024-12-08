@@ -14,14 +14,14 @@ import { XcmRequestInteriorParams } from '@/utils/xcm/type';
 type XcmTransferParams = {
   token: XcAssetData;
   amount: string;
-  toChain: ChainInfoWithXcAssetsData;
+  targetChain: ChainInfoWithXcAssetsData;
   recipientAddress: string;
 };
 
 export function createXcmTransfer({
   token,
   amount,
-  toChain,
+  targetChain,
   recipientAddress
 }: XcmTransferParams) {
   console.log('amount', amount);
@@ -53,7 +53,7 @@ export function createXcmTransfer({
         parents: 1,
         interior: {
           X1: {
-            Parachain: toChain?.id
+            Parachain: targetChain?.id
           }
         }
       }
@@ -100,7 +100,7 @@ type CreateXcmTransferExtrinsicParams = {
   fromChainApi: ApiPromise;
   token: XcAssetData;
   amount: string;
-  toChain: ChainInfoWithXcAssetsData;
+  targetChain: ChainInfoWithXcAssetsData;
   recipientAddress: string;
 };
 export const createXcmTransferExtrinsic = async ({
@@ -108,13 +108,13 @@ export const createXcmTransferExtrinsic = async ({
   fromChainApi,
   token,
   amount,
-  toChain,
+  targetChain,
   recipientAddress
 }: CreateXcmTransferExtrinsicParams) => {
   const xcmTransferParams = createXcmTransfer({
     token,
     amount,
-    toChain,
+    targetChain,
     recipientAddress
   });
   if (!xcmTransferParams || !fromChainApi) return undefined;

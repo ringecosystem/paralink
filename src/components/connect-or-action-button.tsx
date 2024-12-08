@@ -35,7 +35,7 @@ export function ConnectOrActionButton({
   onAction,
   ...props
 }: ConnectOrActionButtonProps) {
-  const fromChain = useChainsStore((state) => state.getFromChain());
+  const sourceChain = useChainsStore((state) => state.getFromChain());
   const [isPolkadotWalletDialogOpen, setIsPolkadotWalletDialogOpen] =
     useState(false);
   const { isConnected } = useWalletConnection();
@@ -45,17 +45,17 @@ export function ConnectOrActionButton({
   const handleClick = () => {
     if (isLoading) return;
     if (!isConnected) {
-      if (fromChain?.isEvmChain && fromChain?.evmInfo) {
-        if (!fromChain?.providers) return;
-        const rpcUrls = convertToEvmRpcUrls(fromChain?.providers);
+      if (sourceChain?.isEvmChain && sourceChain?.evmInfo) {
+        if (!sourceChain?.providers) return;
+        const rpcUrls = convertToEvmRpcUrls(sourceChain?.providers);
 
         setChain({
-          id: Number(fromChain?.evmInfo?.evmChainId),
-          name: fromChain?.name ?? '',
+          id: Number(sourceChain?.evmInfo?.evmChainId),
+          name: sourceChain?.name ?? '',
           nativeCurrency: {
-            name: fromChain?.evmInfo?.symbol ?? '',
-            symbol: fromChain?.evmInfo?.symbol ?? '',
-            decimals: fromChain?.evmInfo?.decimals ?? 18
+            name: sourceChain?.evmInfo?.symbol ?? '',
+            symbol: sourceChain?.evmInfo?.symbol ?? '',
+            decimals: sourceChain?.evmInfo?.decimals ?? 18
           },
           rpcUrls
         });

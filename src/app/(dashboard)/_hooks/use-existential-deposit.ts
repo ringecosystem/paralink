@@ -114,7 +114,7 @@ export function useExistentialDeposit({
         unsubscribeRef.current();
       }
     };
-  }, [getValidApi, address]);
+  }, [getValidApi, address, chainId]);
 
   return {
     isLoading,

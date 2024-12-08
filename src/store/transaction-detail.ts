@@ -6,8 +6,8 @@ interface Transaction {
   amount: string;
   fromAddress: string;
   toAddress: string;
-  fromChain: ChainInfoWithXcAssetsData;
-  toChain: ChainInfoWithXcAssetsData;
+  sourceChain: ChainInfoWithXcAssetsData;
+  targetChain: ChainInfoWithXcAssetsData;
   fromTxHash: string;
   toTxHash?: string;
 }

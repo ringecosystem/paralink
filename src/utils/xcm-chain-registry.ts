@@ -84,24 +84,24 @@ export function getFromChains(
 
 export function getToChains(
   chains: ChainInfoWithXcAssetsData[],
-  fromChainId: string
+  sourceChainId: string
 ): ChainInfoWithXcAssetsData[] {
-  return chains?.filter((chain) => chain.id !== fromChainId);
+  return chains?.filter((chain) => chain.id !== sourceChainId);
 }
 
 export const getTokenList = ({
-  fromChain,
-  toChain
+  sourceChain,
+  targetChain
 }: {
-  fromChain: ChainInfoWithXcAssetsData;
-  toChain: ChainInfoWithXcAssetsData;
+  sourceChain: ChainInfoWithXcAssetsData;
+  targetChain: ChainInfoWithXcAssetsData;
 }) => {
   const tokenList: XcAssetData[] = [];
-  if (fromChain.id === '1000') {
-    const destAssetsInfo = toChain?.xcAssetsData?.filter((asset) => {
+  if (sourceChain.id === '1000') {
+    const destAssetsInfo = targetChain?.xcAssetsData?.filter((asset) => {
       const hasParachain = hasParachainInLocation({
         multiLocationStr: asset.xcmV1MultiLocation,
-        paraId: fromChain.id
+        paraId: sourceChain.id
       });
 
       if (!hasParachain) return false;
@@ -109,20 +109,20 @@ export const getTokenList = ({
       const generalIndex = getGeneralIndex(asset.xcmV1MultiLocation);
       if (!generalIndex) return false;
 
-      return Object.keys(fromChain.assetsInfo || {}).includes(generalIndex);
+      return Object.keys(sourceChain.assetsInfo || {}).includes(generalIndex);
     });
 
     if (destAssetsInfo && destAssetsInfo.length > 0) {
       const processedAssets = destAssetsInfo.map((asset) => {
         const generalIndex = getGeneralIndex(asset.xcmV1MultiLocation);
-        const assetInfo = fromChain.assetsInfo?.[generalIndex || ''];
+        const assetInfo = sourceChain.assetsInfo?.[generalIndex || ''];
 
         return {
           ...asset,
           symbol: assetInfo || asset.symbol,
           decimals: asset.decimals,
-          paraID: Number(fromChain.id),
-          nativeChainID: fromChain.name.toLowerCase().replace(/\s/g, '-'),
+          paraID: Number(sourceChain.id),
+          nativeChainID: sourceChain.name.toLowerCase().replace(/\s/g, '-'),
           reserveType: ReserveType.Local,
           asset: generalIndex as AssetType,
           xcmV1MultiLocation: JSON.stringify({
@@ -131,7 +131,7 @@ export const getTokenList = ({
               interior: {
                 x3: [
                   {
-                    parachain: Number(fromChain.id)
+                    parachain: Number(sourceChain.id)
                   },
                   { palletInstance: 50 },
                   { generalIndex: generalIndex }
@@ -145,14 +145,14 @@ export const getTokenList = ({
     }
   } else {
     let supportedNativeToken: XcAssetData | undefined =
-      toChain.xcAssetsData?.find(
+      targetChain.xcAssetsData?.find(
         (asset) =>
           hasParachainInLocation({
             multiLocationStr: asset.xcmV1MultiLocation,
-            paraId: fromChain.id
+            paraId: sourceChain.id
           }) &&
           asset.symbol.toLowerCase() ===
-            fromChain.nativeToken.symbol.toLowerCase()
+            sourceChain.nativeToken.symbol.toLowerCase()
       );
 
     if (supportedNativeToken) {
@@ -171,17 +171,17 @@ export const getTokenList = ({
     }
 
     const otherAssets =
-      fromChain.xcAssetsData
+      sourceChain.xcAssetsData
         ?.filter((asset) => {
           const hasDestParachain = hasParachainInLocation({
             multiLocationStr: asset.xcmV1MultiLocation,
-            paraId: toChain.id
+            paraId: targetChain.id
           });
 
           if (
             supportedNativeToken &&
             asset.symbol.toLowerCase() ===
-              fromChain.nativeToken.symbol.toLowerCase()
+              sourceChain.nativeToken.symbol.toLowerCase()
           ) {
             supportedNativeToken = {
               ...supportedNativeToken,
@@ -196,7 +196,7 @@ export const getTokenList = ({
         ?.map((v) => ({
           ...v,
           reserveType: determineReserveType({
-            sourceParaId: Number(fromChain.id),
+            sourceParaId: Number(sourceChain.id),
             targetParaId: Number(v?.paraID),
             originChainReserveLocation: v.originChainReserveLocation
           })

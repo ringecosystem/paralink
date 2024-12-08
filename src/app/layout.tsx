@@ -5,11 +5,9 @@ import { DAppProvider } from '@/providers/dapp-provider';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
-import { TransactionDetail } from '@/components/transaction-detail';
 import { ToastContainer } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
-
 import './globals.css';
 import type { Metadata } from 'next';
 
@@ -65,7 +63,6 @@ export default function RootLayout({
             <ToastContainer />
           </TooltipProvider>
         </DAppProvider>
-        <TransactionDetail />
       </body>
     </html>
   );

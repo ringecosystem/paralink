@@ -9,8 +9,8 @@ import {
 } from '@/store/transaction-history';
 import { checkXcmTransaction, XcmMessageStatus } from '@/services/subscan';
 import { getSubscanBaseUrl } from '@/config/subscan-api';
-import { TransactionToastPending } from '@/components/transaction-toast-pending';
-import { TransactionToastFinished } from '@/components/transaction-toast-finished';
+import { TransactionToastPending } from './transaction-toast-pending';
+import { TransactionToastFinished } from './transaction-toast-finished';
 
 const AUTO_CLOSE_TIME = 5000;
 

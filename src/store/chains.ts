@@ -17,15 +17,15 @@ export interface ChainInfoWithXcAssetsData extends ChainInfo {
 
 export type ChainsState = {
   chains: ChainInfoWithXcAssetsData[];
-  fromChainId?: string;
+  sourceChainId?: string;
   fromChains?: ChainInfoWithXcAssetsData[];
-  toChainId?: string;
+  targetChainId?: string;
   toChains?: ChainInfoWithXcAssetsData[];
 };
 
 export type ChainsActions = {
   setChains: (chains: ChainInfoWithXcAssetsData[]) => void;
-  setFromChainId: (chainId: string) => void;
+  setSourceChainId: (chainId: string) => void;
   setFromChains: (chains: ChainInfoWithXcAssetsData[]) => void;
   setToChainId: (chainId: string) => void;
   setToChains: (chains: ChainInfoWithXcAssetsData[]) => void;
@@ -40,13 +40,13 @@ export type ChainsSelectors = {
 const useChainsStore = create<ChainsState & ChainsActions & ChainsSelectors>(
   (set, get) => ({
     chains: [],
-    fromChainId: undefined,
-    toChainId: undefined,
+    sourceChainId: undefined,
+    targetChainId: undefined,
     setChains: (chains: ChainInfoWithXcAssetsData[]) => set({ chains }),
-    setFromChainId: (chainId: string) => set({ fromChainId: chainId }),
+    setSourceChainId: (chainId: string) => set({ sourceChainId: chainId }),
     setFromChains: (chains: ChainInfoWithXcAssetsData[]) =>
       set({ fromChains: chains }),
-    setToChainId: (chainId: string) => set({ toChainId: chainId }),
+    setToChainId: (chainId: string) => set({ targetChainId: chainId }),
     setToChains: (chains: ChainInfoWithXcAssetsData[]) =>
       set({ toChains: chains }),
     getChainById: (chainId?: string) => {
@@ -54,12 +54,12 @@ const useChainsStore = create<ChainsState & ChainsActions & ChainsSelectors>(
       return get().chains.find((chain) => chain.id === chainId);
     },
     getFromChain: () => {
-      const { chains, fromChainId } = get();
-      return chains.find((chain) => chain.id === fromChainId);
+      const { chains, sourceChainId } = get();
+      return chains.find((chain) => chain.id === sourceChainId);
     },
     getToChain: () => {
-      const { chains, toChainId } = get();
-      return chains.find((chain) => chain.id === toChainId);
+      const { chains, targetChainId } = get();
+      return chains.find((chain) => chain.id === targetChainId);
     }
   })
 );

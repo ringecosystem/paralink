@@ -6,8 +6,8 @@ import type { XcAssetData } from '@/types/asset-registry';
 import type { ChainInfoWithXcAssetsData } from '@/store/chains';
 
 type GetAvailableTokensType = {
-  fromChain: ChainInfoWithXcAssetsData;
-  toChain: ChainInfoWithXcAssetsData;
+  sourceChain: ChainInfoWithXcAssetsData;
+  targetChain: ChainInfoWithXcAssetsData;
   assets: Asset[];
 };
 
@@ -22,11 +22,11 @@ export type AvailableToken = {
 };
 
 export function getAvailableTokens({
-  fromChain,
-  toChain,
+  sourceChain,
+  targetChain,
   assets
 }: GetAvailableTokensType): AvailableToken[] {
-  const tokens = getTokenList({ fromChain, toChain });
+  const tokens = getTokenList({ sourceChain, targetChain });
   return tokens?.map((v) => {
     const data = getTokenFromXcAsset({ xcAssetData: v, assets });
     return {

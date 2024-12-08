@@ -151,10 +151,10 @@ export function generateLocalReserveXcmMessage({
 // export function generateRemoteReserveXcmMessage({
 //   token,
 //   amount,
-//   toChain,
+//   targetChain,
 //   recipientAddress
 // }: XcmTransferParams) {
-//   const isToEvm = toChain.isEvmChain;
+//   const isToEvm = targetChain.isEvmChain;
 //   const amountBN = new BN(amount);
 //   const decimalsBN = new BN(10).pow(new BN(token.decimals));
 //   const amountInWei = amountBN.mul(decimalsBN)?.toString();
@@ -217,7 +217,7 @@ export function generateLocalReserveXcmMessage({
 //           parents: 1,
 //           interior: {
 //             X1: {
-//               Parachain: toChain.id
+//               Parachain: targetChain.id
 //             }
 //           }
 //         },
@@ -237,7 +237,7 @@ export function generateLocalReserveXcmMessage({
 //             parents: 1,
 //             interior: {
 //               X1: {
-//                 Parachain: toChain.id
+//                 Parachain: targetChain.id
 //               }
 //             }
 //           },

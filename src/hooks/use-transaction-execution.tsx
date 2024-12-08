@@ -10,16 +10,16 @@ import type { ChainInfoWithXcAssetsData } from '@/store/chains';
 import type { AvailableToken } from '@/utils/xcm-token';
 
 interface UseTransactionExecutionProps {
-  fromChain?: ChainInfoWithXcAssetsData;
-  toChain?: ChainInfoWithXcAssetsData;
+  sourceChain?: ChainInfoWithXcAssetsData;
+  targetChain?: ChainInfoWithXcAssetsData;
   selectedToken?: AvailableToken;
   amount: string;
   recipientAddress: string;
 }
 
 export function useTransactionExecution({
-  fromChain,
-  toChain,
+  sourceChain,
+  targetChain,
   selectedToken,
   amount,
   recipientAddress
@@ -34,7 +34,7 @@ export function useTransactionExecution({
   );
   const executeTransaction = useCallback(
     async ({ extrinsic, address }: { extrinsic: any; address: string }) => {
-      if (!extrinsic || !fromChain?.id || !selectedWallet?.signer || !address)
+      if (!extrinsic || !sourceChain?.id || !selectedWallet?.signer || !address)
         return;
 
       return new Promise((resolve, reject) => {
@@ -43,12 +43,12 @@ export function useTransactionExecution({
           signer: selectedWallet.signer,
           sender: address,
           onPending({ txHash }) {
-            if (fromChain && toChain) {
+            if (sourceChain && targetChain) {
               addTransaction({
                 txHash,
-                sourceChainId: Number(fromChain?.id),
+                sourceChainId: Number(sourceChain?.id),
                 sourceAddress: address,
-                targetChainId: Number(toChain?.id),
+                targetChainId: Number(targetChain?.id),
                 targetAddress: recipientAddress,
                 amount,
                 symbol: selectedToken?.symbol ?? '',
@@ -72,8 +72,8 @@ export function useTransactionExecution({
     },
     [
       selectedWallet,
-      fromChain,
-      toChain,
+      sourceChain,
+      targetChain,
       amount,
       selectedToken,
       recipientAddress,

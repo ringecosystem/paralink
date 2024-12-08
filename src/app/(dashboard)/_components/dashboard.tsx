@@ -65,22 +65,22 @@ export default function Dashboard({
   const { address } = useWalletConnection();
   const {
     chains,
-    fromChainId,
+    sourceChainId,
     fromChains,
-    fromChain,
-    toChainId,
-    toChain,
+    sourceChain,
+    targetChainId,
+    targetChain,
     toChains
   } = useChainsStore(
     useShallow((state) => ({
       chains: state.chains,
       setChains: state.setChains,
-      fromChainId: state.fromChainId,
-      toChainId: state.toChainId,
+      sourceChainId: state.sourceChainId,
+      targetChainId: state.targetChainId,
       fromChains: state.fromChains,
       toChains: state.toChains,
-      fromChain: state.getFromChain(),
-      toChain: state.getToChain()
+      sourceChain: state.getFromChain(),
+      targetChain: state.getToChain()
     }))
   );
 
@@ -102,10 +102,10 @@ export default function Dashboard({
     useCrossChainSetup();
 
   useEffect(() => {
-    if (!fromChain || !toChain || !assetsInfo.length) return;
+    if (!sourceChain || !targetChain || !assetsInfo.length) return;
     const tokens = getAvailableTokens({
-      fromChain,
-      toChain,
+      sourceChain,
+      targetChain,
       assets: assetsInfo
     });
     if (tokens.length) {
@@ -114,25 +114,25 @@ export default function Dashboard({
     return () => {
       setTokens([]);
     };
-  }, [fromChain, toChain, assetsInfo, setTokens]);
+  }, [sourceChain, targetChain, assetsInfo, setTokens]);
 
   const {
     extrinsic,
     partialFee,
     isLoading: isExtrinsicLoading
   } = useXcmExtrinsic({
-    fromChainId,
+    sourceChainId,
     selectedToken,
-    toChain,
+    targetChain,
     recipientAddress,
     amount,
     address
   });
 
   const { networkFee, isLoading: isNetworkFeeLoading } = useNetworkFee({
-    fromChainId,
+    sourceChainId,
     asset: selectedToken?.xcAssetData,
-    toChainId,
+    targetChainId,
     recipientAddress,
     partialFee
   });
@@ -140,12 +140,12 @@ export default function Dashboard({
   const { fee: crossFee, isLoading: isCrossFeeLoading } = useCrossFee({
     asset: selectedToken?.xcAssetData,
     recipientAddress,
-    paraId: toChain?.id
+    paraId: targetChain?.id
   });
 
   const { isLoading: isFromExistentialDepositLoading, deposit: fromDeposit } =
     useExistentialDeposit({
-      chainId: fromChainId,
+      chainId: sourceChainId,
       address: address
     });
 
@@ -154,7 +154,7 @@ export default function Dashboard({
     hasEnoughBalance: hasToEnoughBalance,
     formattedDeposit: toDepositFormatted
   } = useExistentialDeposit({
-    chainId: toChainId,
+    chainId: targetChainId,
     address: recipientAddress
   });
 
@@ -192,26 +192,26 @@ export default function Dashboard({
   const handleChangeToChainId = useCallback(
     async (id: string) => {
       setIsLoadingCrossChain(true);
-      await updateToChain({ chains, toChainId: id });
+      await updateToChain({ chains, targetChainId: id });
       setIsLoadingCrossChain(false);
     },
     [chains, updateToChain]
   );
 
   const handleSwitch = useCallback(async () => {
-    if (!chains?.length || !fromChainId || !toChainId) return;
+    if (!chains?.length || !sourceChainId || !targetChainId) return;
     setIsLoadingCrossChain(true);
     await swapChains({
       chains,
-      fromChainId,
-      toChainId
+      sourceChainId,
+      targetChainId
     });
     setIsLoadingCrossChain(false);
-  }, [swapChains, chains, fromChainId, toChainId]);
+  }, [swapChains, chains, sourceChainId, targetChainId]);
 
   const { executeTransaction } = useTransactionExecution({
-    fromChain,
-    toChain,
+    sourceChain,
+    targetChain,
     selectedToken,
     amount,
     recipientAddress
@@ -239,7 +239,7 @@ export default function Dashboard({
 
   useEffect(() => {
     setRecipientAddress('');
-  }, [toChainId]);
+  }, [targetChainId]);
 
   useEffect(() => {
     const toastId = toastify.loading('Loading...', {
@@ -300,10 +300,10 @@ export default function Dashboard({
             )}
           >
             <ChainSwitcher
-              fromChainId={fromChainId}
-              fromChain={fromChain}
-              toChainId={toChainId}
-              toChain={toChain}
+              sourceChainId={sourceChainId}
+              sourceChain={sourceChain}
+              targetChainId={targetChainId}
+              targetChain={targetChain}
               fromParachains={fromChains}
               toParachains={toChains}
               onChangeFromChain={handleChangeFromChainId}
@@ -324,8 +324,8 @@ export default function Dashboard({
                 }
                 onChangeAmount={setAmount}
                 onChangeTokenBalance={setSelectedTokenBalance}
-                sourceChainId={fromChainId}
-                targetChainId={toChainId}
+                sourceChainId={sourceChainId}
+                targetChainId={targetChainId}
                 onChangeInvalid={setIsInvalid}
                 isLoading={isLoadingCrossChain}
                 error={
@@ -340,12 +340,12 @@ export default function Dashboard({
 
               <AddressInput
                 value={recipientAddress}
-                chain={toChain}
+                chain={targetChain}
                 onChange={setRecipientAddress}
                 error={
                   <AnimatedErrorMessage
                     show={!hasToEnoughBalance && !isToExistentialDepositLoading}
-                    message={`You need at least ${toDepositFormatted} in your recipient account on ${toChain?.name} to keep the account alive.`}
+                    message={`You need at least ${toDepositFormatted} in your recipient account on ${targetChain?.name} to keep the account alive.`}
                   />
                 }
               />
@@ -358,7 +358,7 @@ export default function Dashboard({
                   })}
                   networkFee={networkFee}
                   crossFee={crossFee}
-                  nativeTokenInfo={fromChain?.nativeToken}
+                  nativeTokenInfo={sourceChain?.nativeToken}
                   loading={
                     isNetworkFeeLoading ||
                     isCrossFeeLoading ||
