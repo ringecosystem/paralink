@@ -1,31 +1,33 @@
 import { useEffect, useMemo, useState } from 'react';
-import type { ApiPromise } from '@polkadot/api';
-import { XcAssetData } from '@/types/asset-registry';
-import { getTargetMinBalance } from '@/services/xcm/target-min-balance';
-import { createStandardXcmInterior } from '@/utils/xcm/interior-params';
 import { BN, BN_ZERO } from '@polkadot/util';
+import { getTargetMinBalance } from '@/services/xcm/target-min-balance';
+import useApiConnectionsStore from '@/store/api-connections';
+import { flattenXcmInterior } from '@/utils/xcm/helper';
+import type { XcAssetData } from '@/types/asset-registry';
 
 interface UseMinBalanceProps {
-  api?: ApiPromise | null;
+  chainId?: string;
   asset?: XcAssetData | null;
   decimals?: number | null;
 }
-export const useMinBalance = ({ api, asset, decimals }: UseMinBalanceProps) => {
+export const useMinBalance = ({
+  chainId,
+  asset,
+  decimals
+}: UseMinBalanceProps) => {
   const [formatted, setFormatted] = useState<string>('0');
   const [balance, setBalance] = useState<BN>(BN_ZERO);
   const [isLoading, setIsLoading] = useState(false);
-
+  const getValidApi = useApiConnectionsStore((state) => state.getValidApi);
   const assetId = useMemo(() => {
     if (!asset) return null;
-    const interior = createStandardXcmInterior(
-      JSON.parse(asset.xcmV1MultiLocation)?.v1?.interior
-    );
+    const interior = flattenXcmInterior(asset.xcmV1MultiLocation);
     if (interior) {
       let assetId;
       if (Array.isArray(interior)) {
-        assetId = interior?.find((item) => item.GeneralIndex)?.GeneralIndex;
+        assetId = interior?.find((item) => item.generalIndex)?.generalIndex;
       } else {
-        assetId = interior?.GeneralIndex;
+        assetId = interior?.generalIndex;
       }
       return assetId;
     }
@@ -34,13 +36,17 @@ export const useMinBalance = ({ api, asset, decimals }: UseMinBalanceProps) => {
 
   useEffect(() => {
     const fetchMinBalance = async () => {
-      if (!api || !assetId || !decimals) return;
+      if (!chainId || !assetId || !decimals) return;
       setIsLoading(true);
+      console.log('fetchMinBalance', chainId, assetId, decimals);
+
+      const api = await getValidApi(chainId);
       const { balance, formatted } = await getTargetMinBalance({
         api,
         assetId,
         decimals
       });
+      console.log('fetchMinBalance', formatted);
 
       setFormatted(formatted);
       setBalance(balance);
@@ -52,7 +58,7 @@ export const useMinBalance = ({ api, asset, decimals }: UseMinBalanceProps) => {
       setBalance(BN_ZERO);
       setIsLoading(false);
     };
-  }, [api, assetId, decimals]);
+  }, [getValidApi, chainId, assetId, decimals]);
   return {
     formatted,
     balance,

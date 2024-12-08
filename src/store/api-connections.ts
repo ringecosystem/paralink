@@ -1,194 +1,153 @@
+import { BN_ZERO } from '@polkadot/util';
 import { ApiPromise, WsProvider } from '@polkadot/api';
-import { isNil } from 'lodash-es';
 import { create } from 'zustand';
+import useChainsStore from './chains';
+
+function getValidWssEndpoints(
+  endpoints: Record<string, string> | undefined
+): string[] {
+  if (!endpoints) return [];
+
+  return Object.values(endpoints).filter((endpoint) =>
+    endpoint.toLowerCase().startsWith('wss://')
+  );
+}
 
 interface ApiConnection {
   api: ApiPromise;
-  lastUsed: number;
-  status: 'CONNECTED' | 'CONNECTING' | 'DISCONNECTED' | 'ERROR';
-  reconnectAttempts: number;
-  isLoading: boolean;
-  endpoint: string | string[];
+  endpoints: string[];
 }
+export type GetValidApiType = (paraId: string) => Promise<ApiPromise>;
 
 interface ApiConnectionsStore {
   connections: Record<string, ApiConnection>;
-  connectApi: (
-    paraId: string,
-    endpoint: string | string[]
-  ) => Promise<ApiPromise | null>;
-  getApi: (paraId: string | number | undefined | null) => ApiPromise | null;
-  disconnectApi: (paraId: string) => Promise<void>;
-  setupConnectionListeners: (paraId: string) => void;
+  isLoading: boolean;
+  pendingConnections: Record<string, Promise<ApiPromise> | undefined>;
+  getValidApi: GetValidApiType;
+  clearPendingConnection: (paraId: string) => void;
 }
 
-const MAX_ACTIVE_CONNECTIONS = 6;
-const MAX_RECONNECT_ATTEMPTS = 3;
-const RECONNECT_DELAY = 1000;
+const CONNECTION_TIMEOUT = 15000;
 
 const useApiConnectionsStore = create<ApiConnectionsStore>((set, get) => ({
   connections: {},
-
-  setupConnectionListeners: (paraId: string) => {
-    const connection = get().connections[paraId];
-    if (!connection?.api) return;
-
-    connection.api.on('disconnected', () => {
-      set((state) => ({
-        connections: {
-          ...state.connections,
-          [paraId]: {
-            ...state.connections[paraId],
-            status: 'DISCONNECTED',
-            isLoading: false
-          }
-        }
-      }));
-    });
-
-    connection.api.on('error', async () => {
-      const currentConnection = get().connections[paraId];
-      if (currentConnection?.status === 'CONNECTED') {
-        await get().disconnectApi(paraId);
-      }
-    });
+  isLoading: false,
+  pendingConnections: {},
+  clearPendingConnection: (paraId: string) => {
+    set((state) => ({
+      pendingConnections: {
+        ...state.pendingConnections,
+        [paraId]: undefined
+      },
+      isLoading: false
+    }));
   },
 
-  connectApi: async (paraId: string, endpoint: string | string[]) => {
-    const state = get();
-    const existingConnection = state.connections[paraId];
+  getValidApi: async (paraId: string) => {
+    if (!paraId) throw new Error('must provide paraId');
 
-    if (
-      (existingConnection?.status === 'CONNECTED' ||
-        existingConnection?.status === 'CONNECTING') &&
-      !existingConnection.api
-    ) {
-    } else if (existingConnection?.status === 'CONNECTED') {
+    const { connections, pendingConnections, clearPendingConnection } = get();
+
+    console.log('pendingConnections', pendingConnections);
+
+    if (pendingConnections[paraId]) {
+      set({ isLoading: true });
       try {
-        await existingConnection.api.isReady;
+        // 添加超时控制
+        const timeoutPromise = new Promise<never>((_, reject) => {
+          setTimeout(() => {
+            reject(new Error('连接超时'));
+          }, CONNECTION_TIMEOUT);
+        });
+
+        const api = await Promise.race([
+          pendingConnections[paraId],
+          timeoutPromise
+        ]);
+
+        return api;
+      } catch (error: any) {
+        console.error('waiting for connection failed:', error);
+        clearPendingConnection(paraId);
+        throw new Error(`connection failed: ${error?.message}`);
+      }
+    }
+
+    // 2. check existing connection is healthy
+    console.log('connections', connections);
+    const existingConnection = connections[paraId];
+    if (existingConnection?.api.isConnected) {
+      set({ isLoading: true });
+      try {
+        const health = await existingConnection.api.rpc.system.health();
+
+        if (
+          health.isSyncing?.isFalse &&
+          health.peers.toBn().gt(BN_ZERO) &&
+          health.shouldHavePeers?.isTrue
+        ) {
+          set({ isLoading: false });
+          return existingConnection.api;
+        }
+      } catch (error) {
+        console.error('check api health failed:', error);
+      } finally {
+        set({ isLoading: false });
+      }
+    }
+    const chains = useChainsStore.getState().chains;
+    // 3. create new connection Promise
+    const connectionPromise = (async () => {
+      set({ isLoading: true });
+      try {
+        const endpoints = chains?.find(
+          (chain) => chain.id === paraId
+        )?.providers;
+        const endpointsList = getValidWssEndpoints(endpoints);
+        if (!endpointsList || !endpointsList.length)
+          throw new Error('must provide at least one node');
+
+        const api = await ApiPromise.create({
+          provider: new WsProvider(endpointsList, 6000),
+          throwOnConnect: true
+        });
+
         set((state) => ({
           connections: {
             ...state.connections,
-            [paraId]: {
-              ...existingConnection,
-              lastUsed: Date.now()
-            }
-          }
+            [paraId]: { api, endpoints: endpointsList }
+          },
+          pendingConnections: {
+            ...state.pendingConnections,
+            [paraId]: undefined
+          },
+          isLoading: false
         }));
-        return existingConnection.api;
-      } catch (e) {
-        console.error(`Failed to connect to chain ${paraId}:`, e);
+
+        return api;
+      } catch (error) {
+        console.error('create api connection failed:', error);
+        set((state) => ({
+          pendingConnections: {
+            ...state.pendingConnections,
+            [paraId]: undefined
+          },
+          isLoading: false
+        }));
+        throw error;
       }
-    }
+    })();
 
-    if (existingConnection?.reconnectAttempts >= MAX_RECONNECT_ATTEMPTS) {
-      console.error(`Max reconnection attempts reached for chain ${paraId}`);
-      return null;
-    }
-
+    // important: store pending promise before starting async operation
     set((state) => ({
-      connections: {
-        ...state.connections,
-        [paraId]: {
-          ...existingConnection,
-          isLoading: true,
-          status: 'CONNECTING',
-          endpoint,
-          lastUsed: Date.now(),
-          reconnectAttempts: (existingConnection?.reconnectAttempts ?? 0) + 1
-        }
+      pendingConnections: {
+        ...state.pendingConnections,
+        [paraId]: connectionPromise
       }
     }));
 
-    try {
-      const provider = new WsProvider(endpoint);
-      const api = await ApiPromise.create({
-        provider,
-        throwOnConnect: true
-      });
-
-      await api.isReady;
-      get().setupConnectionListeners(paraId);
-
-      const currentConnections = Object.entries(get().connections);
-      if (currentConnections.length >= MAX_ACTIVE_CONNECTIONS) {
-        const oldestConnection = currentConnections.sort(
-          ([, a], [, b]) => a.lastUsed - b.lastUsed
-        )[0];
-        if (oldestConnection) {
-          await get().disconnectApi(oldestConnection[0]);
-        }
-      }
-
-      set((state) => ({
-        connections: {
-          ...state.connections,
-          [paraId]: {
-            api,
-            lastUsed: Date.now(),
-            status: 'CONNECTED',
-            reconnectAttempts: 0,
-            isLoading: false,
-            endpoint
-          }
-        }
-      }));
-
-      return api;
-    } catch (error) {
-      console.error(`Failed to connect to chain ${paraId}:`, error);
-      await new Promise((resolve) => setTimeout(resolve, RECONNECT_DELAY));
-
-      set((state) => ({
-        connections: {
-          ...state.connections,
-          [paraId]: {
-            ...existingConnection,
-            status: 'ERROR',
-            lastUsed: Date.now(),
-            isLoading: false
-          }
-        }
-      }));
-      return null;
-    }
-  },
-
-  disconnectApi: async (paraId: string) => {
-    const connection = get().connections[paraId];
-    if (connection?.api) {
-      await connection.api.disconnect();
-      set((state) => ({
-        connections: {
-          ...state.connections,
-          [paraId]: {
-            ...connection,
-            status: 'DISCONNECTED'
-          }
-        }
-      }));
-    }
-  },
-
-  getApi: (paraId: string | number | undefined | null) => {
-    if (isNil(paraId)) return null;
-    const connection = get().connections[paraId];
-    if (!connection || connection.status !== 'CONNECTED') {
-      return null;
-    }
-    return connection.api;
+    return connectionPromise;
   }
 }));
-
-if (typeof window !== 'undefined') {
-  window.addEventListener('focus', () => {
-    const store = useApiConnectionsStore.getState();
-    Object.entries(store.connections).forEach(([paraId, connection]) => {
-      if (connection.status === 'DISCONNECTED') {
-        store.connectApi(paraId, connection.endpoint);
-      }
-    });
-  });
-}
 
 export default useApiConnectionsStore;

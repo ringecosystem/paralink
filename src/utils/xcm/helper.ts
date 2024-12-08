@@ -9,7 +9,7 @@ export const isGeneralKeyV3 = (
 };
 
 export function normalizeInterior(
-  interior: NormalizedInterior | NormalizedInterior[]
+  interior: NormalizedInterior | NormalizedInterior[] | null
 ): NormalizedInterior[] | null {
   if (!interior) return null;
   if ('here' in interior) return [];
@@ -20,20 +20,16 @@ export function normalizeInterior(
   return null;
 }
 
-export function flattenXcmInterior(xcmLocationStr: string) {
+export function flattenXcmInterior(
+  xcmLocationStr: string
+): NormalizedInterior[] | NormalizedInterior | null {
   try {
     const parsed = JSON.parse(xcmLocationStr);
     const interior = parsed.v1.interior as
-      | NormalizedInterior[]
       | NormalizedInterior
+      | NormalizedInterior[]
       | null;
-
-    if (!interior) return null;
-    if ('x1' in interior) return [interior.x1];
-    if ('x2' in interior && Array.isArray(interior.x2)) return interior.x2;
-    if ('x3' in interior && Array.isArray(interior.x3)) return interior.x3;
-    if ('x4' in interior && Array.isArray(interior.x4)) return interior.x4;
-    return null;
+    return normalizeInterior(interior);
   } catch (error) {
     console.error('Failed to flatten XCM interior:', error);
     return null;

@@ -1,17 +1,15 @@
 import { useEffect, useState } from 'react';
-import type { ApiPromise } from '@polkadot/api';
 import type { XcAssetData } from '@/types/asset-registry';
 import { getXcmWeightFee } from '@/services/xcm/xcm-weight';
 import { BN, BN_ZERO } from '@polkadot/util';
+import useApiConnectionsStore from '@/store/api-connections';
 
 interface UseCrossFeeProps {
-  api: ApiPromise | null;
   asset?: XcAssetData;
   recipientAddress?: string;
   paraId?: string;
 }
 export const useCrossFee = ({
-  api,
   asset,
   recipientAddress,
   paraId
@@ -19,10 +17,13 @@ export const useCrossFee = ({
   const [fee, setFee] = useState<BN>(BN_ZERO);
   const [isLoading, setIsLoading] = useState(false);
 
+  const getValidApi = useApiConnectionsStore((state) => state.getValidApi);
+
   useEffect(() => {
     const fetchFee = async () => {
-      if (!api || !asset || !recipientAddress || !paraId) return;
+      if (!getValidApi || !asset || !recipientAddress || !paraId) return;
       setIsLoading(true);
+      const api = await getValidApi(paraId);
       const { fee } = await getXcmWeightFee({
         api,
         asset,
@@ -37,7 +38,7 @@ export const useCrossFee = ({
       setFee(BN_ZERO);
       setIsLoading(false);
     };
-  }, [api, asset, recipientAddress, paraId]);
+  }, [getValidApi, asset, recipientAddress, paraId]);
 
   return {
     fee,

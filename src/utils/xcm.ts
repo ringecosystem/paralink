@@ -43,33 +43,34 @@ function parseReserveLocation(
 }
 
 export function determineReserveType({
-  currentParaId,
-  paraID,
+  sourceParaId,
+  targetParaId,
   originChainReserveLocation
 }: {
-  currentParaId: number;
-  paraID: number;
+  sourceParaId: number;
+  targetParaId: number;
   originChainReserveLocation?: string;
 }): ReserveType {
-  if (paraID === 1000 && !originChainReserveLocation) return ReserveType.Local;
+  if (targetParaId === 1000 && !originChainReserveLocation)
+    return ReserveType.Foreign;
   if (originChainReserveLocation) {
     const reserveLocation = parseReserveLocation(originChainReserveLocation);
     if (!reserveLocation) {
-      console.log('No reserve location found', currentParaId, paraID);
+      console.log('No reserve location found', sourceParaId, targetParaId);
       return ReserveType.Remote;
     }
     if (reserveLocation.parents === '0') return ReserveType.Local;
     if (reserveLocation.parents === '1') {
       if (!reserveLocation.parachain) {
-        console.log('No parachain found', currentParaId, paraID);
+        console.log('No parachain found', sourceParaId, targetParaId);
         return ReserveType.Remote;
       }
-      if (Number(reserveLocation.parachain) === paraID)
+      if (Number(reserveLocation.parachain) === targetParaId)
         return ReserveType.Foreign;
     }
   }
 
-  console.log('No reserve location found', currentParaId, paraID);
+  console.log('No reserve location found', sourceParaId, targetParaId);
   return ReserveType.Remote;
 }
 

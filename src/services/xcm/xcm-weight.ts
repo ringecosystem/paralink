@@ -5,7 +5,7 @@ import { MultiLocation } from '@polkadot/types/interfaces/xcm';
 import { parseUnits } from '@/utils/format';
 
 import { BN, BN_ZERO, bnToBn } from '@polkadot/util';
-import { generateBeneficiary } from '@/utils/xcm/helper';
+import { flattenXcmInterior, generateBeneficiary } from '@/utils/xcm/helper';
 
 export interface XcmV3MultiLocation {
   V3?: {
@@ -89,6 +89,7 @@ export function generateLocalReserveXcmMessage({
   isAssetHub
 }: XcmTransferParams) {
   const multiLocation = JSON.parse(asset.xcmV1MultiLocation);
+  console.log('multiLocation?.v1?.interior', multiLocation?.v1?.interior);
 
   const assetId = {
     id: {
@@ -282,13 +283,15 @@ export async function calculateExecutionWeight({
         xcmMessage: null
       };
     }
+
+    console.log('xcm weight xcmMessage', xcmMessage);
+
     const weightResponse =
       await api.call.xcmPaymentApi.queryXcmWeight(xcmMessage);
 
     const humanWeight = (
       weightResponse.toJSON() as { ok: { refTime: number; proofSize: number } }
     ).ok;
-
     return {
       weight: humanWeight,
       xcmMessage
@@ -371,40 +374,44 @@ export async function quotePriceTokensForExactTokens({
   amount
 }: QuotePriceTokensParams) {
   try {
-    const multiLocation = JSON.parse(asset?.xcmV1MultiLocation);
-    const interior = createStandardXcmInterior(multiLocation?.v1?.interior);
-    if (!location) return null;
-    const asset1Location = {
-      parents: 0,
-      interior: {
-        X2: [
-          {
-            PalletInstance: Array.isArray(interior)
-              ? interior?.find((item) => item.PalletInstance)?.PalletInstance
-              : 50
-          },
-          {
-            GeneralIndex: Array.isArray(interior)
-              ? interior?.find((item) => item.GeneralIndex)?.GeneralIndex
-              : (interior?.GeneralIndex ?? 0)
-          }
-        ]
-      }
-    };
+    const interior = flattenXcmInterior(asset?.xcmV1MultiLocation);
+    if (!interior) return null;
 
-    const asset2Location = {
-      parents: 1,
-      interior: 'Here'
-    };
+    const asset1Location = api
+      .createType('MultiLocation', {
+        parents: 0,
+        interior: {
+          X2: [
+            {
+              PalletInstance: Array.isArray(interior)
+                ? interior?.find((item) => item.palletInstance)?.palletInstance
+                : 50
+            },
+            {
+              GeneralIndex: Array.isArray(interior)
+                ? interior?.find((item) => item.generalIndex)?.generalIndex
+                : (interior?.generalIndex ?? 0)
+            }
+          ]
+        }
+      })
+      .toU8a();
 
+    const asset2Location = api
+      .createType('MultiLocation', {
+        parents: 1,
+        interior: 'Here'
+      })
+      .toU8a();
     const quote =
       await api.call.assetConversionApi.quotePriceTokensForExactTokens(
         asset1Location,
         asset2Location,
         amount,
-        'Yes'
+        true
       );
 
+    console.log('quotePriceTokensForExactTokens', quote?.toJSON());
     return quote.toJSON();
   } catch (error) {
     console.error('quotePriceTokens error:', error);

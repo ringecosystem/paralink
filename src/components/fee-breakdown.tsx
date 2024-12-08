@@ -8,6 +8,7 @@ import { FallbackImage } from './ui/fallback-image';
 import { formatTokenBalance } from '@/utils/format';
 import { BN, BN_ZERO, bnMax } from '@polkadot/util';
 import { Skeleton } from './ui/skeleton';
+import FormattedNumberTooltip from './formatted-number-tooltip';
 
 const variants = {
   initial: { height: 0, opacity: 0 },
@@ -66,6 +67,14 @@ export function FeeBreakdown({
 }: FeeBreakdownProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const finalAmount = bnMax(amount.sub(crossFee), BN_ZERO);
+
+  console.log(
+    'crossFee',
+    crossFee?.toString(),
+    formatTokenBalance(crossFee, {
+      decimals: nativeTokenInfo?.decimals ?? 3
+    })
+  );
 
   return (
     <div className="flex w-full flex-col gap-[10px] rounded-[10px] bg-[#F2F3F5] p-[10px] text-[14px] font-normal">
@@ -127,12 +136,17 @@ export function FeeBreakdown({
                     {loading ? (
                       <Skeleton className="h-4 w-10" />
                     ) : (
-                      <span className="font-mono tabular-nums">
-                        {formatTokenBalance(networkFee, {
-                          decimals: nativeTokenInfo?.decimals ?? 3,
-                          displayDecimals: 3
-                        })}
-                      </span>
+                      <FormattedNumberTooltip
+                        value={networkFee}
+                        decimals={nativeTokenInfo?.decimals ?? 3}
+                        displayDecimals={3}
+                      >
+                        {(formattedValue: string) => (
+                          <span className="font-mono tabular-nums">
+                            {formattedValue}
+                          </span>
+                        )}
+                      </FormattedNumberTooltip>
                     )}
 
                     <FallbackImage
@@ -164,12 +178,17 @@ export function FeeBreakdown({
                     {loading ? (
                       <Skeleton className="h-4 w-10" />
                     ) : (
-                      <span className="font-mono tabular-nums">
-                        {formatTokenBalance(crossFee, {
-                          decimals: xcmTokenInfo?.decimals ?? 3,
-                          displayDecimals: 3
-                        })}
-                      </span>
+                      <FormattedNumberTooltip
+                        value={crossFee}
+                        decimals={xcmTokenInfo?.decimals ?? 3}
+                        displayDecimals={3}
+                      >
+                        {(formattedValue: string) => (
+                          <span className="font-mono tabular-nums">
+                            {formattedValue}
+                          </span>
+                        )}
+                      </FormattedNumberTooltip>
                     )}
                     <FallbackImage
                       src={xcmTokenInfo?.icon}
@@ -202,12 +221,17 @@ export function FeeBreakdown({
                     {loading ? (
                       <Skeleton className="h-4 w-10" />
                     ) : (
-                      <span className="font-mono tabular-nums">
-                        {formatTokenBalance(finalAmount, {
-                          decimals: xcmTokenInfo?.decimals ?? 3,
-                          displayDecimals: 3
-                        })}
-                      </span>
+                      <FormattedNumberTooltip
+                        value={finalAmount}
+                        decimals={xcmTokenInfo?.decimals ?? 3}
+                        displayDecimals={3}
+                      >
+                        {(formattedValue: string) => (
+                          <span className="font-mono tabular-nums">
+                            {formattedValue}
+                          </span>
+                        )}
+                      </FormattedNumberTooltip>
                     )}
                     <FallbackImage
                       src={xcmTokenInfo?.icon}

@@ -3,13 +3,19 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 import { StorageKeys } from '@/config/storage-keys';
 import { storage } from '@/utils/storage';
 
+export const enum TransactionStatus {
+  PENDING = 'PENDING',
+  SOURCE_CONFIRMED = 'SOURCE_CONFIRMED',
+  COMPLETED = 'COMPLETED',
+  FAILED = 'FAILED'
+}
+
 export interface TransactionRecord {
   id: string;
   txHash: string;
-  messageHash?: string;
   uniqueId?: string;
   createTime: number;
-  status: 'in-progress' | 'done';
+  status: TransactionStatus;
 
   sourceChainId: number;
   sourceAddress: string;
@@ -21,11 +27,14 @@ export interface TransactionRecord {
   symbol: string;
   decimals: number;
 }
-
+export type UpdateTransactionType = (
+  txHash: string,
+  updates: Partial<TransactionRecord>
+) => void;
 interface TransactionHistoryState {
   records: TransactionRecord[];
   addTransaction: (tx: Omit<TransactionRecord, 'id' | 'createTime'>) => void;
-  updateTransaction: (id: string, updates: Partial<TransactionRecord>) => void;
+  updateTransaction: UpdateTransactionType;
   getTransactionByTxHash: (txHash: string) => TransactionRecord | undefined;
   clearHistory: () => void;
   getTransactionsBySourceAddress: (address: string) => TransactionRecord[];

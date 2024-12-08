@@ -32,11 +32,14 @@ import { useCrossFee } from '../_hooks/use-cross-fee';
 import { parseUnits } from '@/utils/format';
 import { useTransactionExecution } from '@/hooks/use-transaction-execution';
 import toast from 'react-hot-toast';
+import { toast as toastify } from 'react-toastify';
+
 import { AvailableToken, getAvailableTokens } from '@/utils/xcm-token';
 import useApiConnectionsStore from '@/store/api-connections';
 import { cn } from '@/lib/utils';
 import { AssetPicker } from './asset-picker';
 import { BN, BN_ZERO, bnMax } from '@polkadot/util';
+import { TransactionManager } from '@/components/transaction-manager';
 
 interface DashboardProps {
   polkadotAssetRegistry: ChainConfig;
@@ -57,6 +60,7 @@ export default function Dashboard({
   const [isLoadingCrossChain, setIsLoadingCrossChain] = useState(false);
   const [recipientAddress, setRecipientAddress] = useState<string>('');
   const [isTransactionLoading, setIsTransactionLoading] = useState(false);
+  const [isInvalid, setIsInvalid] = useState(false);
   // 12pxLnQcjJqjG4mDaeJoKBLMfsdHZ2p2RxKHNEvicnZwZobx
   const { address } = useWalletConnection();
   const {
@@ -80,31 +84,11 @@ export default function Dashboard({
     }))
   );
 
-  const { connections } = useApiConnectionsStore(
+  const { isLoading: isApiLoading } = useApiConnectionsStore(
     useShallow((state) => ({
-      connections: state.connections
+      isLoading: state.isLoading
     }))
   );
-
-  const sourceChainApi = useMemo(() => {
-    if (!fromChain?.id) return null;
-    const connection = connections[fromChain.id];
-    return connection?.status === 'CONNECTED' ? connection.api : null;
-  }, [connections, fromChain?.id]);
-
-  const targetChainApi = useMemo(() => {
-    if (!toChain?.id) return null;
-    const connection = connections[toChain.id];
-    return connection?.status === 'CONNECTED' ? connection.api : null;
-  }, [connections, toChain?.id]);
-
-  const isApiLoading = useMemo(() => {
-    if (!toChain?.id || !fromChain?.id) return false;
-    const sourceConnectionIsLoading = connections?.[fromChain.id]?.isLoading;
-    const targetConnectionIsLoading = connections?.[toChain.id]?.isLoading;
-
-    return sourceConnectionIsLoading || targetConnectionIsLoading;
-  }, [connections, toChain?.id, fromChain?.id]);
 
   const selectedToken = useTokensStore((state) => state.selectedToken);
 
@@ -137,7 +121,7 @@ export default function Dashboard({
     partialFee,
     isLoading: isExtrinsicLoading
   } = useXcmExtrinsic({
-    fromChainApi: sourceChainApi,
+    fromChainId,
     selectedToken,
     toChain,
     recipientAddress,
@@ -146,7 +130,7 @@ export default function Dashboard({
   });
 
   const { networkFee, isLoading: isNetworkFeeLoading } = useNetworkFee({
-    fromChainApi: sourceChainApi,
+    fromChainId,
     asset: selectedToken?.xcAssetData,
     toChainId,
     recipientAddress,
@@ -154,21 +138,23 @@ export default function Dashboard({
   });
 
   const { fee: crossFee, isLoading: isCrossFeeLoading } = useCrossFee({
-    api: targetChainApi,
     asset: selectedToken?.xcAssetData,
     recipientAddress,
     paraId: toChain?.id
   });
 
   const { isLoading: isFromExistentialDepositLoading, deposit: fromDeposit } =
-    useExistentialDeposit({ api: sourceChainApi, address: address });
+    useExistentialDeposit({
+      chainId: fromChainId,
+      address: address
+    });
 
   const {
     isLoading: isToExistentialDepositLoading,
     hasEnoughBalance: hasToEnoughBalance,
     formattedDeposit: toDepositFormatted
   } = useExistentialDeposit({
-    api: targetChainApi,
+    chainId: toChainId,
     address: recipientAddress
   });
 
@@ -255,14 +241,30 @@ export default function Dashboard({
     setRecipientAddress('');
   }, [toChainId]);
 
-  console.log(
-    'amount',
-    amount,
-    parseUnits({
-      value: amount,
-      decimals: selectedToken?.decimals ?? 3
-    })?.toString()
-  );
+  useEffect(() => {
+    const toastId = toastify.loading('Loading...', {
+      closeButton: true,
+      autoClose: 4000,
+      hideProgressBar: false
+    });
+    setTimeout(() => {
+      console.log('toastId', toastId);
+      console.log('toastify.isActive(toastId)', toastify.isActive(toastId));
+
+      if (toastId && toastify.isActive(toastId)) {
+        toastify.update(toastId, {
+          render: 'Success!',
+          isLoading: false,
+          type: 'error',
+          autoClose: 4000,
+          closeButton: true,
+          hideProgressBar: false
+        });
+      } else {
+        toastify.success('Success!');
+      }
+    }, 4000);
+  }, []);
 
   return (
     <>
@@ -314,7 +316,7 @@ export default function Dashboard({
                 tokens={tokens}
                 crossFee={crossFee}
                 isCrossFeeLoading={isCrossFeeLoading}
-                maxBalance={maxBalanceBN}
+                maxBalanceBN={maxBalanceBN}
                 isMaxBalanceLoading={
                   isExtrinsicLoading ||
                   isNetworkFeeLoading ||
@@ -324,8 +326,7 @@ export default function Dashboard({
                 onChangeTokenBalance={setSelectedTokenBalance}
                 sourceChainId={fromChainId}
                 targetChainId={toChainId}
-                sourceChainApi={sourceChainApi}
-                targetChainApi={targetChainApi}
+                onChangeInvalid={setIsInvalid}
                 isLoading={isLoadingCrossChain}
                 error={
                   <>
@@ -393,7 +394,8 @@ export default function Dashboard({
                   amount === '' ||
                   amount === '0' ||
                   recipientAddress === '' ||
-                  isInsufficientBalance
+                  isInsufficientBalance ||
+                  isInvalid
                 }
               >
                 Confirm Transaction
@@ -402,6 +404,7 @@ export default function Dashboard({
           </div>
         </div>
       )}
+      <TransactionManager />
     </>
   );
 }

@@ -1,12 +1,13 @@
 import { useCallback } from 'react';
+import { useShallow } from 'zustand/react/shallow';
 import { useWalletStore } from '@/store/wallet';
-import { useTransactionHistory } from '@/store/transaction-history';
+import {
+  TransactionStatus,
+  useTransactionHistory
+} from '@/store/transaction-history';
 import { signAndSendExtrinsic } from '@/services/xcm/polkadot-xcm';
-import { TransactionToastDetail } from '@/components/transaction-toast-detail';
 import type { ChainInfoWithXcAssetsData } from '@/store/chains';
 import type { AvailableToken } from '@/utils/xcm-token';
-import { useShallow } from 'zustand/react/shallow';
-import { toast as sonnerToast } from 'sonner';
 
 interface UseTransactionExecutionProps {
   fromChain?: ChainInfoWithXcAssetsData;
@@ -33,15 +34,15 @@ export function useTransactionExecution({
   );
   const executeTransaction = useCallback(
     async ({ extrinsic, address }: { extrinsic: any; address: string }) => {
-      if (!extrinsic || !selectedWallet?.signer || !address) return;
+      if (!extrinsic || !fromChain?.id || !selectedWallet?.signer || !address)
+        return;
 
       return new Promise((resolve, reject) => {
-        let toastId: string | number;
         signAndSendExtrinsic({
           extrinsic,
           signer: selectedWallet.signer,
           sender: address,
-          onStart: ({ txHash }) => {
+          onPending({ txHash }) {
             if (fromChain && toChain) {
               addTransaction({
                 txHash,
@@ -52,24 +53,14 @@ export function useTransactionExecution({
                 amount,
                 symbol: selectedToken?.symbol ?? '',
                 decimals: selectedToken?.decimals ?? 0,
-                status: 'in-progress'
+                status: TransactionStatus.PENDING
               });
-              toastId = sonnerToast(
-                <TransactionToastDetail txHash={txHash} />,
-                {
-                  duration: Infinity
-                }
-              );
             }
           },
-          onSuccess: async ({ txHash, messageHash, uniqueId }) => {
+          onSuccess: async ({ txHash }) => {
             updateTransaction(txHash, {
-              status: uniqueId ? 'done' : 'in-progress',
-              messageHash,
-              uniqueId
+              status: TransactionStatus.SOURCE_CONFIRMED
             });
-            await new Promise((resolve) => setTimeout(resolve, 2000));
-            sonnerToast.dismiss(toastId);
 
             resolve(txHash);
           },

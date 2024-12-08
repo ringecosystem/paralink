@@ -196,8 +196,8 @@ export const getTokenList = ({
         ?.map((v) => ({
           ...v,
           reserveType: determineReserveType({
-            currentParaId: Number(fromChain.id),
-            paraID: Number(v?.paraID),
+            sourceParaId: Number(fromChain.id),
+            targetParaId: Number(v?.paraID),
             originChainReserveLocation: v.originChainReserveLocation
           })
         })) ?? [];

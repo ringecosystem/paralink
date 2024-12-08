@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
 import { queryDeliveryFees } from '@/services/xcm/deliver-fee';
 import { BN, BN_ZERO, bnToBn } from '@polkadot/util';
-import type { ApiPromise } from '@polkadot/api';
+import useApiConnectionsStore from '@/store/api-connections';
 import type { XcAssetData } from '@/types/asset-registry';
 
 interface UseNetworkFeeProps {
-  fromChainApi: ApiPromise | null;
+  fromChainId?: string;
   asset?: XcAssetData;
   toChainId?: string;
   recipientAddress?: string;
@@ -13,7 +13,7 @@ interface UseNetworkFeeProps {
 }
 
 export function useNetworkFee({
-  fromChainApi,
+  fromChainId,
   asset,
   toChainId,
   recipientAddress,
@@ -21,14 +21,16 @@ export function useNetworkFee({
 }: UseNetworkFeeProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [deliveryFee, setDeliveryFee] = useState<BN>(BN_ZERO);
+  const getValidApi = useApiConnectionsStore((state) => state.getValidApi);
 
   useEffect(() => {
     const fetchDeliveryFee = async () => {
       try {
-        if (!fromChainApi || !asset || !recipientAddress || !toChainId) return;
+        if (!fromChainId || !asset || !recipientAddress || !toChainId) return;
         setIsLoading(true);
+        const api = await getValidApi(fromChainId);
         const fee = await queryDeliveryFees({
-          api: fromChainApi,
+          api,
           asset,
           recipientAddress,
           toParaId: toChainId
@@ -45,7 +47,7 @@ export function useNetworkFee({
       setDeliveryFee(BN_ZERO);
       setIsLoading(false);
     };
-  }, [fromChainApi, asset, recipientAddress, toChainId]);
+  }, [getValidApi, asset, recipientAddress, toChainId]);
 
   const networkFee = useMemo(() => {
     const deliveryFeeBN = bnToBn(deliveryFee);

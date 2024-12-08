@@ -1,10 +1,10 @@
-import { ApiPromise } from '@polkadot/api';
 import { BN } from '@polkadot/util';
 import { useEffect, useRef, useState } from 'react';
 import { AugmentedConst } from '@polkadot/api/types';
 import { u128 } from '@polkadot/types';
-import type { AccountInfo } from '@polkadot/types/interfaces';
 import { formatTokenBalance } from '@/utils/format';
+import useApiConnectionsStore from '@/store/api-connections';
+import type { AccountInfo } from '@polkadot/types/interfaces';
 
 interface ExistentialDepositInfo {
   isLoading: boolean;
@@ -38,19 +38,19 @@ const DEFAULT_TOKEN_STATE: TokenState = {
 type Unsubscribe = () => void;
 
 export function useExistentialDeposit({
-  api,
+  chainId,
   address
 }: {
-  api: ApiPromise | null;
+  chainId?: string;
   address?: string;
 }): ExistentialDepositInfo {
   const unsubscribeRef = useRef<Unsubscribe | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error>();
   const [state, setState] = useState<TokenState>(DEFAULT_TOKEN_STATE);
-
+  const getValidApi = useApiConnectionsStore((state) => state.getValidApi);
   useEffect(() => {
-    if (!api || !address) {
+    if (!chainId || !address) {
       setIsLoading(false);
       setState(DEFAULT_TOKEN_STATE);
       return;
@@ -62,6 +62,7 @@ export function useExistentialDeposit({
 
         const section = 'balances';
         const method = 'existentialDeposit';
+        const api = await getValidApi(chainId);
         const ed = (await api.consts[section]?.[method]) as u128 &
           AugmentedConst<'promise'>;
 
@@ -113,7 +114,7 @@ export function useExistentialDeposit({
         unsubscribeRef.current();
       }
     };
-  }, [api, address]);
+  }, [getValidApi, address]);
 
   return {
     isLoading,

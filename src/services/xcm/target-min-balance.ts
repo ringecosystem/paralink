@@ -28,6 +28,7 @@ export async function getTargetMinBalance({
     if (api.query.assets?.asset) {
       const assetDetails = await api.query.assets.asset(assetId);
       const details = assetDetails.toJSON() as { minBalance?: number | string };
+      console.log('details 1', details);
       if (details?.minBalance || details?.minBalance === 0) {
         let balanceBN =
           typeof details.minBalance === 'string' &&
@@ -42,26 +43,28 @@ export async function getTargetMinBalance({
       }
     }
 
-    if (api.query.assetRegistry?.assetMetadatas) {
-      const assetMetadata =
-        await api.query.assetRegistry.assetMetadatas(assetId);
-      const metadata = assetMetadata.toJSON() as {
-        minimalBalance?: string | number;
-      };
-      if (metadata?.minimalBalance) {
-        const balanceBN = bnToBn(metadata.minimalBalance);
-        return {
-          balance: balanceBN,
-          formatted: formatTokenBalance(balanceBN, { decimals })
-        };
-      }
-    }
+    // TODO
+    // if (api.query.assetRegistry?.assetMetadatas) {
+    //   const assetMetadata =
+    //     await api.query.assetRegistry.assetMetadatas(assetId);
+    //   const metadata = assetMetadata.toJSON() as {
+    //     minimalBalance?: string | number;
+    //   };
+    //   if (metadata?.minimalBalance) {
+    //     const balanceBN = bnToBn(metadata.minimalBalance);
+    //     return {
+    //       balance: balanceBN,
+    //       formatted: formatTokenBalance(balanceBN, { decimals })
+    //     };
+    //   }
+    // }
     if (api.query.assetRegistry?.assets) {
       const assetDetails = await api.query.assetRegistry.assets(assetId);
 
       const details = assetDetails?.toJSON() as {
         existentialDeposit?: string;
       } | null;
+      console.log('details 2', details);
       if (details?.existentialDeposit) {
         const balanceBN = bnToBn(details.existentialDeposit);
         return {
@@ -70,6 +73,7 @@ export async function getTargetMinBalance({
         };
       }
     }
+    console.log('no details found');
 
     return {
       balance: parseUnits({

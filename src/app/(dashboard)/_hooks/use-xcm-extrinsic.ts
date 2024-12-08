@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { createXcmTransferExtrinsic } from '@/services/xcm/polkadot-xcm';
-import type { ApiPromise } from '@polkadot/api';
 import { ChainInfoWithXcAssetsData } from '@/store/chains';
 import type { AvailableToken } from '@/utils/xcm-token';
 import { SubmittableExtrinsic } from '@polkadot/api/types';
 import { BN, BN_ZERO, bnToBn } from '@polkadot/util';
+import useApiConnectionsStore from '@/store/api-connections';
 
 interface UseXcmExtrinsicParams {
-  fromChainApi: ApiPromise | null;
+  fromChainId?: string;
   selectedToken?: AvailableToken;
   toChain?: ChainInfoWithXcAssetsData;
   recipientAddress?: string;
@@ -16,7 +16,7 @@ interface UseXcmExtrinsicParams {
 }
 
 export function useXcmExtrinsic({
-  fromChainApi,
+  fromChainId,
   selectedToken,
   toChain,
   recipientAddress,
@@ -29,10 +29,12 @@ export function useXcmExtrinsic({
   const [partialFee, setPartialFee] = useState<BN>(BN_ZERO);
   const [isLoading, setIsLoading] = useState(false);
 
+  const getValidApi = useApiConnectionsStore((state) => state.getValidApi);
+
   useEffect(() => {
     const getExtrinsic = async () => {
       if (
-        !fromChainApi ||
+        !fromChainId ||
         !selectedToken?.xcAssetData ||
         !toChain ||
         !recipientAddress
@@ -41,8 +43,11 @@ export function useXcmExtrinsic({
 
       setIsLoading(true);
       try {
+        const api = await getValidApi(fromChainId);
+
         const result = await createXcmTransferExtrinsic({
-          fromChainApi,
+          sourceChainId: fromChainId,
+          fromChainApi: api,
           token: selectedToken.xcAssetData,
           amount,
           toChain,
@@ -59,11 +64,12 @@ export function useXcmExtrinsic({
     getExtrinsic();
     return () => setExtrinsic(undefined);
   }, [
-    fromChainApi,
+    fromChainId,
     selectedToken?.xcAssetData,
     toChain,
     recipientAddress,
-    amount
+    amount,
+    getValidApi
   ]);
 
   useEffect(() => {

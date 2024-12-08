@@ -8,7 +8,7 @@ import { FallbackImage } from '@/components/ui/fallback-image';
 import FormattedNumberTooltip from '@/components/formatted-number-tooltip';
 import { useNumberInput } from '@/hooks/number-input';
 import { useWalletConnection } from '@/hooks/use-wallet-connection';
-import { formatTokenBalance } from '@/utils/format';
+import { formatTokenBalance, parseUnits } from '@/utils/format';
 import { isXcmLocationMatch } from '@/utils/xcm';
 import { useTokenBalances } from './_hooks/use-token-balances';
 import { getAcceptablePaymentTokens } from '@/services/xcm/get-acceptable-payment-token';
@@ -19,8 +19,8 @@ import useTokensStore from '@/store/tokens';
 import { useShallow } from 'zustand/react/shallow';
 import { useMinBalance } from '../../_hooks/use-min-balance';
 import { Skeleton } from '@/components/ui/skeleton';
-import type { ApiPromise } from '@polkadot/api';
 import type { AvailableToken } from '@/utils/xcm-token';
+import useApiConnectionsStore from '@/store/api-connections';
 
 export interface PickerProps {
   ref: React.RefObject<{ refreshBalances: () => void }>;
@@ -29,16 +29,15 @@ export interface PickerProps {
   tokenBalances?: BalanceWithSymbol[];
   sourceChainId?: string;
   targetChainId?: string;
-  sourceChainApi?: ApiPromise | null;
-  targetChainApi?: ApiPromise | null;
   crossFee: BN;
   isCrossFeeLoading: boolean;
-  maxBalance?: BN;
+  maxBalanceBN: BN;
   isMaxBalanceLoading: boolean;
   error?: React.ReactNode;
   onChangeToken?: (token: AvailableToken | undefined) => void;
   onChangeAmount?: (value: string) => void;
   onChangeTokenBalance?: (value: BN) => void;
+  onChangeInvalid?: (value: boolean) => void;
 }
 
 export function Picker({
@@ -46,19 +45,21 @@ export function Picker({
   tokens,
   sourceChainId,
   targetChainId,
-  sourceChainApi,
-  targetChainApi,
   crossFee,
   isCrossFeeLoading,
-  maxBalance,
+  maxBalanceBN,
   isMaxBalanceLoading,
   error,
   onChangeAmount,
-  onChangeTokenBalance
+  onChangeTokenBalance,
+  onChangeInvalid
 }: PickerProps) {
   const { address } = useWalletConnection();
   const [availableTokens, setAvailableTokens] = useState<AvailableToken[]>([]);
   const [availableTokensLoading, setAvailableTokensLoading] = useState(false);
+  const [isInvalid, setIsInvalid] = useState(false);
+
+  const getValidApi = useApiConnectionsStore((state) => state.getValidApi);
 
   const { selectedToken, setSelectedToken } = useTokensStore(
     useShallow((state) => ({
@@ -74,8 +75,7 @@ export function Picker({
   } = useTokenBalances({
     address,
     tokens: availableTokens,
-    paraId: sourceChainId,
-    api: sourceChainApi
+    paraId: sourceChainId
   });
 
   const tokenBalance = updatedBalances?.find(
@@ -84,7 +84,7 @@ export function Picker({
 
   const { balance: minBalance, isLoading: isMinBalanceLoading } = useMinBalance(
     {
-      api: targetChainApi,
+      chainId: targetChainId,
       asset: selectedToken?.xcAssetData,
       decimals: selectedToken?.decimals
     }
@@ -92,14 +92,10 @@ export function Picker({
 
   const minBalanceBN = bnToBn(minBalance).add(crossFee);
 
-  // const min = minBalance ? minBalance.toNumber() : 0;
-  // const max = maxBalance ? maxBalance.toNumber() : 0;
-
   const price = undefined;
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { value, handleChange, handleBlur, handleReset } = useNumberInput({
     maxDecimals: selectedToken?.decimals ?? 18,
-    // minValue: min,
     initialValue: '',
     onChange: onChangeAmount
   });
@@ -137,10 +133,10 @@ export function Picker({
   useEffect(() => {
     const initTokens = async () => {
       console.log('initTokens', tokens);
-      console.log('targetChainApi', targetChainApi);
       console.log('targetChainId', targetChainId);
-      if (!tokens?.length || !targetChainApi || !targetChainId) return;
+      if (!tokens?.length || !targetChainId) return;
       setAvailableTokensLoading(true);
+      const targetChainApi = await getValidApi(targetChainId);
 
       try {
         if (targetChainId === '1000') {
@@ -216,12 +212,35 @@ export function Picker({
       }
     };
     initTokens();
-  }, [tokens, setSelectedToken, sourceChainId, targetChainApi, targetChainId]);
+  }, [tokens, setSelectedToken, sourceChainId, getValidApi, targetChainId]);
+
+  useEffect(() => {
+    let isInvalid = false;
+    if (!value || value === '0') {
+      return;
+    }
+    const valueBN = parseUnits({
+      value: value,
+      decimals: selectedToken?.decimals ?? 18
+    });
+    if (valueBN.gt(maxBalanceBN) || valueBN.lt(minBalanceBN)) {
+      isInvalid = true;
+    }
+    setIsInvalid(isInvalid);
+    onChangeInvalid?.(isInvalid);
+  }, [
+    value,
+    selectedToken?.decimals,
+    minBalanceBN,
+    maxBalanceBN,
+    onChangeInvalid
+  ]);
 
   // clean up state
   useEffect(() => {
     return () => {
       console.log('clean up 2');
+      setIsInvalid(false);
       setSelectedToken(undefined);
       setAvailableTokens([]);
       setAvailableTokensLoading(false);
@@ -246,11 +265,16 @@ export function Picker({
       </div>
     );
   }
+  // focus-within:shadow-lg
 
   return (
     <>
       <div>
-        <div className="flex items-center gap-[10px] rounded-[10px] bg-[#F2F3F5] p-[10px]">
+        <div
+          className={cn(
+            'flex items-center gap-[10px] rounded-[10px] bg-[#F2F3F5] p-[10px]'
+          )}
+        >
           <div className="relative h-[40px] w-[40px] flex-shrink-0">
             <FallbackImage
               src={selectedToken?.icon ?? '/images/default-token.svg'}
@@ -293,7 +317,8 @@ export function Picker({
                 className={cn(
                   'w-full bg-transparent text-right font-mono text-[18px] font-bold tabular-nums text-[#12161950] focus-visible:outline-none',
                   'md:text-[24px]',
-                  value && 'text-[#121619]'
+                  value && 'text-[#121619]',
+                  isInvalid && 'text-[#ff2d20]'
                 )}
                 placeholder="0.000"
                 type="number"
@@ -325,9 +350,10 @@ export function Picker({
               {isMinBalanceLoading || isCrossFeeLoading ? (
                 <Skeleton className="h-4 w-10" />
               ) : (
-                formatTokenBalance(minBalance ?? BN_ZERO, {
+                formatTokenBalance(minBalanceBN ?? BN_ZERO, {
                   decimals: selectedToken?.decimals,
-                  symbol: selectedToken?.symbol
+                  symbol: selectedToken?.symbol,
+                  displayDecimals: 3
                 })
               )}
             </div>
@@ -337,9 +363,10 @@ export function Picker({
               {isMaxBalanceLoading ? (
                 <Skeleton className="h-4 w-10" />
               ) : (
-                formatTokenBalance(maxBalance ?? BN_ZERO, {
+                formatTokenBalance(maxBalanceBN ?? BN_ZERO, {
                   decimals: selectedToken?.decimals,
-                  symbol: selectedToken?.symbol
+                  symbol: selectedToken?.symbol,
+                  displayDecimals: 3
                 })
               )}
             </div>

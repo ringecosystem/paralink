@@ -1,11 +1,15 @@
 import { parseUnits } from '@/utils/format';
-import { XcAssetData } from '@/types/asset-registry';
+import { ReserveType, XcAssetData } from '@/types/asset-registry';
 import { ChainInfoWithXcAssetsData } from '@/store/chains';
 import { Signer, SubmittableExtrinsic } from '@polkadot/api/types';
 import { ApiPromise } from '@polkadot/api';
-import { createStandardXcmInterior } from '@/utils/xcm/interior-params';
-import { checkTransactionHash } from '../subscan';
-import { generateBeneficiary } from '@/utils/xcm/helper';
+import {
+  createStandardXcmInterior,
+  createStandardXcmInteriorByFlatInterior
+} from '@/utils/xcm/interior-params';
+
+import { generateBeneficiary, normalizeInterior } from '@/utils/xcm/helper';
+import { XcmRequestInteriorParams } from '@/utils/xcm/type';
 
 type XcmTransferParams = {
   token: XcAssetData;
@@ -29,7 +33,20 @@ export function createXcmTransfer({
   if (amountInWei.isZero()) return undefined;
   try {
     const multiLocation = JSON.parse(token.xcmV1MultiLocation);
-    const interior = createStandardXcmInterior(multiLocation?.v1?.interior);
+    let interior: XcmRequestInteriorParams | XcmRequestInteriorParams[] | null =
+      null;
+    const flatInterior = normalizeInterior(multiLocation?.v1?.interior);
+    if (
+      token?.reserveType === ReserveType.Local &&
+      Array.isArray(flatInterior) &&
+      flatInterior.length > 0
+    ) {
+      interior = createStandardXcmInteriorByFlatInterior(
+        flatInterior?.filter((v) => !v.parachain)
+      );
+    } else {
+      interior = createStandardXcmInterior(multiLocation?.v1?.interior);
+    }
 
     const dest = {
       V3: {
@@ -48,7 +65,7 @@ export function createXcmTransfer({
       {
         id: {
           Concrete: {
-            parents: 1,
+            parents: token?.reserveType === ReserveType.Local ? 0 : 1,
             interior
           }
         },
@@ -58,7 +75,9 @@ export function createXcmTransfer({
 
     const xcmParams = {
       dest,
-      beneficiary,
+      beneficiary: {
+        V3: beneficiary
+      },
       assets: {
         V3: assetItems
       },
@@ -77,6 +96,7 @@ export function createXcmTransfer({
 }
 
 type CreateXcmTransferExtrinsicParams = {
+  sourceChainId: string;
   fromChainApi: ApiPromise;
   token: XcAssetData;
   amount: string;
@@ -84,6 +104,7 @@ type CreateXcmTransferExtrinsicParams = {
   recipientAddress: string;
 };
 export const createXcmTransferExtrinsic = async ({
+  sourceChainId,
   fromChainApi,
   token,
   amount,
@@ -98,13 +119,21 @@ export const createXcmTransferExtrinsic = async ({
   });
   if (!xcmTransferParams || !fromChainApi) return undefined;
 
-  const extrinsic = fromChainApi.tx.polkadotXcm.transferAssets(
-    xcmTransferParams.dest,
-    xcmTransferParams.beneficiary,
-    xcmTransferParams.assets,
-    xcmTransferParams.feeAssetItem,
-    xcmTransferParams.weightLimit
-  );
+  const extrinsic =
+    sourceChainId !== '2006'
+      ? fromChainApi.tx.polkadotXcm.transferAssets(
+          xcmTransferParams.dest,
+          xcmTransferParams.beneficiary,
+          xcmTransferParams.assets,
+          xcmTransferParams.feeAssetItem,
+          xcmTransferParams.weightLimit
+        )
+      : fromChainApi.tx.polkadotXcm.reserveTransferAssets(
+          xcmTransferParams.dest,
+          xcmTransferParams.beneficiary,
+          xcmTransferParams.assets,
+          xcmTransferParams.feeAssetItem
+        );
   return extrinsic;
 };
 
@@ -112,7 +141,6 @@ type SignAndSendExtrinsicParams = {
   extrinsic: SubmittableExtrinsic<'promise'>;
   signer: Signer;
   sender: string;
-  onStart?: ({ txHash }: { txHash: string }) => void;
   onPending?: ({ txHash }: { txHash: string }) => void;
   onSuccess?: ({
     txHash,
@@ -130,82 +158,120 @@ export const signAndSendExtrinsic = async ({
   extrinsic,
   signer,
   sender,
-  onStart,
   onPending,
   onSuccess,
   onFailure,
   onError
 }: SignAndSendExtrinsicParams) => {
   try {
-    let hasStarted = false;
+    let txHash: string | undefined;
+    const unsub = await extrinsic.signAndSend(
+      sender,
+      { signer },
+      async (result) => {
+        console.log('result', result);
 
-    const unsub = await extrinsic.signAndSend(sender, { signer }, (result) => {
-      if (!hasStarted) {
-        onStart?.({
-          txHash: result.txHash.toHex()
-        });
-        hasStarted = true;
-      }
-
-      onPending?.({
-        txHash: result.txHash.toHex()
-      });
-
-      if (result.isCompleted) unsub();
-
-      if (result.status.isFinalized || result.status.isInBlock) {
-        let messageHash: string | undefined;
-
-        const sentEvent = result.events.find(
-          ({ event }) => event.index.toHex() === '0x6f00'
-        );
-
-        if (sentEvent) {
-          messageHash = sentEvent.event.data[0].toHex();
-          console.log('XCM Message Hash:', messageHash);
-        }
-
-        result.events
-          .filter(({ event }) => event.section === 'system')
-          .forEach(async ({ event }) => {
-            if (event.method === 'ExtrinsicFailed') {
-              onFailure?.({
-                txHash: result.txHash.toHex()
-              });
-            } else if (event.method === 'ExtrinsicSuccess') {
-              if (messageHash) {
-                const uniqueId = await checkTransactionHash({
-                  hash: messageHash
-                });
-                if (uniqueId) {
-                  console.log(
-                    'XCM Message Hash:',
-                    `https://polkadot.subscan.io/xcm_message/polkadot-${uniqueId}`
-                  );
-                }
-                onSuccess?.({
-                  txHash: result.txHash.toHex(),
-                  messageHash,
-                  uniqueId
-                });
-              } else {
-                onSuccess?.({
-                  txHash: result.txHash.toHex(),
-                  messageHash: undefined,
-                  uniqueId: undefined
-                });
-              }
-            }
+        if (!txHash) {
+          txHash = result.txHash.toHex();
+          onPending?.({
+            txHash
           });
-      } else if (result.isError) {
-        onFailure?.({
-          txHash: result.txHash.toHex()
-        });
+          if (result.status.isFinalized || result.status.isInBlock) {
+            handleRegularTransaction(result, onSuccess, onFailure);
+            if (result.isCompleted) unsub();
+          } else if (result.isError) {
+            console.log('ExtrinsicError', result);
+            onFailure?.({
+              txHash: result.txHash.toHex()
+            });
+            if (result.isCompleted) unsub();
+          }
+          //   try {
+          //     const xcmResult = await checkXcmTransaction({
+          //       hash: txHash,
+          //       paraId: Number(sourceChainId)
+          //     });
+
+          //     switch (xcmResult.status) {
+          //       case XcmMessageStatus.INVALID_PARA_ID:
+          //         shouldCheckRegularTransaction = true;
+          //         break;
+
+          //       case XcmMessageStatus.SUCCESS:
+          //         onSuccess?.({
+          //           txHash,
+          //           messageHash: xcmResult.hash,
+          //           uniqueId: xcmResult.hash
+          //         });
+          //         if (result.isCompleted) unsub();
+          //         return;
+
+          //       case XcmMessageStatus.EXTRINSIC_FAILED:
+          //       case XcmMessageStatus.TIMEOUT:
+          //       case XcmMessageStatus.UNKNOWN_ERROR:
+          //         onFailure?.({ txHash });
+          //         onError?.(xcmResult.message);
+          //         if (result.isCompleted) unsub();
+          //         return;
+          //     }
+          //   } catch (error) {
+          //     console.error('XCM check error:', error);
+          //     // XCM 检查出错，也标记需要检查常规交易结果
+          //     shouldCheckRegularTransaction = true;
+          //   }
+          // }
+
+          // // 只有在需要检查常规交易时才执行以下逻辑
+          // if (shouldCheckRegularTransaction) {
+          //   if (result.status.isFinalized || result.status.isInBlock) {
+          //     handleRegularTransaction(result, onSuccess, onFailure);
+          //     if (result.isCompleted) unsub();
+          //   } else if (result.isError) {
+          //     console.log('ExtrinsicError', result);
+          //     onFailure?.({
+          //       txHash: result.txHash.toHex()
+          //     });
+          //     if (result.isCompleted) unsub();
+          //   }
+          // }
+        }
       }
-    });
+    );
   } catch (err) {
     console.error(err);
     onError?.(err instanceof Error ? err.message : 'Unknown error');
     throw new Error('Transaction failed');
   }
 };
+
+function handleRegularTransaction(
+  result: any,
+  onSuccess?: ({
+    txHash,
+    messageHash,
+    uniqueId
+  }: {
+    txHash: string;
+    messageHash?: string;
+    uniqueId?: string;
+  }) => void,
+  onFailure?: ({ txHash }: { txHash?: string }) => void
+) {
+  result.events
+    .filter(({ event }: { event: any }) => event.section === 'system')
+    .forEach(({ event }: { event: any }) => {
+      if (event.method === 'ExtrinsicFailed') {
+        console.log('ExtrinsicFailed', result);
+        onFailure?.({
+          txHash: result.txHash.toHex()
+        });
+      } else if (event.method === 'ExtrinsicSuccess') {
+        console.log('ExtrinsicSuccess', result);
+        onSuccess?.({
+          txHash: result.txHash.toHex(),
+          messageHash: undefined,
+          uniqueId: undefined
+        });
+      }
+    });
+}

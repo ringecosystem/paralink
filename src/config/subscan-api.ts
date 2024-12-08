@@ -43,7 +43,7 @@ const SUBSCAN_API_CONFIG: Record<number, SubscanApiConfig> = {
     baseUrl: 'https://interlay.api.subscan.io'
   },
   2034: {
-    baseUrl: 'https://hydradx.api.subscan.io'
+    baseUrl: 'https://hydration.api.subscan.io'
   },
   2035: {
     baseUrl: 'https://phala.api.subscan.io'

@@ -1,22 +1,37 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getAssetBalance } from '@/lib/chain/balance';
 import type { AvailableToken } from '@/utils/xcm-token';
-import type { ApiPromise } from '@polkadot/api';
+import { useEffect, useState } from 'react';
+import { ApiPromise } from '@polkadot/api';
+import useApiConnectionsStore from '@/store/api-connections';
 
 interface UseTokenBalancesProps {
   address?: string;
   tokens?: AvailableToken[];
   paraId?: string;
-  api?: ApiPromise | null;
 }
 
 export function useTokenBalances({
   address,
   tokens,
-  paraId,
-  api
+  paraId
 }: UseTokenBalancesProps) {
   const queryClient = useQueryClient();
+  const [api, setApi] = useState<ApiPromise | null>(null);
+  const getValidApi = useApiConnectionsStore((state) => state.getValidApi);
+
+  useEffect(() => {
+    const getApi = async () => {
+      if (!paraId) return;
+      const api = await getValidApi(paraId);
+      setApi(api);
+    };
+    getApi();
+    return () => {
+      setApi(null);
+    };
+  }, [getValidApi, paraId]);
+
   const queryKey = [
     'token-balances',
     address,
