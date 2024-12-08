@@ -9,8 +9,6 @@ export async function connectToChain({
   wsEndpoint,
   onDisconnect
 }: ConnectOptions): Promise<ApiPromise> {
-  console.log('wsEndpoint1', wsEndpoint);
-
   try {
     const provider = new WsProvider(wsEndpoint);
 

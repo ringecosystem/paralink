@@ -5,10 +5,10 @@ import { ChainSelect } from '@/components/chain-select';
 import type { ChainInfoWithXcAssetsData } from '@/store/chains';
 
 interface ChainSwitcherProps {
-  fromChainId?: string;
-  fromChain?: ChainInfoWithXcAssetsData;
-  toChainId?: string;
-  toChain?: ChainInfoWithXcAssetsData;
+  sourceChainId?: string;
+  sourceChain?: ChainInfoWithXcAssetsData;
+  targetChainId?: string;
+  targetChain?: ChainInfoWithXcAssetsData;
   fromParachains?: ChainInfoWithXcAssetsData[];
   toParachains?: ChainInfoWithXcAssetsData[];
   onChangeFromChain: (id: string) => void;
@@ -17,10 +17,10 @@ interface ChainSwitcherProps {
 }
 
 export function ChainSwitcher({
-  fromChainId,
-  fromChain,
-  toChainId,
-  toChain,
+  sourceChainId,
+  sourceChain,
+  targetChainId,
+  targetChain,
   fromParachains,
   toParachains,
   onChangeFromChain,
@@ -31,8 +31,8 @@ export function ChainSwitcher({
     <div className="grid w-full grid-cols-[1fr_auto_1fr] items-center gap-[10px]">
       <ChainSelect
         label="From"
-        value={fromChainId}
-        chain={fromChain}
+        value={sourceChainId}
+        chain={sourceChain}
         chains={fromParachains}
         onChange={onChangeFromChain}
       />
@@ -51,8 +51,8 @@ export function ChainSwitcher({
       </div>
       <ChainSelect
         label="To"
-        value={toChainId}
-        chain={toChain}
+        value={targetChainId}
+        chain={targetChain}
         chains={toParachains}
         onChange={onChangeToChain}
       />

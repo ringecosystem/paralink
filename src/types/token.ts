@@ -12,5 +12,6 @@ export type TokenWithBalance = Token & {
   price?: string;
   address?: string;
   xcAssetData?: XcAssetData;
+  contractAddress?: string;
   decimals?: number;
 };
