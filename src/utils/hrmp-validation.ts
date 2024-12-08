@@ -18,6 +18,11 @@ interface HrmpChannel {
   recipientDeposit: number;
 }
 
+type HrmpChannels = {
+  key: { sender: number; recipient: number };
+  value: HrmpChannel;
+}[];
+
 interface ValidationResult {
   isValid: boolean;
   error?: string;
@@ -61,10 +66,7 @@ async function getHrmpChannels(api: ApiPromise) {
 function validateChannels(
   sourceParaId: number,
   destParaId: number,
-  hrmpChannels: {
-    key: { sender: number; recipient: number };
-    value: HrmpChannel;
-  }[]
+  hrmpChannels: HrmpChannels
 ): ValidationResult {
   const sourceToDestChannel = hrmpChannels.find(
     (channel) =>
@@ -120,7 +122,7 @@ export async function filterHrmpConnections({
         const validationResult = validateChannels(
           Number(paraId),
           Number(otherParaId),
-          hrmpJson
+          hrmpJson as HrmpChannels
         );
         return validationResult.isValid;
       });
