@@ -7,7 +7,7 @@ import {
 } from '@/store/transaction-history';
 import { signAndSendExtrinsic } from '@/services/xcm/polkadot-xcm';
 import type { ChainInfoWithXcAssetsData } from '@/store/chains';
-import type { AvailableToken } from '@/utils/xcm-token';
+import type { AvailableToken } from '@/utils/xcm/token';
 
 interface UseTransactionExecutionProps {
   sourceChain?: ChainInfoWithXcAssetsData;

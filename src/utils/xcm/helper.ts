@@ -1,7 +1,10 @@
 import { isAddress } from 'viem';
 import { decodeAddress } from '@polkadot/util-crypto';
 import { u8aToHex } from '@polkadot/util';
+import { areInteriorsEqual } from './interior-match';
 import type { GeneralKeyV3, NormalizedInterior } from './type';
+import { ReserveType, type XcAssetData } from '@/types/asset-registry';
+
 export const isGeneralKeyV3 = (
   key: GeneralKeyV3 | string
 ): key is GeneralKeyV3 => {
@@ -54,4 +57,48 @@ export function generateBeneficiary(recipientAddress: string) {
       }
     }
   };
+}
+
+export function isXcmLocationMatch({
+  acceptablePaymentLocation,
+  asset
+}: {
+  acceptablePaymentLocation: any | null | undefined;
+  asset: XcAssetData;
+}): boolean {
+  const xcmLocation = JSON.parse(asset?.xcmV1MultiLocation)?.v1;
+
+  if (!acceptablePaymentLocation || !xcmLocation) {
+    console.log(`One or both locations are empty:`, {
+      acceptablePaymentLocation,
+      xcmLocation
+    });
+    return false;
+  }
+
+  if (
+    Number(acceptablePaymentLocation?.parents) === 0 &&
+    typeof acceptablePaymentLocation?.interior?.here !== 'undefined' &&
+    asset?.reserveType === ReserveType.Foreign
+  ) {
+    console.log('native token', { acceptablePaymentLocation, xcmLocation });
+    return true;
+  }
+
+  try {
+    const parsedAcceptablePaymentLocation =
+      typeof acceptablePaymentLocation === 'string'
+        ? JSON.parse(acceptablePaymentLocation)
+        : acceptablePaymentLocation;
+    const parsedXcmLocation =
+      typeof xcmLocation === 'string' ? JSON.parse(xcmLocation) : xcmLocation;
+
+    return areInteriorsEqual(
+      parsedAcceptablePaymentLocation?.interior,
+      parsedXcmLocation?.interior
+    );
+  } catch (error) {
+    console.log(`JSON parsing error:`, error);
+    return false;
+  }
 }

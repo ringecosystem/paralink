@@ -1,6 +1,6 @@
 import { Asset } from '@/types/assets-info';
 import { BN } from '@polkadot/util';
-import { getTokenList } from './xcm-chain-registry';
+import { getTokenList } from './registry';
 import { getTokenFromXcAsset } from '@/lib/registry';
 import type { XcAssetData } from '@/types/asset-registry';
 import type { ChainInfoWithXcAssetsData } from '@/store/chains';

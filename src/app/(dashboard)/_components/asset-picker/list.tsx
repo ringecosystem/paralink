@@ -10,8 +10,8 @@ import {
 } from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Empty } from '@/components/empty';
-import type { AvailableToken } from '@/utils/xcm-token';
 import { AssetPickerItem } from './item';
+import type { AvailableToken } from '@/utils/xcm/token';
 
 export type BalanceWithSymbol = {
   balance: BN;

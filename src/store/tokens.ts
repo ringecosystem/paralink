@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import type { AvailableToken } from '@/utils/xcm-token';
+import type { AvailableToken } from '@/utils/xcm/token';
 
 interface TokensState {
   selectedToken?: AvailableToken;

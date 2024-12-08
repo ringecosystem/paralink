@@ -33,7 +33,7 @@ import { parseUnits } from '@/utils/format';
 import { useTransactionExecution } from '@/hooks/use-transaction-execution';
 import toast from 'react-hot-toast';
 
-import { AvailableToken, getAvailableTokens } from '@/utils/xcm-token';
+import { AvailableToken, getAvailableTokens } from '@/utils/xcm/token';
 import useApiConnectionsStore from '@/store/api-connections';
 import { cn } from '@/lib/utils';
 import { AssetPicker } from './asset-picker';

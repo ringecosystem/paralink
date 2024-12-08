@@ -9,7 +9,6 @@ import FormattedNumberTooltip from '@/components/formatted-number-tooltip';
 import { useNumberInput } from '@/hooks/number-input';
 import { useWalletConnection } from '@/hooks/use-wallet-connection';
 import { formatTokenBalance, parseUnits } from '@/utils/format';
-import { isXcmLocationMatch } from '@/utils/xcm';
 import { useTokenBalances } from './_hooks/use-token-balances';
 import { getAcceptablePaymentTokens } from '@/services/xcm/get-acceptable-payment-token';
 import { checkAssetHubAcceptablePaymentToken } from '@/services/xcm/check-assethub-acceptable-payment-token';
@@ -19,8 +18,9 @@ import useTokensStore from '@/store/tokens';
 import { useShallow } from 'zustand/react/shallow';
 import { useMinBalance } from '../../_hooks/use-min-balance';
 import { Skeleton } from '@/components/ui/skeleton';
-import type { AvailableToken } from '@/utils/xcm-token';
 import useApiConnectionsStore from '@/store/api-connections';
+import { isXcmLocationMatch } from '@/utils/xcm/helper';
+import type { AvailableToken } from '@/utils/xcm/token';
 
 export interface PickerProps {
   ref: React.RefObject<{ refreshBalances: () => void }>;

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { createXcmTransferExtrinsic } from '@/services/xcm/polkadot-xcm';
 import { ChainInfoWithXcAssetsData } from '@/store/chains';
-import type { AvailableToken } from '@/utils/xcm-token';
+import type { AvailableToken } from '@/utils/xcm/token';
 import { SubmittableExtrinsic } from '@polkadot/api/types';
 import { BN, BN_ZERO, bnToBn } from '@polkadot/util';
 import useApiConnectionsStore from '@/store/api-connections';

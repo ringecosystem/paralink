@@ -1,9 +1,9 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getAssetBalance } from '@/lib/chain/balance';
-import type { AvailableToken } from '@/utils/xcm-token';
 import { useEffect, useState } from 'react';
-import { ApiPromise } from '@polkadot/api';
 import useApiConnectionsStore from '@/store/api-connections';
+import type { ApiPromise } from '@polkadot/api';
+import type { AvailableToken } from '@/utils/xcm/token';
 
 interface UseTokenBalancesProps {
   address?: string;
