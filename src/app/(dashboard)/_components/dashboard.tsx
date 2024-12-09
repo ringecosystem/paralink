@@ -368,8 +368,7 @@ export default function Dashboard({
                   amount === '' ||
                   amount === '0' ||
                   recipientAddress === '' ||
-                  isInsufficientBalance ||
-                  isInvalid
+                  isInsufficientBalance 
                 }
               >
                 Confirm Transaction

@@ -31,7 +31,7 @@ export async function getTargetMinBalance({
       if (details?.minBalance || details?.minBalance === 0) {
         let balanceBN =
           typeof details.minBalance === 'string' &&
-          details.minBalance.startsWith('0x')
+            details.minBalance.startsWith('0x')
             ? new BN(details.minBalance.slice(2), 'hex')
             : bnToBn(details.minBalance);
         balanceBN = normalizeMinBalance(balanceBN, decimals);
@@ -41,6 +41,21 @@ export async function getTargetMinBalance({
         };
       }
     }
+    // TODO
+    // if (api.query.assetRegistry?.assetMetadatas) {
+    //   const assetMetadata =
+    //     await api.query.assetRegistry.assetMetadatas(assetId);
+    //   const metadata = assetMetadata.toJSON() as {
+    //     minimalBalance?: string | number;
+    //   };
+    //   if (metadata?.minimalBalance) {
+    //     const balanceBN = bnToBn(metadata.minimalBalance);
+    //     return {
+    //       balance: balanceBN,
+    //       formatted: formatTokenBalance(balanceBN, { decimals })
+    //     };
+    //   }
+    // }
     if (api.query.assetRegistry?.assets) {
       const assetDetails = await api.query.assetRegistry.assets(assetId);
 

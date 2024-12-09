@@ -190,7 +190,7 @@ async function fetchXcmUniqueId({
   if (!API_KEY) throw new Error('Subscan API key is not configured');
 
   const response = await fetch(
-    'https://polkadot.api.subscan.io/api/scan/xcm/check_hash',
+    'https://polkadot.webapi.subscan.io/api/scan/xcm/check_hash',
     {
       method: 'POST',
       headers: {
