@@ -14,7 +14,8 @@ export enum XcmMessageStatus {
 export interface XcmMessageResult {
   status: XcmMessageStatus;
   message: string;
-  hash?: string; // 只有在成功时才会有 hash
+  hash?: string;
+  originEventId?: string;
 }
 
 async function fetchXcmMessageHash(
@@ -83,7 +84,6 @@ export async function getXcmMessageHash({
     const data = await fetchXcmMessageHash(hash, paraId);
     console.log('Polling Subscan response:', data);
 
-    // 如果是网络错误或临时错误，继续重试
     if (data.code === -1) {
       attempts++;
       await new Promise((resolve) => setTimeout(resolve, retryDelay));
@@ -91,48 +91,52 @@ export async function getXcmMessageHash({
     }
 
     if (data.code === 0 && data.data?.event) {
-      // 检查是否有 ExtrinsicFailed 事件
-      const extrinsicFailed = data.data.event.find(
-        (event) => event.event_id === 'ExtrinsicFailed'
-      );
+      if (data.data.finalized) {
+        const extrinsicFailed = data.data.event.find(
+          (event) => event.event_id === 'ExtrinsicFailed'
+        );
 
-      if (extrinsicFailed && data.data.finalized) {
-        return {
-          status: XcmMessageStatus.EXTRINSIC_FAILED,
-          message: 'Transaction failed: ExtrinsicFailed event detected'
-        };
-      }
+        if (extrinsicFailed) {
+          return {
+            status: XcmMessageStatus.EXTRINSIC_FAILED,
+            message: 'Transaction failed: ExtrinsicFailed event detected'
+          };
+        }
 
-      // 查找 XcmpMessageSent 事件并解析其参数
-      const xcmpMessageSent = data.data.event.find(
-        (event) =>
-          event.event_id === 'XcmpMessageSent' &&
-          event.module_id === 'xcmpqueue' &&
-          event.finalized === true
-      );
+        const xcmpMessageSent = data.data.event.find(
+          (event) =>
+            event.event_id === 'XcmpMessageSent' &&
+            event.module_id === 'xcmpqueue' &&
+            event.finalized === true
+        );
 
-      if (xcmpMessageSent) {
-        try {
-          const params =
-            typeof xcmpMessageSent.params === 'string'
-              ? JSON.parse(xcmpMessageSent.params)
+        if (xcmpMessageSent) {
+          try {
+            const params =
+              typeof xcmpMessageSent.params === 'string'
+                ? JSON.parse(xcmpMessageSent.params)
+                : undefined;
+            const messageHashParam = params
+              ? params.find(
+                  (param: any) =>
+                    param.type_name === 'XcmHash' && param.name === 'message_hash'
+                )
               : undefined;
-          const messageHashParam = params
-            ? params.find(
-                (param: any) =>
-                  param.type_name === 'XcmHash' && param.name === 'message_hash'
-              )
-            : undefined;
-
-          if (messageHashParam?.value) {
-            return {
-              status: XcmMessageStatus.SUCCESS,
-              message: 'Transaction successful',
-              hash: messageHashParam.value
-            };
+            console.log('messageHashParam', messageHashParam);
+                
+            if (messageHashParam?.value) {
+              const originEventId = `${xcmpMessageSent.block_num}-${xcmpMessageSent.event_idx}`;
+              
+              return {
+                status: XcmMessageStatus.SUCCESS,
+                message: 'Transaction successful',
+                hash: messageHashParam.value,
+                originEventId
+              };
+            }
+          } catch (error) {
+            console.error('Error parsing XcmpMessageSent params:', error);
           }
-        } catch (error) {
-          console.error('Error parsing XcmpMessageSent params:', error);
         }
       }
     }
@@ -151,12 +155,7 @@ export interface SubscanResponse {
   code: number;
   message: string;
   generated_at: number;
-  data: {
-    hash_type: string;
-    messages: Array<{
-      unique_id: string;
-    }>;
-  };
+  data: string;
 }
 
 // 添加常量配置
@@ -166,24 +165,44 @@ const POLLING_CONFIG = {
 } as const;
 
 interface CheckHashParams {
-  hash: string;
+  messageHash: string;
+  originEventId: string;
+  originParaId: number;
+  destParaId: number;
   maxRetries?: number;
   retryDelay?: number;
 }
 
-async function fetchXcmUniqueId(hash: string): Promise<SubscanResponse> {
+interface FetchXcmUniqueIdParams {
+  messageHash: string;
+  originEventId: string;
+  originParaId: number;
+  destParaId: number;
+}
+
+async function fetchXcmUniqueId({
+  messageHash,
+  originEventId,
+  originParaId,
+  destParaId
+}: FetchXcmUniqueIdParams): Promise<SubscanResponse> {
   const API_KEY = process.env.NEXT_PUBLIC_SUBSCAN_API_KEY;
   if (!API_KEY) throw new Error('Subscan API key is not configured');
 
   const response = await fetch(
-    'https://polkadot.api.subscan.io/api/scan/check_hash',
+    'https://polkadot.api.subscan.io/api/scan/xcm/check_hash',
     {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'X-API-Key': API_KEY
       },
-      body: JSON.stringify({ hash }),
+      body: JSON.stringify({
+        message_hash: messageHash,
+        origin_event_id: originEventId,
+        origin_para_id: originParaId,
+        dest_para_id: destParaId
+      }),
       cache: 'no-store',
       next: { revalidate: 0 }
     }
@@ -193,37 +212,27 @@ async function fetchXcmUniqueId(hash: string): Promise<SubscanResponse> {
 }
 
 export async function checkTransactionHash({
-  hash,
+  messageHash,
+  originEventId,
+  originParaId,
+  destParaId,
   maxRetries = POLLING_CONFIG.MAX_RETRIES,
   retryDelay = POLLING_CONFIG.RETRY_DELAY
 }: CheckHashParams): Promise<string | undefined> {
   let attempts = 0;
-  let initialMessageId: string | undefined;
-
-  try {
-    const data = await fetchXcmUniqueId(hash);
-    console.log('Initial Subscan response:', data);
-
-    if (data.code === 0 && data.data?.messages?.length > 0) {
-      initialMessageId =
-        data.data.messages[data.data.messages.length - 1].unique_id;
-      console.log('Initial message ID:', initialMessageId);
-    }
-  } catch (error) {
-    console.error('Error getting initial state:', error);
-  }
 
   while (attempts < maxRetries) {
     try {
-      const data = await fetchXcmUniqueId(hash);
+      const data = await fetchXcmUniqueId({
+        messageHash,
+        originEventId,
+        originParaId,
+        destParaId
+      });
       console.log('Polling Subscan response:', data);
 
-      if (data.code === 0 && data.data?.messages?.length > 0) {
-        const lastMessage = data.data.messages[data.data.messages.length - 1];
-
-        if (!initialMessageId || lastMessage.unique_id !== initialMessageId) {
-          return lastMessage.unique_id;
-        }
+      if (data.code === 0 && data.data) {
+        return data.data;
       }
 
       attempts++;
@@ -240,36 +249,42 @@ export async function checkTransactionHash({
 
 interface CheckXcmTransactionParams {
   hash: string;
-  paraId: number;
+  sourceParaId: number;
+  targetParaId: number;
   maxRetries?: number;
   retryDelay?: number;
 }
 
 export async function checkXcmTransaction({
   hash,
-  paraId,
+  sourceParaId,
+  targetParaId,
   maxRetries = POLLING_CONFIG.MAX_RETRIES,
   retryDelay = POLLING_CONFIG.RETRY_DELAY
 }: CheckXcmTransactionParams): Promise<XcmMessageResult> {
   const xcmResult = await getXcmMessageHash({
     hash,
-    paraId,
+    paraId: sourceParaId,
     maxRetries,
     retryDelay
   });
 
-  if (xcmResult.status !== XcmMessageStatus.SUCCESS) {
+  if (xcmResult.status !== XcmMessageStatus.SUCCESS || !xcmResult.originEventId) {
     return {
       status: xcmResult.status,
       message: xcmResult.message
     };
   }
-
+  console.log('xcmResult', xcmResult);
   const uniqueId = await checkTransactionHash({
-    hash: xcmResult.hash!,
+    messageHash: xcmResult.hash!,
+    originEventId: xcmResult.originEventId,
+    originParaId: sourceParaId,
+    destParaId: targetParaId,
     maxRetries,
     retryDelay
   });
+
   if (!uniqueId) {
     return {
       status: XcmMessageStatus.TIMEOUT,

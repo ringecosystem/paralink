@@ -54,7 +54,8 @@ function TransactionItem({ tx }: TransactionItemProps) {
         try {
           const result = await checkXcmTransaction({
             hash: tx.txHash,
-            paraId: tx.sourceChainId
+            sourceParaId: tx.sourceChainId,
+            targetParaId: tx.targetChainId
           });
           if (result.status === XcmMessageStatus.SUCCESS) {
             updateTransaction(tx.txHash, {
