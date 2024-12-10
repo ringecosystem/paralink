@@ -118,15 +118,15 @@ export async function getXcmMessageHash({
                 : undefined;
             const messageHashParam = params
               ? params.find(
-                  (param: any) =>
-                    param.type_name === 'XcmHash' && param.name === 'message_hash'
-                )
+                (param: any) =>
+                  param.type_name === 'XcmHash' && param.name === 'message_hash'
+              )
               : undefined;
             console.log('messageHashParam', messageHashParam);
-                
+
             if (messageHashParam?.value) {
               const originEventId = `${xcmpMessageSent.block_num}-${xcmpMessageSent.event_idx}`;
-              
+
               return {
                 status: XcmMessageStatus.SUCCESS,
                 message: 'Transaction successful',
@@ -158,10 +158,9 @@ export interface SubscanResponse {
   data: string;
 }
 
-// 添加常量配置
 const POLLING_CONFIG = {
-  MAX_RETRIES: 20,
-  RETRY_DELAY: 3000
+  MAX_RETRIES: 5,
+  RETRY_DELAY: 12000
 } as const;
 
 interface CheckHashParams {
@@ -190,7 +189,7 @@ async function fetchXcmUniqueId({
   if (!API_KEY) throw new Error('Subscan API key is not configured');
 
   const response = await fetch(
-    'https://polkadot.webapi.subscan.io/api/scan/xcm/check_hash',
+    'https://polkadot.api.subscan.io/api/scan/xcm/check_hash',
     {
       method: 'POST',
       headers: {
