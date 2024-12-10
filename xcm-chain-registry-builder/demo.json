@@ -1,60 +1,87 @@
-// {
-//     "2046": {
-//       explorer: "https://darwinia.subscan.io/",  # Using to track the transactions in the explorer, loaded from a config
-//       "providers": {
-//             "Moonbeam Foundation": "wss://wss.api.moonbeam.network",
-//             "Blast": "wss://moonbeam.public.blastapi.io"
-//         },
-//       alive: true,                               # If the chain is stalled, not list it in the ParaLink. Check the finality block height several times.
-//       assetsType: "assets"/"tokens",             # Two major assets types for query assets information or account balance, loaded from a config
-//       isEvm: true,
-//         "evmInfo": {                                 # 如果evm,则有evminfo,否则就是null
-//         "evmChainId": 1284,
-//             "blockExplorer": "https://moonbeam.subscan.io/",
-//         },                            # If the chain is required to support EVM sign, parse the ss58 registry signature
-//       nativeToken: {
-//           symbol: "RING",
-//           decimals: 18,
-//           icon: "xxx",
-//           registeredChains: {
-//                 "2034": {
-//                   assetId: "32",
-//                   xcmLocation: "xxx"            # Query from the assets-transfer-api-registry, it depends on the balance pallet location
-//                 },
-//                 "2035": {    # it does not support xcmPaymentApi, so we can remove it.
-//                   assetId: 7,
-//                   xcmLocation: "xxx"
-//                 },
-//                 "2004": {
-//                   assetId: "125699734534028342599692732320197985871",
-//                   xcmLocation: "xxx"
-//                 }
-//             }
-//         }
-//       xcAssetData: {      # All the chains here must support xcmPaymentApi
-//           "0": {
-//               assetId: 1029,
-//               symbol: "DOT",
-//               decimals: 10,
-//               xcmLocation: "xxx",
-//               icon: "xxx",
-//             },
-//             "1000": {
-//                 {                          # The asset id registered in the assets of 2046
-//                   assetId: 1027,
-//                   symbol: "ahUSDT",
-//                   decimals: 6,
-//                   xcmLocation: "xxx"
-//                   icon: "xxx",
-//                 },
-//                 {
-//                   assetId: 1028,
-//                   symbol: "ahPINK",
-//                   decimal: 10,
-//                   xcmLocation: "xxx"
-//                   icon: "xxx",
-//                 }
-//             }
-//         }
-//     },
-// }
+{
+    "2046": {
+        "explorer": "https://darwinia.subscan.io/",
+        "providers": {
+            "Moonbeam Foundation": "wss://wss.api.moonbeam.network",
+            "Blast": "wss://moonbeam.public.blastapi.io"
+        },
+        "alive": true,
+        "assetsType": "assets",
+        "isEvm": true,
+        "evmInfo": {
+            "evmChainId": 1284,
+            "blockExplorer": "https://moonbeam.subscan.io/"
+        },
+        "nativeToken": {
+            "symbol": "RING",
+            "decimals": 18,
+            "icon": "xxx",
+            "registeredChains": {
+                "2034": {
+                    "assetId": "32",
+                    "symbol": "ahUSDT",
+                    "decimals": 6,
+                    "icon": "xxx",
+                    "xcmLocation": "xxx"
+                },
+                "2035": {
+                    "assetId": 7,
+                    "symbol": "ahPINK",
+                    "decimals": 10,
+                    "icon": "xxx",
+                    "xcmLocation": "xxx"
+                },
+                "2004": {
+                    "assetId": "125699734534028342599692732320197985871",
+                    "icon": "xxx",
+                    "symbol": "ahUSDT",
+                    "decimals": 6,
+                    "xcmLocation": "xxx"
+                }
+            }
+        },
+        "localAssets": [
+            {
+                "assetId": 1029,
+                "symbol": "ahUSDT",
+                "decimals": 6,
+                "xcmLocation": "xxx",
+                "icon": "xxx"
+            },
+            {
+                "assetId": 1028,
+                "symbol": "ahPINK",
+                "decimals": 10,
+                "xcmLocation": "xxx",
+                "icon": "xxx"
+            }
+        ],
+        "xcAssetData": {
+            "0": [
+                {
+                    "assetId": 1029,
+                    "symbol": "DOT",
+                    "decimals": 10,
+                    "xcmLocation": "xxx",
+                    "icon": "xxx"
+                }
+            ],
+            "1000": [
+                {
+                    "assetId": 1027,
+                    "symbol": "ahUSDT",
+                    "decimals": 6,
+                    "xcmLocation": "xxx",
+                    "icon": "xxx"
+                },
+                {
+                    "assetId": 1028,
+                    "symbol": "ahPINK",
+                    "decimals": 10,
+                    "xcmLocation": "xxx",
+                    "icon": "xxx"
+                }
+            ]
+        }
+    }
+}
