@@ -1,30 +1,39 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import ss58 from '@substrate/ss58-registry';
 import { WsProvider, ApiPromise } from '@polkadot/api';
-
-import { getSupportedParaChains } from '@/lib/registry';
+import { findIconBySymbol, getSupportedParaChains } from '@/lib/registry';
 import { useCrossChainSetup } from './use-cross-chain-setup';
-import type { ChainConfig } from '@/types/asset-registry';
-import type { ChainInfo } from '@/types/chains-info';
 import { filterHrmpConnections } from '@/utils/hrmp-validation';
 import { findBestWssEndpoint } from '@/utils/rpc-endpoint';
+import { SUPPORTED_XCM_PARA_IDS } from '@/config/token';
+import useChainsStore from '@/store/chains';
+import type { ChainConfig } from '@/types/asset-registry';
+import type { ChainInfo } from '@/types/chains-info';
+import type { Asset } from '@/types/assets-info';
 
 interface UseChainInitializationProps {
   polkadotAssetRegistry: ChainConfig;
   chainsInfo: ChainInfo[];
+  assetsInfo: Asset[];
 }
 export function useChainInitialization({
   polkadotAssetRegistry,
-  chainsInfo
+  chainsInfo,
+  assetsInfo
 }: UseChainInitializationProps) {
   const [isLoading, setIsLoading] = useState(false);
-  const { setupCrossChainConfig, setChains } = useCrossChainSetup();
+  const hasInitialized = useRef(false);
+  const { setupCrossChainConfig } = useCrossChainSetup();
+  const setChains = useChainsStore((state) => state.setChains);
 
   useEffect(() => {
     const init = async () => {
-      if (!polkadotAssetRegistry || !chainsInfo?.length) {
+      if (hasInitialized.current) return;
+      if (!polkadotAssetRegistry || !chainsInfo) {
         return;
       }
+
+      hasInitialized.current = true;
       setIsLoading(true);
 
       const filteredPolkadotAssetRegistry = await filterHrmpConnections({
@@ -59,11 +68,11 @@ export function useChainInitialization({
             ...chainAsset,
             id: chain?.id?.toString(),
             assetsInfo: chain?.assetsInfo,
-            foreignAssetsInfo: chain?.foreignAssetsInfo,
             xcAssetsData: chain?.xcAssetsData,
             nativeToken: {
               symbol: ss58Format?.symbols?.[0],
-              decimals: ss58Format?.decimals?.[0]
+              decimals: ss58Format?.decimals?.[0],
+              icon: findIconBySymbol(ss58Format?.symbols?.[0], assetsInfo)
             },
             isEvmChain:
               ss58Format?.standardAccount === 'secp256k1' &&
@@ -71,12 +80,17 @@ export function useChainInitialization({
           };
         })
         ?.filter((v): v is NonNullable<typeof v> => !!v);
-      console.log('supportedChains', supportedChains);
+
       function isValidWsEndpoint(endpoint: string): boolean {
         return endpoint.startsWith('ws://') || endpoint.startsWith('wss://');
       }
 
       const validateChain = async (chain: (typeof supportedChains)[0]) => {
+        if (SUPPORTED_XCM_PARA_IDS.includes(chain.id)) {
+          return chain;
+        }
+        return null;
+
         const providers = Object.values(chain.providers);
         const validProviders = providers.filter(isValidWsEndpoint);
 
@@ -87,52 +101,40 @@ export function useChainInitialization({
           return null;
         }
         try {
-          const provider = new WsProvider(findBestWssEndpoint(chain.providers));
-          console.log('provider', provider);
-          const api = await ApiPromise.create({ provider });
-          console.log('api', api);
-          api.on('connected', () => {
-            console.log(`Connected to chain ${chain.id}`);
-          });
-          api.on('disconnected', () => {
-            console.log(`Disconnected from chain ${chain.id}`);
-          });
-          api.on('error', (error) => {
-            console.error(`Error on chain ${chain.id}:`, error);
-          });
+          const WsProviderUrl = await findBestWssEndpoint(chain.providers);
 
-          const hasXcmPayment = typeof api?.call?.xcmPaymentApi !== 'undefined';
-          console.log('hasXcmPayment', hasXcmPayment);
-          if (!hasXcmPayment) {
-            console.warn(`Chain ${chain.id} does not support xcmPaymentApi`);
-            await api.disconnect();
+          if (!WsProviderUrl) {
+            console.log('no WsProviderUrl');
             return null;
           }
-
+          const provider = new WsProvider(WsProviderUrl);
+          const api = await ApiPromise.create({ provider });
+          const hasXcmPayment = typeof api?.call?.xcmPaymentApi !== 'undefined';
           await api.disconnect();
-          return chain;
+
+          return hasXcmPayment ? chain : null;
         } catch (error) {
           console.error(`Error validating chain ${chain.id}:`, error);
           return null;
         }
       };
 
-      // const validatedChains = await Promise.allSettled(
-      //   supportedChains.map(validateChain)
-      // ).then((chains) =>
-      //   chains.filter((chain): chain is NonNullable<typeof chain> => !!chain)
-      // );
       const validatedChains = (
         await Promise.all(supportedChains?.map(validateChain))
-      )?.filter((chain): chain is NonNullable<typeof chain> => !!chain);
+      )?.filter((v): v is NonNullable<typeof v> => !!v);
 
-      console.log('validatedChains', validatedChains);
       setChains(validatedChains);
-      setupCrossChainConfig(validatedChains);
+      await setupCrossChainConfig(validatedChains);
       setIsLoading(false);
     };
     init();
-  }, [setChains, setupCrossChainConfig, polkadotAssetRegistry, chainsInfo]);
+  }, [
+    setChains,
+    setupCrossChainConfig,
+    polkadotAssetRegistry,
+    chainsInfo,
+    assetsInfo
+  ]);
 
   return { isLoading };
 }

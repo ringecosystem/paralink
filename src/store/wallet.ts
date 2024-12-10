@@ -41,7 +41,6 @@ export const useWalletStore = create<WalletState>((set) => ({
       await wallet.enable(APP_NAME);
 
       const accounts = await wallet.getAccounts();
-
       if (!accounts.length) {
         throw new Error(
           `No accounts found in ${walletId}. Please create or import an account`

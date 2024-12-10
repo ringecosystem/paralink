@@ -1,151 +1,244 @@
 'use client';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from 'react';
 import { useShallow } from 'zustand/react/shallow';
 import { AddressInput } from '@/components/address-input';
 import Alert from '@/components/alert';
 import { FeeBreakdown } from '@/components/fee-breakdown';
-import { TokenSelect } from '@/components/token-select';
 import { ConnectOrActionButton } from '@/components/connect-or-action-button';
-// import { TransactionDetail } from '@/components/transaction-detail';
 import useChainsStore from '@/store/chains';
 import useTokensStore from '@/store/tokens';
-import { getTokensWithBalanceForChain } from '@/services/tokens';
-// import { getAcceptablePaymentAsset } from '@/services/xcm/polkadot-xcm';
-import { useWalletConnection } from '@/hooks/use-wallet-connection';
 
 import { useChainInitialization } from '../_hooks/use-chain-initlization';
 import { useCrossChainSetup } from '../_hooks/use-cross-chain-setup';
-import { useApiConnection } from '../_hooks/use-api-connection';
 import { ChainSwitcher } from './chain-switcher';
 import type { ChainConfig } from '@/types/asset-registry';
 import type { ChainInfo } from '@/types/chains-info';
 import type { Asset } from '@/types/assets-info';
 import Loading from './loading';
 
+import { useExistentialDeposit } from '../_hooks/use-existential-deposit';
+import { AnimatedErrorMessage } from '@/components/animated-error-message';
+import { useWalletConnection } from '@/hooks/use-wallet-connection';
+import { useXcmExtrinsic } from '../_hooks/use-xcm-extrinsic';
+
+import { useNetworkFee } from '../_hooks/use-network-fee';
+import { useCrossFee } from '../_hooks/use-cross-fee';
+import { parseUnits } from '@/utils/format';
+import { useTransactionExecution } from '@/hooks/use-transaction-execution';
+import toast from 'react-hot-toast';
+
+import { AvailableToken, getAvailableTokens } from '@/utils/xcm/token';
+import useApiConnectionsStore from '@/store/api-connections';
+import { cn } from '@/lib/utils';
+import { AssetPicker } from './asset-picker';
+import { BN, BN_ZERO, bnMax } from '@polkadot/util';
+import { TransactionManager } from '@/components/transaction-manager';
+
 interface DashboardProps {
   polkadotAssetRegistry: ChainConfig;
   chainsInfo: ChainInfo[];
   assetsInfo: Asset[];
 }
+
 export default function Dashboard({
   polkadotAssetRegistry,
   chainsInfo,
   assetsInfo
 }: DashboardProps) {
-  const [amount, setAmount] = useState<string>('');
-  const [recipientAddress, setRecipientAddress] = useState<string>('');
+  const pickerRef = useRef<{ refreshBalances: () => void }>(null);
 
+  const [amount, setAmount] = useState<string>('');
+  const [tokens, setTokens] = useState<AvailableToken[]>([]);
+  const [selectedTokenBalance, setSelectedTokenBalance] = useState<BN>(BN_ZERO);
+  const [isLoadingCrossChain, setIsLoadingCrossChain] = useState(false);
+  const [recipientAddress, setRecipientAddress] = useState<string>('');
+  const [isTransactionLoading, setIsTransactionLoading] = useState(false);
+  const [isInvalid, setIsInvalid] = useState(false);
+  // 12pxLnQcjJqjG4mDaeJoKBLMfsdHZ2p2RxKHNEvicnZwZobx
+  const { address } = useWalletConnection();
   const {
     chains,
-    fromChainId,
-    fromChains,
-    fromChain,
-    toChainId,
-    setToChainId,
-    toChain,
-    toChains
+    sourceChainId,
+    sourceChains,
+    sourceChain,
+    targetChainId,
+    targetChain,
+    targetChains
   } = useChainsStore(
     useShallow((state) => ({
       chains: state.chains,
       setChains: state.setChains,
-      fromChainId: state.fromChainId,
-      toChainId: state.toChainId,
-      setToChainId: state.setToChainId,
-      fromChains: state.fromChains,
-      toChains: state.toChains,
-      fromChain: state.getFromChain(),
-      toChain: state.getToChain()
+      sourceChainId: state.sourceChainId,
+      targetChainId: state.targetChainId,
+      sourceChains: state.sourceChains,
+      targetChains: state.targetChains,
+      sourceChain: state.getFromChain(),
+      targetChain: state.getToChain()
     }))
   );
 
-  const { substrateAddress, evmAddress } = useWalletConnection();
+  const { isLoading: isApiLoading } = useApiConnectionsStore(
+    useShallow((state) => ({
+      isLoading: state.isLoading
+    }))
+  );
 
-  const { setupCrossChainConfig, swapChains } = useCrossChainSetup();
+  const selectedToken = useTokensStore((state) => state.selectedToken);
 
-  // init chains and setup cross chain config
   const { isLoading } = useChainInitialization({
     polkadotAssetRegistry,
-    chainsInfo
+    chainsInfo,
+    assetsInfo
   });
 
-  const { setTokens, tokens, setSelectedToken, selectedToken } = useTokensStore(
-    useShallow((state) => ({
-      setTokens: state.setTokens,
-      tokens: state.tokens,
-      setSelectedToken: state.setSelectedToken,
-      selectedToken: state.selectedToken
-    }))
-  );
+  const { setupCrossChainConfig, swapChains, updateToChain } =
+    useCrossChainSetup();
 
-  // init from chain api
-  const { fromChainApi } = useApiConnection({ fromChain });
+  useEffect(() => {
+    if (!sourceChain || !targetChain || !assetsInfo.length) return;
+    const tokens = getAvailableTokens({
+      sourceChain,
+      targetChain,
+      assets: assetsInfo
+    });
+    if (tokens.length) {
+      setTokens(tokens);
+    }
+    return () => {
+      setTokens([]);
+    };
+  }, [sourceChain, targetChain, assetsInfo, setTokens]);
 
-  const fetchTokens = useCallback(async () => {
-    if (!fromChain || !toChain || !assetsInfo.length) return;
-    const tokens = await getTokensWithBalanceForChain({
-      fromChain,
-      toChain,
-      fromChainApi,
-      assets: assetsInfo,
-      evmAddress,
-      substrateAddress
+  const {
+    extrinsic,
+    partialFee,
+    isLoading: isExtrinsicLoading
+  } = useXcmExtrinsic({
+    sourceChainId,
+    selectedToken,
+    targetChain,
+    recipientAddress,
+    amount,
+    address
+  });
+
+  const { networkFee, isLoading: isNetworkFeeLoading } = useNetworkFee({
+    sourceChainId,
+    asset: selectedToken?.xcAssetData,
+    targetChainId,
+    recipientAddress,
+    partialFee
+  });
+
+  const { fee: crossFee, isLoading: isCrossFeeLoading } = useCrossFee({
+    asset: selectedToken?.xcAssetData,
+    recipientAddress,
+    paraId: targetChain?.id
+  });
+
+  const { isLoading: isFromExistentialDepositLoading, deposit: fromDeposit } =
+    useExistentialDeposit({
+      chainId: sourceChainId,
+      address: address
     });
 
-    if (tokens?.length) {
-      setTokens(tokens);
-      setSelectedToken(tokens[0]);
-    } else {
-      console.log('no tokens');
-      setTokens([]);
-      setSelectedToken(undefined);
+  const {
+    isLoading: isToExistentialDepositLoading,
+    hasEnoughBalance: hasToEnoughBalance,
+    formattedDeposit: toDepositFormatted
+  } = useExistentialDeposit({
+    chainId: targetChainId,
+    address: recipientAddress
+  });
+
+  const maxBalanceBN = bnMax(
+    BN_ZERO,
+    selectedTokenBalance
+      ?.sub(fromDeposit)
+      ?.sub(networkFee ? networkFee : BN_ZERO) ?? BN_ZERO
+  );
+
+  const { isInsufficientBalance } = useMemo(() => {
+    if (address && amount) {
+      const balance = selectedTokenBalance;
+      const isInsufficientBalance =
+        Number(amount) > Number(balance?.toString() || '0');
+
+      return {
+        isInsufficientBalance
+      };
     }
-  }, [
-    fromChain,
-    toChain,
-    fromChainApi,
-    assetsInfo,
-    setTokens,
-    setSelectedToken,
-    evmAddress,
-    substrateAddress
-  ]);
+    return {
+      isInsufficientBalance: false
+    };
+  }, [amount, selectedTokenBalance, address]);
 
   const handleChangeFromChainId = useCallback(
-    (id: string) => {
-      setupCrossChainConfig(chains, id);
+    async (id: string) => {
+      setIsLoadingCrossChain(true);
+      await setupCrossChainConfig(chains, id);
+      setIsLoadingCrossChain(false);
     },
     [chains, setupCrossChainConfig]
   );
 
-  const handleSwitch = useCallback(() => {
-    if (!chains?.length || !fromChainId || !toChainId) return;
-    setSelectedToken(undefined);
-    setAmount('');
-    swapChains({
+  const handleChangeToChainId = useCallback(
+    async (id: string) => {
+      setIsLoadingCrossChain(true);
+      await updateToChain({ chains, targetChainId: id });
+      setIsLoadingCrossChain(false);
+    },
+    [chains, updateToChain]
+  );
+
+  const handleSwitch = useCallback(async () => {
+    if (!chains?.length || !sourceChainId || !targetChainId) return;
+    setIsLoadingCrossChain(true);
+    await swapChains({
       chains,
-      fromChainId,
-      toChainId
+      sourceChainId,
+      targetChainId
     });
-  }, [setSelectedToken, swapChains, chains, fromChainId, toChainId]);
+    setIsLoadingCrossChain(false);
+  }, [swapChains, chains, sourceChainId, targetChainId]);
+
+  const { executeTransaction } = useTransactionExecution({
+    sourceChain,
+    targetChain,
+    selectedToken,
+    amount,
+    recipientAddress
+  });
 
   const handleClick = useCallback(async () => {
-    if (!fromChainId || !toChainId) return;
-    // const validationResult = await validateHrmpConnection({
-    //   fromChainId,
-    //   toChainId,
-    //   chainsInfo
-    // });
-    // console.log('validationResult', validationResult);
-    // if (!fromChainApi) return;
-    // console.log('fromChainApi', fromChainApi);
-    // const crossTokenLocation = await getAcceptablePaymentAsset(fromChainApi);
-    // console.log('crossTokenLocation', crossTokenLocation);
-    // console.log('amount', amount);
-  }, [amount, fromChainApi, fromChainId, toChainId, chainsInfo]);
+    if (!extrinsic || !address) return;
+
+    try {
+      setIsTransactionLoading(true);
+      await executeTransaction({ extrinsic, address });
+      pickerRef.current?.refreshBalances();
+    } catch (error) {
+      toast.error((error as unknown as string) ?? 'Transaction failed');
+    } finally {
+      setIsTransactionLoading(false);
+    }
+  }, [extrinsic, address, executeTransaction]);
+
+  const buttonLoadingText = useMemo(() => {
+    if (isApiLoading || isLoadingCrossChain || isToExistentialDepositLoading)
+      return 'Connecting...';
+    return undefined;
+  }, [isApiLoading, isLoadingCrossChain, isToExistentialDepositLoading]);
 
   useEffect(() => {
-    fetchTokens();
-  }, [fetchTokens]);
+    setRecipientAddress('');
+  }, [targetChainId]);
 
   return (
     <>
@@ -153,17 +246,17 @@ export default function Dashboard({
         <Alert
           message={
             <p className="space-x-[10px]">
-              <strong>Bridge Tokens with Paralink! </strong>
+              <strong>Bridge Tokens with Paralink!</strong>
               <span>
-                Paralink makes it easy to take your tokens interchain.
+                Paralink makes it easy to take your tokens interchain. Issues?
               </span>
               <a
                 className="font-bold"
-                href="https://github.com/ringecosystem/paralink/issues"
+                href="https://github.com/ringecosystem/paralink/issues/new/choose"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Get started now↗
+                Report here↗
               </a>
             </p>
           }
@@ -174,48 +267,117 @@ export default function Dashboard({
         <Loading />
       ) : (
         <div className="container flex flex-col gap-[30px] pt-[min(120px,15vh)] md:pt-[min(100px,12vh)]">
-          <div className="mx-auto flex w-full flex-col gap-[20px] rounded-[var(--radius)] bg-white p-[15px] shadow-sm md:w-[460px] md:rounded-[var(--radius-lg)] md:p-[20px]">
+          <div
+            className={cn(
+              'mx-auto flex w-full flex-col gap-[20px] rounded-[var(--radius)] bg-white p-[15px] shadow-sm md:w-[460px] md:rounded-[var(--radius-lg)] md:p-[20px]',
+              'relative'
+            )}
+          >
             <ChainSwitcher
-              fromChainId={fromChainId}
-              fromChain={fromChain}
-              toChainId={toChainId}
-              toChain={toChain}
-              fromParachains={fromChains}
-              toParachains={toChains}
+              sourceChainId={sourceChainId}
+              sourceChain={sourceChain}
+              targetChainId={targetChainId}
+              targetChain={targetChain}
+              fromParachains={sourceChains}
+              toParachains={targetChains}
               onChangeFromChain={handleChangeFromChainId}
-              onChangeToChain={setToChainId}
+              onChangeToChain={handleChangeToChainId}
               onSwitch={handleSwitch}
             />
+            <div className="relative flex flex-col gap-[20px]">
+              <AssetPicker
+                ref={pickerRef}
+                tokens={tokens}
+                crossFee={crossFee}
+                isCrossFeeLoading={isCrossFeeLoading}
+                maxBalanceBN={maxBalanceBN}
+                isMaxBalanceLoading={
+                  isExtrinsicLoading ||
+                  isNetworkFeeLoading ||
+                  isFromExistentialDepositLoading
+                }
+                onChangeAmount={setAmount}
+                onChangeTokenBalance={setSelectedTokenBalance}
+                sourceChainId={sourceChainId}
+                targetChainId={targetChainId}
+                onChangeInvalid={setIsInvalid}
+                isLoading={isLoadingCrossChain}
+                error={
+                  <>
+                    <AnimatedErrorMessage
+                      show={isInsufficientBalance}
+                      message="Insufficient balance."
+                    />
+                  </>
+                }
+              />
 
-            <TokenSelect
-              token={selectedToken}
-              onChangeToken={setSelectedToken}
-              onChangeAmount={setAmount}
-              tokens={tokens}
-              isLoading={false}
-            />
+              <AddressInput
+                value={recipientAddress}
+                chain={targetChain}
+                onChange={setRecipientAddress}
+                error={
+                  <AnimatedErrorMessage
+                    show={!hasToEnoughBalance && !isToExistentialDepositLoading}
+                    message={`You need at least ${toDepositFormatted} in your recipient account on ${targetChain?.name} to keep the account alive.`}
+                  />
+                }
+              />
+              {
+                <FeeBreakdown
+                  showValue={amount !== '' && !!address}
+                  amount={parseUnits({
+                    value: amount,
+                    decimals: selectedToken?.decimals ?? 3
+                  })}
+                  networkFee={networkFee}
+                  crossFee={crossFee}
+                  nativeTokenInfo={sourceChain?.nativeToken}
+                  loading={
+                    isNetworkFeeLoading ||
+                    isCrossFeeLoading ||
+                    isExtrinsicLoading
+                  }
+                  xcmTokenInfo={
+                    selectedToken?.symbol && selectedToken?.decimals
+                      ? {
+                          symbol: selectedToken?.symbol,
+                          decimals: selectedToken?.decimals,
+                          icon: selectedToken?.icon
+                        }
+                      : undefined
+                  }
+                />
+              }
+              <div className="h-[1px] w-full bg-[#F2F3F5]"></div>
 
-            <AddressInput
-              value={recipientAddress}
-              chain={toChain}
-              onChange={setRecipientAddress}
-            />
-            <FeeBreakdown
-              amount={100}
-              networkFee={0.01}
-              crossChainFee={0.02}
-              finalAmount={99.97}
-            />
-            <div className="h-[1px] w-full bg-[#F2F3F5]"></div>
-
-            <ConnectOrActionButton onAction={handleClick}>
-              Confirm Transaction
-            </ConnectOrActionButton>
+              <ConnectOrActionButton
+                onAction={handleClick}
+                isLoading={
+                  isApiLoading ||
+                  isLoadingCrossChain ||
+                  isToExistentialDepositLoading ||
+                  isNetworkFeeLoading ||
+                  isCrossFeeLoading ||
+                  isTransactionLoading ||
+                  isExtrinsicLoading
+                }
+                loadingText={buttonLoadingText}
+                isDisabled={
+                  !hasToEnoughBalance ||
+                  amount === '' ||
+                  amount === '0' ||
+                  recipientAddress === '' ||
+                  isInsufficientBalance 
+                }
+              >
+                Confirm Transaction
+              </ConnectOrActionButton>
+            </div>
           </div>
-
-          {/* <TransactionDetail isOpen={true} onClose={() => {}} /> */}
         </div>
       )}
+      <TransactionManager />
     </>
   );
 }
