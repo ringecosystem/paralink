@@ -21,8 +21,8 @@ export function useWalletConnection(): WalletConnection {
   if (!sourceChain) return { isConnected: false, isWrongNetwork: false };
 
   const isWrongNetwork =
-    sourceChain?.isEvmChain && sourceChain?.evmInfo
-      ? chainId !== sourceChain?.evmInfo?.evmChainId
+    sourceChain?.isEvm && sourceChain?.evmChainId
+      ? chainId !== sourceChain?.evmChainId
       : false;
 
   const substrateAddress = formatSubstrateAddress({
@@ -31,7 +31,7 @@ export function useWalletConnection(): WalletConnection {
   });
 
   const getConnectedAddress = () => {
-    if (sourceChain?.isEvmChain) return !!address;
+    if (sourceChain?.isEvm) return !!address;
     return !!selectedAccount?.address;
   };
 
@@ -40,8 +40,9 @@ export function useWalletConnection(): WalletConnection {
     evmAddress: address,
     substrateAddress,
     baseSubstrateAddress: selectedAccount?.address,
-    address: sourceChain.isEvmChain ? address : selectedAccount?.address,
+    address: sourceChain.isEvm ? address : selectedAccount?.address,
     isWrongNetwork,
-    currentAddress: sourceChain.isEvmChain ? address : selectedAccount?.address
+    currentAddress: sourceChain.isEvm ? address : selectedAccount?.address
   };
 }
+

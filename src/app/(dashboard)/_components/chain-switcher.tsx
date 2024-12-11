@@ -2,17 +2,17 @@
 
 import Image from 'next/image';
 import { ChainSelect } from '@/components/chain-select';
-import type { ChainInfoWithXcAssetsData } from '@/store/chains';
+import type { ChainConfig } from '@/types/registry';
 
 interface ChainSwitcherProps {
-  sourceChainId?: string;
-  sourceChain?: ChainInfoWithXcAssetsData;
-  targetChainId?: string;
-  targetChain?: ChainInfoWithXcAssetsData;
-  fromParachains?: ChainInfoWithXcAssetsData[];
-  toParachains?: ChainInfoWithXcAssetsData[];
-  onChangeFromChain: (id: string) => void;
-  onChangeToChain: (id: string) => void;
+  sourceChainId?: number;
+  sourceChain?: ChainConfig;
+  targetChainId?: number;
+  targetChain?: ChainConfig;
+  fromParachains?: ChainConfig[];
+  toParachains?: ChainConfig[];
+  onChangeFromChain: (id: number) => void;
+  onChangeToChain: (id: number) => void;
   onSwitch: () => void;
 }
 

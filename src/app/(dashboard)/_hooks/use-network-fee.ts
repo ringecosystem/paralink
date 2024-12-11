@@ -2,12 +2,12 @@ import { useEffect, useMemo, useState } from 'react';
 import { queryDeliveryFees } from '@/services/xcm/deliver-fee';
 import { BN, BN_ZERO, bnToBn } from '@polkadot/util';
 import useApiConnectionsStore from '@/store/api-connections';
-import type { XcAssetData } from '@/types/asset-registry';
+import type { Asset } from '@/types/registry';
 
 interface UseNetworkFeeProps {
-  sourceChainId?: string;
-  asset?: XcAssetData;
-  targetChainId?: string;
+  sourceChainId?: number;
+  asset?: Asset;
+  targetChainId?: number;
   recipientAddress?: string;
   partialFee?: BN;
 }

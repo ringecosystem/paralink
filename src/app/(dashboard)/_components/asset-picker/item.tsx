@@ -7,13 +7,13 @@ import FormattedNumberTooltip from '@/components/formatted-number-tooltip';
 import { toShortAddress } from '@/lib/utils';
 import { BN, BN_ZERO } from '@polkadot/util';
 
-import type { AvailableToken } from '@/utils/xcm/token';
+import type { Asset } from '@/types/registry';
 
 interface AssetPickerItemProps {
-  token: AvailableToken;
+  token: Asset;
   balance?: BN;
   isLoading?: boolean;
-  onSelect: (token: AvailableToken) => void;
+  onSelect: (token: Asset) => void;
 }
 
 export function AssetPickerItem({
@@ -42,15 +42,15 @@ export function AssetPickerItem({
             {token?.symbol}
           </span>
           <div className="item-start flex flex-col gap-[5px] md:flex-row md:items-center">
-            <span className="text-[12px] text-[#121619]">{token?.name}</span>
-            {token?.contractAddress && (
+            <span className="text-[12px] text-[#121619]">{token?.symbol}</span>
+            {/* {token?.contractAddress && (
               <div className="flex items-center gap-[5px]">
                 <span className="font-mono text-[12px] tabular-nums text-[#878A92]">
                   {toShortAddress(token.contractAddress)}
                 </span>
                 <ExternalLink className="h-3 w-3" color="#12161950" />
               </div>
-            )}
+            )} */}
           </div>
         </div>
         {isLoading ? (

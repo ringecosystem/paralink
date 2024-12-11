@@ -20,21 +20,21 @@ import { useMinBalance } from '../../_hooks/use-min-balance';
 import { Skeleton } from '@/components/ui/skeleton';
 import useApiConnectionsStore from '@/store/api-connections';
 import { isXcmLocationMatch } from '@/utils/xcm/helper';
-import type { AvailableToken } from '@/utils/xcm/token';
+import type { Asset } from '@/types/registry';
 
 export interface PickerProps {
   ref: React.RefObject<{ refreshBalances: () => void }>;
-  tokens?: AvailableToken[];
+  tokens?: Asset[];
   tokenBalance?: BalanceWithSymbol;
   tokenBalances?: BalanceWithSymbol[];
-  sourceChainId?: string;
-  targetChainId?: string;
+  sourceChainId?: number;
+  targetChainId?: number;
   crossFee: BN;
   isCrossFeeLoading: boolean;
   maxBalanceBN: BN;
   isMaxBalanceLoading: boolean;
   error?: React.ReactNode;
-  onChangeToken?: (token: AvailableToken | undefined) => void;
+  onChangeToken?: (token: Asset | undefined) => void;
   onChangeAmount?: (value: string) => void;
   onChangeTokenBalance?: (value: BN) => void;
   onChangeInvalid?: (value: boolean) => void;
@@ -55,7 +55,7 @@ export function Picker({
   onChangeInvalid
 }: PickerProps) {
   const { address } = useWalletConnection();
-  const [availableTokens, setAvailableTokens] = useState<AvailableToken[]>([]);
+  const [availableTokens, setAvailableTokens] = useState<Asset[]>([]);
   const [availableTokensLoading, setAvailableTokensLoading] = useState(false);
   const [isInvalid, setIsInvalid] = useState(false);
 
@@ -85,7 +85,7 @@ export function Picker({
   const { balance: minBalance, isLoading: isMinBalanceLoading } = useMinBalance(
     {
       chainId: targetChainId,
-      asset: selectedToken?.xcAssetData,
+      asset: selectedToken,
       decimals: selectedToken?.decimals
     }
   );
@@ -108,7 +108,7 @@ export function Picker({
   }
 
   const handleSelect = useCallback(
-    (token: AvailableToken) => {
+    (token: Asset) => {
       setSelectedToken(token);
       setIsDialogOpen(false);
       handleReset();
@@ -137,11 +137,11 @@ export function Picker({
       const targetChainApi = await getValidApi(targetChainId);
 
       try {
-        if (targetChainId === '1000') {
+        if (targetChainId === 1000) {
           const tokenPromises = tokens.map((token) =>
             checkAssetHubAcceptablePaymentToken({
               api: targetChainApi,
-              asset: token.xcAssetData
+              asset: token
             })
           );
           const results = await Promise.allSettled(tokenPromises);
@@ -166,7 +166,7 @@ export function Picker({
               const isSupported = acceptablePaymentTokens.some((tokenInfo) =>
                 isXcmLocationMatch({
                   acceptablePaymentLocation: tokenInfo?.v3?.concrete,
-                  asset: asset.xcAssetData
+                  asset
                 })
               );
               return isSupported;

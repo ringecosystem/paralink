@@ -11,7 +11,7 @@ import {
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Empty } from '@/components/empty';
 import { AssetPickerItem } from './item';
-import type { AvailableToken } from '@/utils/xcm/token';
+import type { Asset } from '@/types/registry';
 
 export type BalanceWithSymbol = {
   balance: BN;
@@ -21,8 +21,8 @@ interface AssetPickerListProps {
   isOpen: boolean;
   onClose: () => void;
   isLoading?: boolean;
-  onSelect: (token: AvailableToken) => void;
-  tokens: AvailableToken[];
+  onSelect: (token: Asset) => void;
+  tokens: Asset[];
   tokenBalances?: BalanceWithSymbol[];
 }
 
@@ -42,9 +42,7 @@ export function AssetPickerList({
     const query = searchQuery.toLowerCase();
     return tokens.filter(
       (token) =>
-        token?.symbol?.toLowerCase().includes(query) ||
-        token?.name?.toLowerCase().includes(query) ||
-        token?.contractAddress?.toLowerCase().includes(query)
+        token?.symbol?.toLowerCase().includes(query)
     );
   }, [tokens, searchQuery]);
 
@@ -68,7 +66,7 @@ export function AssetPickerList({
             <input
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Enter Token Name, Symbol, or Contract Address"
+              placeholder="Enter Token Symbol"
               className="h-[24px] flex-1 bg-transparent text-[12px] font-normal leading-[24px] text-[#12161950] focus-visible:outline-none md:text-[14px]"
             />
             <Search
@@ -90,18 +88,18 @@ export function AssetPickerList({
               <div className="flex flex-col gap-[20px]">
                 {filteredTokens?.length
                   ? filteredTokens?.map((token) => (
-                      <AssetPickerItem
-                        key={token?.symbol}
-                        token={token}
-                        isLoading={isLoading}
-                        onSelect={onSelect}
-                        balance={
-                          tokenBalances?.find(
-                            (balance) => balance.symbol === token.symbol
-                          )?.balance
-                        }
-                      />
-                    ))
+                    <AssetPickerItem
+                      key={token?.symbol}
+                      token={token}
+                      isLoading={isLoading}
+                      onSelect={onSelect}
+                      balance={
+                        tokenBalances?.find(
+                          (balance) => balance.symbol === token.symbol
+                        )?.balance
+                      }
+                    />
+                  ))
                   : null}
               </div>
             )}

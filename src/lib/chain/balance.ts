@@ -2,7 +2,7 @@ import { isFunction, bnToBn } from '@polkadot/util';
 import { BN_ZERO } from '@polkadot/util';
 import type { BN } from '@polkadot/util';
 import type { ApiPromise } from '@polkadot/api';
-import type { XcAssetData } from './../../types/asset-registry';
+import type { Asset } from '@/types/registry';
 
 interface OrmlTokensAccountData {
   free: string | number;
@@ -11,19 +11,18 @@ interface OrmlTokensAccountData {
 }
 
 export async function getAssetBalance({
-  paraId,
   api,
   account,
-  xcAssetData,
+  asset,
   signal
 }: {
   paraId: number;
   api: ApiPromise;
   account: string;
-  xcAssetData?: XcAssetData;
+  asset?: Asset;
   signal?: AbortSignal;
 }): Promise<BN> {
-  const assetId = xcAssetData?.asset;
+  const assetId = asset?.assetId;
   if (!assetId) {
     return BN_ZERO;
   }
@@ -34,18 +33,6 @@ export async function getAssetBalance({
     if (assetId === 'Native') {
       const balancesAll = await api.derive.balances.all(account);
       return balancesAll.availableBalance;
-    }
-    if (paraId === 1000 && xcAssetData.reserveType === 'foreign') {
-      const result = await api.query.foreignAssets.account(
-        JSON.parse(xcAssetData.xcmV1MultiLocation),
-        account
-      );
-
-      const assetAccount = result.toJSON() as unknown as {
-        balance: string | number;
-      };
-      if (!assetAccount) return BN_ZERO;
-      return bnToBn(assetAccount.balance);
     }
 
     if (isFunction(api.query.assets?.account)) {

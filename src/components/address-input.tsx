@@ -4,12 +4,12 @@ import { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { RecipientModal } from './recipient-modal';
 
-import type { ChainInfoWithXcAssetsData } from '@/store/chains';
+import type { ChainConfig } from '@/types/registry';
 
 interface AddressInputProps {
   value: string;
   error?: React.ReactNode;
-  chain?: ChainInfoWithXcAssetsData;
+  chain?: ChainConfig;
   onChange: (address: string) => void;
 }
 

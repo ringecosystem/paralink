@@ -1,15 +1,14 @@
 import { useEffect, useState } from 'react';
 import { createXcmTransferExtrinsic } from '@/services/xcm/polkadot-xcm';
-import { ChainInfoWithXcAssetsData } from '@/store/chains';
 import { SubmittableExtrinsic } from '@polkadot/api/types';
 import { BN, BN_ZERO, bnToBn } from '@polkadot/util';
 import useApiConnectionsStore from '@/store/api-connections';
-import type { AvailableToken } from '@/utils/xcm/token';
+import type { Asset, ChainConfig } from '@/types/registry';
 
 interface UseXcmExtrinsicParams {
-  sourceChainId?: string;
-  selectedToken?: AvailableToken;
-  targetChain?: ChainInfoWithXcAssetsData;
+  sourceChainId?: number;
+  selectedToken?: Asset;
+  targetChain?: ChainConfig;
   recipientAddress?: string;
   amount: string;
   address?: string;
@@ -35,7 +34,7 @@ export function useXcmExtrinsic({
     const getExtrinsic = async () => {
       if (
         !sourceChainId ||
-        !selectedToken?.xcAssetData ||
+        !selectedToken ||
         !targetChain ||
         !recipientAddress
       )
@@ -48,7 +47,7 @@ export function useXcmExtrinsic({
         const result = await createXcmTransferExtrinsic({
           sourceChainId: sourceChainId,
           fromChainApi: api,
-          token: selectedToken.xcAssetData,
+          token: selectedToken,
           amount,
           targetChain,
           recipientAddress
@@ -65,7 +64,7 @@ export function useXcmExtrinsic({
     return () => setExtrinsic(undefined);
   }, [
     sourceChainId,
-    selectedToken?.xcAssetData,
+    selectedToken,
     targetChain,
     recipientAddress,
     amount,

@@ -1,6 +1,5 @@
 import { parseUnits } from '@/utils/format';
 import { ReserveType, XcAssetData } from '@/types/asset-registry';
-import { ChainInfoWithXcAssetsData } from '@/store/chains';
 import { Signer, SubmittableExtrinsic } from '@polkadot/api/types';
 import { ApiPromise } from '@polkadot/api';
 import {
@@ -10,11 +9,12 @@ import {
 
 import { generateBeneficiary, normalizeInterior } from '@/utils/xcm/helper';
 import { XcmRequestInteriorParams } from '@/utils/xcm/type';
+import type { ChainConfig, Asset } from '@/types/registry';
 
 type XcmTransferParams = {
-  token: XcAssetData;
+  token: Asset;
   amount: string;
-  targetChain: ChainInfoWithXcAssetsData;
+  targetChain: ChainConfig;
   recipientAddress: string;
 };
 
@@ -30,10 +30,9 @@ export function createXcmTransfer({
   });
   if (amountInWei.isZero()) return undefined;
   try {
-    const multiLocation = JSON.parse(token.xcmV1MultiLocation);
     let interior: XcmRequestInteriorParams | XcmRequestInteriorParams[] | null =
       null;
-    const flatInterior = normalizeInterior(multiLocation?.v1?.interior);
+    const flatInterior = normalizeInterior(token.xcmLocation?.v1?.interior);
     if (
       token?.reserveType === ReserveType.Local &&
       Array.isArray(flatInterior) &&
@@ -43,9 +42,8 @@ export function createXcmTransfer({
         flatInterior?.filter((v) => !v.parachain)
       );
     } else {
-      interior = createStandardXcmInterior(multiLocation?.v1?.interior);
+      interior = createStandardXcmInterior(token.xcmLocation?.v1?.interior);
     }
-
     const dest = {
       V3: {
         parents: 1,
@@ -94,11 +92,11 @@ export function createXcmTransfer({
 }
 
 type CreateXcmTransferExtrinsicParams = {
-  sourceChainId: string;
+  sourceChainId: number;
   fromChainApi: ApiPromise;
-  token: XcAssetData;
+  token: Asset;
   amount: string;
-  targetChain: ChainInfoWithXcAssetsData;
+  targetChain: ChainConfig;
   recipientAddress: string;
 };
 export const createXcmTransferExtrinsic = async ({
@@ -118,20 +116,20 @@ export const createXcmTransferExtrinsic = async ({
   if (!xcmTransferParams || !fromChainApi) return undefined;
 
   const extrinsic =
-    sourceChainId !== '2006'
+    sourceChainId !== 2006
       ? fromChainApi.tx.polkadotXcm.transferAssets(
-          xcmTransferParams.dest,
-          xcmTransferParams.beneficiary,
-          xcmTransferParams.assets,
-          xcmTransferParams.feeAssetItem,
-          xcmTransferParams.weightLimit
-        )
+        xcmTransferParams.dest,
+        xcmTransferParams.beneficiary,
+        xcmTransferParams.assets,
+        xcmTransferParams.feeAssetItem,
+        xcmTransferParams.weightLimit
+      )
       : fromChainApi.tx.polkadotXcm.reserveTransferAssets(
-          xcmTransferParams.dest,
-          xcmTransferParams.beneficiary,
-          xcmTransferParams.assets,
-          xcmTransferParams.feeAssetItem
-        );
+        xcmTransferParams.dest,
+        xcmTransferParams.beneficiary,
+        xcmTransferParams.assets,
+        xcmTransferParams.feeAssetItem
+      );
   return extrinsic;
 };
 

@@ -1,11 +1,10 @@
 import { useRef, useState } from 'react';
 import { useDebounce } from 'react-use';
-import { BN } from '@polkadot/util';
+import { BN, bnToBn } from '@polkadot/util';
 import { formatTokenBalance } from '@/utils/format';
 import useApiConnectionsStore from '@/store/api-connections';
 import type { AccountInfo } from '@polkadot/types/interfaces';
-import type { u128 } from '@polkadot/types';
-import type { AugmentedConst } from '@polkadot/api/types';
+import type { ChainConfig } from '@/types/registry';
 
 interface ExistentialDepositInfo {
   isLoading: boolean;
@@ -39,10 +38,10 @@ const DEFAULT_TOKEN_STATE: TokenState = {
 type Unsubscribe = () => void;
 
 export function useExistentialDeposit({
-  chainId,
+  chain,
   address
 }: {
-  chainId?: string;
+  chain?: ChainConfig;
   address?: string;
 }): ExistentialDepositInfo {
   const unsubscribeRef = useRef<Unsubscribe | null>(null);
@@ -56,7 +55,7 @@ export function useExistentialDeposit({
       setIsLoading(false);
       setState(DEFAULT_TOKEN_STATE);
       setError(undefined);
-      if (!chainId || !address) {
+      if (!chain || !address) {
         setIsLoading(false);
         setState(DEFAULT_TOKEN_STATE);
         return;
@@ -66,16 +65,8 @@ export function useExistentialDeposit({
         try {
           setIsLoading(true);
 
-          const section = 'balances';
-          const method = 'existentialDeposit';
-          const api = await getValidApi(chainId);
-          const ed = (await api.consts[section]?.[method]) as u128 &
-            AugmentedConst<'promise'>;
+          const api = await getValidApi(chain?.id);
 
-          if (!ed) {
-            console.error('Failed to fetch existential deposit');
-            return;
-          }
           const properties = await api.registry.getChainProperties();
           if (!properties) {
             console.error('Failed to fetch chain properties');
@@ -83,7 +74,7 @@ export function useExistentialDeposit({
           }
 
           const tokenInfo = {
-            deposit: ed.toBn(),
+            deposit: bnToBn(chain?.existentialDeposit),
             tokenInfo: {
               symbol: properties.tokenSymbol.value[0]?.toString() || '',
               decimals: properties.tokenDecimals.value[0]?.toNumber() || 0
@@ -122,7 +113,7 @@ export function useExistentialDeposit({
       };
     },
     300,
-    [getValidApi, address, chainId]
+    [getValidApi, address, chain?.id]
   );
 
   return {

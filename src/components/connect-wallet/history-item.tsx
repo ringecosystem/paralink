@@ -34,9 +34,7 @@ export const HistoryItem = ({
     if (uniqueId) {
       return `https://polkadot.subscan.io/xcm_message/polkadot-${uniqueId}`;
     }
-    const explorer = sourceChain?.isEvmChain
-      ? sourceChain?.evmInfo?.blockExplorer
-      : sourceChain?.substrateInfo?.blockExplorer;
+    const explorer = sourceChain?.explorer;
     return explorer ? `${explorer}/tx/${txHash}` : '';
   }, [sourceChain, txHash, uniqueId]);
 

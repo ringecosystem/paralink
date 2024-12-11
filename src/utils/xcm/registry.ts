@@ -1,6 +1,5 @@
 import { ReserveType } from '@/types/asset-registry';
-import type { ChainInfoWithXcAssetsData } from '@/store/chains';
-import type { AssetType, XcAssetData } from '@/types/asset-registry';
+import type { Asset, ChainConfig } from '@/types/registry';
 
 interface ParsedReserveLocation {
   parents: string;
@@ -87,11 +86,11 @@ export function hasParachainInLocation({
     const locationArray = interior.x1 || interior.x2 || interior.x3 || [];
     return Array.isArray(locationArray)
       ? locationArray.some(
-          (v: { [key: string]: string | number }) =>
-            'parachain' in v && v.parachain?.toString() === paraId
-        )
+        (v: { [key: string]: string | number }) =>
+          'parachain' in v && v.parachain?.toString() === paraId
+      )
       : 'parachain' in locationArray &&
-          locationArray.parachain?.toString() === paraId;
+      locationArray.parachain?.toString() === paraId;
   } catch (error) {
     console.error('Error parsing multiLocation:', error);
     return false;
@@ -134,8 +133,8 @@ export function getGeneralIndex(multiLocationStr: string): string | null {
 
     const generalIndexObj = Array.isArray(locationArray)
       ? locationArray.find(
-          (v: { [key: string]: string | number }) => 'generalIndex' in v
-        )
+        (v: { [key: string]: string | number }) => 'generalIndex' in v
+      )
       : 'generalIndex' in locationArray
         ? locationArray
         : null;
@@ -148,137 +147,42 @@ export function getGeneralIndex(multiLocationStr: string): string | null {
 }
 
 export function getFromChains(
-  chains: ChainInfoWithXcAssetsData[]
-): ChainInfoWithXcAssetsData[] {
+  chains: ChainConfig[]
+): ChainConfig[] {
   return chains;
 }
 
 export function getToChains(
-  chains: ChainInfoWithXcAssetsData[],
-  sourceChainId: string
-): ChainInfoWithXcAssetsData[] {
+  chains: ChainConfig[],
+  sourceChainId: number
+): ChainConfig[] {
   return chains?.filter((chain) => chain.id !== sourceChainId);
 }
 
 export const getTokenList = ({
   sourceChain,
-  targetChain
+  targetChainId
 }: {
-  sourceChain: ChainInfoWithXcAssetsData;
-  targetChain: ChainInfoWithXcAssetsData;
+  sourceChain: ChainConfig;
+  targetChainId: number;
 }) => {
-  const tokenList: XcAssetData[] = [];
-  if (sourceChain.id === '1000') {
-    const destAssetsInfo = targetChain?.xcAssetsData?.filter((asset) => {
-      const hasParachain = hasParachainInLocation({
-        multiLocationStr: asset.xcmV1MultiLocation,
-        paraId: sourceChain.id
-      });
+  const tokenList: Asset[] = [];
+  if (sourceChain.id === 1000) {
+    const tokens = sourceChain?.localAssets?.[targetChainId]
+    return tokens || []
 
-      if (!hasParachain) return false;
-
-      const generalIndex = getGeneralIndex(asset.xcmV1MultiLocation);
-      if (!generalIndex) return false;
-
-      return Object.keys(sourceChain.assetsInfo || {}).includes(generalIndex);
-    });
-
-    if (destAssetsInfo && destAssetsInfo.length > 0) {
-      const processedAssets = destAssetsInfo.map((asset) => {
-        const generalIndex = getGeneralIndex(asset.xcmV1MultiLocation);
-        const assetInfo = sourceChain.assetsInfo?.[generalIndex || ''];
-
-        return {
-          ...asset,
-          symbol: assetInfo || asset.symbol,
-          decimals: asset.decimals,
-          paraID: Number(sourceChain.id),
-          nativeChainID: sourceChain.name.toLowerCase().replace(/\s/g, '-'),
-          reserveType: ReserveType.Local,
-          asset: generalIndex as AssetType,
-          xcmV1MultiLocation: JSON.stringify({
-            v1: {
-              parents: 0,
-              interior: {
-                x3: [
-                  {
-                    parachain: Number(sourceChain.id)
-                  },
-                  { palletInstance: 50 },
-                  { generalIndex: generalIndex }
-                ]
-              }
-            }
-          })
-        };
-      });
-      tokenList.push(...processedAssets);
-    }
   } else {
-    let supportedNativeToken: XcAssetData | undefined =
-      targetChain.xcAssetsData?.find(
-        (asset) =>
-          hasParachainInLocation({
-            multiLocationStr: asset.xcmV1MultiLocation,
-            paraId: sourceChain.id
-          }) &&
-          asset.symbol.toLowerCase() ===
-            sourceChain.nativeToken.symbol.toLowerCase()
-      );
+    const nativeToken = sourceChain?.nativeToken?.registeredChains?.[targetChainId]
+    const xcAssetsData = sourceChain?.xcAssetsData?.[targetChainId]
 
-    if (supportedNativeToken) {
-      supportedNativeToken = {
-        ...supportedNativeToken,
-        reserveType: ReserveType.Local,
-        asset: 'Native' as AssetType,
-        xcmV1MultiLocation: JSON.stringify({
-          v1: {
-            parents: 0,
-            interior: JSON.parse(supportedNativeToken?.xcmV1MultiLocation)?.v1
-              ?.interior
-          }
-        })
-      };
+    if (nativeToken) {
+      tokenList.push({ ...nativeToken, isNative: true })
+    }
+    if (Array.isArray(xcAssetsData) && xcAssetsData.length) {
+      tokenList.push(...xcAssetsData)
     }
 
-    const otherAssets =
-      sourceChain.xcAssetsData
-        ?.filter((asset) => {
-          const hasDestParachain = hasParachainInLocation({
-            multiLocationStr: asset.xcmV1MultiLocation,
-            paraId: targetChain.id
-          });
-
-          if (
-            supportedNativeToken &&
-            asset.symbol.toLowerCase() ===
-              sourceChain.nativeToken.symbol.toLowerCase()
-          ) {
-            supportedNativeToken = {
-              ...supportedNativeToken,
-              decimals: asset.decimals,
-              originChainReserveLocation: asset.originChainReserveLocation
-            };
-            return false;
-          }
-
-          return hasDestParachain;
-        })
-        ?.map((v) => ({
-          ...v,
-          reserveType: determineReserveType({
-            sourceParaId: Number(sourceChain.id),
-            targetParaId: Number(v?.paraID),
-            originChainReserveLocation: v.originChainReserveLocation
-          })
-        })) ?? [];
-
-    return supportedNativeToken
-      ? [supportedNativeToken, ...otherAssets]
-      : otherAssets;
+    return tokenList
   }
-
-  return tokenList;
 };
 
-// clover

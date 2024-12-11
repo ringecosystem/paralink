@@ -1,10 +1,10 @@
 import { create } from 'zustand';
 
-import type { AvailableToken } from '@/utils/xcm/token';
+import type { Asset } from '@/types/registry';
 
 interface TokensState {
-  selectedToken?: AvailableToken;
-  setSelectedToken: (token?: AvailableToken) => void;
+  selectedToken?: Asset;
+  setSelectedToken: (token?: Asset) => void;
 }
 
 const useTokensStore = create<TokensState>((set) => ({

@@ -2,12 +2,12 @@ import { useEffect, useMemo, useState } from 'react';
 import { BN, BN_ZERO } from '@polkadot/util';
 import { getTargetMinBalance } from '@/services/xcm/target-min-balance';
 import useApiConnectionsStore from '@/store/api-connections';
-import { flattenXcmInterior } from '@/utils/xcm/helper';
-import type { XcAssetData } from '@/types/asset-registry';
+import { normalizeInterior } from '@/utils/xcm/helper';
+import type { Asset } from '@/types/registry';
 
 interface UseMinBalanceProps {
-  chainId?: string;
-  asset?: XcAssetData | null;
+  chainId?: number;
+  asset?: Asset;
   decimals?: number | null;
 }
 export const useMinBalance = ({
@@ -21,15 +21,11 @@ export const useMinBalance = ({
   const getValidApi = useApiConnectionsStore((state) => state.getValidApi);
   const assetId = useMemo(() => {
     if (!asset) return null;
-    const interior = flattenXcmInterior(asset.xcmV1MultiLocation);
+    const interior = normalizeInterior(asset.xcmLocation?.v1?.interior);
     if (interior) {
-      let assetId;
       if (Array.isArray(interior)) {
-        assetId = interior?.find((item) => item.generalIndex)?.generalIndex;
-      } else {
-        assetId = interior?.generalIndex;
+        return interior?.find((item) => item.generalIndex)?.generalIndex;
       }
-      return assetId;
     }
     return null;
   }, [asset]);

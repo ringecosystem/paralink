@@ -2,8 +2,9 @@ import { isAddress } from 'viem';
 import { decodeAddress } from '@polkadot/util-crypto';
 import { u8aToHex } from '@polkadot/util';
 import { areInteriorsEqual } from './interior-match';
+import { ReserveType } from '@/types/registry';
 import type { GeneralKeyV3, NormalizedInterior } from './type';
-import { ReserveType, type XcAssetData } from '@/types/asset-registry';
+import type { Asset } from '@/types/registry';
 
 export const isGeneralKeyV3 = (
   key: GeneralKeyV3 | string
@@ -64,9 +65,9 @@ export function isXcmLocationMatch({
   asset
 }: {
   acceptablePaymentLocation: any | null | undefined;
-  asset: XcAssetData;
+  asset: Asset;
 }): boolean {
-  const xcmLocation = JSON.parse(asset?.xcmV1MultiLocation)?.v1;
+  const xcmLocation = asset?.xcmLocation?.v1;
 
   if (!acceptablePaymentLocation || !xcmLocation) {
     console.log(`One or both locations are empty:`, {

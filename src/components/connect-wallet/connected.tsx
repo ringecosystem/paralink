@@ -18,13 +18,14 @@ export function Connected() {
   const sourceChain = useChainsStore((state) => state.getFromChain());
 
   const currentChainInfo = useMemo(() => {
-    if (sourceChain?.isEvmChain && evmAddress) {
+    if (!sourceChain) return null;
+    if (sourceChain?.isEvm && evmAddress) {
       return {
         icon: '/images/wallet/metamask.png',
         name: sourceChain.name,
         address: evmAddress || ''
       };
-    } else if (sourceChain?.substrateInfo && substrateAddress) {
+    } else if (substrateAddress) {
       return {
         icon: '/images/wallet/polkadot.png',
         name: sourceChain.name,

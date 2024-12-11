@@ -252,3 +252,66 @@ export interface PoolPairInfo {
     lpToken: string;
     pairInfo: string;
 }
+
+export interface ChainRegistryAssetInfo {
+    assetId: string | number;
+    symbol: string;
+    decimals: number;
+    xcmLocation?: string;
+    icon?: string;
+}
+
+export interface ChainRegistryProviders {
+    [provider: string]: string;
+}
+
+export interface ChainRegistryEvmInfo extends EvmInfo {
+    blockExplorer: string;
+}
+
+export interface RegisteredChainInfo {
+    assetId: string | number;
+    symbol?: string;
+    decimals?: number;
+    icon?: string;
+    xcmLocation?: string;
+}
+
+export interface ChainRegistryNativeToken {
+    symbol: string;
+    decimals: number;
+    icon?: string;
+    registeredChains?: {
+        [chainId: string]: RegisteredChainInfo | null;
+    } | null;
+}
+
+export interface ChainRegistryAssetInfoData {
+    [paraId: string]: ChainRegistryAssetInfo[] | null;
+}
+export interface ChainRegistryXcAssetData {
+    [paraId: string]: ChainRegistryAssetInfo[] | null;
+}
+
+export interface ChainRegistryInfo {
+    explorer?: string;
+    icon?: string;
+    addressPrefix?: number;
+    providers?: string[];
+    name?: string;
+    slug?: string;
+    alive?: boolean;
+    assetsType?: "assets" | "tokens" | null;
+    isEvm?: boolean;
+    evmChainId?: number;
+    existentialDeposit?: string;
+    nativeToken?: ChainRegistryNativeToken | null;
+    localAssets?: ChainRegistryAssetInfoData | null;
+    xcAssetsData?: ChainRegistryXcAssetData | null;
+}
+
+export interface ChainRegistry {
+    [chainId: string]: ChainRegistryInfo | null;
+}
+
+

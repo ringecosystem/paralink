@@ -28,9 +28,7 @@ export function TransactionToastPending({
     (chain) => chain.id?.toString() === transaction?.targetChainId?.toString()
   );
   const blockExplorerUrl = useMemo(() => {
-    const explorer = sourceChain?.isEvmChain
-      ? sourceChain?.evmInfo?.blockExplorer
-      : sourceChain?.substrateInfo?.blockExplorer;
+    const explorer = sourceChain?.explorer;
     return explorer ? `${explorer}/tx/${txHash}` : '';
   }, [sourceChain, txHash]);
 

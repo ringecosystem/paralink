@@ -1,6 +1,7 @@
 {
     "2046": {
         "explorer": "https://darwinia.subscan.io/",
+        "addressPrefix": 88,
         "providers": {
             "Moonbeam Foundation": "wss://wss.api.moonbeam.network",
             "Blast": "wss://moonbeam.public.blastapi.io"
@@ -8,14 +9,12 @@
         "alive": true,
         "assetsType": "assets",
         "isEvm": true,
-        "evmInfo": {
-            "evmChainId": 1284,
-            "blockExplorer": "https://moonbeam.subscan.io/"
-        },
+        "evmChainId": 1284,
         "nativeToken": {
             "symbol": "RING",
             "decimals": 18,
             "icon": "xxx",
+            "existentialDeposit": "1000000000000",
             "registeredChains": {
                 "2034": {
                     "assetId": "32",

@@ -1,20 +1,20 @@
-import { flattenXcmInterior } from '@/utils/xcm/helper';
+import { normalizeInterior } from '@/utils/xcm/helper';
 import type { ApiPromise } from '@polkadot/api';
-import type { XcAssetData } from '@/types/asset-registry';
+import type { Asset } from '@/types/registry';
 type CheckAssetHubAcceptablePaymentTokenParams = {
   api: ApiPromise;
-  asset?: XcAssetData;
+  asset?: Asset;
 };
 export async function checkAssetHubAcceptablePaymentToken({
   api,
   asset
 }: CheckAssetHubAcceptablePaymentTokenParams) {
   try {
-    if (!asset?.xcmV1MultiLocation) {
+    if (!asset?.xcmLocation) {
       console.log('Asset XCM location not found', asset);
       return false;
     }
-    const interiorFlattened = flattenXcmInterior(asset?.xcmV1MultiLocation);
+    const interiorFlattened = normalizeInterior(asset?.xcmLocation?.v1?.interior);
     const assetId = Array.isArray(interiorFlattened)
       ? interiorFlattened?.find((item) => item.generalIndex)?.generalIndex
       : null;

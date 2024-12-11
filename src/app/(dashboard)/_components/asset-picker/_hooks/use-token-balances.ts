@@ -3,12 +3,12 @@ import { getAssetBalance } from '@/lib/chain/balance';
 import { useEffect, useState } from 'react';
 import useApiConnectionsStore from '@/store/api-connections';
 import type { ApiPromise } from '@polkadot/api';
-import type { AvailableToken } from '@/utils/xcm/token';
+import type { Asset } from '@/types/registry';
 
 interface UseTokenBalancesProps {
   address?: string;
-  tokens?: AvailableToken[];
-  paraId?: string;
+  tokens?: Asset[];
+  paraId?: number;
 }
 
 export function useTokenBalances({
@@ -54,7 +54,7 @@ export function useTokenBalances({
             api,
             paraId: Number(paraId),
             account: address,
-            xcAssetData: token.xcAssetData,
+            asset: token,
             signal
           })
         ) ?? []

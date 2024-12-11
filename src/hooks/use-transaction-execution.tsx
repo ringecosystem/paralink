@@ -6,13 +6,12 @@ import {
   useTransactionHistory
 } from '@/store/transaction-history';
 import { signAndSendExtrinsic } from '@/services/xcm/polkadot-xcm';
-import type { ChainInfoWithXcAssetsData } from '@/store/chains';
-import type { AvailableToken } from '@/utils/xcm/token';
+import type { ChainConfig, Asset } from '@/types/registry';
 
 interface UseTransactionExecutionProps {
-  sourceChain?: ChainInfoWithXcAssetsData;
-  targetChain?: ChainInfoWithXcAssetsData;
-  selectedToken?: AvailableToken;
+  sourceChain?: ChainConfig;
+  targetChain?: ChainConfig;
+  selectedToken?: Asset;
   amount: string;
   recipientAddress: string;
 }

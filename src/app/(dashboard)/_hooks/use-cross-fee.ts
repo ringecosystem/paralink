@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
-import type { XcAssetData } from '@/types/asset-registry';
 import { getXcmWeightFee } from '@/services/xcm/xcm-weight';
 import { BN, BN_ZERO } from '@polkadot/util';
 import useApiConnectionsStore from '@/store/api-connections';
+import type { Asset } from '@/types/registry';
 
 interface UseCrossFeeProps {
-  asset?: XcAssetData;
+  asset?: Asset;
   recipientAddress?: string;
-  paraId?: string;
+  paraId?: number;
 }
 export const useCrossFee = ({
   asset,

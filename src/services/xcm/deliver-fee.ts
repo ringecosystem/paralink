@@ -2,11 +2,11 @@ import { BN_ZERO, bnToBn } from '@polkadot/util';
 import { createStandardXcmInterior } from '@/utils/xcm/interior-params';
 import { parseUnits } from '@/utils/format';
 import { generateBeneficiary } from '@/utils/xcm/helper';
-import type { XcAssetData } from '@/types/asset-registry';
 import type { ApiPromise } from '@polkadot/api';
+import type { Asset } from '@/types/registry';
 
 type XcmTransferParams = {
-  asset: XcAssetData;
+  asset: Asset;
   recipientAddress: string;
 };
 
@@ -14,9 +14,9 @@ export function generateDestReserveXcmMessage({
   asset,
   recipientAddress
 }: XcmTransferParams) {
-  if (!asset.xcmV1MultiLocation) return null;
+  if (!asset.xcmLocation) return null;
   try {
-    const multiLocation = JSON.parse(asset.xcmV1MultiLocation);
+    const multiLocation = asset.xcmLocation
 
     const assetId = {
       id: {
@@ -62,9 +62,9 @@ export function generateLocalReserveXcmMessage({
   asset,
   recipientAddress
 }: XcmTransferParams) {
-  if (!asset.xcmV1MultiLocation) return null;
+  if (!asset.xcmLocation) return null;
   try {
-    const multiLocation = JSON.parse(asset.xcmV1MultiLocation);
+    const multiLocation = asset.xcmLocation;
 
     const assetId = {
       id: {
@@ -110,9 +110,9 @@ export function generateLocalReserveXcmMessage({
 
 interface QueryDeliveryFeesParams {
   api: ApiPromise;
-  asset: XcAssetData;
+  asset: Asset;
   recipientAddress: string;
-  toParaId: string;
+  toParaId: number;
 }
 
 /**
@@ -134,12 +134,12 @@ export async function queryDeliveryFees({
         parents: 1,
         interior: {
           X1: {
-            Parachain: parseInt(toParaId)
+            Parachain: toParaId
           }
         }
       }
     };
-    let xcmMessage = null;
+    let xcmMessage: ReturnType<typeof generateDestReserveXcmMessage> | ReturnType<typeof generateLocalReserveXcmMessage> | null = null;
     if (asset.reserveType === 'foreign') {
       xcmMessage = generateDestReserveXcmMessage({
         asset,

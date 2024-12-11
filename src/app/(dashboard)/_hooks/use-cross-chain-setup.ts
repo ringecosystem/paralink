@@ -2,18 +2,18 @@ import { useCallback } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 import useChainsStore from '@/store/chains';
 import { getFromChains, getToChains } from '@/utils/xcm/registry';
-import type { ChainInfoWithXcAssetsData } from '@/store/chains';
+import type { ChainConfig } from '@/types/registry';
 
 type SwapChainsParams = {
-  chains: ChainInfoWithXcAssetsData[];
-  sourceChainId: string;
-  targetChainId: string;
+  chains: ChainConfig[];
+  sourceChainId: number;
+  targetChainId: number;
 };
 interface UseCrossChainSetupReturn {
   setupCrossChainConfig: (
-    chains: ChainInfoWithXcAssetsData[],
-    initialFromId?: string
-  ) => Promise<void>;
+    chains: ChainConfig[],
+    initialFromId?: number
+  ) => void;
   swapChains: ({
     chains,
     sourceChainId,
@@ -23,8 +23,8 @@ interface UseCrossChainSetupReturn {
     chains,
     targetChainId
   }: {
-    chains: ChainInfoWithXcAssetsData[];
-    targetChainId: string;
+    chains: ChainConfig[];
+    targetChainId: number;
   }) => void;
 }
 export function useCrossChainSetup(): UseCrossChainSetupReturn {
@@ -45,7 +45,7 @@ export function useCrossChainSetup(): UseCrossChainSetupReturn {
   );
 
   const setupCrossChainConfig = useCallback(
-    async (chains: ChainInfoWithXcAssetsData[], initialFromId?: string) => {
+    (chains: ChainConfig[], initialFromId?: number) => {
       try {
         const sourceChains = getFromChains(chains);
         const sourceChainId = initialFromId
@@ -80,7 +80,7 @@ export function useCrossChainSetup(): UseCrossChainSetupReturn {
   );
 
   const updateToChain = useCallback(
-    async ({ targetChainId }: { targetChainId: string }) => {
+    async ({ targetChainId }: { targetChainId: number }) => {
       try {
         setTargetChainId(targetChainId);
       } catch (error) {

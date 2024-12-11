@@ -3,28 +3,20 @@ import { ApiPromise, WsProvider } from '@polkadot/api';
 import { create } from 'zustand';
 import useChainsStore from './chains';
 
-function getValidWssEndpoints(
-  endpoints: Record<string, string> | undefined
-): string[] {
-  if (!endpoints) return [];
 
-  return Object.values(endpoints).filter((endpoint) =>
-    endpoint.toLowerCase().startsWith('wss://')
-  );
-}
 
 interface ApiConnection {
   api: ApiPromise;
   endpoints: string[];
 }
-export type GetValidApiType = (paraId: string) => Promise<ApiPromise>;
+export type GetValidApiType = (paraId: number) => Promise<ApiPromise>;
 
 interface ApiConnectionsStore {
   connections: Record<string, ApiConnection>;
   isLoading: boolean;
   pendingConnections: Record<string, Promise<ApiPromise> | undefined>;
   getValidApi: GetValidApiType;
-  clearPendingConnection: (paraId: string) => void;
+  clearPendingConnection: (paraId: number) => void;
 }
 
 const CONNECTION_TIMEOUT = 15000;
@@ -33,7 +25,7 @@ const useApiConnectionsStore = create<ApiConnectionsStore>((set, get) => ({
   connections: {},
   isLoading: false,
   pendingConnections: {},
-  clearPendingConnection: (paraId: string) => {
+  clearPendingConnection: (paraId: number) => {
     set((state) => ({
       pendingConnections: {
         ...state.pendingConnections,
@@ -43,7 +35,7 @@ const useApiConnectionsStore = create<ApiConnectionsStore>((set, get) => ({
     }));
   },
 
-  getValidApi: async (paraId: string) => {
+  getValidApi: async (paraId: number) => {
     if (!paraId) throw new Error('must provide paraId');
 
     const { connections, pendingConnections, clearPendingConnection } = get();
@@ -53,7 +45,7 @@ const useApiConnectionsStore = create<ApiConnectionsStore>((set, get) => ({
       try {
         const timeoutPromise = new Promise<never>((_, reject) => {
           setTimeout(() => {
-            reject(new Error('连接超时'));
+            reject(new Error('connection timeout'));
           }, CONNECTION_TIMEOUT);
         });
 
@@ -94,24 +86,25 @@ const useApiConnectionsStore = create<ApiConnectionsStore>((set, get) => ({
     const chains = useChainsStore.getState().chains;
     // 3. create new connection Promise
     const connectionPromise = (async () => {
+      if (!chains?.length) return;
       set({ isLoading: true });
       try {
+
         const endpoints = chains?.find(
           (chain) => chain.id === paraId
         )?.providers;
-        const endpointsList = getValidWssEndpoints(endpoints);
-        if (!endpointsList || !endpointsList.length)
+        if (!endpoints || !endpoints.length)
           throw new Error('must provide at least one node');
 
         const api = await ApiPromise.create({
-          provider: new WsProvider(endpointsList, 6000),
+          provider: new WsProvider(endpoints, 6000),
           throwOnConnect: true
         });
 
         set((state) => ({
           connections: {
             ...state.connections,
-            [paraId]: { api, endpoints: endpointsList }
+            [paraId]: { api, endpoints: endpoints }
           },
           pendingConnections: {
             ...state.pendingConnections,

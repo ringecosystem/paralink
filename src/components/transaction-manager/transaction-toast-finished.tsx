@@ -31,9 +31,7 @@ export function TransactionToastFinished({
     if (transaction?.uniqueId) {
       return `https://polkadot.subscan.io/xcm_message/polkadot-${transaction.uniqueId}`;
     }
-    const explorer = sourceChain?.isEvmChain
-      ? sourceChain?.evmInfo?.blockExplorer
-      : sourceChain?.substrateInfo?.blockExplorer;
+    const explorer = sourceChain?.explorer;
     return explorer ? `${explorer}/tx/${txHash}` : '';
   }, [transaction, sourceChain, txHash]);
 

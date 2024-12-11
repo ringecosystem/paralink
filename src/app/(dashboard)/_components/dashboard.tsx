@@ -17,10 +17,6 @@ import useTokensStore from '@/store/tokens';
 import { useChainInitialization } from '../_hooks/use-chain-initlization';
 import { useCrossChainSetup } from '../_hooks/use-cross-chain-setup';
 import { ChainSwitcher } from './chain-switcher';
-import type { ChainConfig } from '@/types/asset-registry';
-import type { ChainInfo } from '@/types/chains-info';
-import type { Asset } from '@/types/assets-info';
-import Loading from './loading';
 
 import { useExistentialDeposit } from '../_hooks/use-existential-deposit';
 import { AnimatedErrorMessage } from '@/components/animated-error-message';
@@ -33,34 +29,31 @@ import { parseUnits } from '@/utils/format';
 import { useTransactionExecution } from '@/hooks/use-transaction-execution';
 import toast from 'react-hot-toast';
 
-import { AvailableToken, getAvailableTokens } from '@/utils/xcm/token';
 import useApiConnectionsStore from '@/store/api-connections';
 import { cn } from '@/lib/utils';
 import { AssetPicker } from './asset-picker';
 import { BN, BN_ZERO, bnMax } from '@polkadot/util';
 import { TransactionManager } from '@/components/transaction-manager';
 
+import type { Asset, ChainRegistry } from '@/types/registry';
+import { getTokenList } from '@/utils/xcm/registry';
+
 interface DashboardProps {
-  polkadotAssetRegistry: ChainConfig;
-  chainsInfo: ChainInfo[];
-  assetsInfo: Asset[];
+  registryAssets: ChainRegistry;
 }
 
 export default function Dashboard({
-  polkadotAssetRegistry,
-  chainsInfo,
-  assetsInfo
+  registryAssets
 }: DashboardProps) {
   const pickerRef = useRef<{ refreshBalances: () => void }>(null);
 
   const [amount, setAmount] = useState<string>('');
-  const [tokens, setTokens] = useState<AvailableToken[]>([]);
+  const [tokens, setTokens] = useState<Asset[]>([]);
   const [selectedTokenBalance, setSelectedTokenBalance] = useState<BN>(BN_ZERO);
   const [isLoadingCrossChain, setIsLoadingCrossChain] = useState(false);
   const [recipientAddress, setRecipientAddress] = useState<string>('');
   const [isTransactionLoading, setIsTransactionLoading] = useState(false);
   const [isInvalid, setIsInvalid] = useState(false);
-  // 12pxLnQcjJqjG4mDaeJoKBLMfsdHZ2p2RxKHNEvicnZwZobx
   const { address } = useWalletConnection();
   const {
     chains,
@@ -82,7 +75,7 @@ export default function Dashboard({
       targetChain: state.getToChain()
     }))
   );
-
+  console.log('chains', chains);
   const { isLoading: isApiLoading } = useApiConnectionsStore(
     useShallow((state) => ({
       isLoading: state.isLoading
@@ -91,21 +84,22 @@ export default function Dashboard({
 
   const selectedToken = useTokensStore((state) => state.selectedToken);
 
-  const { isLoading } = useChainInitialization({
-    polkadotAssetRegistry,
-    chainsInfo,
-    assetsInfo
+  useChainInitialization({
+    registryAssets
   });
+
+
 
   const { setupCrossChainConfig, swapChains, updateToChain } =
     useCrossChainSetup();
 
+
+
   useEffect(() => {
-    if (!sourceChain || !targetChain || !assetsInfo.length) return;
-    const tokens = getAvailableTokens({
+    if (!sourceChain || !targetChainId) return;
+    const tokens = getTokenList({
       sourceChain,
-      targetChain,
-      assets: assetsInfo
+      targetChainId: targetChainId
     });
     if (tokens.length) {
       setTokens(tokens);
@@ -113,7 +107,7 @@ export default function Dashboard({
     return () => {
       setTokens([]);
     };
-  }, [sourceChain, targetChain, assetsInfo, setTokens]);
+  }, [sourceChain, targetChainId, setTokens]);
 
   const {
     extrinsic,
@@ -130,21 +124,21 @@ export default function Dashboard({
 
   const { networkFee, isLoading: isNetworkFeeLoading } = useNetworkFee({
     sourceChainId,
-    asset: selectedToken?.xcAssetData,
+    asset: selectedToken,
     targetChainId,
     recipientAddress,
     partialFee
   });
 
   const { fee: crossFee, isLoading: isCrossFeeLoading } = useCrossFee({
-    asset: selectedToken?.xcAssetData,
+    asset: selectedToken,
     recipientAddress,
     paraId: targetChain?.id
   });
 
   const { isLoading: isFromExistentialDepositLoading, deposit: fromDeposit } =
     useExistentialDeposit({
-      chainId: sourceChainId,
+      chain: sourceChain,
       address: address
     });
 
@@ -153,7 +147,7 @@ export default function Dashboard({
     hasEnoughBalance: hasToEnoughBalance,
     formattedDeposit: toDepositFormatted
   } = useExistentialDeposit({
-    chainId: targetChainId,
+    chain: targetChain,
     address: recipientAddress
   });
 
@@ -180,7 +174,7 @@ export default function Dashboard({
   }, [amount, selectedTokenBalance, address]);
 
   const handleChangeFromChainId = useCallback(
-    async (id: string) => {
+    async (id: number) => {
       setIsLoadingCrossChain(true);
       await setupCrossChainConfig(chains, id);
       setIsLoadingCrossChain(false);
@@ -189,7 +183,7 @@ export default function Dashboard({
   );
 
   const handleChangeToChainId = useCallback(
-    async (id: string) => {
+    async (id: number) => {
       setIsLoadingCrossChain(true);
       await updateToChain({ chains, targetChainId: id });
       setIsLoadingCrossChain(false);
@@ -263,120 +257,116 @@ export default function Dashboard({
           closable={true}
         />
       </div>
-      {isLoading ? (
-        <Loading />
-      ) : (
-        <div className="container flex flex-col gap-[30px] pt-[min(120px,15vh)] md:pt-[min(100px,12vh)]">
-          <div
-            className={cn(
-              'mx-auto flex w-full flex-col gap-[20px] rounded-[var(--radius)] bg-white p-[15px] shadow-sm md:w-[460px] md:rounded-[var(--radius-lg)] md:p-[20px]',
-              'relative'
-            )}
-          >
-            <ChainSwitcher
+      <div className="container flex flex-col gap-[30px] pt-[min(120px,15vh)] md:pt-[min(100px,12vh)]">
+        <div
+          className={cn(
+            'mx-auto flex w-full flex-col gap-[20px] rounded-[var(--radius)] bg-white p-[15px] shadow-sm md:w-[460px] md:rounded-[var(--radius-lg)] md:p-[20px]',
+            'relative'
+          )}
+        >
+          <ChainSwitcher
+            sourceChainId={sourceChainId}
+            sourceChain={sourceChain}
+            targetChainId={targetChainId}
+            targetChain={targetChain}
+            fromParachains={sourceChains}
+            toParachains={targetChains}
+            onChangeFromChain={handleChangeFromChainId}
+            onChangeToChain={handleChangeToChainId}
+            onSwitch={handleSwitch}
+          />
+          <div className="relative flex flex-col gap-[20px]">
+            <AssetPicker
+              ref={pickerRef}
+              tokens={tokens}
+              crossFee={crossFee}
+              isCrossFeeLoading={isCrossFeeLoading}
+              maxBalanceBN={maxBalanceBN}
+              isMaxBalanceLoading={
+                isExtrinsicLoading ||
+                isNetworkFeeLoading ||
+                isFromExistentialDepositLoading
+              }
+              onChangeAmount={setAmount}
+              onChangeTokenBalance={setSelectedTokenBalance}
               sourceChainId={sourceChainId}
-              sourceChain={sourceChain}
               targetChainId={targetChainId}
-              targetChain={targetChain}
-              fromParachains={sourceChains}
-              toParachains={targetChains}
-              onChangeFromChain={handleChangeFromChainId}
-              onChangeToChain={handleChangeToChainId}
-              onSwitch={handleSwitch}
-            />
-            <div className="relative flex flex-col gap-[20px]">
-              <AssetPicker
-                ref={pickerRef}
-                tokens={tokens}
-                crossFee={crossFee}
-                isCrossFeeLoading={isCrossFeeLoading}
-                maxBalanceBN={maxBalanceBN}
-                isMaxBalanceLoading={
-                  isExtrinsicLoading ||
-                  isNetworkFeeLoading ||
-                  isFromExistentialDepositLoading
-                }
-                onChangeAmount={setAmount}
-                onChangeTokenBalance={setSelectedTokenBalance}
-                sourceChainId={sourceChainId}
-                targetChainId={targetChainId}
-                onChangeInvalid={setIsInvalid}
-                isLoading={isLoadingCrossChain}
-                error={
-                  <>
-                    <AnimatedErrorMessage
-                      show={isInsufficientBalance}
-                      message="Insufficient balance."
-                    />
-                  </>
-                }
-              />
-
-              <AddressInput
-                value={recipientAddress}
-                chain={targetChain}
-                onChange={setRecipientAddress}
-                error={
+              onChangeInvalid={setIsInvalid}
+              isLoading={isLoadingCrossChain}
+              error={
+                <>
                   <AnimatedErrorMessage
-                    show={!hasToEnoughBalance && !isToExistentialDepositLoading}
-                    message={`You need at least ${toDepositFormatted} in your recipient account on ${targetChain?.name} to keep the account alive.`}
+                    show={isInsufficientBalance}
+                    message="Insufficient balance."
                   />
-                }
-              />
-              {
-                <FeeBreakdown
-                  showValue={amount !== '' && !!address}
-                  amount={parseUnits({
-                    value: amount,
-                    decimals: selectedToken?.decimals ?? 3
-                  })}
-                  networkFee={networkFee}
-                  crossFee={crossFee}
-                  nativeTokenInfo={sourceChain?.nativeToken}
-                  loading={
-                    isNetworkFeeLoading ||
-                    isCrossFeeLoading ||
-                    isExtrinsicLoading
-                  }
-                  xcmTokenInfo={
-                    selectedToken?.symbol && selectedToken?.decimals
-                      ? {
-                          symbol: selectedToken?.symbol,
-                          decimals: selectedToken?.decimals,
-                          icon: selectedToken?.icon
-                        }
-                      : undefined
-                  }
+                </>
+              }
+            />
+
+            <AddressInput
+              value={recipientAddress}
+              chain={targetChain}
+              onChange={setRecipientAddress}
+              error={
+                <AnimatedErrorMessage
+                  show={!hasToEnoughBalance && !isToExistentialDepositLoading}
+                  message={`You need at least ${toDepositFormatted} in your recipient account on ${targetChain?.name} to keep the account alive.`}
                 />
               }
-              <div className="h-[1px] w-full bg-[#F2F3F5]"></div>
-
-              <ConnectOrActionButton
-                onAction={handleClick}
-                isLoading={
-                  isApiLoading ||
-                  isLoadingCrossChain ||
-                  isToExistentialDepositLoading ||
+            />
+            {
+              <FeeBreakdown
+                showValue={amount !== '' && !!address}
+                amount={parseUnits({
+                  value: amount,
+                  decimals: selectedToken?.decimals ?? 3
+                })}
+                networkFee={networkFee}
+                crossFee={crossFee}
+                nativeTokenInfo={sourceChain?.nativeToken}
+                loading={
                   isNetworkFeeLoading ||
                   isCrossFeeLoading ||
-                  isTransactionLoading ||
                   isExtrinsicLoading
                 }
-                loadingText={buttonLoadingText}
-                isDisabled={
-                  !hasToEnoughBalance ||
-                  amount === '' ||
-                  amount === '0' ||
-                  recipientAddress === '' ||
-                  isInsufficientBalance 
+                xcmTokenInfo={
+                  selectedToken?.symbol && selectedToken?.decimals
+                    ? {
+                      symbol: selectedToken?.symbol,
+                      decimals: selectedToken?.decimals,
+                      icon: selectedToken?.icon
+                    }
+                    : undefined
                 }
-              >
-                Confirm Transaction
-              </ConnectOrActionButton>
-            </div>
+              />
+            }
+            <div className="h-[1px] w-full bg-[#F2F3F5]"></div>
+
+            <ConnectOrActionButton
+              onAction={handleClick}
+              isLoading={
+                isApiLoading ||
+                isLoadingCrossChain ||
+                isToExistentialDepositLoading ||
+                isNetworkFeeLoading ||
+                isCrossFeeLoading ||
+                isTransactionLoading ||
+                isExtrinsicLoading
+              }
+              loadingText={buttonLoadingText}
+              isDisabled={
+                !hasToEnoughBalance ||
+                amount === '' ||
+                amount === '0' ||
+                recipientAddress === '' ||
+                isInsufficientBalance
+              }
+            >
+              Confirm Transaction
+            </ConnectOrActionButton>
           </div>
         </div>
-      )}
+      </div>
       <TransactionManager />
     </>
   );

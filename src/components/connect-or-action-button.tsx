@@ -45,17 +45,17 @@ export function ConnectOrActionButton({
   const handleClick = () => {
     if (isLoading) return;
     if (!isConnected) {
-      if (sourceChain?.isEvmChain && sourceChain?.evmInfo) {
+      if (sourceChain?.isEvm && sourceChain?.evmChainId) {
         if (!sourceChain?.providers) return;
         const rpcUrls = convertToEvmRpcUrls(sourceChain?.providers);
 
         setChain({
-          id: Number(sourceChain?.evmInfo?.evmChainId),
+          id: Number(sourceChain?.evmChainId),
           name: sourceChain?.name ?? '',
           nativeCurrency: {
-            name: sourceChain?.evmInfo?.symbol ?? '',
-            symbol: sourceChain?.evmInfo?.symbol ?? '',
-            decimals: sourceChain?.evmInfo?.decimals ?? 18
+            name: sourceChain?.nativeToken?.symbol ?? '',
+            symbol: sourceChain?.nativeToken?.symbol ?? '',
+            decimals: sourceChain?.nativeToken?.decimals ?? 18
           },
           rpcUrls
         });
