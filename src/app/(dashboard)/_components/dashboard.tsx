@@ -42,9 +42,7 @@ interface DashboardProps {
   registryAssets: ChainRegistry;
 }
 
-export default function Dashboard({
-  registryAssets
-}: DashboardProps) {
+export default function Dashboard({ registryAssets }: DashboardProps) {
   const pickerRef = useRef<{ refreshBalances: () => void }>(null);
 
   const [amount, setAmount] = useState<string>('');
@@ -75,7 +73,6 @@ export default function Dashboard({
       targetChain: state.getToChain()
     }))
   );
-  console.log('chains', chains);
   const { isLoading: isApiLoading } = useApiConnectionsStore(
     useShallow((state) => ({
       isLoading: state.isLoading
@@ -88,12 +85,8 @@ export default function Dashboard({
     registryAssets
   });
 
-
-
   const { setupCrossChainConfig, swapChains, updateToChain } =
     useCrossChainSetup();
-
-
 
   useEffect(() => {
     if (!sourceChain || !targetChainId) return;
@@ -325,17 +318,15 @@ export default function Dashboard({
                 crossFee={crossFee}
                 nativeTokenInfo={sourceChain?.nativeToken}
                 loading={
-                  isNetworkFeeLoading ||
-                  isCrossFeeLoading ||
-                  isExtrinsicLoading
+                  isNetworkFeeLoading || isCrossFeeLoading || isExtrinsicLoading
                 }
                 xcmTokenInfo={
                   selectedToken?.symbol && selectedToken?.decimals
                     ? {
-                      symbol: selectedToken?.symbol,
-                      decimals: selectedToken?.decimals,
-                      icon: selectedToken?.icon
-                    }
+                        symbol: selectedToken?.symbol,
+                        decimals: selectedToken?.decimals,
+                        icon: selectedToken?.icon
+                      }
                     : undefined
                 }
               />

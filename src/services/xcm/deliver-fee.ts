@@ -16,7 +16,7 @@ export function generateDestReserveXcmMessage({
 }: XcmTransferParams) {
   if (!asset.xcmLocation) return null;
   try {
-    const multiLocation = asset.xcmLocation
+    const multiLocation = asset.xcmLocation;
 
     const assetId = {
       id: {
@@ -139,7 +139,10 @@ export async function queryDeliveryFees({
         }
       }
     };
-    let xcmMessage: ReturnType<typeof generateDestReserveXcmMessage> | ReturnType<typeof generateLocalReserveXcmMessage> | null = null;
+    let xcmMessage:
+      | ReturnType<typeof generateDestReserveXcmMessage>
+      | ReturnType<typeof generateLocalReserveXcmMessage>
+      | null = null;
     if (asset.reserveType === 'foreign') {
       xcmMessage = generateDestReserveXcmMessage({
         asset,

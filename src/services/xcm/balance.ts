@@ -30,7 +30,7 @@ export async function getAssetBalance({
     if (signal?.aborted) throw new Error('Request aborted');
     signal?.throwIfAborted();
 
-    if (assetId === 'Native') {
+    if (asset.isNative) {
       const balancesAll = await api.derive.balances.all(account);
       return balancesAll.availableBalance;
     }

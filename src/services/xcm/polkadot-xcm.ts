@@ -1,5 +1,4 @@
 import { parseUnits } from '@/utils/format';
-import { ReserveType, XcAssetData } from '@/types/asset-registry';
 import { Signer, SubmittableExtrinsic } from '@polkadot/api/types';
 import { ApiPromise } from '@polkadot/api';
 import {
@@ -9,7 +8,7 @@ import {
 
 import { generateBeneficiary, normalizeInterior } from '@/utils/xcm/helper';
 import { XcmRequestInteriorParams } from '@/utils/xcm/type';
-import type { ChainConfig, Asset } from '@/types/registry';
+import { type ChainConfig, type Asset, ReserveType } from '@/types/registry';
 
 type XcmTransferParams = {
   token: Asset;
@@ -118,18 +117,18 @@ export const createXcmTransferExtrinsic = async ({
   const extrinsic =
     sourceChainId !== 2006
       ? fromChainApi.tx.polkadotXcm.transferAssets(
-        xcmTransferParams.dest,
-        xcmTransferParams.beneficiary,
-        xcmTransferParams.assets,
-        xcmTransferParams.feeAssetItem,
-        xcmTransferParams.weightLimit
-      )
+          xcmTransferParams.dest,
+          xcmTransferParams.beneficiary,
+          xcmTransferParams.assets,
+          xcmTransferParams.feeAssetItem,
+          xcmTransferParams.weightLimit
+        )
       : fromChainApi.tx.polkadotXcm.reserveTransferAssets(
-        xcmTransferParams.dest,
-        xcmTransferParams.beneficiary,
-        xcmTransferParams.assets,
-        xcmTransferParams.feeAssetItem
-      );
+          xcmTransferParams.dest,
+          xcmTransferParams.beneficiary,
+          xcmTransferParams.assets,
+          xcmTransferParams.feeAssetItem
+        );
   return extrinsic;
 };
 

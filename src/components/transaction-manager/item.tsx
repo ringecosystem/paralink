@@ -33,7 +33,6 @@ function TransactionItem({ tx }: TransactionItemProps) {
       ) {
         return;
       }
-      console.log('processTransaction', tx);
       if (!toastIdRef.current && tx.status === TransactionStatus.PENDING) {
         const toastId = toast.loading(
           <TransactionToastPending txHash={tx.txHash} />,

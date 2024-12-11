@@ -1,6 +1,6 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { getAssetBalance } from '@/lib/chain/balance';
 import { useEffect, useState } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { getAssetBalance } from '@/services/xcm/balance';
 import useApiConnectionsStore from '@/store/api-connections';
 import type { ApiPromise } from '@polkadot/api';
 import type { Asset } from '@/types/registry';

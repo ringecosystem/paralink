@@ -92,13 +92,14 @@ export function useCrossChainSetup(): UseCrossChainSetupReturn {
 
   const swapChains = useCallback(
     async ({ chains, sourceChainId, targetChainId }: SwapChainsParams) => {
+      console.log('11');
       try {
-        const newFromChainId = targetChainId;
-        const newToChainId = sourceChainId;
-        const newDestParachains = getToChains(chains, newFromChainId);
-        setTargetChains(newDestParachains);
-        setSourceChainId(newFromChainId);
-        setTargetChainId(newToChainId);
+        const newSourceChainId = targetChainId;
+        const newTargetChainId = sourceChainId;
+        const newTargetParachains = getToChains(chains, newSourceChainId);
+        setTargetChains(newTargetParachains);
+        setSourceChainId(newSourceChainId);
+        setTargetChainId(newTargetChainId);
       } catch (error) {
         console.error(error);
       }

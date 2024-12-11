@@ -3,8 +3,6 @@ import { ApiPromise, WsProvider } from '@polkadot/api';
 import { create } from 'zustand';
 import useChainsStore from './chains';
 
-
-
 interface ApiConnection {
   api: ApiPromise;
   endpoints: string[];
@@ -36,8 +34,6 @@ const useApiConnectionsStore = create<ApiConnectionsStore>((set, get) => ({
   },
 
   getValidApi: async (paraId: number) => {
-    if (!paraId) throw new Error('must provide paraId');
-
     const { connections, pendingConnections, clearPendingConnection } = get();
 
     if (pendingConnections[paraId]) {
@@ -86,10 +82,9 @@ const useApiConnectionsStore = create<ApiConnectionsStore>((set, get) => ({
     const chains = useChainsStore.getState().chains;
     // 3. create new connection Promise
     const connectionPromise = (async () => {
-      if (!chains?.length) return;
+      // if (!chains?.length) return;
       set({ isLoading: true });
       try {
-
         const endpoints = chains?.find(
           (chain) => chain.id === paraId
         )?.providers;
