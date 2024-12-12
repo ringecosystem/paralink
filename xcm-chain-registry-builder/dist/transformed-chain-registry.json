@@ -2681,46 +2681,6 @@
           "reserveType": "remote",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/moonbeam-local-xcintr.png"
         }
-      ],
-      "undefined": [
-        {
-          "assetId": {
-            "Token2": "8"
-          },
-          "symbol": "MANTA",
-          "decimals": 18,
-          "xcmLocation": {
-            "v1": {
-              "parents": 1,
-              "interior": {
-                "x1": {
-                  "parachain": 2104
-                }
-              }
-            }
-          },
-          "reserveType": "remote",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/manta_network-native-manta.png"
-        },
-        {
-          "assetId": {
-            "Token2": "3"
-          },
-          "symbol": "ASTR",
-          "decimals": 18,
-          "xcmLocation": {
-            "v1": {
-              "parents": 1,
-              "interior": {
-                "x1": {
-                  "parachain": 2006
-                }
-              }
-            }
-          },
-          "reserveType": "remote",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/astar-native-astr.png"
-        }
       ]
     }
   },

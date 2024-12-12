@@ -18,8 +18,8 @@ import {
 } from './service';
 import { filterHrmpConnections } from './utils/hrmp-validation';
 import { getSupportedParaChains } from './utils/get-supported-parachains';
-import { filterWorkingWssProviders } from './utils/provider';
 import { SUPPORTED_XCM_PARA_IDS } from './config';
+import { filterWorkingWssProviders } from './utils/provider';
 
 async function buildChainRegistry({
   supportedParaChains,
@@ -70,25 +70,30 @@ async function buildChainRegistry({
       console.warn(`No valid WebSocket endpoints found for chain ${chain.id}`);
       return null;
     }
-    const bestEndpoint = await filterWorkingWssProviders(validProviders);
-    if (!bestEndpoint.length) {
-      console.warn(`No valid WebSocket endpoints found for chain ${chain.id}`);
-      return null;
-    }
+
+    let provider: WsProvider | null = null;
+    let api: ApiPromise | null = null;
+
     try {
-      const provider = new WsProvider(bestEndpoint, 5_000);
-      const api = await ApiPromise.create({
+      provider = new WsProvider(validProviders, 5_000);
+      api = await ApiPromise.create({
         provider,
         noInitWarn: true,
         throwOnConnect: true
       });
       const hasXcmPayment = typeof api?.call?.xcmPaymentApi !== 'undefined';
-      await api.disconnect();
-
       return hasXcmPayment ? chain : null;
     } catch (error) {
       console.error(`Error validating chain ${chain.id}:`, error);
       return null;
+    } finally {
+      if (api) {
+        try {
+          await api.disconnect();
+        } catch (error) {
+          console.error(`Error disconnecting from chain ${chain.id}:`, error);
+        }
+      }
     }
   };
   const validatedChains = (
@@ -115,21 +120,42 @@ async function transformChainRegistry({ originalJson, assetsInfoArray }) {
       chain.substrateInfo.existentialDeposit;
 
     registry[chainId].assetsType = null;
-    const validProviders = getValidWssEndpoints(chain.providers);
-    if (validProviders.length) {
-      const provider = new WsProvider(validProviders, 5_000);
-      const api = await ApiPromise.create({
-        provider,
-        noInitWarn: true,
-        throwOnConnect: true
-      });
-      if (isFunction(api.query.assets?.account)) {
-        registry[chainId].assetsType = 'assets';
-      } else if (isFunction(api.query.tokens?.accounts)) {
-        registry[chainId].assetsType = 'tokens';
+    let provider: WsProvider | null = null;
+    let api: ApiPromise | null = null;
+
+    try {
+      const validProviders = getValidWssEndpoints(chain.providers);
+      if (validProviders.length) {
+        // filterWorkingWssProviders
+        const bestEndpoint = await filterWorkingWssProviders(validProviders);
+        if (!bestEndpoint.length) {
+          console.warn(`No valid WebSocket endpoints found for chain ${chainId}`);
+          return null;
+        }
+        provider = new WsProvider(bestEndpoint, 5_000);
+        api = await ApiPromise.create({
+          provider,
+          noInitWarn: true,
+          throwOnConnect: true
+        });
+        if (isFunction(api.query.assets?.account)) {
+          registry[chainId].assetsType = 'assets';
+        } else if (isFunction(api.query.tokens?.accounts)) {
+          registry[chainId].assetsType = 'tokens';
+        }
       }
-      await api.disconnect();
+    } catch (error) {
+      console.error(`Error checking assets type for chain ${chainId}:`, error);
+    } finally {
+      if (api) {
+        try {
+          await api.disconnect();
+        } catch (error) {
+          console.error(`Error disconnecting from chain ${chainId}:`, error);
+        }
+      }
     }
+
     registry[chainId].isEvm = chain.isEvm;
     registry[chainId].explorer = chain.isEvm
       ? chain.evmInfo?.blockExplorer
@@ -150,7 +176,7 @@ async function transformChainRegistry({ originalJson, assetsInfoArray }) {
         ?.filter((v) => v.id !== '1000')
         ?.forEach((v) => {
           const targetParaId = v?.id;
-          console.log('targetParaId', targetParaId);
+
           if (!targetParaId) return;
 
           if (
@@ -246,7 +272,7 @@ async function transformChainRegistry({ originalJson, assetsInfoArray }) {
 
       const groupedAssets: { [key: string]: any[] } = {};
 
-      chain.xcAssetsData?.forEach((asset: any) => {
+      chain.xcAssetsData?.filter(asset => typeof asset?.paraID === 'number')?.forEach((asset: any) => {
         const paraId = asset.paraID;
         if (!groupedAssets[paraId]) {
           groupedAssets[paraId] = [];
