@@ -71,22 +71,14 @@ const useApiConnectionsStore = create<ApiConnectionsStore>((set, get) => ({
         }
       }));
       try {
-        const timeoutPromise = new Promise<never>((_, reject) => {
-          setTimeout(() => {
-            reject(new Error('connection timeout'));
-          }, CONNECTION_TIMEOUT);
-        });
-
-        const api = await Promise.race([
-          pendingConnections[paraId],
-          timeoutPromise
-        ]);
+        const api = await pendingConnections[paraId];
 
         return api;
       } catch (error: any) {
         console.error('waiting for connection failed:', error);
-        clearPendingConnection(paraId);
         throw new Error(`connection failed: ${error?.message}`);
+      } finally {
+        clearPendingConnection(paraId);
       }
     }
 
