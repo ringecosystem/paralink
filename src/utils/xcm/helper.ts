@@ -24,21 +24,6 @@ export function normalizeInterior(
   return null;
 }
 
-export function flattenXcmInterior(
-  xcmLocationStr: string
-): NormalizedInterior[] | NormalizedInterior | null {
-  try {
-    const parsed = JSON.parse(xcmLocationStr);
-    const interior = parsed.v1.interior as
-      | NormalizedInterior
-      | NormalizedInterior[]
-      | null;
-    return normalizeInterior(interior);
-  } catch (error) {
-    console.error('Failed to flatten XCM interior:', error);
-    return null;
-  }
-}
 
 export function generateBeneficiary(recipientAddress: string) {
   const accountType = isAddress(recipientAddress)
