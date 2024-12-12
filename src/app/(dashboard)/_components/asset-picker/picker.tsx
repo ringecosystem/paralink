@@ -166,7 +166,8 @@ export function Picker({
               const isSupported = acceptablePaymentTokens.some((tokenInfo) =>
                 isXcmLocationMatch({
                   acceptablePaymentLocation: tokenInfo?.v3?.concrete,
-                  asset
+                  asset,
+                  targetChainId
                 })
               );
               return isSupported;

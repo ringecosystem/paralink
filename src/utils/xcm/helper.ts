@@ -47,10 +47,12 @@ export function generateBeneficiary(recipientAddress: string) {
 
 export function isXcmLocationMatch({
   acceptablePaymentLocation,
-  asset
+  asset,
+  targetChainId
 }: {
   acceptablePaymentLocation: any | null | undefined;
   asset: Asset;
+  targetChainId: number;
 }): boolean {
   const xcmLocation = asset?.xcmLocation?.v1;
 
@@ -62,10 +64,17 @@ export function isXcmLocationMatch({
     return false;
   }
 
+  const acceptablePaymentLocationIsNative = (Number(acceptablePaymentLocation?.parents) === 0 &&
+    typeof acceptablePaymentLocation?.interior?.here !== 'undefined') || (
+      Number(acceptablePaymentLocation?.parents) === 0 &&
+      acceptablePaymentLocation?.interior?.x1?.palletInstance
+    )
+
+  const assetIsNative = asset?.reserveType === ReserveType.Foreign && (asset?.xcmLocation?.v1?.interior?.x1?.parachain === targetChainId || asset?.xcmLocation?.v1?.interior?.x2?.some((item) => 'parachain' in item && item.parachain === targetChainId));
+
   if (
-    Number(acceptablePaymentLocation?.parents) === 0 &&
-    typeof acceptablePaymentLocation?.interior?.here !== 'undefined' &&
-    asset?.reserveType === ReserveType.Foreign
+    acceptablePaymentLocationIsNative &&
+    assetIsNative
   ) {
     console.log('native token', { acceptablePaymentLocation, xcmLocation });
     return true;
