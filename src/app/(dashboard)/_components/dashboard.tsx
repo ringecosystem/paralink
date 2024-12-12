@@ -44,7 +44,7 @@ interface DashboardProps {
 
 export default function Dashboard({ registryAssets }: DashboardProps) {
   const pickerRef = useRef<{ refreshBalances: () => void }>(null);
-
+  const apiLoadingTimerRef = useRef<NodeJS.Timeout | null>(null);
   const [amount, setAmount] = useState<string>('');
   const [tokens, setTokens] = useState<Asset[]>([]);
   const [selectedTokenBalance, setSelectedTokenBalance] = useState<BN>(BN_ZERO);
@@ -73,11 +73,15 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
       targetChain: state.getToChain()
     }))
   );
-  const { isLoading: isApiLoading } = useApiConnectionsStore(
+
+  const { sourceLoading, targetLoading } = useApiConnectionsStore(
     useShallow((state) => ({
-      isLoading: state.isLoading
+      sourceLoading: state.loadingStates?.[sourceChainId ?? ''],
+      targetLoading: state.loadingStates?.[targetChainId ?? ''],
     }))
   );
+
+  const isApiLoading = sourceLoading || targetLoading;
 
   const selectedToken = useTokensStore((state) => state.selectedToken);
 
@@ -227,6 +231,35 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
     setRecipientAddress('');
   }, [targetChainId]);
 
+
+  useEffect(() => {
+    const LOADING_TIMEOUT = 60_000;
+
+    if (isApiLoading) {
+      apiLoadingTimerRef.current = setTimeout(() => {
+        toast.error(
+          'Connection is taking longer than expected. This might be due to network issues or slow node response. Please try refreshing the page or try again later.',
+          {
+            duration: 10_000,
+            position: 'bottom-right',
+          }
+        );
+      }, LOADING_TIMEOUT);
+    } else {
+      if (apiLoadingTimerRef.current) {
+        clearTimeout(apiLoadingTimerRef.current);
+        apiLoadingTimerRef.current = null;
+      }
+    }
+
+    return () => {
+      if (apiLoadingTimerRef.current) {
+        clearTimeout(apiLoadingTimerRef.current);
+        apiLoadingTimerRef.current = null;
+      }
+    };
+  }, [isApiLoading]);
+
   return (
     <>
       <div className="container absolute left-0 right-0 top-[calc(var(--header-height)+10px)]">
@@ -323,10 +356,10 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
                 xcmTokenInfo={
                   selectedToken?.symbol && selectedToken?.decimals
                     ? {
-                        symbol: selectedToken?.symbol,
-                        decimals: selectedToken?.decimals,
-                        icon: selectedToken?.icon
-                      }
+                      symbol: selectedToken?.symbol,
+                      decimals: selectedToken?.decimals,
+                      icon: selectedToken?.icon
+                    }
                     : undefined
                 }
               />
