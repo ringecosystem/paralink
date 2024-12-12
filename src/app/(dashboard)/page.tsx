@@ -1,12 +1,13 @@
 export const dynamic = 'force-dynamic';
-import transformedChainRegistry from '../../../xcm-chain-registry-builder/dist/transformed-chain-registry.json';
+import { fetchRegistry } from '@/utils/fetch-register';
 import Dashboard from './_components/dashboard';
 
 import type { ChainRegistry } from '@/types/registry';
 
 export default async function Page() {
 
-  const registryAssets = transformedChainRegistry;
+  const registryAssets = await fetchRegistry();
+
 
 
   return (
