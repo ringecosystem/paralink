@@ -1,7 +1,9 @@
 import { BN_ZERO } from '@polkadot/util';
 import { ApiPromise, WsProvider } from '@polkadot/api';
 import { create } from 'zustand';
+import { toast } from 'react-hot-toast';
 import useChainsStore from './chains';
+import { Button } from '@/components/ui/button';
 
 async function connectToChain(endpoints: string[]) {
   for (const endpoint of endpoints) {
@@ -22,6 +24,16 @@ async function connectToChain(endpoints: string[]) {
     }
   }
 
+  toast.error((t) => (
+    <div className="flex items-center gap-2">
+      <p>Connection failed. Please check your network and try again.</p>
+      <div>
+        <Button onClick={() => {
+          window.location.reload();
+        }} size="sm">Refresh</Button>
+      </div>
+    </div>
+  ));
   throw new Error('All connection attempts failed');
 }
 
@@ -41,7 +53,7 @@ interface ApiConnectionsStore {
   clearPendingConnection: (paraId: number) => void;
 }
 
-const CONNECTION_TIMEOUT = 15000;
+
 
 const useApiConnectionsStore = create<ApiConnectionsStore>((set, get) => ({
   connections: {},

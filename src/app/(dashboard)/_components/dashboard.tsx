@@ -28,7 +28,7 @@ import { useCrossFee } from '../_hooks/use-cross-fee';
 import { parseUnits } from '@/utils/format';
 import { useTransactionExecution } from '@/hooks/use-transaction-execution';
 import toast from 'react-hot-toast';
-
+import { toast as toastify } from 'react-toastify';
 import useApiConnectionsStore from '@/store/api-connections';
 import { cn } from '@/lib/utils';
 import { AssetPicker } from './asset-picker';
@@ -233,15 +233,15 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
 
 
   useEffect(() => {
-    const LOADING_TIMEOUT = 60_000;
+    const LOADING_TIMEOUT = 10_000;
 
     if (isApiLoading) {
       apiLoadingTimerRef.current = setTimeout(() => {
         toast.error(
           'Connection is taking longer than expected. This might be due to network issues or slow node response. Please try refreshing the page or try again later.',
           {
-            duration: 10_000,
             position: 'bottom-right',
+            duration: 10_000,
           }
         );
       }, LOADING_TIMEOUT);
