@@ -44,20 +44,20 @@ export function isValidAddress({
   }
 }
 
-export const convertToEvmRpcUrls = (providers: Record<string, string>) => {
-  const httpUrls: Record<string, string> = {};
+export const convertToEvmRpcUrls = (providers: string[]) => {
+  const httpUrls: string[] = [];
 
-  Object.entries(providers).forEach(([name, url]) => {
+  providers.forEach((url) => {
     if (url.startsWith('wss://')) {
-      httpUrls[name] = url.replace('wss://', 'https://');
+      httpUrls.push(url.replace('wss://', 'https://'));
     } else {
-      httpUrls[name] = url;
+      httpUrls.push(url);
     }
   });
 
   return {
     default: {
-      http: Object.values(httpUrls)
+      http: httpUrls
     }
   };
 };

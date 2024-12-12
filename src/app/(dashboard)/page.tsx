@@ -1,28 +1,18 @@
 export const dynamic = 'force-dynamic';
-
-import {
-  fetchPolkadotAssetRegistry,
-  fetchAssetsInfo,
-  fetchChainsInfo
-} from '@/services/fetch-chain-resources';
+import { fetchRegistry } from '@/utils/fetch-register';
 import Dashboard from './_components/dashboard';
 
-export default async function Page() {
-  const [polkadotAsset, chainAssets, assetsInfo] = await Promise.all([
-    fetchPolkadotAssetRegistry(),
-    fetchChainsInfo(),
-    fetchAssetsInfo()
-  ]);
+import type { ChainRegistry } from '@/types/registry';
 
-  console.log('polkadotAsset', polkadotAsset);
-  console.log('chainAssets', chainAssets);
-  console.log('assetsInfo', assetsInfo);
+export default async function Page() {
+
+  const registryAssets = await fetchRegistry();
+
+
 
   return (
     <Dashboard
-      polkadotAssetRegistry={polkadotAsset}
-      chainsInfo={chainAssets}
-      assetsInfo={assetsInfo}
+      registryAssets={registryAssets as unknown as ChainRegistry}
     />
   );
 }

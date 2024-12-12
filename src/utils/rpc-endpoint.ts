@@ -1,26 +1,31 @@
-export function findBestWssEndpoint(
-  endpoints: Record<string, string>
-): string | undefined {
-  // 过滤出所有 wss 端点
-  const wssEndpoints = Object.entries(endpoints).filter(([, url]) =>
-    url.startsWith('wss://')
+export async function filterWorkingWssProviders(providers: string[]): Promise<string[]> {
+  const checkProvider = async (provider: string): Promise<boolean> => {
+    return new Promise((resolve) => {
+      const ws = new WebSocket(provider);
+
+      const timeout = setTimeout(() => {
+        ws.close();
+        resolve(false);
+      }, 3000);
+
+      ws.onopen = () => {
+        clearTimeout(timeout);
+        ws.close();
+        resolve(true);
+      };
+
+      ws.onerror = () => {
+        clearTimeout(timeout);
+        ws.close();
+        resolve(false);
+      };
+    });
+  };
+
+  const results = await Promise.all(
+    providers.map(provider => checkProvider(provider))
   );
 
-  // 如果没有 wss 端点，返回 undefined
-  if (!wssEndpoints.length) return undefined;
-
-  // 优先查找 onfinality
-  const onfinality = wssEndpoints.find(([name]) =>
-    name.toLowerCase().includes('onfinality')
-  );
-  if (onfinality) return onfinality[1];
-
-  // 其次查找 dwellir
-  const dwellir = wssEndpoints.find(([name]) =>
-    name.toLowerCase().includes('dwellir')
-  );
-  if (dwellir) return dwellir[1];
-
-  // 最后返回第一个 wss 端点
-  return wssEndpoints[0][1];
+  return providers.filter((_, index) => results[index]);
 }
+
