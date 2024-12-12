@@ -26,11 +26,11 @@ export function hasParachainInLocation({
       interior.x1 || interior.x2 || interior.x3 || interior.x4 || [];
     return Array.isArray(locationArray)
       ? locationArray.some(
-          (v: { [key: string]: string | number }) =>
-            'parachain' in v && v.parachain?.toString() === paraId
-        )
+        (v: { [key: string]: string | number }) =>
+          'parachain' in v && v.parachain?.toString() === paraId
+      )
       : 'parachain' in locationArray &&
-          locationArray.parachain?.toString() === paraId;
+      locationArray.parachain?.toString() === paraId;
   } catch (error) {
     console.error('Error parsing multiLocation:', error);
     return false;
@@ -45,8 +45,8 @@ export function getGeneralIndex(multiLocationStr: string): string | null {
 
     const generalIndexObj = Array.isArray(locationArray)
       ? locationArray.find(
-          (v: { [key: string]: string | number }) => 'generalIndex' in v
-        )
+        (v: { [key: string]: string | number }) => 'generalIndex' in v
+      )
       : 'generalIndex' in locationArray
         ? locationArray
         : null;
@@ -58,72 +58,60 @@ export function getGeneralIndex(multiLocationStr: string): string | null {
   }
 }
 
-interface ParsedReserveLocation {
-  parents: string;
-  parachain?: number;
-}
-
-function parseReserveLocation(
-  originChainReserveLocation?: string
-): ParsedReserveLocation | null {
-  if (!originChainReserveLocation) return null;
-
-  try {
-    const location = JSON.parse(originChainReserveLocation);
-
-    const parents =
-      location.parents?.toString() || location.Parents?.toString();
-    if (!parents) return null;
-
-    if (
-      location.interior?.Here !== undefined ||
-      location.Interior?.Here !== undefined
-    )
-      return { parents };
-
-    const interior = location.interior || location.Interior;
-    const x1 = interior?.X1 || interior?.x1;
-    const parachain = x1?.Parachain || x1?.parachain;
-
-    if (parachain)
-      return {
-        parents,
-        parachain: Number(parachain)
-      };
-
-    return null;
-  } catch (error) {
-    console.error('Error parsing reserve location:', error);
-    return null;
-  }
-}
 
 export function determineReserveType({
   sourceParaId,
   targetParaId,
   originChainReserveLocation
 }: {
-  sourceParaId: number;
-  targetParaId: number;
+  sourceParaId: number | string;
+  targetParaId: number | string;
   originChainReserveLocation?: string;
 }): ReserveType {
-  if (targetParaId === 1000 && !originChainReserveLocation)
+  if (Number(targetParaId) === 1000) {
     return ReserveType.Foreign;
+  }
   if (originChainReserveLocation) {
-    const reserveLocation = parseReserveLocation(originChainReserveLocation);
-    if (!reserveLocation) {
-      console.log('No reserve location found', sourceParaId, targetParaId);
-      return ReserveType.Remote;
-    }
-    if (reserveLocation.parents === '0') return ReserveType.Local;
-    if (reserveLocation.parents === '1') {
-      if (!reserveLocation.parachain) {
-        console.log('No parachain found', sourceParaId, targetParaId);
+    try {
+      const reserveLocation = JSON.parse(originChainReserveLocation);
+      if (reserveLocation.parents === '0') return ReserveType.Local;
+      if (reserveLocation.parents === '1') {
+        if ('X1' in reserveLocation.interior) {
+          if (Number(reserveLocation.interior.X1.Parachain) === Number(targetParaId)) {
+            return ReserveType.Foreign;
+          }
+          return ReserveType.Remote;
+        }
+        if ('X2' in reserveLocation.interior && Array.isArray(reserveLocation.interior.X2)) {
+          if ((reserveLocation.interior.X2)?.some(v => {
+            return 'Parachain' in v && Number(v.Parachain) === Number(targetParaId)
+          })) {
+            return ReserveType.Foreign;
+          }
+          return ReserveType.Remote;
+        }
+        if ('X3' in reserveLocation.interior && Array.isArray(reserveLocation.interior.X3)) {
+          if ((reserveLocation.interior.X3)?.some(v => {
+            return 'Parachain' in v && Number(v.Parachain) === Number(targetParaId)
+          })) {
+            return ReserveType.Foreign;
+          }
+          return ReserveType.Remote;
+        }
+        if ('X4' in reserveLocation.interior && Array.isArray(reserveLocation.interior.X4)) {
+          if ((reserveLocation.interior.X4)?.some(v => {
+            return 'Parachain' in v && Number(v.Parachain) === Number(targetParaId)
+          })) {
+            return ReserveType.Foreign;
+          }
+          return ReserveType.Remote;
+        }
         return ReserveType.Remote;
       }
-      if (Number(reserveLocation.parachain) === targetParaId)
-        return ReserveType.Foreign;
+    } catch (error) {
+      return ReserveType.Remote;
     }
+
   }
 
   console.log('No reserve location found', sourceParaId, targetParaId);

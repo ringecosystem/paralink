@@ -75,7 +75,7 @@ async function buildChainRegistry({
     let api: ApiPromise | null = null;
 
     try {
-      provider = new WsProvider(validProviders, 5_000);
+      provider = new WsProvider(validProviders, 2_000, {}, 10_000);
       api = await ApiPromise.create({
         provider,
         noInitWarn: true,
@@ -126,13 +126,7 @@ async function transformChainRegistry({ originalJson, assetsInfoArray }) {
     try {
       const validProviders = getValidWssEndpoints(chain.providers);
       if (validProviders.length) {
-        // filterWorkingWssProviders
-        const bestEndpoint = await filterWorkingWssProviders(validProviders);
-        if (!bestEndpoint.length) {
-          console.warn(`No valid WebSocket endpoints found for chain ${chainId}`);
-          return null;
-        }
-        provider = new WsProvider(bestEndpoint, 5_000);
+        provider = new WsProvider(validProviders, 2_000, {}, 10_000);
         api = await ApiPromise.create({
           provider,
           noInitWarn: true,
@@ -235,7 +229,6 @@ async function transformChainRegistry({ originalJson, assetsInfoArray }) {
           }
         });
     } else {
-      // registeredChains 的获取
       originalJson
         ?.filter((v) => v.id !== chainId)
         ?.forEach((v) => {
@@ -278,7 +271,6 @@ async function transformChainRegistry({ originalJson, assetsInfoArray }) {
           groupedAssets[paraId] = [];
         }
 
-        // 解析 xcmV1MultiLocation
         const xcmLocation = JSON.parse(asset.xcmV1MultiLocation);
 
         groupedAssets[paraId].push({
@@ -287,8 +279,8 @@ async function transformChainRegistry({ originalJson, assetsInfoArray }) {
           decimals: asset.decimals,
           xcmLocation: xcmLocation,
           reserveType: determineReserveType({
-            sourceParaId: paraId,
-            targetParaId: chainId,
+            sourceParaId: chainId,
+            targetParaId: paraId,
             originChainReserveLocation: asset.originChainReserveLocation
           }),
           icon: findIconBySymbol(asset.symbol, assetsInfoArray)
@@ -333,7 +325,6 @@ async function init() {
     assetsInfoArray
   });
 
-  // 将转换后的 JSON 数据写入新的 JSON 文件
   fs.writeJson(
     path.join(__dirname, './dist/transformed-chain-registry.json'),
     transformedJson,

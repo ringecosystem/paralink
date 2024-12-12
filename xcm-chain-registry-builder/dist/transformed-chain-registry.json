@@ -683,7 +683,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/hydradx_main-local-wifd.png"
         },
         {
@@ -708,7 +708,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-ded.png"
         },
         {
@@ -733,7 +733,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/calamari-local-usdc.png"
         },
         {
@@ -758,7 +758,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-nctr.png"
         },
         {
@@ -783,7 +783,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/acala-local-usdt.png"
         },
         {
@@ -808,7 +808,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-pink.png"
         },
         {
@@ -833,7 +833,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-stink.png"
         }
       ],
@@ -857,7 +857,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/acala-local-ldot.png"
         },
         {
@@ -879,7 +879,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "/images/default-token.svg"
         },
         {
@@ -901,7 +901,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/acala-native-aca.png"
         }
       ],
@@ -920,7 +920,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/astar-native-astr.png"
         }
       ],
@@ -944,7 +944,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/nodle-native-nodl.png"
         }
       ],
@@ -968,7 +968,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vfil.png"
         },
         {
@@ -990,7 +990,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vdot.png"
         },
         {
@@ -1012,7 +1012,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-bncs.png"
         },
         {
@@ -1034,7 +1034,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vglmr.png"
         },
         {
@@ -1056,7 +1056,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vmanta.png"
         },
         {
@@ -1078,7 +1078,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost-native-bnc.png"
         },
         {
@@ -1100,7 +1100,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vfil.png"
         },
         {
@@ -1122,7 +1122,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vastr.png"
         }
       ],
@@ -1146,7 +1146,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/centrifuge-native-cfg.png"
         }
       ],
@@ -1170,7 +1170,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/moonbeam-local-xcibtc.png"
         },
         {
@@ -1192,7 +1192,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/moonbeam-local-xcintr.png"
         }
       ],
@@ -1216,7 +1216,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/hydradx_main-native-hdx.png"
         }
       ],
@@ -1235,7 +1235,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/phala-native-pha.png"
         }
       ],
@@ -1254,7 +1254,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/unique_network-native-unq.png"
         }
       ],
@@ -1278,7 +1278,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/origintrail-native-neuro.png"
         }
       ],
@@ -1302,7 +1302,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/darwinia2-native-ring.png"
         }
       ],
@@ -1326,7 +1326,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/zeitgeist-native-ztg.png"
         }
       ],
@@ -1350,7 +1350,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/pendulum-native-pen.png"
         }
       ],
@@ -1369,7 +1369,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/subsocial_x-native-sub.png"
         }
       ],
@@ -1388,7 +1388,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/manta_network-native-manta.png"
         }
       ],
@@ -1407,7 +1407,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/peaq-native-peaq.png"
         }
       ]
@@ -1425,7 +1425,7 @@
     ],
     "alive": true,
     "existentialDeposit": "1000000",
-    "assetsType": "assets",
+    "assetsType": null,
     "isEvm": false,
     "explorer": "https://astar.subscan.io/",
     "nativeToken": {
@@ -1532,7 +1532,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/calamari-local-usdc.png"
         },
         {
@@ -1557,7 +1557,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/acala-local-usdt.png"
         },
         {
@@ -1582,7 +1582,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-pink.png"
         }
       ],
@@ -1606,7 +1606,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/acala-local-ldot.png"
         },
         {
@@ -1628,7 +1628,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/acala-native-aca.png"
         },
         {
@@ -1650,7 +1650,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/acala-local-aseed.png"
         }
       ],
@@ -1674,7 +1674,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/moonbeam-native-glmr.png"
         }
       ],
@@ -1698,7 +1698,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vfil.png"
         },
         {
@@ -1720,7 +1720,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vsdot.png"
         },
         {
@@ -1742,7 +1742,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vmanta.png"
         },
         {
@@ -1764,7 +1764,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vdot.png"
         },
         {
@@ -1786,7 +1786,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vfil.png"
         },
         {
@@ -1808,7 +1808,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vastr.png"
         },
         {
@@ -1830,7 +1830,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost-native-bnc.png"
         },
         {
@@ -1852,7 +1852,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vglmr.png"
         }
       ],
@@ -1876,7 +1876,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/moonbeam-local-xcibtc.png"
         },
         {
@@ -1898,7 +1898,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/moonbeam-local-xcintr.png"
         }
       ],
@@ -1922,7 +1922,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/hydradx_main-native-hdx.png"
         }
       ],
@@ -1941,7 +1941,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/phala-native-pha.png"
         }
       ],
@@ -1960,7 +1960,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/unique_network-native-unq.png"
         }
       ],
@@ -1984,7 +1984,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/darwinia2-native-ring.png"
         }
       ],
@@ -2017,7 +2017,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/pendulum-local-eurc.s.png"
         },
         {
@@ -2039,7 +2039,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "/images/default-token.svg"
         },
         {
@@ -2064,7 +2064,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/pendulum-local-xlm.s.png"
         }
       ]
@@ -2237,7 +2237,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/acala-local-usdt.png"
         },
         {
@@ -2264,7 +2264,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/calamari-local-usdc.png"
         },
         {
@@ -2291,7 +2291,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-ded.png"
         },
         {
@@ -2318,7 +2318,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-pink.png"
         }
       ],
@@ -2344,7 +2344,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/moonbeam-native-glmr.png"
         }
       ],
@@ -2654,7 +2654,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/moonbeam-local-xcibtc.png"
         },
         {
@@ -2678,7 +2678,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/moonbeam-local-xcintr.png"
         }
       ]
@@ -2938,7 +2938,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/acala-local-usdt.png"
         },
         {
@@ -2963,7 +2963,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-wud.png"
         },
         {
@@ -2988,7 +2988,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/calamari-local-usdc.png"
         }
       ],
@@ -3012,7 +3012,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/ethereum-erc20-weth-0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png"
         },
         {
@@ -3034,7 +3034,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/acala-native-aca.png"
         },
         {
@@ -3056,7 +3056,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/ethereum-erc20-ape-0x4d224452801aced8b2f0aebe155379bb5d594381.png"
         },
         {
@@ -3078,7 +3078,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/calamari-local-dai.png"
         },
         {
@@ -3100,7 +3100,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/calamari-local-usdc.png"
         },
         {
@@ -3122,7 +3122,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/acala-local-ldot.png"
         },
         {
@@ -3144,7 +3144,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/calamari-local-wbtc.png"
         }
       ],
@@ -3174,7 +3174,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/calamari-local-usdc.png"
         },
         {
@@ -3202,7 +3202,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/ethereum-erc20-weth-0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png"
         },
         {
@@ -3224,7 +3224,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/moonbeam-native-glmr.png"
         },
         {
@@ -3252,7 +3252,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/calamari-local-wbtc.png"
         },
         {
@@ -3280,7 +3280,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/calamari-local-dai.png"
         },
         {
@@ -3308,7 +3308,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/acala-local-usdt.png"
         }
       ],
@@ -3327,7 +3327,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/astar-native-astr.png"
         }
       ],
@@ -3346,7 +3346,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/crust-native-cru.png"
         }
       ],
@@ -3370,7 +3370,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/nodle-native-nodl.png"
         }
       ],
@@ -3394,7 +3394,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost-native-bnc.png"
         },
         {
@@ -3416,7 +3416,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vastr.png"
         },
         {
@@ -3438,7 +3438,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vdot.png"
         }
       ],
@@ -3462,7 +3462,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/centrifuge-native-cfg.png"
         }
       ],
@@ -3486,7 +3486,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/moonbeam-local-xcibtc.png"
         },
         {
@@ -3508,7 +3508,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/moonbeam-local-xcintr.png"
         }
       ],
@@ -3527,7 +3527,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/phala-native-pha.png"
         }
       ],
@@ -3546,7 +3546,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/unique_network-native-unq.png"
         }
       ],
@@ -3570,7 +3570,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/darwinia2-native-ring.png"
         }
       ],
@@ -3594,7 +3594,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/ajunapolkadot-native-ajun.png"
         }
       ],
@@ -3613,7 +3613,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/kilt-native-kilt.png"
         }
       ],
@@ -3637,7 +3637,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/zeitgeist-native-ztg.png"
         }
       ],
@@ -3661,7 +3661,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/pendulum-native-pen.png"
         }
       ],
@@ -3680,7 +3680,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/subsocial_x-native-sub.png"
         }
       ],
@@ -3699,7 +3699,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/polimec-native-plmc.png"
         }
       ],
@@ -3718,7 +3718,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/mythos-native-myth.png"
         }
       ]
