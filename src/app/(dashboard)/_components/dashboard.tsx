@@ -28,7 +28,6 @@ import { useCrossFee } from '../_hooks/use-cross-fee';
 import { parseUnits } from '@/utils/format';
 import { useTransactionExecution } from '@/hooks/use-transaction-execution';
 import toast from 'react-hot-toast';
-import { toast as toastify } from 'react-toastify';
 import useApiConnectionsStore from '@/store/api-connections';
 import { cn } from '@/lib/utils';
 import { AssetPicker } from './asset-picker';
@@ -215,7 +214,10 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
       await executeTransaction({ extrinsic, address });
       pickerRef.current?.refreshBalances();
     } catch (error) {
-      toast.error((error as unknown as string) ?? 'Transaction failed');
+      toast.error((error as unknown as string) ?? 'Transaction failed', {
+        position: 'top-center',
+        className: 'font-sans text-[14px]'
+      });
     } finally {
       setIsTransactionLoading(false);
     }
@@ -233,19 +235,24 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
 
 
   useEffect(() => {
-    const LOADING_TIMEOUT = 10_000;
+    const LOADING_TIMEOUT = 60_000;
+    let toastId: string | undefined;
 
     if (isApiLoading) {
       apiLoadingTimerRef.current = setTimeout(() => {
-        toast.error(
+        toastId = toast.error(
           'Connection is taking longer than expected. This might be due to network issues or slow node response. Please try refreshing the page or try again later.',
           {
             position: 'bottom-right',
             duration: 10_000,
+            className: 'font-sans text-[14px]'
           }
         );
       }, LOADING_TIMEOUT);
     } else {
+      if (toastId) {
+        toast.dismiss(toastId);
+      }
       if (apiLoadingTimerRef.current) {
         clearTimeout(apiLoadingTimerRef.current);
         apiLoadingTimerRef.current = null;
@@ -256,6 +263,9 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
       if (apiLoadingTimerRef.current) {
         clearTimeout(apiLoadingTimerRef.current);
         apiLoadingTimerRef.current = null;
+      }
+      if (toastId) {
+        toast.dismiss(toastId);
       }
     };
   }, [isApiLoading]);

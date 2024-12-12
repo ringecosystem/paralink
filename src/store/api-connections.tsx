@@ -33,7 +33,11 @@ async function connectToChain(endpoints: string[]) {
         }} size="sm">Refresh</Button>
       </div>
     </div>
-  ));
+  ), {
+    position: 'bottom-right',
+    duration: 10_000,
+    className: 'font-sans text-[14px]'
+  });
   throw new Error('All connection attempts failed');
 }
 
