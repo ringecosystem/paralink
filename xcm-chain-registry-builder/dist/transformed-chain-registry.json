@@ -525,28 +525,22 @@
           }
         },
         "2034": {
-          "assetId": "23",
-          "symbol": "USDT",
-          "decimals": 6,
+          "assetId": "16",
+          "symbol": "GLMR",
+          "decimals": 18,
           "isNative": true,
           "reserveType": "local",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/acala-local-usdt.png",
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/moonbeam-native-glmr.png",
           "xcmLocation": {
             "v1": {
               "parents": 1,
               "interior": {
-                "x3": [
+                "x2": [
                   {
                     "parachain": 2004
                   },
                   {
-                    "palletInstance": 110
-                  },
-                  {
-                    "accountKey20": {
-                      "network": null,
-                      "key": "0xc30e9ca94cf52f3bf5692aacf81353a27052c46f"
-                    }
+                    "palletInstance": 10
                   }
                 ]
               }
@@ -2091,12 +2085,12 @@
       "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost-native-bnc.png",
       "registeredChains": {
         "2004": {
-          "assetId": "114018676402354620972806895487280206446",
-          "symbol": "vASTR",
-          "decimals": 18,
+          "assetId": "165823357460190568952172802245839421906",
+          "symbol": "BNC",
+          "decimals": 12,
           "isNative": true,
           "reserveType": "local",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vastr.png",
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost-native-bnc.png",
           "xcmLocation": {
             "v1": {
               "parents": 1,
@@ -2106,7 +2100,7 @@
                     "parachain": 2030
                   },
                   {
-                    "generalKey": "0x0903"
+                    "generalKey": "0x0001"
                   }
                 ]
               }
@@ -2114,12 +2108,12 @@
           }
         },
         "2006": {
-          "assetId": "18446744073709551637",
-          "symbol": "vGLMR",
-          "decimals": 18,
+          "assetId": "18446744073709551623",
+          "symbol": "BNC",
+          "decimals": 12,
           "isNative": true,
           "reserveType": "local",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vglmr.png",
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost-native-bnc.png",
           "xcmLocation": {
             "v1": {
               "parents": 1,
@@ -2129,7 +2123,7 @@
                     "parachain": 2030
                   },
                   {
-                    "generalKey": "0x0901"
+                    "generalKey": "0x0001"
                   }
                 ]
               }
@@ -2137,12 +2131,12 @@
           }
         },
         "2034": {
-          "assetId": "15",
-          "symbol": "vDOT",
-          "decimals": 10,
+          "assetId": "14",
+          "symbol": "BNC",
+          "decimals": 12,
           "isNative": true,
           "reserveType": "local",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vdot.png",
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost-native-bnc.png",
           "xcmLocation": {
             "v1": {
               "parents": 1,
@@ -2152,7 +2146,7 @@
                     "parachain": 2030
                   },
                   {
-                    "generalKey": "0x0900"
+                    "generalKey": "0x0001"
                   }
                 ]
               }

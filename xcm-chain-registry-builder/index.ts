@@ -232,11 +232,12 @@ async function transformChainRegistry({ originalJson, assetsInfoArray }) {
       originalJson
         ?.filter((v) => v.id !== chainId)
         ?.forEach((v) => {
+
           const destAssetsInfo = v.xcAssetsData?.filter((asset) => {
             const hasParachain = hasParachainInLocation({
               multiLocationStr: asset.xcmV1MultiLocation,
               paraId: chainId
-            });
+            }) && chain?.nativeToken?.symbol?.toLowerCase() === asset?.symbol?.toLowerCase()
             return hasParachain;
           });
 
