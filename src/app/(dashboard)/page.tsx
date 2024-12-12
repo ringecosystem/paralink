@@ -1,5 +1,5 @@
 export const dynamic = 'force-dynamic';
-import transformedChainRegistry from '@/assets/transformed-chain-registry.json';
+import transformedChainRegistry from '../../../xcm-chain-registry-builder/dist/transformed-chain-registry.json';
 import Dashboard from './_components/dashboard';
 
 import type { ChainRegistry } from '@/types/registry';
