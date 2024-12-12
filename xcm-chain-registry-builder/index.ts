@@ -333,9 +333,11 @@ async function init() {
   )
     .then(() => {
       console.log('Transformed chain registry file created successfully!');
+      process.exit(0);
     })
     .catch((err) => {
       console.error('Failed to write transformed chain registry file:', err);
+      process.exit(1);
     });
 }
 
