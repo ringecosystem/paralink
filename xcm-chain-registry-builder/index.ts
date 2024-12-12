@@ -18,6 +18,7 @@ import {
 } from './service';
 import { filterHrmpConnections } from './utils/hrmp-validation';
 import { getSupportedParaChains } from './utils/get-supported-parachains';
+import { filterWorkingWssProviders } from './utils/provider';
 import { SUPPORTED_XCM_PARA_IDS } from './config';
 
 async function buildChainRegistry({
@@ -69,8 +70,13 @@ async function buildChainRegistry({
       console.warn(`No valid WebSocket endpoints found for chain ${chain.id}`);
       return null;
     }
+    const bestEndpoint = await filterWorkingWssProviders(validProviders);
+    if (!bestEndpoint.length) {
+      console.warn(`No valid WebSocket endpoints found for chain ${chain.id}`);
+      return null;
+    }
     try {
-      const provider = new WsProvider(validProviders, 5_000);
+      const provider = new WsProvider(bestEndpoint, 5_000);
       const api = await ApiPromise.create({
         provider,
         noInitWarn: true,

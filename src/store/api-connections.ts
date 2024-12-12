@@ -1,6 +1,7 @@
 import { BN_ZERO } from '@polkadot/util';
 import { ApiPromise, WsProvider } from '@polkadot/api';
 import { create } from 'zustand';
+import { filterWorkingWssProviders } from '@/utils/rpc-endpoint';
 import useChainsStore from './chains';
 
 interface ApiConnection {
@@ -90,9 +91,12 @@ const useApiConnectionsStore = create<ApiConnectionsStore>((set, get) => ({
         )?.providers;
         if (!endpoints || !endpoints.length)
           throw new Error('must provide at least one node');
-
+        const bestEndpoint = await filterWorkingWssProviders(endpoints);
+        if (!bestEndpoint.length) {
+          throw new Error('No valid WebSocket endpoints found');
+        }
         const api = await ApiPromise.create({
-          provider: new WsProvider(endpoints, 6000),
+          provider: new WsProvider(bestEndpoint, 6000),
           throwOnConnect: true
         });
 
