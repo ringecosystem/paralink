@@ -19,7 +19,6 @@ import {
 import { filterHrmpConnections } from './utils/hrmp-validation';
 import { getSupportedParaChains } from './utils/get-supported-parachains';
 import { SUPPORTED_XCM_PARA_IDS } from './config';
-import { filterWorkingWssProviders } from './utils/provider';
 
 async function buildChainRegistry({
   supportedParaChains,
@@ -49,7 +48,7 @@ async function buildChainRegistry({
         ...chainAsset,
         id: chain?.id?.toString(),
         assetsInfo: chain?.assetsInfo,
-        xcAssetsData: chain?.xcAssetsData,
+        xcAssetsData: chain?.xcAssetsData?.filter(asset => !asset?.xcmV1MultiLocation?.toLowerCase()?.includes('globalconsensus')),
         nativeToken: {
           symbol: ss58Format?.symbols?.[0],
           decimals: ss58Format?.decimals?.[0],
@@ -103,10 +102,24 @@ async function buildChainRegistry({
   return validatedChains;
 }
 
-async function transformChainRegistry({ originalJson, assetsInfoArray }) {
+async function transformChainRegistry({ originalChainRegistry, assetsInfoArray }) {
   const registry: ChainRegistry = {};
+  const availableParachainIds = [0, ...originalChainRegistry?.map(chain => chain.id)?.map(Number)];
+  let filteredChainRegistry: any[] = [];
+  console.log('availableParachainIds', availableParachainIds);
 
-  for (const chain of originalJson) {
+  for (const chainEntry of originalChainRegistry) {
+    const filteredXcmAssets = chainEntry?.xcAssetsData?.filter(
+      xcmAsset => availableParachainIds?.includes(xcmAsset?.paraID)
+    );
+
+    filteredChainRegistry.push({
+      ...chainEntry,
+      xcAssetsData: filteredXcmAssets
+    });
+  }
+
+  for (const chain of filteredChainRegistry) {
     const chainId = chain.id;
     const isAssetHub = chainId === '1000';
     registry[chainId] = {};
@@ -166,7 +179,7 @@ async function transformChainRegistry({ originalJson, assetsInfoArray }) {
 
     if (isAssetHub) {
       registry[chainId].localAssets = {};
-      originalJson
+      filteredChainRegistry
         ?.filter((v) => v.id !== '1000')
         ?.forEach((v) => {
           const targetParaId = v?.id;
@@ -229,7 +242,7 @@ async function transformChainRegistry({ originalJson, assetsInfoArray }) {
           }
         });
     } else {
-      originalJson
+      filteredChainRegistry
         ?.filter((v) => v.id !== chainId)
         ?.forEach((v) => {
 
@@ -322,7 +335,7 @@ async function init() {
   });
 
   const transformedJson = await transformChainRegistry({
-    originalJson: validatedChains,
+    originalChainRegistry: validatedChains,
     assetsInfoArray
   });
 
