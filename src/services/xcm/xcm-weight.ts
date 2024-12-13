@@ -1,4 +1,4 @@
-import { createStandardXcmInterior } from '@/utils/xcm/interior-params';
+import { createStandardXcmInterior, createStandardXcmInteriorByFilterParaId } from '@/utils/xcm/interior-params';
 import { ApiPromise } from '@polkadot/api';
 import { MultiLocation } from '@polkadot/types/interfaces/xcm';
 import { parseUnits } from '@/utils/format';
@@ -279,6 +279,7 @@ export async function calculateExecutionWeight({
         xcmMessage: null
       };
     }
+    console.log('fee token xcmMessage', xcmMessage);
 
     const weightResponse =
       await api.call.xcmPaymentApi.queryXcmWeight(xcmMessage);
@@ -318,6 +319,7 @@ export async function calculateWeightFee({
   try {
     let assetInfo: Record<string, any> = {};
 
+
     if (paraId === 1000) {
       assetInfo = {
         V4: {
@@ -326,27 +328,30 @@ export async function calculateWeightFee({
         }
       };
     } else {
-      const multiLocation = asset.xcmLocation;
 
       assetInfo = {
         V3: {
           Concrete: {
             parents: asset?.reserveType === ReserveType.Local ? 1 : 0,
-            interior: createStandardXcmInterior(multiLocation?.v1?.interior)
+            interior: createStandardXcmInteriorByFilterParaId(paraId, asset.xcmLocation?.v1?.interior)
           }
         }
       };
     }
 
+    console.log('fee token assetInfo', assetInfo);
     const fee = await api.call.xcmPaymentApi.queryWeightToAssetFee(
       weight,
       assetInfo
-    );
-    console.log('token fee', fee?.toJSON());
+    )
 
     const humanFee = fee.toJSON() as {
       ok: number;
+    } | {
+      err: string;
     };
+
+
     if (!humanFee || typeof humanFee !== 'object') return null;
     if ('ok' in humanFee) return bnToBn(humanFee.ok);
     return null;

@@ -82,7 +82,6 @@ export function generateLocalReserveXcmMessage({
     };
 
     const beneficiary = generateBeneficiary(recipientAddress);
-    console.log('beneficiary', beneficiary);
 
     return {
       V3: [
@@ -154,13 +153,15 @@ export async function queryDeliveryFees({
         recipientAddress
       });
     }
-    console.log('xcmMessage', xcmMessage);
+    console.log('deliver fee xcmMessage', xcmMessage);
     if (!xcmMessage) return BN_ZERO;
 
     const deliveryFee = await api.call.xcmPaymentApi.queryDeliveryFees(
       destLocation,
       xcmMessage
     );
+
+    console.log('deliver fee', deliveryFee?.toJSON());
 
     const humanReadableFee = deliveryFee.toJSON() as {
       ok: {

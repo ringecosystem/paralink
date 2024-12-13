@@ -5,6 +5,7 @@ import { areInteriorsEqual } from './interior-match';
 import { ReserveType } from '@/types/registry';
 import type { GeneralKeyV3, NormalizedInterior } from './type';
 import type { Asset } from '@/types/registry';
+import { isNil } from 'lodash-es';
 
 export const isGeneralKeyV3 = (
   key: GeneralKeyV3 | string
@@ -97,3 +98,31 @@ export function isXcmLocationMatch({
     return false;
   }
 }
+
+
+export const destLocationIsNativeAsset = ({
+  asset,
+  paraId
+}: {
+  asset: Asset;
+  paraId: number;
+}): boolean => {
+  if (asset?.reserveType !== ReserveType.Foreign) {
+    return false;
+  }
+
+  const interior = asset?.xcmLocation?.v1?.interior;
+
+  if (interior?.x1?.parachain === paraId) {
+    return true;
+  }
+
+  if (interior?.x2) {
+    return interior.x2.some(item => (
+      ('parachain' in item && item.parachain === paraId) ||
+      ('generalIndex' in item && !isNil(item.generalIndex))
+    ));
+  }
+
+  return false;
+};

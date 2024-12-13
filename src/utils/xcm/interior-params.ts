@@ -90,3 +90,15 @@ export function createStandardXcmInteriorByFlatInterior(
   }
   return null;
 }
+
+export function createStandardXcmInteriorByFilterParaId(
+  paraId: number,
+  interior: NormalizedInterior | NormalizedInterior[]
+): XcmRequestInteriorParams | XcmRequestInteriorParams[] | null {
+  const normalizedInterior = normalizeInterior(interior);
+  if (Array.isArray(normalizedInterior)) {
+    const filteredInterior = normalizedInterior?.filter((item) => !('parachain' in item && item.parachain === paraId));
+    return createStandardXcmInteriorByFlatInterior(filteredInterior);
+  }
+  return null;
+}
