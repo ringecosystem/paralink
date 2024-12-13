@@ -21,6 +21,7 @@ import { filterHrmpConnections } from './utils/hrmp-validation';
 import { getSupportedParaChains } from './utils/get-supported-parachains';
 import { SUPPORTED_XCM_PARA_IDS } from './config';
 import { filterXcmTokensByString } from './utils/filter';
+import { isSameLocation } from './utils/location';
 
 async function buildChainRegistry({
   supportedParaChains,
@@ -132,6 +133,7 @@ async function transformChainRegistry({ originalChainRegistry, assetsInfoArray }
 
     try {
       const validProviders = getValidWssEndpoints(chain.providers);
+
       if (validProviders.length) {
         api = await connectToChain(validProviders);
         if (isFunction(api.query.assets?.account)) {
@@ -174,19 +176,14 @@ async function transformChainRegistry({ originalChainRegistry, assetsInfoArray }
 
     if (isAssetHub) {
       registry[chainId].localAssets = {};
+      const assetGroups: { [assetId: string]: any } = {};
+
       filteredChainRegistry
         ?.filter((v) => v.id !== '1000')
         ?.forEach((v) => {
           const targetParaId = v?.id;
-
           if (!targetParaId) return;
 
-          if (
-            registry?.[chainId]?.localAssets &&
-            !registry[chainId].localAssets[targetParaId]
-          ) {
-            registry[chainId].localAssets[targetParaId] = [];
-          }
           const destAssetsInfo = v.xcAssetsData?.filter((asset) => {
             const hasParachain = hasParachainInLocation({
               multiLocationStr: asset.xcmV1MultiLocation,
@@ -197,15 +194,32 @@ async function transformChainRegistry({ originalChainRegistry, assetsInfoArray }
             if (!generalIndex) return false;
             return Object.keys(chain.assetsInfo || {}).includes(generalIndex);
           });
+
           if (destAssetsInfo && destAssetsInfo.length > 0) {
-            const processedAssets = destAssetsInfo.map((asset) => {
+            destAssetsInfo.forEach((asset) => {
               const generalIndex = getGeneralIndex(asset.xcmV1MultiLocation);
+              if (!generalIndex) return;
+
               const assetInfo = chain.assetsInfo?.[generalIndex || ''];
-              return {
-                assetId: generalIndex,
-                symbol: assetInfo || asset.symbol,
+
+              if (!assetGroups[generalIndex]) {
+                assetGroups[generalIndex] = {
+                  assetId: generalIndex,
+                  symbol: assetInfo || asset.symbol,
+                  decimals: asset.decimals,
+                  registeredChains: {}
+                };
+              }
+              assetGroups[generalIndex].registeredChains[targetParaId] = {
+                assetId: asset.asset,
+                symbol: asset.symbol,
                 decimals: asset.decimals,
+                isNative: false,
                 reserveType: ReserveType.Local,
+                icon: findIconBySymbol(
+                  assetInfo || asset.symbol,
+                  assetsInfoArray
+                ),
                 xcmLocation: {
                   v1: {
                     parents: 0,
@@ -219,24 +233,71 @@ async function transformChainRegistry({ originalChainRegistry, assetsInfoArray }
                       ]
                     }
                   }
-                },
-                icon: findIconBySymbol(
-                  assetInfo || asset.symbol,
-                  assetsInfoArray
-                )
+                }
               };
             });
-            if (
-              registry?.[chainId]?.localAssets?.[targetParaId] &&
-              processedAssets
-            ) {
-              registry[chainId].localAssets[targetParaId].push(
-                ...processedAssets
-              );
-            }
           }
         });
+      registry[chainId].localAssets = assetGroups;
     } else {
+      // 处理非AssetHub链的localAssets
+      registry[chainId].localAssets = {};
+      const assetGroups: { [assetId: string]: any } = {};
+
+      // 找出当前链的本地资产
+      const currentChainAssets = chain.xcAssetsData?.filter(asset =>
+        asset.paraID?.toString() === chainId
+      );
+
+      if (currentChainAssets?.length) {
+        currentChainAssets.forEach(localAsset => {
+          const assetId = localAsset.asset;
+          const localAssetLocation = localAsset.xcmV1MultiLocation;
+
+          // 初始化资产组
+          if (!assetGroups[assetId]) {
+            assetGroups[assetId] = {
+              assetId: assetId,
+              symbol: localAsset.symbol,
+              decimals: localAsset.decimals,
+              registeredChains: {},
+              xcmLocation: JSON.parse(localAssetLocation) // 保存原始location用于比较
+            };
+          }
+
+          // 查找其他链对这个资产的引用
+          filteredChainRegistry
+            ?.filter(v => v.id !== chainId)
+            ?.forEach(otherChain => {
+              const registeredAsset = otherChain.xcAssetsData?.find(asset => {
+                // 使用isSameLocation比较XCM位置
+                return isSameLocation(asset.xcmV1MultiLocation, localAssetLocation) ||
+                  (hasParachainInLocation({
+                    multiLocationStr: asset.xcmV1MultiLocation,
+                    paraId: chainId
+                  }) &&
+                    asset.symbol.toLowerCase() === localAsset.symbol.toLowerCase());
+              });
+
+              if (registeredAsset) {
+                assetGroups[assetId].registeredChains[otherChain.id] = {
+                  assetId: registeredAsset.asset,
+                  symbol: registeredAsset.symbol,
+                  decimals: registeredAsset.decimals,
+                  isNative: false,
+                  reserveType: ReserveType.Local,
+                  icon: findIconBySymbol(registeredAsset.symbol, assetsInfoArray),
+                  xcmLocation: JSON.parse(registeredAsset.xcmV1MultiLocation)
+                };
+              }
+            });
+        });
+      }
+
+      registry[chainId].localAssets = assetGroups;
+
+
+
       filteredChainRegistry
         ?.filter((v) => v.id !== chainId)
         ?.forEach((v) => {

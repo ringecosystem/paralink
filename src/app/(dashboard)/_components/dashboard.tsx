@@ -92,10 +92,10 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
     useCrossChainSetup();
 
   useEffect(() => {
-    if (!sourceChain || !targetChainId) return;
+    if (!sourceChain || !targetChain) return;
     const tokens = getTokenList({
       sourceChain,
-      targetChainId: targetChainId
+      targetChain
     });
     if (tokens.length) {
       setTokens(tokens);
@@ -103,7 +103,7 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
     return () => {
       setTokens([]);
     };
-  }, [sourceChain, targetChainId, setTokens]);
+  }, [sourceChain, targetChain, setTokens]);
 
   const {
     extrinsic,
