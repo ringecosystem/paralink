@@ -307,6 +307,7 @@ export interface ChainRegistryInfo {
   isEvm?: boolean;
   evmChainId?: number;
   existentialDeposit?: string;
+  xcmPaymentAcceptTokens?: any[];
   nativeToken?: ChainRegistryNativeToken | null;
   localAssets?: ChainRegistryAssetInfoData | null;
   xcAssetsData?: ChainRegistryXcAssetData | null;

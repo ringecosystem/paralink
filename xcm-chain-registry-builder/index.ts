@@ -3,6 +3,7 @@ import path from 'path';
 import { isFunction } from '@polkadot/util';
 import { ChainRegistry, ReserveType } from './type';
 import {
+  connectToChain,
   determineReserveType,
   getGeneralIndex,
   getValidWssEndpoints,
@@ -69,17 +70,10 @@ async function buildChainRegistry({
       console.warn(`No valid WebSocket endpoints found for chain ${chain.id}`);
       return null;
     }
-
-    let provider: WsProvider | null = null;
     let api: ApiPromise | null = null;
 
     try {
-      provider = new WsProvider(validProviders, 2_000, {}, 10_000);
-      api = await ApiPromise.create({
-        provider,
-        noInitWarn: true,
-        throwOnConnect: true
-      });
+      api = await connectToChain(validProviders);
       const hasXcmPayment = typeof api?.call?.xcmPaymentApi !== 'undefined';
       return hasXcmPayment ? chain : null;
     } catch (error) {
@@ -133,22 +127,22 @@ async function transformChainRegistry({ originalChainRegistry, assetsInfoArray }
       chain.substrateInfo.existentialDeposit;
 
     registry[chainId].assetsType = null;
-    let provider: WsProvider | null = null;
     let api: ApiPromise | null = null;
 
     try {
       const validProviders = getValidWssEndpoints(chain.providers);
       if (validProviders.length) {
-        provider = new WsProvider(validProviders, 2_000, {}, 10_000);
-        api = await ApiPromise.create({
-          provider,
-          noInitWarn: true,
-          throwOnConnect: true
-        });
+        api = await connectToChain(validProviders);
         if (isFunction(api.query.assets?.account)) {
           registry[chainId].assetsType = 'assets';
         } else if (isFunction(api.query.tokens?.accounts)) {
           registry[chainId].assetsType = 'tokens';
+        }
+
+        const tokenXcm: any = await api.call.xcmPaymentApi.queryAcceptablePaymentAssets(3);
+        const xcmTokens = tokenXcm.toJSON()?.ok || [];
+        if (xcmTokens.length) {
+          registry[chainId].xcmPaymentAcceptTokens = xcmTokens;
         }
       }
     } catch (error) {

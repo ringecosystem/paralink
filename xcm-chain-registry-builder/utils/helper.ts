@@ -1,3 +1,4 @@
+import { ApiPromise, WsProvider } from '@polkadot/api';
 import { ReserveType } from '../type';
 
 export function getValidWssEndpoints(
@@ -116,4 +117,27 @@ export function determineReserveType({
 
   console.log('No reserve location found', sourceParaId, targetParaId);
   return ReserveType.Remote;
+}
+
+
+export async function connectToChain(endpoints: string[]) {
+  for (const endpoint of endpoints) {
+    try {
+      console.log('excuting endpoint', endpoint);
+      const api = await ApiPromise.create({
+        provider: new WsProvider(endpoint, 1_000, {}, 5_000),
+        throwOnConnect: true
+      });
+
+      console.log(`Successfully connected to ${endpoint}`);
+      await api.isReady;
+      return api;
+
+    } catch (error) {
+      console.error(`Failed to connect to ${endpoint}, trying next...`);
+      continue;
+    }
+  }
+
+  throw new Error('All connection attempts failed');
 }
