@@ -44,7 +44,7 @@ export function generateDestReserveXcmMessage({
     const beneficiary = generateBeneficiary(recipientAddress);
 
     return {
-      V3: [
+      V2: [
         { WithdrawAsset: [assetId] },
         { ClearOrigin: null },
         {
@@ -109,7 +109,7 @@ export function generateLocalReserveXcmMessage({
   const beneficiary = generateBeneficiary(recipientAddress);
 
   return {
-    V3: [
+    V2: [
       { ReserveAssetDeposited: [assetId] },
       { ClearOrigin: null },
       {
@@ -440,6 +440,9 @@ export const getXcmWeightFee = async ({
     isAssetHub: Number(paraId) === 1000
   });
 
+  console.log('weight', weight);
+
+
   if (!weight) {
     errMsg = 'Failed to calculate execution weight';
     return {
@@ -462,12 +465,15 @@ export const getXcmWeightFee = async ({
     };
   }
 
+  console.log('fee', fee?.toString());
+
   if (paraId === 1000) {
     const quote = (await quotePriceTokensForExactTokens({
       api,
       asset,
       amount: fee?.toString()
     })) as number | null;
+    console.log('quote', quote);
     return {
       fee: quote ? bnToBn(quote) : BN_ZERO,
       errMsg: ''
