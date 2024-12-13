@@ -147,12 +147,23 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
     address: recipientAddress
   });
 
-  const maxBalanceBN = bnMax(
-    BN_ZERO,
-    selectedTokenBalance
-      ?.sub(fromDeposit)
-      ?.sub(networkFee ? networkFee : BN_ZERO) ?? BN_ZERO
-  );
+
+  const maxBalanceBN = useMemo(() => {
+    if (selectedToken?.isNative) {
+      return bnMax(
+        BN_ZERO,
+        selectedTokenBalance
+          ?.sub(fromDeposit)
+          ?.sub(networkFee ? networkFee : BN_ZERO) ?? BN_ZERO
+      );
+    }
+
+    return bnMax(
+      BN_ZERO,
+      selectedTokenBalance ?? BN_ZERO
+    );
+  }, [selectedToken, selectedTokenBalance, fromDeposit, networkFee]);
+
 
   const { isInsufficientBalance } = useMemo(() => {
     if (address && amount) {
