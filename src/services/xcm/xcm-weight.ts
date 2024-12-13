@@ -5,7 +5,7 @@ import { parseUnits } from '@/utils/format';
 
 import { BN, BN_ZERO, bnToBn } from '@polkadot/util';
 import { generateBeneficiary, normalizeInterior } from '@/utils/xcm/helper';
-import type { Asset } from '@/types/registry';
+import { ReserveType, type Asset } from '@/types/registry';
 
 export interface XcmV3MultiLocation {
   V3?: {
@@ -89,6 +89,7 @@ export function generateLocalReserveXcmMessage({
   isAssetHub
 }: XcmTransferParams) {
   const multiLocation = asset.xcmLocation;
+
 
   const assetId = {
     id: {
@@ -279,8 +280,6 @@ export async function calculateExecutionWeight({
       };
     }
 
-    console.log('xcm weight xcmMessage', xcmMessage);
-
     const weightResponse =
       await api.call.xcmPaymentApi.queryXcmWeight(xcmMessage);
 
@@ -332,7 +331,7 @@ export async function calculateWeightFee({
       assetInfo = {
         V3: {
           Concrete: {
-            parents: multiLocation?.v1?.parents === 1 ? 0 : 1,
+            parents: asset?.reserveType === ReserveType.Local ? 1 : 0,
             interior: createStandardXcmInterior(multiLocation?.v1?.interior)
           }
         }
@@ -343,6 +342,7 @@ export async function calculateWeightFee({
       weight,
       assetInfo
     );
+    console.log('token fee', fee?.toJSON());
 
     const humanFee = fee.toJSON() as {
       ok: number;
