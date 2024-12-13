@@ -10,7 +10,7 @@ import {
   hasParachainInLocation
 } from './utils/helper';
 import { findIconBySymbol } from './utils/find-icon-by-symbol';
-import { ApiPromise, WsProvider } from '@polkadot/api';
+import { ApiPromise } from '@polkadot/api';
 import ss58 from '@substrate/ss58-registry';
 import {
   fetchPolkadotAssetRegistry,
@@ -20,6 +20,7 @@ import {
 import { filterHrmpConnections } from './utils/hrmp-validation';
 import { getSupportedParaChains } from './utils/get-supported-parachains';
 import { SUPPORTED_XCM_PARA_IDS } from './config';
+import { filterXcmTokensByString } from './utils/filter';
 
 async function buildChainRegistry({
   supportedParaChains,
@@ -98,7 +99,7 @@ async function buildChainRegistry({
 
 async function transformChainRegistry({ originalChainRegistry, assetsInfoArray }) {
   const registry: ChainRegistry = {};
-  const availableParachainIds = [0, ...originalChainRegistry?.map(chain => chain.id)?.map(Number)];
+  const availableParachainIds: number[] = [0, ...originalChainRegistry?.map(chain => chain.id)?.map(Number)];
   let filteredChainRegistry: any[] = [];
   console.log('availableParachainIds', availableParachainIds);
 
@@ -142,7 +143,7 @@ async function transformChainRegistry({ originalChainRegistry, assetsInfoArray }
         const tokenXcm: any = await api.call.xcmPaymentApi.queryAcceptablePaymentAssets(3);
         const xcmTokens = tokenXcm.toJSON()?.ok || [];
         if (xcmTokens.length) {
-          registry[chainId].xcmPaymentAcceptTokens = xcmTokens;
+          registry[chainId].xcmPaymentAcceptTokens = filterXcmTokensByString(xcmTokens, availableParachainIds);
         }
       }
     } catch (error) {
