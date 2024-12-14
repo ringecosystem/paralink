@@ -3,7 +3,7 @@ import { BN, BN_ZERO } from '@polkadot/util';
 import { getTargetMinBalance } from '@/services/xcm/target-min-balance';
 import useApiConnectionsStore from '@/store/api-connections';
 import { normalizeInterior } from '@/utils/xcm/helper';
-import type { Asset } from '@/types/registry';
+import type { Asset } from '@/types/xcm-asset';
 
 interface UseMinBalanceProps {
   chainId?: number;

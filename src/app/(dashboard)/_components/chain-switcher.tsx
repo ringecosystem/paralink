@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { ChainSelect } from '@/components/chain-select';
-import type { ChainConfig } from '@/types/registry';
+import type { ChainConfig } from '@/types/xcm-asset';
 
 interface ChainSwitcherProps {
   sourceChainId?: number;

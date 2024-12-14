@@ -34,7 +34,7 @@ import { AssetPicker } from './asset-picker';
 import { BN, BN_ZERO, bnMax } from '@polkadot/util';
 import { TransactionManager } from '@/components/transaction-manager';
 
-import type { Asset, ChainRegistry } from '@/types/registry';
+import type { Asset, ChainRegistry } from '@/types/xcm-asset';
 import { getTokenList } from '@/utils/xcm/registry';
 
 interface DashboardProps {
@@ -76,7 +76,7 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
   const { sourceLoading, targetLoading } = useApiConnectionsStore(
     useShallow((state) => ({
       sourceLoading: state.loadingStates?.[sourceChainId ?? ''],
-      targetLoading: state.loadingStates?.[targetChainId ?? ''],
+      targetLoading: state.loadingStates?.[targetChainId ?? '']
     }))
   );
 
@@ -104,6 +104,8 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
       setTokens([]);
     };
   }, [sourceChain, targetChain, setTokens]);
+
+  console.log('tokens', tokens);
 
   const {
     extrinsic,
@@ -147,7 +149,6 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
     address: recipientAddress
   });
 
-
   const maxBalanceBN = useMemo(() => {
     if (selectedToken?.isNative) {
       return bnMax(
@@ -158,12 +159,8 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
       );
     }
 
-    return bnMax(
-      BN_ZERO,
-      selectedTokenBalance ?? BN_ZERO
-    );
+    return bnMax(BN_ZERO, selectedTokenBalance ?? BN_ZERO);
   }, [selectedToken, selectedTokenBalance, fromDeposit, networkFee]);
-
 
   const { isInsufficientBalance } = useMemo(() => {
     if (address && amount) {
@@ -243,7 +240,6 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
   useEffect(() => {
     setRecipientAddress('');
   }, [targetChainId]);
-
 
   useEffect(() => {
     const LOADING_TIMEOUT = 60_000;
@@ -377,10 +373,10 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
                 xcmTokenInfo={
                   selectedToken?.symbol && selectedToken?.decimals
                     ? {
-                      symbol: selectedToken?.symbol,
-                      decimals: selectedToken?.decimals,
-                      icon: selectedToken?.icon
-                    }
+                        symbol: selectedToken?.symbol,
+                        decimals: selectedToken?.decimals,
+                        icon: selectedToken?.icon
+                      }
                     : undefined
                 }
               />

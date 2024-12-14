@@ -7,7 +7,7 @@ import FormattedNumberTooltip from '@/components/formatted-number-tooltip';
 import { toShortAddress } from '@/lib/utils';
 import { BN, BN_ZERO } from '@polkadot/util';
 
-import type { Asset } from '@/types/registry';
+import type { Asset } from '@/types/xcm-asset';
 
 interface AssetPickerItemProps {
   token: Asset;

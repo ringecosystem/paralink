@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 import useChainsStore from '@/store/chains';
 import { getFromChains, getToChains } from '@/utils/xcm/registry';
-import type { ChainConfig } from '@/types/registry';
+import type { ChainConfig } from '@/types/xcm-asset';
 
 type SwapChainsParams = {
   chains: ChainConfig[];

@@ -6,7 +6,7 @@ import {
   useTransactionHistory
 } from '@/store/transaction-history';
 import { signAndSendExtrinsic } from '@/services/xcm/polkadot-xcm';
-import type { ChainConfig, Asset } from '@/types/registry';
+import type { ChainConfig, Asset } from '@/types/xcm-asset';
 
 interface UseTransactionExecutionProps {
   sourceChain?: ChainConfig;
@@ -33,7 +33,12 @@ export function useTransactionExecution({
   );
   const executeTransaction = useCallback(
     async ({ extrinsic, address }: { extrinsic: any; address: string }) => {
-      if (!extrinsic || !sourceChain?.id || !selectedWallet?.signer || !address) {
+      if (
+        !extrinsic ||
+        !sourceChain?.id ||
+        !selectedWallet?.signer ||
+        !address
+      ) {
         throw new Error('Missing required parameters for transaction');
       }
       let txHash: string | undefined;
@@ -74,7 +79,7 @@ export function useTransactionExecution({
             onError: (error) => {
               if (txHash) {
                 updateTransaction(txHash, {
-                  status: TransactionStatus.FAILED,
+                  status: TransactionStatus.FAILED
                 });
               }
               reject(error);

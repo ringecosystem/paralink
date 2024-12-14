@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { queryDeliveryFees } from '@/services/xcm/deliver-fee';
 import { BN, BN_ZERO, bnToBn } from '@polkadot/util';
 import useApiConnectionsStore from '@/store/api-connections';
-import type { Asset } from '@/types/registry';
+import type { Asset } from '@/types/xcm-asset';
 
 interface UseNetworkFeeProps {
   sourceChainId?: number;

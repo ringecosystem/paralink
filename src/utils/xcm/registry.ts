@@ -1,5 +1,5 @@
-import { ReserveType, type Asset, type ChainConfig } from '@/types/registry';
-
+import { ReserveType, type Asset, type ChainConfig } from '@/types/xcm-asset';
+import { isDotLocation } from './helper';
 
 export function getFromChains(chains: ChainConfig[]): ChainConfig[] {
   return chains;
@@ -12,6 +12,32 @@ export function getToChains(
   return chains?.filter((chain) => chain.id !== sourceChainId);
 }
 
+function findDotToken(chain: ChainConfig): Asset | null {
+  if (chain.id === 1000) {
+    return {
+      ...chain.nativeToken,
+      assetId: 'Native',
+      isNative: true,
+      reserveType: ReserveType.Local,
+      xcmLocation: {
+        v1: {
+          parents: 1,
+          interior: {
+            here: null
+          }
+        }
+      }
+    };
+  }
+
+  for (const assets of Object.values(chain.xcAssetsData || {})) {
+    const dotToken = assets?.find((asset) => isDotLocation(asset.xcmLocation));
+
+    if (dotToken) return dotToken;
+  }
+  return null;
+}
+
 export const getTokenList = ({
   sourceChain,
   targetChain
@@ -20,55 +46,34 @@ export const getTokenList = ({
   targetChain: ChainConfig;
 }) => {
   const tokenList: Asset[] = [];
-  // 加入dot
-  if (sourceChain?.id === 1000 && targetChain?.xcAssetsData) {
-    Object.entries(targetChain?.xcAssetsData)?.forEach(([key, value]) => {
-      const dotToken = value?.find(item => item?.symbol?.toLowerCase() === 'dot');
-      if (dotToken) {
-        tokenList.push({ ...dotToken, isNative: true, reserveType: ReserveType.Local, assetId: '' });
-      }
-    });
-  }
-  if (targetChain?.id === 1000 && sourceChain?.xcAssetsData) {
-    Object.entries(sourceChain?.xcAssetsData)?.forEach(([key, value]) => {
-      const dotToken = value?.find(item => item?.symbol?.toLowerCase() === 'dot');
-      if (dotToken) {
-        tokenList.push(dotToken);
-      }
-    });
-  }
-  if (sourceChain?.xcAssetsData && targetChain?.xcAssetsData) {
-    // 检查源链是否支持 DOT
-    let sourceSupportsDot = false;
-    Object.values(sourceChain.xcAssetsData).forEach(value => {
-      if (value?.find(item => item?.symbol?.toLowerCase() === 'dot')) {
-        sourceSupportsDot = true;
-      }
-    });
 
-    // 检查目标链是否支持 DOT
-    let targetSupportsDot = false;
-    Object.values(targetChain.xcAssetsData).forEach(value => {
-      if (value?.find(item => item?.symbol?.toLowerCase() === 'dot')) {
-        targetSupportsDot = true;
-      }
-    });
-
-    // 只有当双方都支持 DOT 时才添加到 tokenList
-    if (sourceSupportsDot && targetSupportsDot) {
-      Object.values(sourceChain.xcAssetsData).forEach(value => {
-        const dotToken = value?.find(item => item?.symbol?.toLowerCase() === 'dot');
-        if (dotToken) {
-          tokenList.push(dotToken);
-        }
+  if (sourceChain.id === 1000) {
+    const targetDot = findDotToken(targetChain);
+    if (targetDot) {
+      tokenList.push({
+        ...targetDot,
+        isNative: true,
+        assetId: 'Native',
+        reserveType: ReserveType.Local
       });
+    }
+  } else if (targetChain.id === 1000) {
+    const sourceDot = findDotToken(sourceChain);
+    if (sourceDot) tokenList.push(sourceDot);
+  } else {
+    const sourceDot = findDotToken(sourceChain);
+    const targetDot = findDotToken(targetChain);
+    if (sourceDot && targetDot) {
+      tokenList.push(sourceDot);
     }
   }
 
-
+  const targetChainId = targetChain?.id;
   if (sourceChain.id === 1000) {
     const tokens = sourceChain?.localAssets?.[targetChainId];
-    return tokens || [];
+    if (tokens) {
+      tokenList.push(...tokens);
+    }
   } else {
     const nativeToken =
       sourceChain?.nativeToken?.registeredChains?.[targetChainId];
@@ -80,7 +85,6 @@ export const getTokenList = ({
     if (Array.isArray(xcAssetsData) && xcAssetsData.length) {
       tokenList.push(...xcAssetsData);
     }
-
-    return tokenList;
   }
+  return tokenList;
 };

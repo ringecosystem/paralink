@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { RecipientModal } from './recipient-modal';
 
-import type { ChainConfig } from '@/types/registry';
+import type { ChainConfig } from '@/types/xcm-asset';
 
 interface AddressInputProps {
   value: string;

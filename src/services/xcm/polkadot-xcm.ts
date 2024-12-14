@@ -7,8 +7,8 @@ import {
 } from '@/utils/xcm/interior-params';
 
 import { generateBeneficiary, normalizeInterior } from '@/utils/xcm/helper';
-import { XcmRequestInteriorParams } from '@/utils/xcm/type';
-import { type ChainConfig, type Asset, ReserveType } from '@/types/registry';
+import { XcmRequestInteriorParams } from '@/types/xcm-location';
+import { type ChainConfig, type Asset, ReserveType } from '@/types/xcm-asset';
 
 type XcmTransferParams = {
   token: Asset;

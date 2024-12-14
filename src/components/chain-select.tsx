@@ -12,7 +12,7 @@ import {
 import { FallbackImage } from './ui/fallback-image';
 import { ScrollArea } from './ui/scroll-area';
 import { Empty } from './empty';
-import type { ChainConfig } from '@/types/registry';
+import type { ChainConfig } from '@/types/xcm-asset';
 
 interface ChainSelectProps {
   label: string;
@@ -88,7 +88,7 @@ export const ChainSelect = ({
                       className={cn(
                         'flex cursor-pointer items-center gap-[10px] px-[20px] py-[10px] transition-all hover:bg-[#12161910] hover:opacity-80',
                         index === chains.length - 1 &&
-                        'rounded-b-[var(--radius)]',
+                          'rounded-b-[var(--radius)]',
                         chain?.id === value && 'cursor-default bg-[#12161910]'
                       )}
                       key={chain?.id}

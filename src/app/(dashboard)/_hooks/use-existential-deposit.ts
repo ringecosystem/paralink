@@ -4,7 +4,7 @@ import { BN, bnToBn } from '@polkadot/util';
 import { formatTokenBalance } from '@/utils/format';
 import useApiConnectionsStore from '@/store/api-connections';
 import type { AccountInfo } from '@polkadot/types/interfaces';
-import type { ChainConfig } from '@/types/registry';
+import type { ChainConfig } from '@/types/xcm-asset';
 
 interface ExistentialDepositInfo {
   isLoading: boolean;

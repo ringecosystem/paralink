@@ -1,11 +1,18 @@
 import { isAddress } from 'viem';
 import { decodeAddress } from '@polkadot/util-crypto';
 import { u8aToHex } from '@polkadot/util';
-import { areInteriorsEqual } from './interior-match';
-import { ReserveType } from '@/types/registry';
-import type { GeneralKeyV3, NormalizedInterior } from './type';
-import type { Asset } from '@/types/registry';
 import { isNil } from 'lodash-es';
+import { ReserveType } from '@/types/xcm-asset';
+
+import { areInteriorsEqual } from './interior-match';
+
+import type {
+  GeneralKeyV3,
+  XcmInterior,
+  XcmJunction
+} from '@/types/xcm-location';
+import type { Asset } from '@/types/xcm-asset';
+import type { XcmV1Location } from '@/types/xcm-location';
 
 export const isGeneralKeyV3 = (
   key: GeneralKeyV3 | string
@@ -14,8 +21,8 @@ export const isGeneralKeyV3 = (
 };
 
 export function normalizeInterior(
-  interior: NormalizedInterior | NormalizedInterior[] | null
-): NormalizedInterior[] | null {
+  interior: XcmInterior | null
+): XcmJunction[] | null {
   if (!interior) return null;
   if ('here' in interior) return [];
   if ('x1' in interior && interior.x1) return [interior.x1];
@@ -24,7 +31,6 @@ export function normalizeInterior(
   if ('x4' in interior && Array.isArray(interior.x4)) return interior.x4;
   return null;
 }
-
 
 export function generateBeneficiary(recipientAddress: string) {
   const accountType = isAddress(recipientAddress)
@@ -55,7 +61,12 @@ export function isXcmLocationMatch({
   asset: Asset;
   targetChainId: number;
 }): boolean {
+  console.log('asset', asset);
   const xcmLocation = asset?.xcmLocation?.v1;
+
+  if (isDotLocation(asset?.xcmLocation)) {
+    return true;
+  }
 
   if (!acceptablePaymentLocation || !xcmLocation) {
     console.log(`One or both locations are empty:`, {
@@ -65,18 +76,20 @@ export function isXcmLocationMatch({
     return false;
   }
 
-  const acceptablePaymentLocationIsNative = (Number(acceptablePaymentLocation?.parents) === 0 &&
-    typeof acceptablePaymentLocation?.interior?.here !== 'undefined') || (
-      Number(acceptablePaymentLocation?.parents) === 0 &&
-      acceptablePaymentLocation?.interior?.x1?.palletInstance
-    )
+  const acceptablePaymentLocationIsNative =
+    (Number(acceptablePaymentLocation?.parents) === 0 &&
+      typeof acceptablePaymentLocation?.interior?.here !== 'undefined') ||
+    (Number(acceptablePaymentLocation?.parents) === 0 &&
+      acceptablePaymentLocation?.interior?.x1?.palletInstance);
 
-  const assetIsNative = asset?.reserveType === ReserveType.Foreign && (asset?.xcmLocation?.v1?.interior?.x1?.parachain === targetChainId || asset?.xcmLocation?.v1?.interior?.x2?.some((item) => 'parachain' in item && item.parachain === targetChainId));
+  const assetIsNative =
+    asset?.reserveType === ReserveType.Foreign &&
+    (asset?.xcmLocation?.v1?.interior?.x1?.parachain === targetChainId ||
+      asset?.xcmLocation?.v1?.interior?.x2?.some(
+        (item) => 'parachain' in item && item.parachain === targetChainId
+      ));
 
-  if (
-    acceptablePaymentLocationIsNative &&
-    assetIsNative
-  ) {
+  if (acceptablePaymentLocationIsNative && assetIsNative) {
     console.log('native token', { acceptablePaymentLocation, xcmLocation });
     return true;
   }
@@ -99,7 +112,6 @@ export function isXcmLocationMatch({
   }
 }
 
-
 export const destLocationIsNativeAsset = ({
   asset,
   paraId
@@ -118,11 +130,18 @@ export const destLocationIsNativeAsset = ({
   }
 
   if (interior?.x2) {
-    return interior.x2.some(item => (
-      ('parachain' in item && item.parachain === paraId) ||
-      ('generalIndex' in item && !isNil(item.generalIndex))
-    ));
+    return interior.x2.some(
+      (item) =>
+        ('parachain' in item && item.parachain === paraId) ||
+        ('generalIndex' in item && !isNil(item.generalIndex))
+    );
   }
 
   return false;
 };
+
+export function isDotLocation(xcmLocation: XcmV1Location): boolean {
+  return (
+    xcmLocation?.v1?.parents === 1 && xcmLocation?.v1?.interior?.here === null
+  );
+}

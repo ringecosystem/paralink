@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { ChainConfig } from '@/types/registry';
+import type { ChainConfig } from '@/types/xcm-asset';
 
 export type ChainsState = {
   chains: ChainConfig[];
@@ -30,11 +30,9 @@ const useChainsStore = create<ChainsState & ChainsActions & ChainsSelectors>(
     targetChainId: undefined,
     setChains: (chains: ChainConfig[]) => set({ chains }),
     setSourceChainId: (chainId: number) => set({ sourceChainId: chainId }),
-    setSourceChains: (chains: ChainConfig[]) =>
-      set({ sourceChains: chains }),
+    setSourceChains: (chains: ChainConfig[]) => set({ sourceChains: chains }),
     setTargetChainId: (chainId: number) => set({ targetChainId: chainId }),
-    setTargetChains: (chains: ChainConfig[]) =>
-      set({ targetChains: chains }),
+    setTargetChains: (chains: ChainConfig[]) => set({ targetChains: chains }),
     getChainById: (chainId?: number) => {
       if (!chainId) return undefined;
       return get().chains.find((chain) => chain.id === chainId);

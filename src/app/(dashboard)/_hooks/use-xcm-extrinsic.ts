@@ -3,7 +3,7 @@ import { createXcmTransferExtrinsic } from '@/services/xcm/polkadot-xcm';
 import { SubmittableExtrinsic } from '@polkadot/api/types';
 import { BN, BN_ZERO, bnToBn } from '@polkadot/util';
 import useApiConnectionsStore from '@/store/api-connections';
-import type { Asset, ChainConfig } from '@/types/registry';
+import type { Asset, ChainConfig } from '@/types/xcm-asset';
 
 interface UseXcmExtrinsicParams {
   sourceChainId?: number;
@@ -32,12 +32,7 @@ export function useXcmExtrinsic({
 
   useEffect(() => {
     const getExtrinsic = async () => {
-      if (
-        !sourceChainId ||
-        !selectedToken ||
-        !targetChain ||
-        !recipientAddress
-      )
+      if (!sourceChainId || !selectedToken || !targetChain || !recipientAddress)
         return;
 
       setIsLoading(true);

@@ -11,7 +11,7 @@ import {
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Empty } from '@/components/empty';
 import { AssetPickerItem } from './item';
-import type { Asset } from '@/types/registry';
+import type { Asset } from '@/types/xcm-asset';
 
 export type BalanceWithSymbol = {
   balance: BN;
@@ -40,9 +40,8 @@ export function AssetPickerList({
     if (!searchQuery) return tokens;
 
     const query = searchQuery.toLowerCase();
-    return tokens.filter(
-      (token) =>
-        token?.symbol?.toLowerCase().includes(query)
+    return tokens.filter((token) =>
+      token?.symbol?.toLowerCase().includes(query)
     );
   }, [tokens, searchQuery]);
 
@@ -88,18 +87,18 @@ export function AssetPickerList({
               <div className="flex flex-col gap-[20px]">
                 {filteredTokens?.length
                   ? filteredTokens?.map((token) => (
-                    <AssetPickerItem
-                      key={token?.symbol}
-                      token={token}
-                      isLoading={isLoading}
-                      onSelect={onSelect}
-                      balance={
-                        tokenBalances?.find(
-                          (balance) => balance.symbol === token.symbol
-                        )?.balance
-                      }
-                    />
-                  ))
+                      <AssetPickerItem
+                        key={token?.symbol}
+                        token={token}
+                        isLoading={isLoading}
+                        onSelect={onSelect}
+                        balance={
+                          tokenBalances?.find(
+                            (balance) => balance.symbol === token.symbol
+                          )?.balance
+                        }
+                      />
+                    ))
                   : null}
               </div>
             )}

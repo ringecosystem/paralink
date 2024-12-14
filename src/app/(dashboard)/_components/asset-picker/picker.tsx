@@ -20,7 +20,7 @@ import { useMinBalance } from '../../_hooks/use-min-balance';
 import { Skeleton } from '@/components/ui/skeleton';
 import useApiConnectionsStore from '@/store/api-connections';
 import { isXcmLocationMatch } from '@/utils/xcm/helper';
-import type { Asset } from '@/types/registry';
+import type { Asset } from '@/types/xcm-asset';
 
 export interface PickerProps {
   ref: React.RefObject<{ refreshBalances: () => void }>;
@@ -58,6 +58,7 @@ export function Picker({
   const [availableTokens, setAvailableTokens] = useState<Asset[]>([]);
   const [availableTokensLoading, setAvailableTokensLoading] = useState(false);
   const [isInvalid, setIsInvalid] = useState(false);
+  console.log('availableTokens', availableTokens);
 
   const getValidApi = useApiConnectionsStore((state) => state.getValidApi);
 

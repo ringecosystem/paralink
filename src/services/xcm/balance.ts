@@ -2,7 +2,7 @@ import { isFunction, bnToBn } from '@polkadot/util';
 import { BN_ZERO } from '@polkadot/util';
 import type { BN } from '@polkadot/util';
 import type { ApiPromise } from '@polkadot/api';
-import type { Asset } from '@/types/registry';
+import type { Asset } from '@/types/xcm-asset';
 
 interface OrmlTokensAccountData {
   free: string | number;
@@ -31,7 +31,10 @@ export async function getAssetBalance({
     signal?.throwIfAborted();
 
     if (asset.isNative) {
+      console.log('asset', asset);
       const balancesAll = await api.derive.balances.all(account);
+      console.log('balancesAll', balancesAll);
+
       return balancesAll.availableBalance;
     }
 

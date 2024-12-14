@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 import { Button } from './ui/button';
 import { cn, isValidAddress } from '@/lib/utils';
-import type { ChainConfig } from '@/types/registry';
+import type { ChainConfig } from '@/types/xcm-asset';
 
 interface RecipientModalProps {
   value: string;

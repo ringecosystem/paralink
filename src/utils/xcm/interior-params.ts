@@ -1,11 +1,16 @@
 import { isNil } from 'lodash-es';
 import { isGeneralKeyV3, normalizeInterior } from './helper';
-import type { NormalizedInterior, XcmRequestInteriorParams } from './type';
+import type {
+  XcmInterior,
+  XcmJunction,
+  XcmRequestInteriorParams,
+  XcmRequestJunctionParams
+} from '@/types/xcm-location';
 
 export function normalizeInteriorItem(
-  item: Omit<NormalizedInterior, 'here'>
+  item: Omit<XcmJunction, 'here'>
 ): XcmRequestInteriorParams {
-  const normalized: XcmRequestInteriorParams = {};
+  const normalized: XcmRequestJunctionParams = {};
   // Parachain
   if ('parachain' in item && !isNil(item.parachain)) {
     normalized.Parachain = item.parachain;
@@ -53,7 +58,7 @@ export function normalizeInteriorItem(
 }
 
 export function createStandardXcmInterior(
-  interior: NormalizedInterior | NormalizedInterior[]
+  interior: XcmInterior
 ): XcmRequestInteriorParams | XcmRequestInteriorParams[] | null {
   const normalizedInterior = normalizeInterior(interior);
   if (!normalizedInterior) return null;
@@ -76,7 +81,7 @@ export function createStandardXcmInterior(
 }
 
 export function createStandardXcmInteriorByFlatInterior(
-  interior: NormalizedInterior[]
+  interior: XcmJunction[]
 ): XcmRequestInteriorParams | XcmRequestInteriorParams[] | null {
   if (Array.isArray(interior)) {
     if (interior.length === 0) return { Here: null };
@@ -93,11 +98,13 @@ export function createStandardXcmInteriorByFlatInterior(
 
 export function createStandardXcmInteriorByFilterParaId(
   paraId: number,
-  interior: NormalizedInterior | NormalizedInterior[]
+  interior: XcmInterior
 ): XcmRequestInteriorParams | XcmRequestInteriorParams[] | null {
   const normalizedInterior = normalizeInterior(interior);
   if (Array.isArray(normalizedInterior)) {
-    const filteredInterior = normalizedInterior?.filter((item) => !('parachain' in item && item.parachain === paraId));
+    const filteredInterior = normalizedInterior?.filter(
+      (item) => !('parachain' in item && item.parachain === paraId)
+    );
     return createStandardXcmInteriorByFlatInterior(filteredInterior);
   }
   return null;

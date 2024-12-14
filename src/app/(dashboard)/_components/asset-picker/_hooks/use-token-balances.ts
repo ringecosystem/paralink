@@ -3,7 +3,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getAssetBalance } from '@/services/xcm/balance';
 import useApiConnectionsStore from '@/store/api-connections';
 import type { ApiPromise } from '@polkadot/api';
-import type { Asset } from '@/types/registry';
+import type { Asset } from '@/types/xcm-asset';
 
 interface UseTokenBalancesProps {
   address?: string;
@@ -47,6 +47,8 @@ export function useTokenBalances({
       if (!address || !tokens?.length || !paraId || !api) {
         throw new Error('Missing required parameters');
       }
+
+      console.log('balances', tokens);
 
       const balances = await Promise.all(
         tokens?.map((token) =>

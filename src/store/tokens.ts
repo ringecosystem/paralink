@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import type { Asset } from '@/types/registry';
+import type { Asset } from '@/types/xcm-asset';
 
 interface TokensState {
   selectedToken?: Asset;

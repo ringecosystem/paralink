@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useCrossChainSetup } from './use-cross-chain-setup';
 import useChainsStore from '@/store/chains';
-import type { ChainRegistry } from '@/types/registry';
+import type { ChainRegistry } from '@/types/xcm-asset';
 
 interface UseChainInitializationProps {
   registryAssets: ChainRegistry;

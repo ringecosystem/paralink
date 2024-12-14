@@ -1,7 +1,6 @@
 import { encodeAddress } from '@polkadot/util-crypto';
-import type { ChainConfig } from '@/types/registry';
+import type { ChainConfig } from '@/types/xcm-asset';
 import type { WalletAccount } from '@talismn/connect-wallets';
-
 
 export function formatSubstrateAddress({
   account,
@@ -10,10 +9,7 @@ export function formatSubstrateAddress({
   account?: WalletAccount;
   chain?: ChainConfig;
 }): string | undefined {
-  if (
-    !account?.address ||
-    typeof chain?.addressPrefix === 'undefined'
-  )
+  if (!account?.address || typeof chain?.addressPrefix === 'undefined')
     return undefined;
 
   try {

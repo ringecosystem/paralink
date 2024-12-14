@@ -3,7 +3,7 @@ import { createStandardXcmInterior } from '@/utils/xcm/interior-params';
 import { parseUnits } from '@/utils/format';
 import { generateBeneficiary } from '@/utils/xcm/helper';
 import type { ApiPromise } from '@polkadot/api';
-import type { Asset } from '@/types/registry';
+import type { Asset } from '@/types/xcm-asset';
 
 type XcmTransferParams = {
   asset: Asset;

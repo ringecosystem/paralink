@@ -1,11 +1,14 @@
-import { createStandardXcmInterior, createStandardXcmInteriorByFilterParaId } from '@/utils/xcm/interior-params';
+import {
+  createStandardXcmInterior,
+  createStandardXcmInteriorByFilterParaId
+} from '@/utils/xcm/interior-params';
 import { ApiPromise } from '@polkadot/api';
 import { MultiLocation } from '@polkadot/types/interfaces/xcm';
 import { parseUnits } from '@/utils/format';
 
 import { BN, BN_ZERO, bnToBn } from '@polkadot/util';
 import { generateBeneficiary, normalizeInterior } from '@/utils/xcm/helper';
-import { ReserveType, type Asset } from '@/types/registry';
+import { ReserveType, type Asset } from '@/types/xcm-asset';
 
 export interface XcmV3MultiLocation {
   V3?: {
@@ -51,21 +54,21 @@ export function generateDestReserveXcmMessage({
           BuyExecution: {
             fees: isAssetHub
               ? {
-                id: {
-                  Concrete: {
-                    parents: 1,
-                    interior: {
-                      Here: null
+                  id: {
+                    Concrete: {
+                      parents: 1,
+                      interior: {
+                        Here: null
+                      }
                     }
+                  },
+                  fun: {
+                    Fungible: parseUnits({
+                      value: '1',
+                      decimals: asset.decimals
+                    })?.toString()
                   }
-                },
-                fun: {
-                  Fungible: parseUnits({
-                    value: '1',
-                    decimals: asset.decimals
-                  })?.toString()
                 }
-              }
               : assetId,
             weightLimit: 'Unlimited'
           }
@@ -89,7 +92,6 @@ export function generateLocalReserveXcmMessage({
   isAssetHub
 }: XcmTransferParams) {
   const multiLocation = asset.xcmLocation;
-
 
   const assetId = {
     id: {
@@ -116,21 +118,21 @@ export function generateLocalReserveXcmMessage({
         BuyExecution: {
           fees: isAssetHub
             ? {
-              id: {
-                Concrete: {
-                  parents: 1,
-                  interior: {
-                    Here: null
+                id: {
+                  Concrete: {
+                    parents: 1,
+                    interior: {
+                      Here: null
+                    }
                   }
+                },
+                fun: {
+                  Fungible: parseUnits({
+                    value: '1',
+                    decimals: asset.decimals
+                  })?.toString()
                 }
-              },
-              fun: {
-                Fungible: parseUnits({
-                  value: '1',
-                  decimals: asset.decimals
-                })?.toString()
               }
-            }
             : assetId,
           weightLimit: 'Unlimited'
         }
@@ -257,7 +259,10 @@ export async function calculateExecutionWeight({
   recipientAddress,
   isAssetHub
 }: CalculateExecutionWeightParams) {
-  let xcmMessage: ReturnType<typeof generateDestReserveXcmMessage> | ReturnType<typeof generateLocalReserveXcmMessage> | null = null;
+  let xcmMessage:
+    | ReturnType<typeof generateDestReserveXcmMessage>
+    | ReturnType<typeof generateLocalReserveXcmMessage>
+    | null = null;
 
   if (asset?.reserveType === 'local') {
     xcmMessage = generateLocalReserveXcmMessage({
@@ -319,7 +324,6 @@ export async function calculateWeightFee({
   try {
     let assetInfo: Record<string, any> = {};
 
-
     if (paraId === 1000) {
       assetInfo = {
         V4: {
@@ -328,12 +332,14 @@ export async function calculateWeightFee({
         }
       };
     } else {
-
       assetInfo = {
         V3: {
           Concrete: {
             parents: asset?.reserveType === ReserveType.Local ? 1 : 0,
-            interior: createStandardXcmInteriorByFilterParaId(paraId, asset.xcmLocation?.v1?.interior)
+            interior: createStandardXcmInteriorByFilterParaId(
+              paraId,
+              asset.xcmLocation?.v1?.interior
+            )
           }
         }
       };
@@ -343,14 +349,15 @@ export async function calculateWeightFee({
     const fee = await api.call.xcmPaymentApi.queryWeightToAssetFee(
       weight,
       assetInfo
-    )
+    );
 
-    const humanFee = fee.toJSON() as {
-      ok: number;
-    } | {
-      err: string;
-    };
-
+    const humanFee = fee.toJSON() as
+      | {
+          ok: number;
+        }
+      | {
+          err: string;
+        };
 
     if (!humanFee || typeof humanFee !== 'object') return null;
     if ('ok' in humanFee) return bnToBn(humanFee.ok);
@@ -441,7 +448,6 @@ export const getXcmWeightFee = async ({
   });
 
   console.log('weight', weight);
-
 
   if (!weight) {
     errMsg = 'Failed to calculate execution weight';
