@@ -21,6 +21,7 @@ import { filterHrmpConnections } from './utils/hrmp-validation';
 import { getSupportedParaChains } from './utils/get-supported-parachains';
 import { SUPPORTED_XCM_PARA_IDS } from './config';
 import { filterXcmTokensByString } from './utils/filter';
+import { isSameLocation } from './utils/location';
 
 async function buildChainRegistry({
   supportedParaChains,
@@ -252,6 +253,43 @@ async function transformChainRegistry({
           }
         });
     } else {
+      // 找出 xcAssetsData 中 paraID 为 chainId 的 asset
+      const xcAssetsData = chain.xcAssetsData?.filter(
+        (asset) => asset.paraID === Number(chainId)
+      );
+      // 找出其他 chain 中 xcAssetsData 中 paraID 为 chainId 并且 location 一样的
+      if (xcAssetsData && xcAssetsData.length > 0) {
+        registry[chainId].localAssets = {};
+
+        filteredChainRegistry
+          ?.filter((v) => v.id !== chainId)
+          ?.forEach((v) => {
+            const destAssetsInfo = v.xcAssetsData?.filter(
+              (asset) => asset.paraID === Number(chainId)
+            );
+            if (
+              registry?.[chainId]?.localAssets &&
+              destAssetsInfo &&
+              destAssetsInfo.length > 0
+            ) {
+              registry[chainId].localAssets[v.id] = [];
+              destAssetsInfo?.forEach((asset) => {
+                xcAssetsData?.forEach((data) => {
+                  if (
+                    isSameLocation(
+                      asset.xcmV1MultiLocation,
+                      data.xcmV1MultiLocation
+                    ) &&
+                    registry?.[chainId]?.localAssets?.[v.id]
+                  ) {
+                    registry[chainId].localAssets[v.id]!.push(data);
+                  }
+                });
+              });
+            }
+          });
+      }
+
       filteredChainRegistry
         ?.filter((v) => v.id !== chainId)
         ?.forEach((v) => {
