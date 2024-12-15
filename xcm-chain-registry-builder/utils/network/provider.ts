@@ -4,7 +4,6 @@ export async function filterWorkingWssProviders(providers: string[]): Promise<st
             let ws: WebSocket | null = null;
             let isResolved = false;
 
-            // 确保只resolve一次
             const safeResolve = (value: boolean) => {
                 if (!isResolved) {
                     isResolved = true;
@@ -12,7 +11,6 @@ export async function filterWorkingWssProviders(providers: string[]): Promise<st
                 }
             };
 
-            // 清理函数
             const cleanup = () => {
                 if (ws) {
                     try {
@@ -60,14 +58,12 @@ export async function filterWorkingWssProviders(providers: string[]): Promise<st
         });
     };
 
-    // 并发检查所有providers，但降低并发数并添加延迟
-    const concurrentLimit = 3; // 降低并发数
+    const concurrentLimit = 3;
     const workingProviders: string[] = [];
 
     for (let i = 0; i < providers.length; i += concurrentLimit) {
         const batch = providers.slice(i, i + concurrentLimit);
 
-        // 添加延迟，避免过快创建连接
         if (i > 0) {
             await new Promise(resolve => setTimeout(resolve, 1000));
         }

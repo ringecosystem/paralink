@@ -1,15 +1,22 @@
 import fs from 'fs-extra';
 import path from 'path';
 import { isFunction } from '@polkadot/util';
-import { ChainRegistry, ReserveType } from './type';
+import { Asset, ChainInfo, ChainRegistry, ParaChainConfig, } from './types/registry';
+import { ReserveType } from './types/enum';
+
 import {
   connectToChain,
+  getValidWssEndpoints,
+} from './utils/network/endpoints';
+import { findIconBySymbol, filterXcmTokensByString } from './utils/xcm/assets';
+import {
+  isSameLocation,
   determineReserveType,
   getGeneralIndex,
-  getValidWssEndpoints,
   hasParachainInLocation
-} from './utils/helper';
-import { findIconBySymbol } from './utils/find-icon-by-symbol';
+} from './utils/xcm/location';
+import { getSupportedParaChains } from './utils/chain/parachain';
+import { filterHrmpConnections, validateChains } from './utils/chain/validation';
 import { ApiPromise } from '@polkadot/api';
 import ss58 from '@substrate/ss58-registry';
 import {
@@ -17,16 +24,17 @@ import {
   fetchChainsInfo,
   fetchAssetsInfo
 } from './service';
-import { filterHrmpConnections } from './utils/hrmp-validation';
-import { getSupportedParaChains } from './utils/get-supported-parachains';
 import { SUPPORTED_XCM_PARA_IDS } from './config';
-import { filterXcmTokensByString } from './utils/filter';
-import { isSameLocation } from './utils/location';
+import { ChainRegistryItem } from './types/transformParachains';
 
 async function buildChainRegistry({
   supportedParaChains,
   chainsInfoArray,
   assetsInfoArray
+}: {
+  supportedParaChains: ParaChainConfig[];
+  chainsInfoArray: ChainInfo[];
+  assetsInfoArray: Asset[];
 }) {
   const supportedChains = supportedParaChains
     ?.map((chain) => {
@@ -68,39 +76,41 @@ async function buildChainRegistry({
     })
     ?.filter((v): v is NonNullable<typeof v> => !!v);
 
-  const validateChain = async (chain: (typeof supportedChains)[0]) => {
-    if (SUPPORTED_XCM_PARA_IDS.includes(Number(chain.id))) {
-      return chain;
-    }
-    const validProviders = getValidWssEndpoints(chain.providers);
-    if (!validProviders.length) {
-      console.warn(`No valid WebSocket endpoints found for chain ${chain.id}`);
-      return null;
-    }
-    let api: ApiPromise | null = null;
+  // const validateChain = async (chain: (typeof supportedChains)[0]) => {
+  //   if (SUPPORTED_XCM_PARA_IDS.includes(Number(chain.id))) {
+  //     return chain;
+  //   }
+  //   const validProviders = getValidWssEndpoints(chain.providers);
+  //   if (!validProviders.length) {
+  //     console.warn(`No valid WebSocket endpoints found for chain ${chain.id}`);
+  //     return null;
+  //   }
+  //   let api: ApiPromise | null = null;
 
-    try {
-      api = await connectToChain(validProviders);
-      const hasXcmPayment = typeof api?.call?.xcmPaymentApi !== 'undefined';
-      return hasXcmPayment ? chain : null;
-    } catch (error) {
-      console.error(`Error validating chain ${chain.id}:`, error);
-      return null;
-    } finally {
-      if (api) {
-        try {
-          await api.disconnect();
-        } catch (error) {
-          console.error(`Error disconnecting from chain ${chain.id}:`, error);
-        }
-      }
-    }
-  };
-  const validatedChains = (
-    await Promise.all(supportedChains?.map(validateChain))
-  )?.filter((v): v is NonNullable<typeof v> => !!v);
+  //   try {
+  //     api = await connectToChain(validProviders);
+  //     const hasXcmPayment = typeof api?.call?.xcmPaymentApi !== 'undefined';
+  //     return hasXcmPayment ? chain : null;
+  //   } catch (error) {
+  //     console.error(`Error validating chain ${chain.id}:`, error);
+  //     return null;
+  //   } finally {
+  //     if (api) {
+  //       try {
+  //         await api.disconnect();
+  //       } catch (error) {
+  //         console.error(`Error disconnecting from chain ${chain.id}:`, error);
+  //       }
+  //     }
+  //   }
+  // };
 
-  return validatedChains;
+
+  // const validatedChains = (
+  //   await Promise.all(supportedChains?.map(validateChain))
+  // )?.filter((v): v is NonNullable<typeof v> => !!v);
+
+  return await validateChains(supportedChains as unknown as ChainRegistryItem[]);
 }
 
 async function transformChainRegistry({
@@ -129,17 +139,18 @@ async function transformChainRegistry({
   for (const chain of filteredChainRegistry) {
     const chainId = chain.id;
     const isAssetHub = chainId === '1000';
-    registry[chainId] = {};
-    registry[chainId].name = chain.name;
-    registry[chainId].slug = chain.extraInfo?.subscanSlug;
-    registry[chainId].icon = chain.icon;
-    registry[chainId].addressPrefix = chain.substrateInfo.addressPrefix;
-    registry[chainId].providers = getValidWssEndpoints(chain.providers);
-    registry[chainId].alive = chain.chainStatus === 'ACTIVE';
-    registry[chainId].existentialDeposit =
-      chain.substrateInfo.existentialDeposit;
+    registry[chainId] = {
+      name: chain.name,
+      slug: chain.extraInfo?.subscanSlug,
+      icon: chain.icon,
+      addressPrefix: chain.substrateInfo.addressPrefix,
+      providers: getValidWssEndpoints(chain.providers),
+      alive: chain.chainStatus === 'ACTIVE',
+      existentialDeposit: chain.substrateInfo.existentialDeposit,
+      assetsType: null,
+    };
 
-    registry[chainId].assetsType = null;
+
     let api: ApiPromise | null = null;
 
     try {

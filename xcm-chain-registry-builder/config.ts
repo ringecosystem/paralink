@@ -1,4 +1,4 @@
-import { ParaId } from './type';
+import { ParaId } from './types/enum';
 
 // blacklisted ParaIds
 export const BLACKLISTED_PARA_IDS = [

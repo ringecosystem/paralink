@@ -1,6 +1,6 @@
 'use server';
 import { createJsonResourceLoader } from './utils/resource-loader';
-import type { ChainInfo, Asset, ChainConfig, Registry } from './type';
+import type { ChainInfo, Asset, ChainConfig, Registry } from './types/registry';
 
 const CHAIN_INFO_CDN = 'https://content.subwallet.app/api/list/chain';
 const ASSETS_CDN = 'https://content.subwallet.app/api/list/chain-asset';
