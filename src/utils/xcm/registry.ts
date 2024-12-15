@@ -75,8 +75,8 @@ export const getTokenList = ({
   // by native token
   if (sourceChain?.nativeToken?.registeredChains) {
     // filter by target chain id
-    const isNativeToken = !!sourceChain?.nativeToken?.registeredChains?.[targetChainId];
-    if (isNativeToken) {
+    const nativeTokenInTargetChain = sourceChain?.nativeToken?.registeredChains?.[targetChainId];
+    if (nativeTokenInTargetChain) {
       tokenList.push({
         ...sourceChain?.nativeToken,
         assetId: 'Native',
@@ -89,7 +89,8 @@ export const getTokenList = ({
               here: null
             }
           }
-        }
+        },
+        targetXcmLocation: nativeTokenInTargetChain?.xcmLocation
       });
     }
   }
@@ -98,7 +99,10 @@ export const getTokenList = ({
   if (sourceChain?.localAssets) {
     const localAssets = sourceChain?.localAssets?.filter(v => v.registeredChains?.[targetChainId]);
     if (localAssets?.length) {
-      tokenList.push(...localAssets);
+      tokenList.push(...localAssets?.map(v => ({
+        ...v,
+        targetXcmLocation: v.registeredChains?.[targetChainId]?.xcmLocation
+      })));
     }
   }
 

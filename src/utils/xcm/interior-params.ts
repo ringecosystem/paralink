@@ -4,12 +4,14 @@ import type {
   XcmInterior,
   XcmJunction,
   XcmRequestInteriorParams,
-  XcmRequestJunctionParams
+  XcmRequestJunctionParams,
+  XcmV1Location
 } from '@/types/xcm-location';
 
 export function normalizeInteriorItem(
   item: Omit<XcmJunction, 'here'>
 ): XcmRequestInteriorParams {
+
   const normalized: XcmRequestJunctionParams = {};
   // Parachain
   if ('parachain' in item && !isNil(item.parachain)) {
@@ -28,10 +30,10 @@ export function normalizeInteriorItem(
   }
 
   // GeneralKey
-  if ('generalKey' in item && !isNil(item.generalKey)) {
-    if (isGeneralKeyV3(item.generalKey)) {
+  if (isGeneralKeyV3(item)) {
+    if (isGeneralKeyV3(item) && typeof item.generalKey !== 'string') {
       normalized.GeneralKey = item.generalKey;
-    } else {
+    } else if (typeof item.generalKey === 'string') {
       normalized.GeneralKey = {
         length: 2,
         data: item.generalKey?.padEnd(66, '0').toLowerCase()
@@ -55,6 +57,18 @@ export function normalizeInteriorItem(
   }
 
   return normalized;
+}
+
+export function createStandardXcmInteriorByTargetXcmLocation(
+  targetXcmLocation: XcmV1Location
+): {
+  parents: number;
+  interior: XcmRequestInteriorParams | XcmRequestInteriorParams[] | null;
+} {
+  return {
+    parents: targetXcmLocation?.v1?.parents,
+    interior: createStandardXcmInterior(targetXcmLocation?.v1?.interior)
+  }
 }
 
 export function createStandardXcmInterior(

@@ -7,7 +7,6 @@ import { ReserveType } from '@/types/xcm-asset';
 import { areInteriorsEqual } from './interior-match';
 
 import type {
-  GeneralKeyV3,
   XcmInterior,
   XcmJunction
 } from '@/types/xcm-location';
@@ -15,8 +14,8 @@ import type { Asset } from '@/types/xcm-asset';
 import type { XcmV1Location } from '@/types/xcm-location';
 
 function normalizeGeneralKey(key: any): string {
-  if (typeof key === 'string') {
-    return key.toLowerCase();
+  if (typeof key?.generalKey === 'string') {
+    return key?.generalKey?.toLowerCase();
   }
   if (key?.generalKey?.data) {
     return key?.generalKey?.data.substring(0, 6).toLowerCase();

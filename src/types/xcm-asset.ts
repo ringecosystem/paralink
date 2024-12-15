@@ -13,6 +13,7 @@ export type Asset = {
   symbol: string;
   decimals: number;
   xcmLocation: XcmV1Location;
+  targetXcmLocation?: XcmV1Location;
   icon: string;
   reserveType: ReserveType;
   registeredChains?: {
