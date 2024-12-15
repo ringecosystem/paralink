@@ -14,21 +14,55 @@ import type {
 import type { Asset } from '@/types/xcm-asset';
 import type { XcmV1Location } from '@/types/xcm-location';
 
+function normalizeGeneralKey(key: any): string {
+  if (typeof key === 'string') {
+    return key.toLowerCase();
+  }
+  if (key?.generalKey?.data) {
+    return key?.generalKey?.data.substring(0, 6).toLowerCase();
+  }
+  if (key?.length && key?.[0]?.generalKey) {
+    return key?.[0]?.generalKey?.data.substring(0, 6).toLowerCase();
+  }
+  return '';
+}
+
 export const isGeneralKeyV3 = (
-  key: GeneralKeyV3 | string
-): key is GeneralKeyV3 => {
-  return typeof key === 'object' && 'data' in key && 'length' in key;
+  key: XcmJunction
+) => {
+  if (typeof key?.generalKey === 'string') {
+    return true;
+  }
+  if (key?.generalKey?.data) {
+    return true
+  }
+  if (Array.isArray(key)) {
+    return key?.[0]?.generalKey && key?.[0]?.generalKey?.data
+  }
+  return false;
 };
+
+
+const processItem = (item: XcmJunction) => {
+  if (item && isGeneralKeyV3(item)) {
+    return {
+      generalKey: normalizeGeneralKey(item)
+    };
+  }
+
+  return item;
+};
+
 
 export function normalizeInterior(
   interior: XcmInterior | null
 ): XcmJunction[] | null {
   if (!interior) return null;
   if ('here' in interior) return [];
-  if ('x1' in interior && interior.x1) return [interior.x1];
-  if ('x2' in interior && Array.isArray(interior.x2)) return interior.x2;
-  if ('x3' in interior && Array.isArray(interior.x3)) return interior.x3;
-  if ('x4' in interior && Array.isArray(interior.x4)) return interior.x4;
+  if ('x1' in interior && interior.x1) return [processItem(interior.x1)];
+  if ('x2' in interior && Array.isArray(interior.x2)) return interior.x2.map(processItem);
+  if ('x3' in interior && Array.isArray(interior.x3)) return interior.x3.map(processItem);
+  if ('x4' in interior && Array.isArray(interior.x4)) return interior.x4.map(processItem);
   return null;
 }
 
@@ -61,7 +95,6 @@ export function isXcmLocationMatch({
   asset: Asset;
   targetChainId: number;
 }): boolean {
-  console.log('asset', asset);
   const xcmLocation = asset?.xcmLocation?.v1;
 
   if (isDotLocation(asset?.xcmLocation)) {

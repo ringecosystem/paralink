@@ -60,7 +60,9 @@ export const getTokenList = ({
       });
     }
   } else if (targetChain.id === 1000) {
+    console.log('sourceChain', sourceChain);
     const sourceDot = findDotToken(sourceChain);
+    console.log('sourceDot', sourceDot);
     if (sourceDot) tokenList.push(sourceDot);
   } else {
     const sourceDot = findDotToken(sourceChain);

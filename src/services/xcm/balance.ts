@@ -31,10 +31,8 @@ export async function getAssetBalance({
     signal?.throwIfAborted();
 
     if (asset.isNative) {
-      console.log('asset', asset);
       const balancesAll = await api.derive.balances.all(account);
       console.log('balancesAll', balancesAll);
-
       return balancesAll.availableBalance;
     }
 

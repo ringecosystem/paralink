@@ -2463,16 +2463,12 @@
     },
     "localAssets": [
       {
-        "paraID": 2030,
-        "nativeChainID": "bifrost",
         "symbol": "vGLMR",
         "decimals": 18,
-        "xcmV1MultiLocation": "{\"v1\":{\"parents\":1,\"interior\":{\"x2\":[{\"parachain\":2030},[{\"generalKey\":{\"length\":2,\"data\":\"0x0901000000000000000000000000000000000000000000000000000000000000\"}}]]}}}",
-        "asset": {
+        "assetId": {
           "VToken2": "1"
         },
-        "assetHubReserveLocation": "{\"parents\":\"1\",\"interior\":{\"X1\":{\"Parachain\":\"1000\"}}}",
-        "originChainReserveLocation": "{\"parents\":\"0\",\"interior\":{\"Here\":\"\"}}",
+        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vglmr.png",
         "xcmLocation": {
           "v1": {
             "parents": 1,
@@ -2494,7 +2490,6 @@
           }
         },
         "reserveType": "local",
-        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vglmr.png",
         "registeredChains": {
           "2004": {
             "assetId": "204507659831918931608354793288110796652",
@@ -2545,16 +2540,12 @@
         }
       },
       {
-        "paraID": 2030,
-        "nativeChainID": "bifrost",
         "symbol": "vFIL",
         "decimals": 18,
-        "xcmV1MultiLocation": "{\"v1\":{\"parents\":1,\"interior\":{\"x2\":[{\"parachain\":2030},[{\"generalKey\":{\"length\":2,\"data\":\"0x0904000000000000000000000000000000000000000000000000000000000000\"}}]]}}}",
-        "asset": {
+        "assetId": {
           "VToken2": "4"
         },
-        "assetHubReserveLocation": "{\"parents\":\"1\",\"interior\":{\"X1\":{\"Parachain\":\"1000\"}}}",
-        "originChainReserveLocation": "{\"parents\":\"0\",\"interior\":{\"Here\":\"\"}}",
+        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vfil.png",
         "xcmLocation": {
           "v1": {
             "parents": 1,
@@ -2576,7 +2567,6 @@
           }
         },
         "reserveType": "local",
-        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vfil.png",
         "registeredChains": {
           "2004": {
             "assetId": "272547899416482196831721420898811311297",
@@ -2627,16 +2617,12 @@
         }
       },
       {
-        "paraID": 2030,
-        "nativeChainID": "bifrost",
         "symbol": "BNCS",
         "decimals": 12,
-        "xcmV1MultiLocation": "{\"v1\":{\"parents\":1,\"interior\":{\"x2\":[{\"parachain\":2030},[{\"generalKey\":{\"length\":2,\"data\":\"0x0809000000000000000000000000000000000000000000000000000000000000\"}}]]}}}",
-        "asset": {
+        "assetId": {
           "Token2": "9"
         },
-        "assetHubReserveLocation": "{\"parents\":\"1\",\"interior\":{\"X1\":{\"Parachain\":\"1000\"}}}",
-        "originChainReserveLocation": "{\"parents\":\"0\",\"interior\":{\"Here\":\"\"}}",
+        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-bncs.png",
         "xcmLocation": {
           "v1": {
             "parents": 1,
@@ -2658,7 +2644,6 @@
           }
         },
         "reserveType": "local",
-        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-bncs.png",
         "registeredChains": {
           "2004": {
             "assetId": "142155548796783636521833385094843759961",
@@ -2686,16 +2671,12 @@
         }
       },
       {
-        "paraID": 2030,
-        "nativeChainID": "bifrost",
         "symbol": "FIL",
         "decimals": 18,
-        "xcmV1MultiLocation": "{\"v1\":{\"parents\":1,\"interior\":{\"x2\":[{\"parachain\":2030},[{\"generalKey\":{\"length\":2,\"data\":\"0x0804000000000000000000000000000000000000000000000000000000000000\"}}]]}}}",
-        "asset": {
+        "assetId": {
           "Token2": "4"
         },
-        "assetHubReserveLocation": "{\"parents\":\"1\",\"interior\":{\"X1\":{\"Parachain\":\"1000\"}}}",
-        "originChainReserveLocation": "{\"parents\":\"0\",\"interior\":{\"Here\":\"\"}}",
+        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vfil.png",
         "xcmLocation": {
           "v1": {
             "parents": 1,
@@ -2717,7 +2698,6 @@
           }
         },
         "reserveType": "local",
-        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vfil.png",
         "registeredChains": {
           "2004": {
             "assetId": "144012926827374458669278577633504620722",
@@ -2768,16 +2748,12 @@
         }
       },
       {
-        "paraID": 2030,
-        "nativeChainID": "bifrost",
         "symbol": "vMANTA",
         "decimals": 18,
-        "xcmV1MultiLocation": "{\"v1\":{\"parents\":1,\"interior\":{\"x2\":[{\"parachain\":2030},[{\"generalKey\":{\"length\":2,\"data\":\"0x0908000000000000000000000000000000000000000000000000000000000000\"}}]]}}}",
-        "asset": {
+        "assetId": {
           "VToken2": "8"
         },
-        "assetHubReserveLocation": "{\"parents\":\"1\",\"interior\":{\"X1\":{\"Parachain\":\"1000\"}}}",
-        "originChainReserveLocation": "{\"parents\":\"0\",\"interior\":{\"Here\":\"\"}}",
+        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vmanta.png",
         "xcmLocation": {
           "v1": {
             "parents": 1,
@@ -2799,7 +2775,6 @@
           }
         },
         "reserveType": "local",
-        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vmanta.png",
         "registeredChains": {
           "2004": {
             "assetId": "289989900872525819559124583375550296953",
@@ -2850,16 +2825,12 @@
         }
       },
       {
-        "paraID": 2030,
-        "nativeChainID": "bifrost",
         "symbol": "PEN",
         "decimals": 12,
-        "xcmV1MultiLocation": "{\"v1\":{\"parents\":1,\"interior\":{\"x2\":[{\"parachain\":2030},[{\"palletInstance\":10}]]}}}",
-        "asset": {
+        "assetId": {
           "Token2": "12"
         },
-        "assetHubReserveLocation": "{\"parents\":\"1\",\"interior\":{\"X1\":{\"Parachain\":\"1000\"}}}",
-        "originChainReserveLocation": "{\"parents\":\"0\",\"interior\":{\"Here\":\"\"}}",
+        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/pendulum-native-pen.png",
         "xcmLocation": {
           "v1": {
             "parents": 1,
@@ -2878,20 +2849,15 @@
           }
         },
         "reserveType": "local",
-        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/pendulum-native-pen.png",
         "registeredChains": {}
       },
       {
-        "paraID": 2030,
-        "nativeChainID": "bifrost",
         "symbol": "vASTR",
         "decimals": 18,
-        "xcmV1MultiLocation": "{\"v1\":{\"parents\":1,\"interior\":{\"x2\":[{\"parachain\":2030},[{\"generalKey\":{\"length\":2,\"data\":\"0x0903000000000000000000000000000000000000000000000000000000000000\"}}]]}}}",
-        "asset": {
+        "assetId": {
           "VToken2": "3"
         },
-        "assetHubReserveLocation": "{\"parents\":\"1\",\"interior\":{\"X1\":{\"Parachain\":\"1000\"}}}",
-        "originChainReserveLocation": "{\"parents\":\"0\",\"interior\":{\"Here\":\"\"}}",
+        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vastr.png",
         "xcmLocation": {
           "v1": {
             "parents": 1,
@@ -2913,7 +2879,6 @@
           }
         },
         "reserveType": "local",
-        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vastr.png",
         "registeredChains": {
           "2004": {
             "assetId": "114018676402354620972806895487280206446",
@@ -2987,16 +2952,12 @@
         }
       },
       {
-        "paraID": 2030,
-        "nativeChainID": "bifrost",
         "symbol": "vDOT",
         "decimals": 10,
-        "xcmV1MultiLocation": "{\"v1\":{\"parents\":1,\"interior\":{\"x2\":[{\"parachain\":2030},[{\"generalKey\":{\"length\":2,\"data\":\"0x0900000000000000000000000000000000000000000000000000000000000000\"}}]]}}}",
-        "asset": {
+        "assetId": {
           "VToken2": "0"
         },
-        "assetHubReserveLocation": "{\"parents\":\"1\",\"interior\":{\"X1\":{\"Parachain\":\"1000\"}}}",
-        "originChainReserveLocation": "{\"parents\":\"0\",\"interior\":{\"Here\":\"\"}}",
+        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vdot.png",
         "xcmLocation": {
           "v1": {
             "parents": 1,
@@ -3018,7 +2979,6 @@
           }
         },
         "reserveType": "local",
-        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vdot.png",
         "registeredChains": {
           "2004": {
             "assetId": "29085784439601774464560083082574142143",
@@ -3092,16 +3052,12 @@
         }
       },
       {
-        "paraID": 2030,
-        "nativeChainID": "bifrost",
         "symbol": "vsDOT",
         "decimals": 10,
-        "xcmV1MultiLocation": "{\"v1\":{\"parents\":1,\"interior\":{\"x2\":[{\"parachain\":2030},{\"generalKey\":\"0x0403\"}]}}}",
-        "asset": {
+        "assetId": {
           "VSToken2": "0"
         },
-        "assetHubReserveLocation": "{\"parents\":\"1\",\"interior\":{\"X1\":{\"Parachain\":\"1000\"}}}",
-        "originChainReserveLocation": "{\"parents\":\"0\",\"interior\":{\"Here\":\"\"}}",
+        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vsdot.png",
         "xcmLocation": {
           "v1": {
             "parents": 1,
@@ -3118,7 +3074,6 @@
           }
         },
         "reserveType": "local",
-        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vsdot.png",
         "registeredChains": {
           "2006": {
             "assetId": "18446744073709551626",

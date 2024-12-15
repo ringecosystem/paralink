@@ -1,3 +1,4 @@
+import { XcmV3MultiLocation } from '@/services/xcm/get-acceptable-payment-token';
 import type { XcmV1Location } from './xcm-location';
 
 export enum ReserveType {
@@ -42,7 +43,8 @@ export type Chain = {
   evmChainId?: number;
   nativeToken: NativeToken;
   xcAssetsData?: XcAssetsData;
-  localAssets?: (Asset & { id: number })[]
+  localAssets?: (Asset & { id: number })[];
+  xcmPaymentAcceptTokens?: XcmV3MultiLocation[];
 };
 
 export type ChainConfig = Chain & {

@@ -10,6 +10,7 @@ export interface XcmJunction {
   palletInstance?: number;
   generalIndex?: number | string;
   generalKey?: GeneralKeyV3 | string;
+  [key: number]: GeneralKeyV3;
   accountKey20?: {
     network: string | null;
     key: string;
@@ -38,7 +39,7 @@ export type XcmInterior = {
 export type XcmV1Location = {
   v1: {
     parents: number;
-    interior: XcmInterior;
+    interior: XcmInterior
   };
 };
 

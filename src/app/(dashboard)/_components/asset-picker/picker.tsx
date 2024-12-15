@@ -10,7 +10,7 @@ import { useNumberInput } from '@/hooks/number-input';
 import { useWalletConnection } from '@/hooks/use-wallet-connection';
 import { parseUnits } from '@/utils/format';
 import { useTokenBalances } from './_hooks/use-token-balances';
-import { getAcceptablePaymentTokens } from '@/services/xcm/get-acceptable-payment-token';
+import { XcmV3MultiLocation } from '@/services/xcm/get-acceptable-payment-token';
 import { checkAssetHubAcceptablePaymentToken } from '@/services/xcm/check-assethub-acceptable-payment-token';
 import { AssetPickerLoading } from './loading';
 import { BalanceWithSymbol, AssetPickerList } from './list';
@@ -29,6 +29,7 @@ export interface PickerProps {
   tokenBalances?: BalanceWithSymbol[];
   sourceChainId?: number;
   targetChainId?: number;
+  acceptablePaymentTokens?: XcmV3MultiLocation[];
   crossFee: BN;
   isCrossFeeLoading: boolean;
   maxBalanceBN: BN;
@@ -45,6 +46,7 @@ export function Picker({
   tokens,
   sourceChainId,
   targetChainId,
+  acceptablePaymentTokens,
   crossFee,
   isCrossFeeLoading,
   maxBalanceBN,
@@ -156,12 +158,8 @@ export function Picker({
             setSelectedToken(validTokens[0]);
           }
         } else {
-          const acceptablePaymentTokens = await getAcceptablePaymentTokens({
-            api: targetChainApi
-          });
           console.log('acceptablePaymentTokens', acceptablePaymentTokens);
           console.log('tokens', tokens);
-
           if (acceptablePaymentTokens?.length) {
             const matchTokens = tokens.filter((asset) => {
               const isSupported = acceptablePaymentTokens.some((tokenInfo) =>
@@ -190,7 +188,7 @@ export function Picker({
       }
     };
     initTokens();
-  }, [tokens, setSelectedToken, sourceChainId, getValidApi, targetChainId]);
+  }, [tokens, setSelectedToken, sourceChainId, getValidApi, targetChainId, acceptablePaymentTokens]);
 
   useEffect(() => {
     let isInvalid = false;

@@ -1,10 +1,6 @@
 import { isGeneralKeyV3, normalizeInterior } from './helper';
-import type { GeneralKeyV3, XcmJunction } from '@/types/xcm-location';
+import type { XcmJunction } from '@/types/xcm-location';
 
-function normalizeGeneralKey(key: string | GeneralKeyV3): string {
-  const rawKey = isGeneralKeyV3(key) ? key.data : key;
-  return rawKey.padEnd(66, '0').toLowerCase();
-}
 
 function isBifrostSpecialInteriorMatch(
   a: XcmJunction | XcmJunction[] | null,
@@ -19,9 +15,7 @@ function isBifrostSpecialInteriorMatch(
     b.length === 2
   ) {
     if (a?.[0]?.generalKey && b?.[1]?.generalKey) {
-      const keyA = normalizeGeneralKey(a?.[0]?.generalKey);
-      const keyB = normalizeGeneralKey(b?.[1]?.generalKey);
-      return keyA === keyB;
+      return (a[0]?.generalKey as string).toLowerCase() === (b[1]?.generalKey as string).toLowerCase();
     }
   }
 
@@ -34,9 +28,7 @@ function isBifrostSpecialInteriorMatch(
     const isSourceBifrost = Number(a[0]?.parachain) === 2030;
 
     if (isSourceBifrost && a[1]?.generalKey && b[1]?.generalKey) {
-      const keyA = normalizeGeneralKey(a[1]?.generalKey);
-      const keyB = normalizeGeneralKey(b[1]?.generalKey);
-      return keyA.toLowerCase() === keyB.toLowerCase();
+      return (a[1]?.generalKey as string).toLowerCase() === (b[1]?.generalKey as string).toLowerCase();
     }
   }
 
@@ -49,6 +41,8 @@ export function areInteriorsEqual(
 ): boolean {
   const normalizedA = normalizeInterior(a as XcmJunction);
   const normalizedB = normalizeInterior(b as XcmJunction);
+
+
 
   if (normalizedA === null || normalizedB === null)
     return normalizedA === normalizedB;

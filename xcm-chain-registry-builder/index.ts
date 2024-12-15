@@ -188,10 +188,12 @@ async function transformChainRegistry({
 
       if (processedAssets && processedAssets.length > 0) {
         const localAssets = processedAssets.map(asset => ({
-          ...asset,
+          symbol: asset.symbol,
+          decimals: asset.decimals,
+          assetId: asset.asset,
+          icon: findIconBySymbol(asset.symbol, assetsInfoArray),
           xcmLocation: JSON.parse(asset.xcmV1MultiLocation),
           reserveType: ReserveType.Local,
-          icon: findIconBySymbol(asset.symbol, assetsInfoArray)
         }));
 
         const enhancedLocalAssets = localAssets.map(asset => {

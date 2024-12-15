@@ -105,7 +105,6 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
     };
   }, [sourceChain, targetChain, setTokens]);
 
-  console.log('tokens', tokens);
 
   const {
     extrinsic,
@@ -334,6 +333,7 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
               onChangeTokenBalance={setSelectedTokenBalance}
               sourceChainId={sourceChainId}
               targetChainId={targetChainId}
+              acceptablePaymentTokens={targetChain?.xcmPaymentAcceptTokens}
               onChangeInvalid={setIsInvalid}
               isLoading={isLoadingCrossChain}
               error={
@@ -373,10 +373,10 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
                 xcmTokenInfo={
                   selectedToken?.symbol && selectedToken?.decimals
                     ? {
-                        symbol: selectedToken?.symbol,
-                        decimals: selectedToken?.decimals,
-                        icon: selectedToken?.icon
-                      }
+                      symbol: selectedToken?.symbol,
+                      decimals: selectedToken?.decimals,
+                      icon: selectedToken?.icon
+                    }
                     : undefined
                 }
               />
