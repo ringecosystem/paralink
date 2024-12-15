@@ -253,11 +253,10 @@ async function transformChainRegistry({
           }
         });
     } else {
-      // 找出 xcAssetsData 中 paraID 为 chainId 的 asset
       const xcAssetsData = chain.xcAssetsData?.filter(
         (asset) => asset.paraID === Number(chainId)
       );
-      // 找出其他 chain 中 xcAssetsData 中 paraID 为 chainId 并且 location 一样的
+
       if (xcAssetsData && xcAssetsData.length > 0) {
         registry[chainId].localAssets = {};
 
@@ -275,6 +274,7 @@ async function transformChainRegistry({
               registry[chainId].localAssets[v.id] = [];
               destAssetsInfo?.forEach((asset) => {
                 xcAssetsData?.forEach((data) => {
+
                   if (
                     isSameLocation(
                       asset.xcmV1MultiLocation,
@@ -300,7 +300,7 @@ async function transformChainRegistry({
                 paraId: chainId
               }) &&
               chain?.nativeToken?.symbol?.toLowerCase() ===
-                asset?.symbol?.toLowerCase();
+              asset?.symbol?.toLowerCase();
             return hasParachain;
           });
 

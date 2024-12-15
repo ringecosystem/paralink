@@ -16,6 +16,7 @@
     "@polkadot/api": "^15.0.1",
     "@substrate/ss58-registry": "^1.51.0",
     "fs-extra": "^11.2.0",
+    "lodash": "^4.17.21",
     "lodash-es": "^4.17.21",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
