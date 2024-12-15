@@ -1,7 +1,6 @@
 import { getSubscanBaseUrl } from '@/config/subscan-api';
 import { SubscanExtrinsicResponse } from '@/types/subscan';
 
-// 定义结果枚举
 export enum XcmMessageStatus {
   SUCCESS = 'SUCCESS',
   INVALID_PARA_ID = 'INVALID_PARA_ID',
@@ -10,7 +9,6 @@ export enum XcmMessageStatus {
   UNKNOWN_ERROR = 'UNKNOWN_ERROR'
 }
 
-// 定义返回类型接口
 export interface XcmMessageResult {
   status: XcmMessageStatus;
   message: string;
@@ -42,14 +40,12 @@ async function fetchXcmMessageHash(
       next: { revalidate: 0 }
     });
 
-    // 添加响应状态检查
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
     return response.json();
   } catch (error) {
-    // 不再抛出错误，而是返回一个表示临时错误的响应
     return {
       code: -1,
       message: error instanceof Error ? error.message : 'Network error',
