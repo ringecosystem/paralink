@@ -8,11 +8,9 @@ import {
   connectToChain,
   getValidWssEndpoints,
 } from './utils/network/endpoints';
-import { findIconBySymbol, filterXcmTokensByString } from './utils/xcm/assets';
+import { findIconBySymbol, filterXcmTokensByString, processAssetHubAssets, processAssetHubAssetsWithRegisteredChains } from './utils/xcm/assets';
 import {
-  isSameLocation,
   determineReserveType,
-  getGeneralIndex,
   hasParachainInLocation
 } from './utils/xcm/location';
 import { getSupportedParaChains } from './utils/chain/parachain';
@@ -24,8 +22,7 @@ import {
   fetchChainsInfo,
   fetchAssetsInfo
 } from './service';
-import { SUPPORTED_XCM_PARA_IDS } from './config';
-import { ChainRegistryItem } from './types/transformParachains';
+import { ChainRegistry as ChainRegistryItem } from './types/transformParachains';
 
 async function buildChainRegistry({
   supportedParaChains,
@@ -75,40 +72,6 @@ async function buildChainRegistry({
       };
     })
     ?.filter((v): v is NonNullable<typeof v> => !!v);
-
-  // const validateChain = async (chain: (typeof supportedChains)[0]) => {
-  //   if (SUPPORTED_XCM_PARA_IDS.includes(Number(chain.id))) {
-  //     return chain;
-  //   }
-  //   const validProviders = getValidWssEndpoints(chain.providers);
-  //   if (!validProviders.length) {
-  //     console.warn(`No valid WebSocket endpoints found for chain ${chain.id}`);
-  //     return null;
-  //   }
-  //   let api: ApiPromise | null = null;
-
-  //   try {
-  //     api = await connectToChain(validProviders);
-  //     const hasXcmPayment = typeof api?.call?.xcmPaymentApi !== 'undefined';
-  //     return hasXcmPayment ? chain : null;
-  //   } catch (error) {
-  //     console.error(`Error validating chain ${chain.id}:`, error);
-  //     return null;
-  //   } finally {
-  //     if (api) {
-  //       try {
-  //         await api.disconnect();
-  //       } catch (error) {
-  //         console.error(`Error disconnecting from chain ${chain.id}:`, error);
-  //       }
-  //     }
-  //   }
-  // };
-
-
-  // const validatedChains = (
-  //   await Promise.all(supportedChains?.map(validateChain))
-  // )?.filter((v): v is NonNullable<typeof v> => !!v);
 
   return await validateChains(supportedChains as unknown as ChainRegistryItem[]);
 }
@@ -196,110 +159,78 @@ async function transformChainRegistry({
       symbol: chain.nativeToken.symbol,
       decimals: chain.nativeToken.decimals,
       icon: chain.nativeToken.icon,
+      isNative: true,
+      reserveType: ReserveType.Local,
+      xcmLocation: {
+        v1: {
+          parents: 0,
+          interior: {
+            here: null
+          }
+        }
+      },
       registeredChains: null
     };
 
+
+    const peerChains = filteredChainRegistry?.filter((v) => v.id !== chainId)
+
     if (isAssetHub) {
-      registry[chainId].localAssets = {};
-      filteredChainRegistry
-        ?.filter((v) => v.id !== '1000')
-        ?.forEach((v) => {
-          const targetParaId = v?.id;
-
-          if (!targetParaId) return;
-
-          if (
-            registry?.[chainId]?.localAssets &&
-            !registry[chainId].localAssets[targetParaId]
-          ) {
-            registry[chainId].localAssets[targetParaId] = [];
-          }
-          const destAssetsInfo = v.xcAssetsData?.filter((asset) => {
-            const hasParachain = hasParachainInLocation({
-              multiLocationStr: asset.xcmV1MultiLocation,
-              paraId: '1000'
-            });
-            if (!hasParachain) return false;
-            const generalIndex = getGeneralIndex(asset.xcmV1MultiLocation);
-            if (!generalIndex) return false;
-            return Object.keys(chain.assetsInfo || {}).includes(generalIndex);
-          });
-          if (destAssetsInfo && destAssetsInfo.length > 0) {
-            const processedAssets = destAssetsInfo.map((asset) => {
-              const generalIndex = getGeneralIndex(asset.xcmV1MultiLocation);
-              const assetInfo = chain.assetsInfo?.[generalIndex || ''];
-              return {
-                assetId: generalIndex,
-                symbol: assetInfo || asset.symbol,
-                decimals: asset.decimals,
-                reserveType: ReserveType.Local,
-                xcmLocation: {
-                  v1: {
-                    parents: 0,
-                    interior: {
-                      x3: [
-                        {
-                          parachain: Number(chain.id)
-                        },
-                        { palletInstance: 50 },
-                        { generalIndex: generalIndex }
-                      ]
-                    }
-                  }
-                },
-                icon: findIconBySymbol(
-                  assetInfo || asset.symbol,
-                  assetsInfoArray
-                )
-              };
-            });
-            if (
-              registry?.[chainId]?.localAssets?.[targetParaId] &&
-              processedAssets
-            ) {
-              registry[chainId].localAssets[targetParaId].push(
-                ...processedAssets
-              );
-            }
-          }
-        });
-    } else {
-      const xcAssetsData = chain.xcAssetsData?.filter(
-        (asset) => asset.paraID === Number(chainId)
-      );
-
-      if (xcAssetsData && xcAssetsData.length > 0) {
-        registry[chainId].localAssets = {};
-
-        filteredChainRegistry
-          ?.filter((v) => v.id !== chainId)
-          ?.forEach((v) => {
-            const destAssetsInfo = v.xcAssetsData?.filter(
-              (asset) => asset.paraID === Number(chainId)
-            );
-            if (
-              registry?.[chainId]?.localAssets &&
-              destAssetsInfo &&
-              destAssetsInfo.length > 0
-            ) {
-              registry[chainId].localAssets[v.id] = [];
-              destAssetsInfo?.forEach((asset) => {
-                xcAssetsData?.forEach((data) => {
-
-                  if (
-                    isSameLocation(
-                      asset.xcmV1MultiLocation,
-                      data.xcmV1MultiLocation
-                    ) &&
-                    registry?.[chainId]?.localAssets?.[v.id]
-                  ) {
-                    registry[chainId].localAssets[v.id]!.push(data);
-                  }
-                });
-              });
-            }
-          });
+      const processedAssets = processAssetHubAssets(chain, peerChains, assetsInfoArray);
+      const enhancedAssets = processAssetHubAssetsWithRegisteredChains(processedAssets, peerChains);
+      if (registry[chainId]) {
+        registry[chainId].localAssets = enhancedAssets;
       }
+    } else {
+      const processedAssets = chain.xcAssetsData?.filter(
+        (asset) => asset.paraID === Number(chainId)
+      )?.filter(v => v.symbol.toLowerCase() !== chain.nativeToken.symbol.toLowerCase())
+
+      if (processedAssets && processedAssets.length > 0) {
+        const localAssets = processedAssets.map(asset => ({
+          ...asset,
+          xcmLocation: JSON.parse(asset.xcmV1MultiLocation),
+          reserveType: ReserveType.Local,
+          icon: findIconBySymbol(asset.symbol, assetsInfoArray)
+        }));
+
+        const enhancedLocalAssets = localAssets.map(asset => {
+          const registeredChains = {};
+          peerChains
+            ?.forEach(peerChain => {
+              if (!peerChain.xcAssetsData || peerChain.xcAssetsData.length === 0) {
+                return;
+              }
+              const matchedAsset = peerChain.xcAssetsData?.find(xcAsset =>
+                xcAsset.symbol.toLowerCase() === asset.symbol.toLowerCase() &&
+                hasParachainInLocation({
+                  multiLocationStr: JSON.stringify(xcAsset.xcmV1MultiLocation),
+                  paraId: chainId
+                })
+              );
+              if (matchedAsset) {
+                registeredChains[peerChain.id] = {
+                  assetId: matchedAsset.asset,
+                  symbol: matchedAsset.symbol,
+                  decimals: matchedAsset.decimals,
+                  icon: asset.icon,
+                  isNative: false,
+                  reserveType: ReserveType.Local,
+                  xcmLocation: JSON.parse(matchedAsset.xcmV1MultiLocation)
+                };
+              }
+            });
+
+          return {
+            ...asset,
+            registeredChains
+          };
+        });
+        registry[chainId].localAssets = enhancedLocalAssets;
+      }
+
+
+
 
       filteredChainRegistry
         ?.filter((v) => v.id !== chainId)
@@ -396,6 +327,18 @@ async function init() {
     chainsInfoArray,
     assetsInfoArray
   });
+  fs.writeJson(
+    path.join(__dirname, './dist/registry.json'),
+    validatedChains,
+    { spaces: 2 }
+  )
+    .then(() => {
+      console.log('Validated chain registry file created successfully!');
+    })
+    .catch((err) => {
+      console.error('Failed to write validated chain registry file:', err);
+    });
+
 
   const transformedJson = await transformChainRegistry({
     originalChainRegistry: validatedChains,

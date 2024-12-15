@@ -46,7 +46,9 @@ export const getTokenList = ({
   targetChain: ChainConfig;
 }) => {
   const tokenList: Asset[] = [];
+  const targetChainId = targetChain?.id;
 
+  // get dot token
   if (sourceChain.id === 1000) {
     const targetDot = findDotToken(targetChain);
     if (targetDot) {
@@ -68,23 +70,44 @@ export const getTokenList = ({
     }
   }
 
-  const targetChainId = targetChain?.id;
-  if (sourceChain.id === 1000) {
-    const tokens = sourceChain?.localAssets?.[targetChainId];
-    if (tokens) {
-      tokenList.push(...tokens);
-    }
-  } else {
-    const nativeToken =
-      sourceChain?.nativeToken?.registeredChains?.[targetChainId];
-    const xcAssetsData = sourceChain?.xcAssetsData?.[targetChainId];
-
-    if (nativeToken) {
-      tokenList.push({ ...nativeToken, isNative: true });
-    }
-    if (Array.isArray(xcAssetsData) && xcAssetsData.length) {
-      tokenList.push(...xcAssetsData);
+  // by native token
+  if (sourceChain?.nativeToken?.registeredChains) {
+    // filter by target chain id
+    const isNativeToken = !!sourceChain?.nativeToken?.registeredChains?.[targetChainId];
+    if (isNativeToken) {
+      tokenList.push({
+        ...sourceChain?.nativeToken,
+        assetId: 'Native',
+        isNative: true,
+        reserveType: ReserveType.Foreign,
+        xcmLocation: {
+          v1: {
+            parents: 1,
+            interior: {
+              here: null
+            }
+          }
+        }
+      });
     }
   }
+
+  // by local assets
+  if (sourceChain?.localAssets) {
+    const localAssets = sourceChain?.localAssets?.filter(v => v.registeredChains?.[targetChainId]);
+    if (localAssets?.length) {
+      tokenList.push(...localAssets);
+    }
+  }
+
+  if (sourceChain?.xcAssetsData) {
+    const targetChainAssets = sourceChain?.xcAssetsData?.[targetChainId];
+    if (targetChainAssets?.length) {
+      tokenList.push(...targetChainAssets);
+    }
+  }
+
+
+
   return tokenList;
 };

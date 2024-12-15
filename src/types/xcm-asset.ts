@@ -14,6 +14,9 @@ export type Asset = {
   xcmLocation: XcmV1Location;
   icon: string;
   reserveType: ReserveType;
+  registeredChains?: {
+    [chainId: string]: Asset;
+  };
 };
 
 export type NativeToken = {
@@ -39,9 +42,7 @@ export type Chain = {
   evmChainId?: number;
   nativeToken: NativeToken;
   xcAssetsData?: XcAssetsData;
-  localAssets?: {
-    [chainId: string]: Asset[];
-  };
+  localAssets?: (Asset & { id: number })[]
 };
 
 export type ChainConfig = Chain & {

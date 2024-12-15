@@ -1,32 +1,11 @@
-import { ChainStatus } from "./enum";
-import { XcmV1Location } from "./xcm-location";
-
-
-
-
-export interface SubstrateInfo {
-    paraId: string;
-    addressPrefix: number;
-    existentialDeposit: string;
-    blockExplorer?: string;
-}
-
-export interface Provider {
-    name?: string;
-    url: string;
-}
-
-export interface AssetsInfo {
-    [key: string]: string;
-}
-
-
-export interface XcmAssetData {
+export interface XcAssetData {
     paraID: number;
-    asset: string;
+    nativeChainID: string | null;
     symbol: string;
     decimals: number;
     xcmV1MultiLocation: string;
+    asset: string | number | { Token2?: string | number; VToken2?: string | number; VSToken2?: string | number; Native?: string };
+    assetHubReserveLocation: string;
     originChainReserveLocation?: string;
 }
 
@@ -37,84 +16,69 @@ export interface NativeToken {
 }
 
 export interface EvmInfo {
-    evmChainId: string;
+    evmChainId: number;
     blockExplorer: string;
+    existentialDeposit: string;
+    symbol: string;
+    decimals: number;
+    supportSmartContract: string[];
+    abiExplorer: string;
 }
 
-export interface ChainInfo {
-    id: string;
+export interface SubstrateInfo {
+    relaySlug: string;
+    paraId: number;
+    genesisHash: string;
+    addressPrefix: number;
+    chainType: string;
+    crowdloanUrl: string | null;
+    blockExplorer: string;
+    existentialDeposit: string;
+    symbol: string;
+    decimals: number;
+    hasNativeNft: boolean;
+    supportStaking: boolean;
+    supportSmartContract: string[] | null;
+    crowdloanParaId: number | null;
+    crowdloanFunds: Array<{
+        relayChain: string;
+        fundId: string;
+        paraId: number;
+        status: string;
+        startTime: string;
+        endTime: string;
+        auctionIndex: number;
+        firstPeriod: number;
+        lastPeriod: number;
+    }>;
+}
+
+export interface ExtraInfo {
+    subscanSlug: string;
+    chainBalanceSlug: string;
+}
+
+export interface ChainRegistry {
+    slug: string;
     name: string;
+    isTestnet: boolean;
+    chainStatus: string;
+    icon: string;
+    providers: {
+        [key: string]: string;
+    };
+    evmInfo: EvmInfo | null;
     substrateInfo: SubstrateInfo;
-    providers: string[];
-    assetsInfo: AssetsInfo;
-    xcAssetsData: XcmAssetData[];
+    extraInfo: ExtraInfo;
+    bitcoinInfo: null;
+    tonInfo: null;
+    id: string;
+    assetsInfo: {
+        [key: string]: string;
+    };
+    xcAssetsData: XcAssetData[];
     nativeToken: NativeToken;
     isEvm: boolean;
-    evmInfo?: EvmInfo;
-    chainStatus: ChainStatus;
-    icon?: string;
-    extraInfo?: {
-        subscanSlug?: string;
-    };
 }
 
-export interface SupportedChains {
-    supportedChains: ChainInfo[];
-}
-export interface ChainRegistryItem {
-    id: string;
-    name: string;
-    slug?: string;
-    icon?: string;
-    addressPrefix: number;
-    providers: Record<string, string>;
-    alive: boolean;
-    existentialDeposit: string;
-    assetsType: 'assets' | 'tokens' | null;
-    isEvm: boolean;
-    explorer?: string;
-    evmChainId?: number;
-    nativeToken: {
-        symbol: string;
-        decimals: number;
-        icon: string;
-        registeredChains: {
-            [paraId: string]: {
-                assetId: string;
-                symbol: string;
-                decimals: number;
-                isNative: boolean;
-                reserveType: string;
-                icon: string;
-                xcmLocation: XcmV1Location;
-            };
-        } | null;
-    };
-    localAssets?: {
-        [paraId: string]: Array<{
-            assetId: string;
-            symbol: string;
-            decimals: number;
-            reserveType: string;
-            xcmLocation: XcmV1Location;
-            icon: string;
-        }>;
-    };
-    xcmPaymentAcceptTokens?: string[];
-    xcAssetsData?: {
-        [paraId: string]: Array<{
-            assetId: string;
-            symbol: string;
-            decimals: number;
-            xcmLocation: XcmV1Location;
-            reserveType: string;
-            icon: string;
-        }>;
-    };
-}
-
-export interface TransformedChainRegistry {
-    [chainId: string]: ChainRegistryItem;
-}
-
-
+export type Registry = ChainRegistry[];

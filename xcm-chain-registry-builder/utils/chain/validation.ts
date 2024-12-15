@@ -3,8 +3,8 @@ import { getValidWssEndpoints, connectToChain, disconnectChain } from '../networ
 
 import { SUPPORTED_XCM_PARA_IDS } from '../../config';
 import type { BN } from '@polkadot/util';
-import type { ChainInfo, ChainConfig, ParaChainConfig } from '../../types/registry';
-import { ChainRegistryItem } from '../../types/transformParachains';
+import type { ChainInfo, ChainConfig } from '../../types/registry';
+import { ChainRegistry } from '../../types/transformParachains';
 
 interface HrmpChannel {
     sender: number;
@@ -146,7 +146,7 @@ export async function filterHrmpConnections({
 
 
 
-export async function validateChains(supportedChains: ChainRegistryItem[]): Promise<ChainRegistryItem[]> {
+export async function validateChains(supportedChains: ChainRegistry[]): Promise<ChainRegistry[]> {
     const validatedChains = await Promise.all(
         supportedChains?.map(chain => validateSingleChain(chain))
     );
@@ -155,7 +155,7 @@ export async function validateChains(supportedChains: ChainRegistryItem[]): Prom
 }
 
 
-async function validateSingleChain(chain: ChainRegistryItem): Promise<ChainRegistryItem | null> {
+async function validateSingleChain(chain: ChainRegistry): Promise<ChainRegistry | null> {
     if (isPreApprovedChain(chain.id)) {
         return chain;
     }
@@ -183,9 +183,9 @@ function hasValidProviders(providers: string[], chainId: string): boolean {
 
 
 async function validateXcmSupport(
-    chain: ChainRegistryItem,
+    chain: ChainRegistry,
     providers: string[]
-): Promise<ChainRegistryItem | null> {
+): Promise<ChainRegistry | null> {
     let api: ApiPromise | null = null;
 
     try {
@@ -202,8 +202,8 @@ async function validateXcmSupport(
 
 async function checkXcmPaymentSupport(
     api: ApiPromise,
-    chain: ChainRegistryItem
-): Promise<ChainRegistryItem | null> {
+    chain: ChainRegistry
+): Promise<ChainRegistry | null> {
     const hasXcmPayment = typeof api?.call?.xcmPaymentApi !== 'undefined';
     return hasXcmPayment ? chain : null;
 }

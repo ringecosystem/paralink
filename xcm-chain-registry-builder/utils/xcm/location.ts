@@ -72,8 +72,13 @@ export function hasParachainInLocation({
     multiLocationStr: string;
     paraId: string;
 }): boolean {
+
     try {
-        const multiLocation = JSON.parse(multiLocationStr);
+        let multiLocation: any;
+        multiLocation = JSON.parse(multiLocationStr);
+        if (typeof multiLocation === 'string') {
+            multiLocation = JSON.parse(multiLocation);
+        }
         const interior = multiLocation.v1.interior;
         const locationArray =
             interior.x1 || interior.x2 || interior.x3 || interior.x4 || [];

@@ -1,4 +1,5 @@
 import { ChainStatus, ReserveType } from "./enum";
+import { XcmV1Location } from "./xcm-location";
 
 export interface ChainInfo {
     slug: string;
@@ -199,46 +200,27 @@ export interface PoolPairInfo {
     pairInfo: string;
 }
 
-export interface ChainRegistryAssetInfo {
-    assetId: string | number;
-    symbol: string;
-    decimals: number;
-    xcmLocation?: string;
-    icon?: string;
-}
 
-export interface ChainRegistryProviders {
-    [provider: string]: string;
-}
 
-export interface ChainRegistryEvmInfo extends EvmInfo {
-    blockExplorer: string;
-}
-
-export interface RegisteredChainInfo {
-    assetId: string | number;
+export interface RegisteredAssetInfo {
+    assetId?: AssetType;
     symbol?: string;
     decimals?: number;
     icon?: string;
     reserveType?: ReserveType;
-    xcmLocation?: string;
+    xcmLocation?: XcmV1Location;
     isNative?: boolean;
 }
 
-export interface ChainRegistryNativeToken {
-    symbol: string;
-    decimals: number;
-    icon?: string;
+export interface RegisteredAssetInfoWithChains extends RegisteredAssetInfo {
     registeredChains?: {
-        [chainId: string]: RegisteredChainInfo | null;
+        [chainId: string]: RegisteredAssetInfo | null;
     } | null;
 }
 
-export interface ChainRegistryAssetInfoData {
-    [paraId: string]: ChainRegistryAssetInfo[] | null;
-}
+
 export interface ChainRegistryXcAssetData {
-    [paraId: string]: ChainRegistryAssetInfo[] | null;
+    [paraId: string]: RegisteredAssetInfo[] | null;
 }
 
 export interface ChainRegistryInfo {
@@ -254,8 +236,8 @@ export interface ChainRegistryInfo {
     evmChainId?: number;
     existentialDeposit?: string;
     xcmPaymentAcceptTokens?: any[];
-    nativeToken?: ChainRegistryNativeToken | null;
-    localAssets?: ChainRegistryAssetInfoData | null;
+    nativeToken?: RegisteredAssetInfoWithChains | null;
+    localAssets?: RegisteredAssetInfoWithChains[] | null;
     xcAssetsData?: ChainRegistryXcAssetData | null;
 }
 
