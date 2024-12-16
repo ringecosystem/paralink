@@ -109,7 +109,7 @@ export const getTokenList = ({
         ...sourceChain?.nativeToken,
         assetId: 'Native',
         isNative: true,
-        reserveType: ReserveType.Foreign,
+        reserveType: ReserveType.Local,
         xcmLocation: {
           v1: {
             parents: 1,
