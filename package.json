@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@moonbeam-network/xcm-sdk": "^2.7.8",
     "@polkadot/api": "^14.3.1",
     "@polkadot/extension-dapp": "^0.56.1",
     "@polkadot/extension-inject": "^0.56.1",

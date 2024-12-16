@@ -36,12 +36,36 @@ import { TransactionManager } from '@/components/transaction-manager';
 
 import type { Asset, ChainRegistry } from '@/types/xcm-asset';
 import { getTokenList } from '@/utils/xcm/registry';
+import { Sdk } from '@moonbeam-network/xcm-sdk';
+import { getAvailableAssets } from '@/services/xcm/moonbean';
+
 
 interface DashboardProps {
   registryAssets: ChainRegistry;
 }
 
+
+
 export default function Dashboard({ registryAssets }: DashboardProps) {
+
+
+
+
+  useEffect(() => {
+    // const assets = getAvailableAssets(2004, 1000);
+    // console.log('useEffectuseEffectuseEffectuseEffectuseEffectuseEffectuseEffect', assets);
+    const sdkInstance = Sdk();
+    const assets = sdkInstance.assets('polkadot');
+    console.log('assets', assets);
+
+    // console.log('The supported assets are as follows:');
+    // assets.assets.forEach((asset) => {
+    //   console.log(asset);
+    // });
+  }, []);
+
+
+
   const pickerRef = useRef<{ refreshBalances: () => void }>(null);
   const apiLoadingTimerRef = useRef<NodeJS.Timeout | null>(null);
   const [amount, setAmount] = useState<string>('');
