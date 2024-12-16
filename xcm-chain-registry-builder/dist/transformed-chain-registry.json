@@ -71,28 +71,7 @@
           "2004": {
             "assetId": "61295607754960722617854661686514597014",
             "symbol": "WIFD",
-            "decimals": 10,
-            "xcmLocation": {
-              "v1": {
-                "parents": 1,
-                "interior": {
-                  "x3": [
-                    {
-                      "parachain": 1000
-                    },
-                    {
-                      "palletInstance": 50
-                    },
-                    {
-                      "generalIndex": 17
-                    }
-                  ]
-                }
-              }
-            },
-            "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/hydradx_main-local-wifd.png",
-            "isNative": false,
-            "reserveType": "foreign"
+            "decimals": 10
           }
         }
       },
@@ -124,56 +103,14 @@
           "2004": {
             "assetId": "124463719055550872076363892993240202694",
             "symbol": "DED",
-            "decimals": 10,
-            "xcmLocation": {
-              "v1": {
-                "parents": 1,
-                "interior": {
-                  "x3": [
-                    {
-                      "parachain": 1000
-                    },
-                    {
-                      "palletInstance": 50
-                    },
-                    {
-                      "generalIndex": 30
-                    }
-                  ]
-                }
-              }
-            },
-            "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-ded.png",
-            "isNative": false,
-            "reserveType": "foreign"
+            "decimals": 10
           },
           "2030": {
             "assetId": {
               "Token2": "11"
             },
             "symbol": "DED",
-            "decimals": 10,
-            "xcmLocation": {
-              "v1": {
-                "parents": 1,
-                "interior": {
-                  "x3": [
-                    {
-                      "parachain": 1000
-                    },
-                    {
-                      "palletInstance": 50
-                    },
-                    {
-                      "generalIndex": 30
-                    }
-                  ]
-                }
-              }
-            },
-            "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-ded.png",
-            "isNative": false,
-            "reserveType": "foreign"
+            "decimals": 10
           }
         }
       },
@@ -205,108 +142,24 @@
           "2004": {
             "assetId": "166377000701797186346254371275954761085",
             "symbol": "USDC",
-            "decimals": 6,
-            "xcmLocation": {
-              "v1": {
-                "parents": 1,
-                "interior": {
-                  "x3": [
-                    {
-                      "parachain": 1000
-                    },
-                    {
-                      "palletInstance": 50
-                    },
-                    {
-                      "generalIndex": 1337
-                    }
-                  ]
-                }
-              }
-            },
-            "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/calamari-local-usdc.png",
-            "isNative": false,
-            "reserveType": "foreign"
+            "decimals": 6
           },
           "2006": {
             "assetId": "4294969281",
             "symbol": "USDC",
-            "decimals": 6,
-            "xcmLocation": {
-              "v1": {
-                "parents": 1,
-                "interior": {
-                  "x3": [
-                    {
-                      "parachain": 1000
-                    },
-                    {
-                      "palletInstance": 50
-                    },
-                    {
-                      "generalIndex": 1337
-                    }
-                  ]
-                }
-              }
-            },
-            "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/calamari-local-usdc.png",
-            "isNative": false,
-            "reserveType": "foreign"
+            "decimals": 6
           },
           "2030": {
             "assetId": {
               "Token2": "5"
             },
             "symbol": "USDC",
-            "decimals": 6,
-            "xcmLocation": {
-              "v1": {
-                "parents": 1,
-                "interior": {
-                  "x3": [
-                    {
-                      "parachain": 1000
-                    },
-                    {
-                      "palletInstance": 50
-                    },
-                    {
-                      "generalIndex": 1337
-                    }
-                  ]
-                }
-              }
-            },
-            "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/calamari-local-usdc.png",
-            "isNative": false,
-            "reserveType": "foreign"
+            "decimals": 6
           },
           "2034": {
             "assetId": "22",
             "symbol": "USDC",
-            "decimals": 6,
-            "xcmLocation": {
-              "v1": {
-                "parents": 1,
-                "interior": {
-                  "x3": [
-                    {
-                      "parachain": 1000
-                    },
-                    {
-                      "palletInstance": 50
-                    },
-                    {
-                      "generalIndex": 1337
-                    }
-                  ]
-                }
-              }
-            },
-            "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/calamari-local-usdc.png",
-            "isNative": false,
-            "reserveType": "foreign"
+            "decimals": 6
           }
         }
       },
@@ -338,28 +191,7 @@
           "2004": {
             "assetId": "184218609779515850660274730699350567246",
             "symbol": "NCTR",
-            "decimals": 18,
-            "xcmLocation": {
-              "v1": {
-                "parents": 1,
-                "interior": {
-                  "x3": [
-                    {
-                      "parachain": 1000
-                    },
-                    {
-                      "palletInstance": 50
-                    },
-                    {
-                      "generalIndex": 1024
-                    }
-                  ]
-                }
-              }
-            },
-            "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-nctr.png",
-            "isNative": false,
-            "reserveType": "foreign"
+            "decimals": 18
           }
         }
       },
@@ -391,108 +223,24 @@
           "2004": {
             "assetId": "311091173110107856861649819128533077277",
             "symbol": "USDT",
-            "decimals": 6,
-            "xcmLocation": {
-              "v1": {
-                "parents": 1,
-                "interior": {
-                  "x3": [
-                    {
-                      "parachain": 1000
-                    },
-                    {
-                      "palletInstance": 50
-                    },
-                    {
-                      "generalIndex": 1984
-                    }
-                  ]
-                }
-              }
-            },
-            "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/acala-local-usdt.png",
-            "isNative": false,
-            "reserveType": "foreign"
+            "decimals": 6
           },
           "2006": {
             "assetId": "4294969280",
             "symbol": "USDT",
-            "decimals": 6,
-            "xcmLocation": {
-              "v1": {
-                "parents": 1,
-                "interior": {
-                  "x3": [
-                    {
-                      "parachain": 1000
-                    },
-                    {
-                      "palletInstance": 50
-                    },
-                    {
-                      "generalIndex": 1984
-                    }
-                  ]
-                }
-              }
-            },
-            "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/acala-local-usdt.png",
-            "isNative": false,
-            "reserveType": "foreign"
+            "decimals": 6
           },
           "2030": {
             "assetId": {
               "Token2": "2"
             },
             "symbol": "USDT",
-            "decimals": 6,
-            "xcmLocation": {
-              "v1": {
-                "parents": 1,
-                "interior": {
-                  "x3": [
-                    {
-                      "parachain": 1000
-                    },
-                    {
-                      "palletInstance": 50
-                    },
-                    {
-                      "generalIndex": 1984
-                    }
-                  ]
-                }
-              }
-            },
-            "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/acala-local-usdt.png",
-            "isNative": false,
-            "reserveType": "foreign"
+            "decimals": 6
           },
           "2034": {
             "assetId": "10",
             "symbol": "USDT",
-            "decimals": 6,
-            "xcmLocation": {
-              "v1": {
-                "parents": 1,
-                "interior": {
-                  "x3": [
-                    {
-                      "parachain": 1000
-                    },
-                    {
-                      "palletInstance": 50
-                    },
-                    {
-                      "generalIndex": 1984
-                    }
-                  ]
-                }
-              }
-            },
-            "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/acala-local-usdt.png",
-            "isNative": false,
-            "reserveType": "foreign"
+            "decimals": 6
           }
         }
       },
@@ -524,82 +272,19 @@
           "2004": {
             "assetId": "64174511183114006009298114091987195453",
             "symbol": "PINK",
-            "decimals": 10,
-            "xcmLocation": {
-              "v1": {
-                "parents": 1,
-                "interior": {
-                  "x3": [
-                    {
-                      "parachain": 1000
-                    },
-                    {
-                      "palletInstance": 50
-                    },
-                    {
-                      "generalIndex": 23
-                    }
-                  ]
-                }
-              }
-            },
-            "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-pink.png",
-            "isNative": false,
-            "reserveType": "foreign"
+            "decimals": 10
           },
           "2006": {
             "assetId": "18446744073709551633",
             "symbol": "PINK",
-            "decimals": 10,
-            "xcmLocation": {
-              "v1": {
-                "parents": 1,
-                "interior": {
-                  "x3": [
-                    {
-                      "parachain": 1000
-                    },
-                    {
-                      "palletInstance": 50
-                    },
-                    {
-                      "generalIndex": 23
-                    }
-                  ]
-                }
-              }
-            },
-            "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-pink.png",
-            "isNative": false,
-            "reserveType": "foreign"
+            "decimals": 10
           },
           "2030": {
             "assetId": {
               "Token2": "10"
             },
             "symbol": "PINK",
-            "decimals": 10,
-            "xcmLocation": {
-              "v1": {
-                "parents": 1,
-                "interior": {
-                  "x3": [
-                    {
-                      "parachain": 1000
-                    },
-                    {
-                      "palletInstance": 50
-                    },
-                    {
-                      "generalIndex": 23
-                    }
-                  ]
-                }
-              }
-            },
-            "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-pink.png",
-            "isNative": false,
-            "reserveType": "foreign"
+            "decimals": 10
           }
         }
       },
@@ -631,28 +316,7 @@
           "2004": {
             "assetId": "112679793397406599376365943185137098326",
             "symbol": "STINK",
-            "decimals": 10,
-            "xcmLocation": {
-              "v1": {
-                "parents": 1,
-                "interior": {
-                  "x3": [
-                    {
-                      "parachain": 1000
-                    },
-                    {
-                      "palletInstance": 50
-                    },
-                    {
-                      "generalIndex": 42069
-                    }
-                  ]
-                }
-              }
-            },
-            "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-stink.png",
-            "isNative": false,
-            "reserveType": "foreign"
+            "decimals": 10
           }
         }
       },
@@ -684,28 +348,7 @@
           "2034": {
             "assetId": "1000085",
             "symbol": "WUD",
-            "decimals": 10,
-            "xcmLocation": {
-              "v1": {
-                "parents": 1,
-                "interior": {
-                  "x3": [
-                    {
-                      "parachain": 1000
-                    },
-                    {
-                      "palletInstance": 50
-                    },
-                    {
-                      "generalIndex": 31337
-                    }
-                  ]
-                }
-              }
-            },
-            "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-wud.png",
-            "isNative": false,
-            "reserveType": "foreign"
+            "decimals": 10
           }
         }
       }
@@ -2494,48 +2137,12 @@
           "2004": {
             "assetId": "204507659831918931608354793288110796652",
             "symbol": "vGLMR",
-            "decimals": 18,
-            "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vglmr.png",
-            "isNative": false,
-            "reserveType": "local",
-            "xcmLocation": {
-              "v1": {
-                "parents": 1,
-                "interior": {
-                  "x2": [
-                    {
-                      "parachain": 2030
-                    },
-                    {
-                      "generalKey": "0x0901"
-                    }
-                  ]
-                }
-              }
-            }
+            "decimals": 18
           },
           "2006": {
             "assetId": "18446744073709551637",
             "symbol": "vGLMR",
-            "decimals": 18,
-            "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vglmr.png",
-            "isNative": false,
-            "reserveType": "local",
-            "xcmLocation": {
-              "v1": {
-                "parents": 1,
-                "interior": {
-                  "x2": [
-                    {
-                      "parachain": 2030
-                    },
-                    {
-                      "generalKey": "0x0901"
-                    }
-                  ]
-                }
-              }
-            }
+            "decimals": 18
           }
         }
       },
@@ -2571,48 +2178,12 @@
           "2004": {
             "assetId": "272547899416482196831721420898811311297",
             "symbol": "vFIL",
-            "decimals": 18,
-            "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vfil.png",
-            "isNative": false,
-            "reserveType": "local",
-            "xcmLocation": {
-              "v1": {
-                "parents": 1,
-                "interior": {
-                  "x2": [
-                    {
-                      "parachain": 2030
-                    },
-                    {
-                      "generalKey": "0x0904"
-                    }
-                  ]
-                }
-              }
-            }
+            "decimals": 18
           },
           "2006": {
             "assetId": "18446744073709551640",
             "symbol": "vFIL",
-            "decimals": 18,
-            "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vfil.png",
-            "isNative": false,
-            "reserveType": "local",
-            "xcmLocation": {
-              "v1": {
-                "parents": 1,
-                "interior": {
-                  "x2": [
-                    {
-                      "parachain": 2030
-                    },
-                    {
-                      "generalKey": "0x0904"
-                    }
-                  ]
-                }
-              }
-            }
+            "decimals": 18
           }
         }
       },
@@ -2648,25 +2219,7 @@
           "2004": {
             "assetId": "142155548796783636521833385094843759961",
             "symbol": "BNCS",
-            "decimals": 12,
-            "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-bncs.png",
-            "isNative": false,
-            "reserveType": "local",
-            "xcmLocation": {
-              "v1": {
-                "parents": 1,
-                "interior": {
-                  "x2": [
-                    {
-                      "parachain": 2030
-                    },
-                    {
-                      "generalKey": "0x0809"
-                    }
-                  ]
-                }
-              }
-            }
+            "decimals": 12
           }
         }
       },
@@ -2702,48 +2255,12 @@
           "2004": {
             "assetId": "144012926827374458669278577633504620722",
             "symbol": "FIL",
-            "decimals": 18,
-            "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vfil.png",
-            "isNative": false,
-            "reserveType": "local",
-            "xcmLocation": {
-              "v1": {
-                "parents": 1,
-                "interior": {
-                  "x2": [
-                    {
-                      "parachain": 2030
-                    },
-                    {
-                      "generalKey": "0x0804"
-                    }
-                  ]
-                }
-              }
-            }
+            "decimals": 18
           },
           "2006": {
             "assetId": "18446744073709551639",
             "symbol": "FIL",
-            "decimals": 18,
-            "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vfil.png",
-            "isNative": false,
-            "reserveType": "local",
-            "xcmLocation": {
-              "v1": {
-                "parents": 1,
-                "interior": {
-                  "x2": [
-                    {
-                      "parachain": 2030
-                    },
-                    {
-                      "generalKey": "0x0804"
-                    }
-                  ]
-                }
-              }
-            }
+            "decimals": 18
           }
         }
       },
@@ -2779,48 +2296,12 @@
           "2004": {
             "assetId": "289989900872525819559124583375550296953",
             "symbol": "vMANTA",
-            "decimals": 18,
-            "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vmanta.png",
-            "isNative": false,
-            "reserveType": "local",
-            "xcmLocation": {
-              "v1": {
-                "parents": 1,
-                "interior": {
-                  "x2": [
-                    {
-                      "parachain": 2030
-                    },
-                    {
-                      "generalKey": "0x0908"
-                    }
-                  ]
-                }
-              }
-            }
+            "decimals": 18
           },
           "2006": {
             "assetId": "18446744073709551638",
             "symbol": "vMANTA",
-            "decimals": 18,
-            "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vmanta.png",
-            "isNative": false,
-            "reserveType": "local",
-            "xcmLocation": {
-              "v1": {
-                "parents": 1,
-                "interior": {
-                  "x2": [
-                    {
-                      "parachain": 2030
-                    },
-                    {
-                      "generalKey": "0x0908"
-                    }
-                  ]
-                }
-              }
-            }
+            "decimals": 18
           }
         }
       },
@@ -2883,71 +2364,17 @@
           "2004": {
             "assetId": "114018676402354620972806895487280206446",
             "symbol": "vASTR",
-            "decimals": 18,
-            "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vastr.png",
-            "isNative": false,
-            "reserveType": "local",
-            "xcmLocation": {
-              "v1": {
-                "parents": 1,
-                "interior": {
-                  "x2": [
-                    {
-                      "parachain": 2030
-                    },
-                    {
-                      "generalKey": "0x0903"
-                    }
-                  ]
-                }
-              }
-            }
+            "decimals": 18
           },
           "2006": {
             "assetId": "18446744073709551632",
             "symbol": "vASTR",
-            "decimals": 18,
-            "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vastr.png",
-            "isNative": false,
-            "reserveType": "local",
-            "xcmLocation": {
-              "v1": {
-                "parents": 1,
-                "interior": {
-                  "x2": [
-                    {
-                      "parachain": 2030
-                    },
-                    {
-                      "generalKey": "0x0903"
-                    }
-                  ]
-                }
-              }
-            }
+            "decimals": 18
           },
           "2034": {
             "assetId": "33",
             "symbol": "vASTR",
-            "decimals": 18,
-            "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vastr.png",
-            "isNative": false,
-            "reserveType": "local",
-            "xcmLocation": {
-              "v1": {
-                "parents": 1,
-                "interior": {
-                  "x2": [
-                    {
-                      "parachain": 2030
-                    },
-                    {
-                      "generalKey": "0x0903"
-                    }
-                  ]
-                }
-              }
-            }
+            "decimals": 18
           }
         }
       },
@@ -2983,71 +2410,17 @@
           "2004": {
             "assetId": "29085784439601774464560083082574142143",
             "symbol": "vDOT",
-            "decimals": 10,
-            "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vdot.png",
-            "isNative": false,
-            "reserveType": "local",
-            "xcmLocation": {
-              "v1": {
-                "parents": 1,
-                "interior": {
-                  "x2": [
-                    {
-                      "parachain": 2030
-                    },
-                    {
-                      "generalKey": "0x0900"
-                    }
-                  ]
-                }
-              }
-            }
+            "decimals": 10
           },
           "2006": {
             "assetId": "18446744073709551624",
             "symbol": "vDOT",
-            "decimals": 10,
-            "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vdot.png",
-            "isNative": false,
-            "reserveType": "local",
-            "xcmLocation": {
-              "v1": {
-                "parents": 1,
-                "interior": {
-                  "x2": [
-                    {
-                      "parachain": 2030
-                    },
-                    {
-                      "generalKey": "0x0900"
-                    }
-                  ]
-                }
-              }
-            }
+            "decimals": 10
           },
           "2034": {
             "assetId": "15",
             "symbol": "vDOT",
-            "decimals": 10,
-            "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vdot.png",
-            "isNative": false,
-            "reserveType": "local",
-            "xcmLocation": {
-              "v1": {
-                "parents": 1,
-                "interior": {
-                  "x2": [
-                    {
-                      "parachain": 2030
-                    },
-                    {
-                      "generalKey": "0x0900"
-                    }
-                  ]
-                }
-              }
-            }
+            "decimals": 10
           }
         }
       },
@@ -3078,25 +2451,7 @@
           "2006": {
             "assetId": "18446744073709551626",
             "symbol": "vsDOT",
-            "decimals": 10,
-            "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vsdot.png",
-            "isNative": false,
-            "reserveType": "local",
-            "xcmLocation": {
-              "v1": {
-                "parents": 1,
-                "interior": {
-                  "x2": [
-                    {
-                      "parachain": 2030
-                    },
-                    {
-                      "generalKey": "0x0403"
-                    }
-                  ]
-                }
-              }
-            }
+            "decimals": 10
           }
         }
       }

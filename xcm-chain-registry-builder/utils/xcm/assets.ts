@@ -118,10 +118,6 @@ export function processAssetHubAssetsWithRegisteredChains(processedAssets: any[]
                     assetId: matchedAsset.asset,
                     symbol: matchedAsset.symbol,
                     decimals: matchedAsset.decimals,
-                    xcmLocation: JSON.parse(matchedAsset.xcmV1MultiLocation),
-                    icon: asset.icon,
-                    isNative: false,
-                    reserveType: ReserveType.Foreign,
                 };
             }
         });

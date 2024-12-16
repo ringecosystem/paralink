@@ -215,10 +215,6 @@ async function transformChainRegistry({
                   assetId: matchedAsset.asset,
                   symbol: matchedAsset.symbol,
                   decimals: matchedAsset.decimals,
-                  icon: asset.icon,
-                  isNative: false,
-                  reserveType: ReserveType.Local,
-                  xcmLocation: JSON.parse(matchedAsset.xcmV1MultiLocation)
                 };
               }
             });
