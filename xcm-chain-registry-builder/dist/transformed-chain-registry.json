@@ -44,7 +44,7 @@
     },
     "localAssets": [
       {
-        "assetId": "17",
+        "assetId": 17,
         "symbol": "WIFD",
         "decimals": 10,
         "reserveType": "local",
@@ -60,7 +60,7 @@
                   "palletInstance": 50
                 },
                 {
-                  "generalIndex": "17"
+                  "generalIndex": 17
                 }
               ]
             }
@@ -97,7 +97,7 @@
         }
       },
       {
-        "assetId": "30",
+        "assetId": 30,
         "symbol": "DED",
         "decimals": 10,
         "reserveType": "local",
@@ -113,7 +113,7 @@
                   "palletInstance": 50
                 },
                 {
-                  "generalIndex": "30"
+                  "generalIndex": 30
                 }
               ]
             }
@@ -178,7 +178,7 @@
         }
       },
       {
-        "assetId": "1337",
+        "assetId": 1337,
         "symbol": "USDC",
         "decimals": 6,
         "reserveType": "local",
@@ -194,7 +194,7 @@
                   "palletInstance": 50
                 },
                 {
-                  "generalIndex": "1337"
+                  "generalIndex": 1337
                 }
               ]
             }
@@ -311,7 +311,7 @@
         }
       },
       {
-        "assetId": "1024",
+        "assetId": 1024,
         "symbol": "NCTR",
         "decimals": 18,
         "reserveType": "local",
@@ -327,7 +327,7 @@
                   "palletInstance": 50
                 },
                 {
-                  "generalIndex": "1024"
+                  "generalIndex": 1024
                 }
               ]
             }
@@ -364,7 +364,7 @@
         }
       },
       {
-        "assetId": "1984",
+        "assetId": 1984,
         "symbol": "USDt",
         "decimals": 6,
         "reserveType": "local",
@@ -380,7 +380,7 @@
                   "palletInstance": 50
                 },
                 {
-                  "generalIndex": "1984"
+                  "generalIndex": 1984
                 }
               ]
             }
@@ -497,7 +497,7 @@
         }
       },
       {
-        "assetId": "23",
+        "assetId": 23,
         "symbol": "PINK",
         "decimals": 10,
         "reserveType": "local",
@@ -513,7 +513,7 @@
                   "palletInstance": 50
                 },
                 {
-                  "generalIndex": "23"
+                  "generalIndex": 23
                 }
               ]
             }
@@ -604,7 +604,7 @@
         }
       },
       {
-        "assetId": "42069",
+        "assetId": 42069,
         "symbol": "STINK",
         "decimals": 10,
         "reserveType": "local",
@@ -620,7 +620,7 @@
                   "palletInstance": 50
                 },
                 {
-                  "generalIndex": "42069"
+                  "generalIndex": 42069
                 }
               ]
             }
@@ -657,7 +657,7 @@
         }
       },
       {
-        "assetId": "31337",
+        "assetId": 31337,
         "symbol": "WUD",
         "decimals": 10,
         "reserveType": "local",
@@ -673,7 +673,7 @@
                   "palletInstance": 50
                 },
                 {
-                  "generalIndex": "31337"
+                  "generalIndex": 31337
                 }
               ]
             }

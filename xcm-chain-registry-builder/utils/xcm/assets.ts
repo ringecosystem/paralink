@@ -45,7 +45,7 @@ export function collectAssetHubAssets(
                 if (!hasParachain) return false;
                 const generalIndex = getGeneralIndex(asset.xcmV1MultiLocation);
                 if (!generalIndex) return false;
-                return Object.keys(chain.assetsInfo || {}).includes(generalIndex);
+                return Object.keys(chain.assetsInfo || {}).includes(generalIndex.toString());
             });
         });
 }

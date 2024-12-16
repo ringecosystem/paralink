@@ -95,7 +95,7 @@ export function hasParachainInLocation({
     }
 }
 
-export function getGeneralIndex(multiLocationStr: string): string | null {
+export function getGeneralIndex(multiLocationStr: string): number | null {
     try {
         const multiLocation = JSON.parse(multiLocationStr);
         const interior = multiLocation.v1?.interior;
@@ -109,7 +109,7 @@ export function getGeneralIndex(multiLocationStr: string): string | null {
                 ? locationArray
                 : null;
 
-        return generalIndexObj?.generalIndex?.toString() || null;
+        return generalIndexObj?.generalIndex ? Number(generalIndexObj.generalIndex) : null;
     } catch (error) {
         console.error('Error parsing multiLocation for generalIndex:', error);
         return null;
