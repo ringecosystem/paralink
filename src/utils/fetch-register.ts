@@ -8,7 +8,7 @@ export async function fetchRegistry() {
   return response.fetchJson({
     owner: 'ringecosystem',
     repo: 'paralink',
-    branch: 'feature',
+    branch: 'main',
     path: 'xcm-chain-registry-builder/dist/transformed-chain-registry.json'
   })
 }
