@@ -60,7 +60,6 @@ export function Picker({
   const [availableTokens, setAvailableTokens] = useState<Asset[]>([]);
   const [availableTokensLoading, setAvailableTokensLoading] = useState(false);
   const [isInvalid, setIsInvalid] = useState(false);
-  console.log('availableTokens', availableTokens);
 
   const getValidApi = useApiConnectionsStore((state) => state.getValidApi);
 
