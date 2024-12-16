@@ -1,7 +1,7 @@
 'use client';
 
 import { memo, useEffect, useRef } from 'react';
-import { Bounce, toast } from 'react-toastify';
+import { Slide, toast } from 'react-toastify';
 import {
   TransactionStatus,
   TransactionRecord,
@@ -69,7 +69,7 @@ function TransactionItem({ tx }: TransactionItemProps) {
                 autoClose: AUTO_CLOSE_TIME,
                 closeButton: true,
                 progress: undefined,
-                transition: Bounce
+                transition: Slide
               });
               toastIdRef.current = undefined;
             }
@@ -85,7 +85,7 @@ function TransactionItem({ tx }: TransactionItemProps) {
                 autoClose: AUTO_CLOSE_TIME,
                 closeButton: true,
                 progress: undefined,
-                transition: Bounce
+                transition: Slide
               });
               toastIdRef.current = undefined;
             }
@@ -112,7 +112,7 @@ function TransactionItem({ tx }: TransactionItemProps) {
             autoClose: AUTO_CLOSE_TIME,
             closeButton: true,
             progress: undefined,
-            transition: Bounce
+            transition: Slide
           });
         } else {
           toast.success(<TransactionToastFinished txHash={tx.txHash} />, {
