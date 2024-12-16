@@ -1,4 +1,4 @@
-import { isEqual } from 'lodash';
+import { isEqual } from 'lodash-es';
 import { ReserveType } from '../../types/enum';
 
 function normalizeGeneralKey(key: any): string {
