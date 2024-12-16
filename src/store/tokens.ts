@@ -1,20 +1,15 @@
 import { create } from 'zustand';
-import type { TokenWithBalance } from '@/types/token';
+
+import type { Asset } from '@/types/xcm-asset';
 
 interface TokensState {
-  tokens: TokenWithBalance[];
-  selectedToken?: TokenWithBalance;
-  setTokens: (tokens: TokenWithBalance[]) => void;
-  setSelectedToken: (token?: TokenWithBalance) => void;
-  reset: () => void;
+  selectedToken?: Asset;
+  setSelectedToken: (token?: Asset) => void;
 }
 
 const useTokensStore = create<TokensState>((set) => ({
-  tokens: [],
   selectedToken: undefined,
-  setTokens: (tokens) => set({ tokens, selectedToken: tokens[0] }),
-  setSelectedToken: (token) => set({ selectedToken: token }),
-  reset: () => set({ tokens: [], selectedToken: undefined })
+  setSelectedToken: (token) => set({ selectedToken: token })
 }));
 
 export default useTokensStore;

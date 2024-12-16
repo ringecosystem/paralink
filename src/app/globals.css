@@ -36,6 +36,12 @@
     --radius-lg: 20px;
     --header-height: 56px;
     --footer-height: 44px;
+    --error-color: #ff2d20;
+
+    /* toastify */
+    --toastify-text-color-light: #121619;
+    --toastify-toast-bd-radius: 10px;
+    --toastify-color-error: var(--error-color);
   }
 }
 

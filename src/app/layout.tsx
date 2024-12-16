@@ -5,6 +5,9 @@ import { DAppProvider } from '@/providers/dapp-provider';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
+import { ToastContainer } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 import './globals.css';
 import type { Metadata } from 'next';
 
@@ -42,7 +45,8 @@ export default function RootLayout({
         <DAppProvider>
           <Toaster
             toastOptions={{
-              className: 'font-sans antialiased text-[14px]'
+              className: 'font-sans antialiased text-[14px]',
+              duration: 3_000
             }}
           />
           <TooltipProvider>
@@ -55,6 +59,8 @@ export default function RootLayout({
                 <Footer />
               </footer>
             </div>
+
+            <ToastContainer pauseOnFocusLoss={false} />
           </TooltipProvider>
         </DAppProvider>
       </body>

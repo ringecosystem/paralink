@@ -15,24 +15,25 @@ import { useWalletConnection } from '@/hooks/use-wallet-connection';
 export function Connected() {
   const { evmAddress, substrateAddress } = useWalletConnection();
 
-  const fromChain = useChainsStore((state) => state.getFromChain());
+  const sourceChain = useChainsStore((state) => state.getFromChain());
 
   const currentChainInfo = useMemo(() => {
-    if (fromChain?.isEvmChain && evmAddress) {
+    if (!sourceChain) return null;
+    if (sourceChain?.isEvm && evmAddress) {
       return {
         icon: '/images/wallet/metamask.png',
-        name: fromChain.name,
+        name: sourceChain.name,
         address: evmAddress || ''
       };
-    } else if (fromChain?.substrateInfo && substrateAddress) {
+    } else if (substrateAddress) {
       return {
         icon: '/images/wallet/polkadot.png',
-        name: fromChain.name,
+        name: sourceChain.name,
         address: substrateAddress || ''
       };
     }
     return null;
-  }, [fromChain, evmAddress, substrateAddress]);
+  }, [sourceChain, evmAddress, substrateAddress]);
 
   return (
     <DropdownMenu>

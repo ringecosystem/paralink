@@ -1,83 +1,115 @@
 import { useCallback } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 import useChainsStore from '@/store/chains';
-import { getFromChains, getToChains } from '@/utils/xcm-chain-registry';
-import type { ChainInfoWithXcAssetsData } from '@/store/chains';
+import { getFromChains, getToChains } from '@/utils/xcm/registry';
+import type { ChainConfig } from '@/types/xcm-asset';
 
 type SwapChainsParams = {
-  chains: ChainInfoWithXcAssetsData[];
-  fromChainId: string;
-  toChainId: string;
+  chains: ChainConfig[];
+  sourceChainId: number;
+  targetChainId: number;
 };
 interface UseCrossChainSetupReturn {
   setupCrossChainConfig: (
-    chains: ChainInfoWithXcAssetsData[],
-    initialFromId?: string
-  ) => {
-    fromChains: ChainInfoWithXcAssetsData[];
-    fromChainId: string;
-    toChains: ChainInfoWithXcAssetsData[];
-    toChainId: string;
-  };
-  setChains: (chains: ChainInfoWithXcAssetsData[]) => void;
-  swapChains: ({ chains, fromChainId, toChainId }: SwapChainsParams) => void;
+    chains: ChainConfig[],
+    initialFromId?: number
+  ) => void;
+  swapChains: ({
+    chains,
+    sourceChainId,
+    targetChainId
+  }: SwapChainsParams) => void;
+  updateToChain: ({
+    chains,
+    targetChainId
+  }: {
+    chains: ChainConfig[];
+    targetChainId: number;
+  }) => void;
 }
-
 export function useCrossChainSetup(): UseCrossChainSetupReturn {
   const {
-    setChains,
-    setFromChainId,
-    setToChainId,
-    setFromChains,
-    setToChains
+    setSourceChainId,
+    targetChainId,
+    setTargetChainId,
+    setSourceChains,
+    setTargetChains
   } = useChainsStore(
     useShallow((state) => ({
-      setChains: state.setChains,
-      setFromChainId: state.setFromChainId,
-      setToChainId: state.setToChainId,
-      setFromChains: state.setFromChains,
-      setToChains: state.setToChains
+      setSourceChainId: state.setSourceChainId,
+      targetChainId: state.targetChainId,
+      setTargetChainId: state.setTargetChainId,
+      setSourceChains: state.setSourceChains,
+      setTargetChains: state.setTargetChains
     }))
   );
 
   const setupCrossChainConfig = useCallback(
-    (chains: ChainInfoWithXcAssetsData[], initialFromId?: string) => {
-      const fromChains = getFromChains(chains);
-      const fromChainId = initialFromId ? initialFromId : fromChains?.[0]?.id;
+    (chains: ChainConfig[], initialFromId?: number) => {
+      try {
+        const sourceChains = getFromChains(chains);
+        const sourceChainId = initialFromId
+          ? initialFromId
+          : sourceChains?.[0]?.id;
+        setSourceChainId(sourceChainId);
+        setSourceChains(sourceChains);
+        const targetChains = getToChains(chains, sourceChainId);
+        setTargetChains(targetChains);
 
-      const toChains = getToChains(chains, fromChainId);
-      const toChainId = toChains?.[0]?.id ?? '';
+        let defaultToChainId = targetChainId;
+        if (
+          !defaultToChainId ||
+          defaultToChainId === sourceChainId ||
+          !targetChains?.find((chain) => chain.id === defaultToChainId)
+        ) {
+          defaultToChainId = targetChains?.[0]?.id ?? '';
+        }
 
-      setFromChainId(fromChainId);
-      setFromChains(fromChains);
-      setToChainId(toChainId);
-      setToChains(toChains);
-
-      return {
-        fromChains,
-        fromChainId,
-        toChains,
-        toChainId
-      };
+        setTargetChainId(defaultToChainId);
+      } catch (error) {
+        console.error(error);
+      }
     },
-    [setFromChainId, setFromChains, setToChainId, setToChains]
+    [
+      targetChainId,
+      setSourceChainId,
+      setSourceChains,
+      setTargetChainId,
+      setTargetChains
+    ]
+  );
+
+  const updateToChain = useCallback(
+    async ({ targetChainId }: { targetChainId: number }) => {
+      try {
+        setTargetChainId(targetChainId);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    [setTargetChainId]
   );
 
   const swapChains = useCallback(
-    ({ chains, fromChainId, toChainId }: SwapChainsParams) => {
-      const newFromChainId = toChainId;
-      const newToChainId = fromChainId;
-      const newDestParachains = getToChains(chains, newFromChainId);
-      setToChains(newDestParachains);
-      setFromChainId(newFromChainId);
-      setToChainId(newToChainId);
+    async ({ chains, sourceChainId, targetChainId }: SwapChainsParams) => {
+      console.log('11');
+      try {
+        const newSourceChainId = targetChainId;
+        const newTargetChainId = sourceChainId;
+        const newTargetParachains = getToChains(chains, newSourceChainId);
+        setTargetChains(newTargetParachains);
+        setSourceChainId(newSourceChainId);
+        setTargetChainId(newTargetChainId);
+      } catch (error) {
+        console.error(error);
+      }
     },
-    [setToChains, setFromChainId, setToChainId]
+    [setTargetChains, setSourceChainId, setTargetChainId]
   );
 
   return {
-    setChains,
     setupCrossChainConfig,
-    swapChains
+    swapChains,
+    updateToChain
   };
 }
