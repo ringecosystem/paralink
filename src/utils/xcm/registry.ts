@@ -1,5 +1,7 @@
 import { ReserveType, type Asset, type ChainConfig } from '@/types/xcm-asset';
-import { isDotLocation } from './helper';
+import { isDotLocation, normalizeInterior } from './helper';
+import { TOKEN_BLACKLIST } from '@/config/blacklist';
+import { isEqual } from 'lodash-es';
 
 export function getFromChains(chains: ChainConfig[]): ChainConfig[] {
   return chains;
@@ -38,6 +40,31 @@ function findDotToken(chain: ChainConfig): Asset | null {
   return null;
 }
 
+
+function filterBlacklistedTokens(tokenList: Asset[]): Asset[] {
+
+  return tokenList.filter(token => {
+    const tokenInterior = normalizeInterior(token.xcmLocation?.v1?.interior)
+    if (!tokenInterior || !Array.isArray(tokenInterior)) {
+      return true;
+    }
+
+    const isBlacklisted = TOKEN_BLACKLIST.some(blacklistLocation => {
+      return isEqual(
+        tokenInterior,
+        blacklistLocation
+      )
+    }
+    );
+    if (isBlacklisted) {
+      console.log('blacklisted token', token);
+    }
+    return !isBlacklisted;
+  });
+}
+
+
+
 export const getTokenList = ({
   sourceChain,
   targetChain
@@ -45,6 +72,7 @@ export const getTokenList = ({
   sourceChain: ChainConfig;
   targetChain: ChainConfig;
 }) => {
+  // TOKEN_BLACKLIST
   const tokenList: Asset[] = [];
   const targetChainId = targetChain?.id;
 
@@ -115,5 +143,6 @@ export const getTokenList = ({
 
 
 
-  return tokenList;
+
+  return filterBlacklistedTokens(tokenList);
 };

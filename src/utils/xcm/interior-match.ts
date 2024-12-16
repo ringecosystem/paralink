@@ -66,7 +66,7 @@ export function areInteriorsEqual(
   return compareInteriorItems(normalizedA, normalizedB);
 }
 
-function compareInteriorItems(a: any, b: any): boolean {
+export function compareInteriorItems(a: any, b: any): boolean {
   if ('parachain' in a && 'parachain' in b) {
     const valueA = String(a.parachain);
     const valueB = String(b.parachain);
