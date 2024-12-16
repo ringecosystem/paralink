@@ -53,10 +53,7 @@ export function PolkadotWalletConnectDialog({
     } catch (error) {
       console.log('error', error);
       toast.error(
-        error instanceof Error ? error.message : 'Failed to connect wallet',
-        {
-          duration: 3_000
-        }
+        error instanceof Error ? error.message : 'Failed to connect wallet'
       );
     }
   };

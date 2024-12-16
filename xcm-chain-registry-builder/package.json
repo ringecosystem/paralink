@@ -1,0 +1,32 @@
+{
+  "name": "xcm-chain-registry-builder",
+  "version": "1.0.0",
+  "description": "XCM Chain Registry Builder Tool",
+  "main": "index.js",
+  "scripts": {
+    "build": "ts-node index.ts",
+    "dev": "ts-node-dev --respawn index.ts",
+    "lint": "eslint . --ext .ts",
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@polkadot/api": "^15.0.1",
+    "@substrate/ss58-registry": "^1.51.0",
+    "fs-extra": "^11.2.0",
+    "lodash": "^4.17.21",
+    "lodash-es": "^4.17.21",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.7.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.16.0",
+    "@types/fs-extra": "^11.0.4",
+    "eslint": "^9.16.0",
+    "globals": "^15.13.0",
+    "typescript-eslint": "^8.17.0"
+  }
+}

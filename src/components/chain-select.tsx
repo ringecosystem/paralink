@@ -12,14 +12,14 @@ import {
 import { FallbackImage } from './ui/fallback-image';
 import { ScrollArea } from './ui/scroll-area';
 import { Empty } from './empty';
-import type { ChainInfoWithXcAssetsData } from '@/store/chains';
+import type { ChainConfig } from '@/types/xcm-asset';
 
 interface ChainSelectProps {
   label: string;
-  chain?: ChainInfoWithXcAssetsData;
-  chains?: ChainInfoWithXcAssetsData[];
-  value?: string;
-  onChange: (value: string) => void;
+  chain?: ChainConfig;
+  chains?: ChainConfig[];
+  value?: number;
+  onChange: (value: number) => void;
 }
 
 export const ChainSelect = ({
@@ -34,7 +34,7 @@ export const ChainSelect = ({
   const handleClick = () => {
     setOpen(true);
   };
-  const handleChange = (id: string) => {
+  const handleChange = (id: number) => {
     if (id === value) return;
     onChange(id);
     setOpen(false);

@@ -5,11 +5,11 @@ import { useCallback, useEffect, useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 import { Button } from './ui/button';
 import { cn, isValidAddress } from '@/lib/utils';
-import type { ChainInfoWithXcAssetsData } from '@/store/chains';
+import type { ChainConfig } from '@/types/xcm-asset';
 
 interface RecipientModalProps {
   value: string;
-  chain?: ChainInfoWithXcAssetsData;
+  chain?: ChainConfig;
   isOpen: boolean;
   onClose: () => void;
   onSave: (address: string) => void;
@@ -34,8 +34,8 @@ export function RecipientModal({
     if (
       !isValidAddress({
         address,
-        chainType: chain?.isEvmChain ? 'evm' : 'substrate',
-        expectedPrefix: chain?.substrateInfo?.addressPrefix
+        chainType: chain?.isEvm ? 'evm' : 'substrate',
+        expectedPrefix: chain?.addressPrefix
       })
     ) {
       setIsError(true);

@@ -4,9 +4,9 @@ import {
   TooltipContent,
   TooltipTrigger
 } from '@/components/ui/tooltip';
-import { formatTokenAmount } from '@/utils/number';
 import { cn } from '@/lib/utils';
 import BN from 'bn.js';
+import { formatTokenBalance } from '@/utils/format';
 
 interface FormattedNumberTooltipProps {
   value: BN;
@@ -20,11 +20,18 @@ const FormattedNumberTooltip = React.forwardRef<
   HTMLDivElement,
   FormattedNumberTooltipProps
 >(({ value, decimals, displayDecimals = 3, className, children }, ref) => {
-  const formattedValue = formatTokenAmount({
-    value,
+  const formattedBalance = formatTokenBalance(value, {
     decimals,
+    showFullPrecision: false,
     displayDecimals
   });
+
+  const formattedValueWithFullPrecision = formatTokenBalance(value, {
+    decimals,
+    showFullPrecision: true,
+    withZero: true
+  });
+
   const renderContent =
     children || ((formattedValue: string) => formattedValue);
 
@@ -32,10 +39,10 @@ const FormattedNumberTooltip = React.forwardRef<
     <Tooltip>
       <TooltipTrigger asChild>
         <div ref={ref} className={cn('cursor-pointer', className)}>
-          {renderContent(formattedValue.formatted)}
+          {renderContent(formattedBalance)}
         </div>
       </TooltipTrigger>
-      <TooltipContent>{formattedValue.number}</TooltipContent>
+      <TooltipContent>{formattedValueWithFullPrecision}</TooltipContent>
     </Tooltip>
   );
 });
