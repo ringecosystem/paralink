@@ -400,7 +400,8 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
                 amount === '' ||
                 amount === '0' ||
                 recipientAddress === '' ||
-                isInsufficientBalance
+                isInsufficientBalance ||
+                isInvalid
               }
             >
               Confirm Transaction
