@@ -231,7 +231,7 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
       try {
         setIsTransactionLoading(true);
         await executeTransactionFromMoonbeam();
-        setIsTransactionLoading(false);
+        pickerRef.current?.refreshBalances();
       } catch (error) {
         toast.error((typeof error === 'string' ? error : 'Transaction failed'), {
           position: 'top-center',
