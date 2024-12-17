@@ -32,7 +32,7 @@ export function TransactionToastFinished({
     //   return `https://polkadot.subscan.io/xcm_message/polkadot-${transaction.uniqueId}`;
     // }
     const explorer = sourceChain?.explorer;
-    return explorer ? `${explorer}/tx/${txHash}` : '';
+    return explorer ? `${explorer}/tx/${txHash}?tab=xcm_transfer` : '';
   }, [transaction, sourceChain, txHash]);
 
   return (
