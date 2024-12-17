@@ -29,7 +29,7 @@ jobs:
 
       - name: Generate
         run: |
-          export STORE_BASE_PATH=$(pwd)/output
+          export STORE_BASE_PATH=$(pwd)
           pnpm --filter=xcm-chain-registry-builder build
 
       - name: Commit files
