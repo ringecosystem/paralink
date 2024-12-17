@@ -31,18 +31,21 @@ export function createXcmTransfer({
   try {
     let interior: XcmRequestInteriorParams | XcmRequestInteriorParams[] | null =
       null;
-    const flatInterior = normalizeInterior(token.xcmLocation?.v1?.interior);
-    if (
-      token?.reserveType === ReserveType.Local &&
-      Array.isArray(flatInterior) &&
-      flatInterior.length > 0
-    ) {
-      interior = createStandardXcmInteriorByFlatInterior(
-        flatInterior?.filter((v) => !v.parachain)
+    if (token?.reserveType === ReserveType.Local) {
+      const flatInterior = normalizeInterior(
+        token?.targetXcmLocation
+          ? token?.targetXcmLocation?.v1?.interior
+          : token?.xcmLocation?.v1?.interior
       );
+      if (Array.isArray(flatInterior) && flatInterior.length > 0) {
+        interior = createStandardXcmInteriorByFlatInterior(
+          flatInterior?.filter((v) => !v.parachain)
+        );
+      }
     } else {
-      interior = createStandardXcmInterior(token.xcmLocation?.v1?.interior);
+      interior = createStandardXcmInterior(token?.xcmLocation?.v1?.interior);
     }
+
     const dest = {
       V3: {
         parents: 1,
