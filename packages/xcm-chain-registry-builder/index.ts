@@ -347,8 +347,6 @@ async function init() {
     originalChainRegistry: validatedChains,
     assetsInfoArray
   });
-  const distPath = path.join(__dirname, './dist');
-  await fs.ensureDir(distPath);
 
   fs.writeJson(
     path.join(storeBasePath, 'transformed-chain-registry.json'),
