@@ -44,4 +44,4 @@ certificates
 node_modules
 .next
 
-**/node_modules
+packages/xcm-chain-registry-builder/node_modules
