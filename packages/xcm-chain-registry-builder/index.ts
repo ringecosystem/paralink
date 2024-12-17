@@ -330,13 +330,14 @@ async function init() {
   if (!await fs.exists(storeBasePath)) {
     await fs.mkdirp(storeBasePath);
   }
+  const registryPath = path.join(storeBasePath, 'registry.json');
   fs.writeJson(
-    path.join(storeBasePath, 'registry.json'),
+    registryPath,
     validatedChains,
     { spaces: 2 }
   )
     .then(() => {
-      console.log('Validated chain registry file created successfully!');
+      console.log('Validated chain registry file created successfully!', );
     })
     .catch((err) => {
       console.error('Failed to write validated chain registry file:', err);
@@ -348,13 +349,14 @@ async function init() {
     assetsInfoArray
   });
 
+  const transformedPath = path.join(storeBasePath, 'transformed-chain-registry.json');
   fs.writeJson(
-    path.join(storeBasePath, 'transformed-chain-registry.json'),
+    transformedPath,
     transformedJson,
     { spaces: 2 }
   )
     .then(() => {
-      console.log('Transformed chain registry file created successfully!');
+      console.log('Transformed chain registry file created successfully!', transformedPath);
       process.exit(0);
     })
     .catch((err) => {
