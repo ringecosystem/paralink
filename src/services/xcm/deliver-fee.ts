@@ -107,6 +107,96 @@ export function generateLocalReserveXcmMessage({
   }
 }
 
+export function generateRemoteReserveXcmMessage({
+  asset,
+  targetChainId,
+  recipientAddress
+}: Omit<XcmTransferParams, 'isAssetHub'> & { targetChainId: number }) {
+  try {
+    const interior = asset?.targetXcmLocation
+      ? createStandardXcmInterior(asset?.targetXcmLocation?.v1?.interior)
+      : createStandardXcmInterior(asset?.xcmLocation?.v1?.interior);
+
+    const baseAssetLocation = {
+      parents: 1,
+      interior: interior
+    };
+
+    const WithdrawAsset = {
+      id: {
+        Concrete: baseAssetLocation
+      },
+      fun: {
+        Fungible: parseUnits({
+          value: '1',
+          decimals: asset.decimals
+        })?.toString()
+      }
+    };
+
+    const SetFeesMode = {
+      jitWithdraw: true
+    };
+
+    const xcmInDepositReserveAsset = [
+      {
+        BuyExecution: {
+          fees: {
+            Concrete: baseAssetLocation,
+            fun: {
+              Fungible: parseUnits({
+                value: '1',
+                decimals: asset.decimals
+              })?.toString()
+            }
+          },
+          weightLimit: 'Unlimited'
+        }
+      },
+      {
+        DepositAsset: {
+          assets: {
+            Wild: 'All'
+          },
+          beneficiary: generateBeneficiary(recipientAddress)
+        }
+      }
+    ];
+
+    const InitiateReserveWithdraw = {
+      assets: {
+        Wild: 'All'
+      },
+      reserve: {
+        parents: 1,
+        interior: {
+          X1: {
+            Parachain: targetChainId
+          }
+        }
+      },
+      xcm: xcmInDepositReserveAsset
+    };
+    return {
+      V3: [
+        {
+          WithdrawAsset: [WithdrawAsset]
+        },
+        {
+          SetFeesMode
+        },
+        {
+          InitiateReserveWithdraw
+        }
+      ]
+    };
+  } catch (error) {
+    const errorMessage = (error as Error)?.message ?? 'Unknown error';
+    console.error(errorMessage);
+    return undefined;
+  }
+}
+
 interface QueryDeliveryFeesParams {
   api: ApiPromise;
   asset: Asset;
@@ -141,6 +231,7 @@ export async function queryDeliveryFees({
     let xcmMessage:
       | ReturnType<typeof generateDestReserveXcmMessage>
       | ReturnType<typeof generateLocalReserveXcmMessage>
+      | ReturnType<typeof generateRemoteReserveXcmMessage>
       | null = null;
     if (asset.reserveType === 'foreign') {
       xcmMessage = generateDestReserveXcmMessage({
@@ -150,6 +241,12 @@ export async function queryDeliveryFees({
     } else if (asset.reserveType === 'local') {
       xcmMessage = generateLocalReserveXcmMessage({
         asset,
+        recipientAddress
+      });
+    } else if (asset.reserveType === 'remote') {
+      xcmMessage = generateRemoteReserveXcmMessage({
+        asset,
+        targetChainId: toParaId,
         recipientAddress
       });
     }

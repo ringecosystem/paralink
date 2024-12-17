@@ -8,7 +8,11 @@ import { MultiLocation } from '@polkadot/types/interfaces/xcm';
 import { parseUnits } from '@/utils/format';
 
 import { BN, BN_ZERO, bnToBn } from '@polkadot/util';
-import { generateBeneficiary, normalizeInterior } from '@/utils/xcm/helper';
+import {
+  generateBeneficiary,
+  isDotLocation,
+  normalizeInterior
+} from '@/utils/xcm/helper';
 import { ReserveType, type Asset } from '@/types/xcm-asset';
 
 export interface XcmV3MultiLocation {
@@ -148,121 +152,111 @@ export function generateLocalReserveXcmMessage({
   };
 }
 
-/**
+export function generateRemoteReserveXcmMessage({
+  asset,
+  targetChainId,
+  recipientAddress
+}: Omit<XcmTransferParams, 'isAssetHub'> & { targetChainId: number }) {
+  try {
+    const interior = asset?.targetXcmLocation
+      ? createStandardXcmInterior(asset?.targetXcmLocation?.v1?.interior)
+      : createStandardXcmInterior(asset?.xcmLocation?.v1?.interior);
 
- */
-// export function generateRemoteReserveXcmMessage({
-//   token,
-//   amount,
-//   targetChain,
-//   recipientAddress
-// }: XcmTransferParams) {
-//   const isToEvm = targetChain.isEvmChain;
-//   const amountBN = new BN(amount);
-//   const decimalsBN = new BN(10).pow(new BN(token.decimals));
-//   const amountInWei = amountBN.mul(decimalsBN)?.toString();
+    const baseAssetLocation = {
+      parents: 1,
+      interior: interior
+    };
 
-//   const assetId = {
-//     id: {
-//       Concrete: {
-//         parents: 1,
-//         interior: JSON.parse(token.xcmV1MultiLocation).v1.interior
-//       }
-//     },
-//     fun: {
-//       Fungible: amountInWei
-//     }
-//   };
+    const WithdrawAsset = {
+      id: {
+        Concrete: baseAssetLocation
+      },
+      fun: {
+        Fungible: parseUnits({
+          value: '1',
+          decimals: asset.decimals
+        })?.toString()
+      }
+    };
 
-//   const innerMostXcm = [
-//     {
-//       BuyExecution: {
-//         fees: assetId,
-//         weightLimit: 'Unlimited'
-//       }
-//     },
-//     {
-//       DepositAsset: {
-//         assets: { Wild: 'All' },
-//         beneficiary: {
-//           parents: 0,
-//           interior: {
-//             X1: isToEvm
-//               ? {
-//                   AccountKey20: {
-//                     network: null,
-//                     key: recipientAddress
-//                   }
-//                 }
-//               : {
-//                   AccountId32: {
-//                     network: null,
-//                     id: Array.from(decodeAddress(recipientAddress))
-//                   }
-//                 }
-//           }
-//         }
-//       }
-//     }
-//   ];
+    const SetFeesMode = {
+      jitWithdraw: true
+    };
 
-//   const middleXcm = [
-//     {
-//       BuyExecution: {
-//         fees: assetId,
-//         weightLimit: 'Unlimited'
-//       }
-//     },
-//     {
-//       DepositReserveAsset: {
-//         assets: { Wild: 'All' },
-//         dest: {
-//           parents: 1,
-//           interior: {
-//             X1: {
-//               Parachain: targetChain.id
-//             }
-//           }
-//         },
-//         xcm: innerMostXcm
-//       }
-//     }
-//   ];
+    const xcmInDepositReserveAsset = [
+      {
+        BuyExecution: {
+          fees: {
+            Concrete: baseAssetLocation,
+            fun: {
+              Fungible: parseUnits({
+                value: '1',
+                decimals: asset.decimals
+              })?.toString()
+            }
+          },
+          weightLimit: 'Unlimited'
+        }
+      },
+      {
+        DepositAsset: {
+          assets: {
+            Wild: 'All'
+          },
+          beneficiary: generateBeneficiary(recipientAddress)
+        }
+      }
+    ];
 
-//   return {
-//     V3: [
-//       { WithdrawAsset: [assetId] },
-//       { SetFeesMode: { jitWithdraw: true } },
-//       {
-//         InitiateReserveWithdraw: {
-//           assets: { Wild: 'All' },
-//           reserve: {
-//             parents: 1,
-//             interior: {
-//               X1: {
-//                 Parachain: targetChain.id
-//               }
-//             }
-//           },
-//           xcm: middleXcm
-//         }
-//       }
-//     ]
-//   };
-// }
+    const InitiateReserveWithdraw = {
+      assets: {
+        Wild: 'All'
+      },
+      reserve: {
+        parents: 1,
+        interior: {
+          X1: {
+            Parachain: targetChainId
+          }
+        }
+      },
+      xcm: xcmInDepositReserveAsset
+    };
+    return {
+      V3: [
+        {
+          WithdrawAsset: [WithdrawAsset]
+        },
+        {
+          SetFeesMode
+        },
+        {
+          InitiateReserveWithdraw
+        }
+      ]
+    };
+  } catch (error) {
+    const errorMessage = (error as Error)?.message ?? 'Unknown error';
+    console.error(errorMessage);
+    return undefined;
+  }
+}
 
 type CalculateExecutionWeightParams = Omit<XcmTransferParams, 'isEvmChain'> & {
   api: ApiPromise;
+  targetChainId: number;
 };
 export async function calculateExecutionWeight({
   api,
   asset,
   recipientAddress,
-  isAssetHub
+  isAssetHub,
+  targetChainId
 }: CalculateExecutionWeightParams) {
   let xcmMessage:
     | ReturnType<typeof generateDestReserveXcmMessage>
     | ReturnType<typeof generateLocalReserveXcmMessage>
+    | ReturnType<typeof generateRemoteReserveXcmMessage>
     | null = null;
 
   if (asset?.reserveType === 'local') {
@@ -276,6 +270,12 @@ export async function calculateExecutionWeight({
       asset,
       recipientAddress,
       isAssetHub
+    });
+  } else if (asset?.reserveType === 'remote') {
+    xcmMessage = generateRemoteReserveXcmMessage({
+      asset,
+      targetChainId,
+      recipientAddress
     });
   }
   try {
@@ -333,21 +333,32 @@ export async function calculateWeightFee({
         }
       };
     } else {
-      assetInfo = {
-        V3: {
-          Concrete: asset?.targetXcmLocation
-            ? createStandardXcmInteriorByTargetXcmLocation(
-                asset?.targetXcmLocation
-              )
-            : {
-                parents: asset?.reserveType === ReserveType.Local ? 1 : 0,
-                interior: createStandardXcmInteriorByFilterParaId(
-                  paraId,
-                  asset.xcmLocation?.v1?.interior
+      if (isDotLocation(asset?.xcmLocation)) {
+        assetInfo = {
+          V3: {
+            Concrete: {
+              parents: 1,
+              interior: 'Here'
+            }
+          }
+        };
+      } else {
+        assetInfo = {
+          V3: {
+            Concrete: asset?.targetXcmLocation
+              ? createStandardXcmInteriorByTargetXcmLocation(
+                  asset?.targetXcmLocation
                 )
-              }
-        }
-      };
+              : {
+                  parents: asset?.reserveType === ReserveType.Local ? 1 : 0,
+                  interior: createStandardXcmInteriorByFilterParaId(
+                    paraId,
+                    asset.xcmLocation?.v1?.interior
+                  )
+                }
+          }
+        };
+      }
     }
 
     console.log('fee token assetInfo', assetInfo);
@@ -451,7 +462,8 @@ export const getXcmWeightFee = async ({
     api,
     asset,
     recipientAddress,
-    isAssetHub: Number(paraId) === 1000
+    isAssetHub: Number(paraId) === 1000,
+    targetChainId: paraId
   });
 
   console.log('weight', weight);
@@ -478,9 +490,10 @@ export const getXcmWeightFee = async ({
     };
   }
 
-  console.log('fee', fee?.toString());
+  // console.log('fee', fee?.toString());
+  console.log('isDotLocation', isDotLocation(asset?.xcmLocation));
 
-  if (paraId === 1000) {
+  if (paraId === 1000 && !isDotLocation(asset?.xcmLocation)) {
     const quote = (await quotePriceTokensForExactTokens({
       api,
       asset,

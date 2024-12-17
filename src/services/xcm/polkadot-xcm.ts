@@ -6,7 +6,7 @@ import {
   createStandardXcmInteriorByFlatInterior
 } from '@/utils/xcm/interior-params';
 
-import { generateBeneficiary, normalizeInterior } from '@/utils/xcm/helper';
+import { generateBeneficiary, isDotLocation, normalizeInterior } from '@/utils/xcm/helper';
 import { XcmRequestInteriorParams } from '@/types/xcm-location';
 import { type ChainConfig, type Asset, ReserveType } from '@/types/xcm-asset';
 
@@ -62,10 +62,17 @@ export function createXcmTransfer({
     const assetItems = [
       {
         id: {
-          Concrete: {
-            parents: token?.reserveType === ReserveType.Local ? 0 : 1,
-            interior
-          }
+          Concrete: isDotLocation(token.xcmLocation)
+            ?  {
+                parents: 1,
+                interior: {
+                  Here: null
+                }
+              }
+            : {
+                parents: token?.reserveType === ReserveType.Local ? 0 : 1,
+                interior
+              }
         },
         fun: { Fungible: amountInWei }
       }
@@ -115,6 +122,7 @@ export const createXcmTransferExtrinsic = async ({
     targetChain,
     recipientAddress
   });
+  console.log('xcmTransferParams', xcmTransferParams);
   if (!xcmTransferParams || !fromChainApi) return undefined;
 
   const extrinsic =
