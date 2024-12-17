@@ -34,8 +34,11 @@ import { AssetPicker } from './asset-picker';
 import { BN, BN_ZERO, bnMax } from '@polkadot/util';
 import { TransactionManager } from '@/components/transaction-manager';
 
-import type { Asset, ChainRegistry } from '@/types/xcm-asset';
 import { getTokenList } from '@/utils/xcm/registry';
+import { MOCK_ADDRESSES } from '@/config/mock';
+import { formatSubstrateAddress } from '@/utils/address';
+import type { WalletAccount } from '@talismn/connect-wallets';
+import type { Asset, ChainRegistry } from '@/types/xcm-asset';
 
 
 interface DashboardProps {
@@ -86,6 +89,19 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
 
   const selectedToken = useTokensStore((state) => state.selectedToken);
 
+
+  const targetMockAddress = useMemo(() => {
+    if (targetChain?.isEvm) {
+      return MOCK_ADDRESSES.evmAddress;
+    }
+    return formatSubstrateAddress({
+      account: {
+        address: MOCK_ADDRESSES.substrateAddress,
+      } as WalletAccount,
+      chain: targetChain
+    });
+  }, [targetChain]);
+
   useChainInitialization({
     registryAssets
   });
@@ -125,13 +141,13 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
     sourceChainId,
     asset: selectedToken,
     targetChainId,
-    recipientAddress,
+    recipientAddress: targetMockAddress,
     partialFee
   });
 
   const { fee: crossFee, isLoading: isCrossFeeLoading } = useCrossFee({
     asset: selectedToken,
-    recipientAddress,
+    recipientAddress: targetMockAddress,
     paraId: targetChain?.id
   });
 
