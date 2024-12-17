@@ -41,12 +41,38 @@ function TransactionItem({ tx }: TransactionItemProps) {
 
   useEffect(() => {
     try {
-      if (
-        tx?.status === TransactionStatus.COMPLETED ||
-        tx?.status === TransactionStatus.FAILED
-      ) {
+      if (tx?.status === TransactionStatus.COMPLETED) {
+        if (toastIdRef.current && toast.isActive(toastIdRef.current)) {
+          toast.update(toastIdRef.current, {
+            render: <TransactionToastFinished txHash={tx.txHash} />,
+            type: 'success',
+            isLoading: false,
+            autoClose: AUTO_CLOSE_TIME,
+            closeButton: true,
+            progress: undefined,
+            transition: Slide
+          });
+          toastIdRef.current = undefined;
+        }
         return;
       }
+
+      if (tx?.status === TransactionStatus.FAILED) {
+        if (toastIdRef.current && toast.isActive(toastIdRef.current)) {
+          toast.update(toastIdRef.current, {
+            render: <TransactionToastFinished txHash={tx.txHash} />,
+            type: 'error',
+            isLoading: false,
+            autoClose: AUTO_CLOSE_TIME,
+            closeButton: true,
+            progress: undefined,
+            transition: Slide
+          });
+          toastIdRef.current = undefined;
+        }
+        return;
+      }
+
       if (!toastIdRef.current && tx.status === TransactionStatus.PENDING) {
         const toastId = toast.loading(
           <TransactionToastPending txHash={tx.txHash} />,
