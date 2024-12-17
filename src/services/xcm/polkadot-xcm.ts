@@ -112,6 +112,7 @@ export const createXcmTransferExtrinsic = async ({
     targetChain,
     recipientAddress
   });
+  console.log('xcmTransferParams', xcmTransferParams);
   if (!xcmTransferParams || !fromChainApi) return undefined;
 
   const extrinsic =

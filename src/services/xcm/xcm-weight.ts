@@ -8,7 +8,11 @@ import { MultiLocation } from '@polkadot/types/interfaces/xcm';
 import { parseUnits } from '@/utils/format';
 
 import { BN, BN_ZERO, bnToBn } from '@polkadot/util';
-import { generateBeneficiary, normalizeInterior } from '@/utils/xcm/helper';
+import {
+  generateBeneficiary,
+  isDotLocation,
+  normalizeInterior
+} from '@/utils/xcm/helper';
 import { ReserveType, type Asset } from '@/types/xcm-asset';
 
 export interface XcmV3MultiLocation {
@@ -55,21 +59,21 @@ export function generateDestReserveXcmMessage({
           BuyExecution: {
             fees: isAssetHub
               ? {
-                id: {
-                  Concrete: {
-                    parents: 1,
-                    interior: {
-                      Here: null
+                  id: {
+                    Concrete: {
+                      parents: 1,
+                      interior: {
+                        Here: null
+                      }
                     }
+                  },
+                  fun: {
+                    Fungible: parseUnits({
+                      value: '1',
+                      decimals: asset.decimals
+                    })?.toString()
                   }
-                },
-                fun: {
-                  Fungible: parseUnits({
-                    value: '1',
-                    decimals: asset.decimals
-                  })?.toString()
                 }
-              }
               : assetId,
             weightLimit: 'Unlimited'
           }
@@ -119,21 +123,21 @@ export function generateLocalReserveXcmMessage({
         BuyExecution: {
           fees: isAssetHub
             ? {
-              id: {
-                Concrete: {
-                  parents: 1,
-                  interior: {
-                    Here: null
+                id: {
+                  Concrete: {
+                    parents: 1,
+                    interior: {
+                      Here: null
+                    }
                   }
+                },
+                fun: {
+                  Fungible: parseUnits({
+                    value: '1',
+                    decimals: asset.decimals
+                  })?.toString()
                 }
-              },
-              fun: {
-                Fungible: parseUnits({
-                  value: '1',
-                  decimals: asset.decimals
-                })?.toString()
               }
-            }
             : assetId,
           weightLimit: 'Unlimited'
         }
@@ -149,62 +153,35 @@ export function generateLocalReserveXcmMessage({
 }
 
 export function generateRemoteReserveXcmMessage({
-  amount,
-  token,
-  targetChain,
-  recipientAddress,
-  sourceChain, // 添加源链信息
-  destChain    // 添加目标链信息
-}: XcmTransferParams & {
-  sourceChain: ChainConfig;
-  destChain: ChainConfig;
-}) {
-  const amountInWei = parseUnits({
-    value: amount,
-    decimals: token.decimals
-  });
-  if (amountInWei.isZero()) return undefined;
-
+  asset,
+  targetChainId,
+  recipientAddress
+}: Omit<XcmTransferParams, 'isAssetHub'> & { targetChainId: number }) {
   try {
-    const interior = token?.targetXcmLocation ?
-      createStandardXcmInterior(token?.targetXcmLocation?.v1?.interior)
-      : createStandardXcmInterior(token?.xcmLocation?.v1?.interior);
+    const interior = asset?.targetXcmLocation
+      ? createStandardXcmInterior(asset?.targetXcmLocation?.v1?.interior)
+      : createStandardXcmInterior(asset?.xcmLocation?.v1?.interior);
 
     const baseAssetLocation = {
       parents: 1,
       interior: interior
-    }
+    };
 
-    const WithdrawAsset = [
-      {
-        id: {
-          Concrete: baseAssetLocation,
-        },
-        fun: {
-          Fungible: amountInWei
-        }
+    const WithdrawAsset = {
+      id: {
+        Concrete: baseAssetLocation
+      },
+      fun: {
+        Fungible: parseUnits({
+          value: '1',
+          decimals: asset.decimals
+        })?.toString()
       }
-    ]
+    };
 
     const SetFeesMode = {
       jitWithdraw: true
-    }
-
-    const InitiateReserveWithdraw = {
-      assets: {
-        Wild: 'All'
-      },
-      reserve: {
-        parents: 1,
-        interior: {
-          X1: {
-            Parachain: sourceChain?.id
-          }
-        }
-      }
-    }
-
-    const
+    };
 
     const xcmInDepositReserveAsset = [
       {
@@ -212,11 +189,14 @@ export function generateRemoteReserveXcmMessage({
           fees: {
             Concrete: baseAssetLocation,
             fun: {
-              Fungible: amountInWei
+              Fungible: parseUnits({
+                value: '1',
+                decimals: asset.decimals
+              })?.toString()
             }
           },
           weightLimit: 'Unlimited'
-        },
+        }
       },
       {
         DepositAsset: {
@@ -226,95 +206,34 @@ export function generateRemoteReserveXcmMessage({
           beneficiary: generateBeneficiary(recipientAddress)
         }
       }
-    ]
-
-
-
-
-
-
-    // 目标链配置
-    const dest = {
-      V3: {
-        parents: 1,
-        interior: {
-          X2: [
-            { Parachain: targetChain?.id },
-            {
-              AccountId32: {
-                network: null,
-                id: recipientAddress
-              }
-            }
-          ]
-        }
-      }
-    };
-
-    // 受益人配置
-    const beneficiary = {
-      V3: {
-        parents: 0,
-        interior: {
-          X1: {
-            AccountId32: {
-              network: null,
-              id: recipientAddress
-            }
-          }
-        }
-      }
-    };
-
-    // 资产配置，需要考虑资产在不同链上的表示
-    const assetItems = [
-      {
-        id: {
-          Concrete: {
-            parents: 1,
-            interior: {
-              X3: [
-                { Parachain: token.originChainId }, // 资产原始链 ID
-                { PalletInstance: token.palletInstance },
-                { GeneralIndex: token.generalIndex }
-              ]
-            }
-          }
-        },
-        fun: { Fungible: amountInWei }
-      }
     ];
 
-    // 完整的 XCM 参数
-    return {
-      dest,
-      beneficiary,
+    const InitiateReserveWithdraw = {
       assets: {
-        V3: assetItems
+        Wild: 'All'
       },
-      feeAssetItem: 0,
-      weightLimit: {
-        Unlimited: null
-      },
-      // 添加其他必要的参数
-      originLocation: {
+      reserve: {
         parents: 1,
         interior: {
           X1: {
-            Parachain: sourceChain.id
+            Parachain: targetChainId
           }
         }
       },
-      destLocation: {
-        parents: 1,
-        interior: {
-          X1: {
-            Parachain: destChain.id
-          }
+      xcm: xcmInDepositReserveAsset
+    };
+    return {
+      V3: [
+        {
+          WithdrawAsset: [WithdrawAsset]
+        },
+        {
+          SetFeesMode
+        },
+        {
+          InitiateReserveWithdraw
         }
-      },
-      // 添加 XCM 版本信息
-      version: 'V3'
+      ]
     };
   } catch (error) {
     const errorMessage = (error as Error)?.message ?? 'Unknown error';
@@ -325,16 +244,19 @@ export function generateRemoteReserveXcmMessage({
 
 type CalculateExecutionWeightParams = Omit<XcmTransferParams, 'isEvmChain'> & {
   api: ApiPromise;
+  targetChainId: number;
 };
 export async function calculateExecutionWeight({
   api,
   asset,
   recipientAddress,
-  isAssetHub
+  isAssetHub,
+  targetChainId
 }: CalculateExecutionWeightParams) {
   let xcmMessage:
     | ReturnType<typeof generateDestReserveXcmMessage>
     | ReturnType<typeof generateLocalReserveXcmMessage>
+    | ReturnType<typeof generateRemoteReserveXcmMessage>
     | null = null;
 
   if (asset?.reserveType === 'local') {
@@ -348,6 +270,12 @@ export async function calculateExecutionWeight({
       asset,
       recipientAddress,
       isAssetHub
+    });
+  } else if (asset?.reserveType === 'remote') {
+    xcmMessage = generateRemoteReserveXcmMessage({
+      asset,
+      targetChainId,
+      recipientAddress
     });
   }
   try {
@@ -394,8 +322,6 @@ export async function calculateWeightFee({
   weight,
   asset
 }: CalculateWeightFeeParams) {
-
-
   try {
     let assetInfo: Record<string, any> = {};
 
@@ -407,17 +333,32 @@ export async function calculateWeightFee({
         }
       };
     } else {
-      assetInfo = {
-        V3: {
-          Concrete: asset?.targetXcmLocation ? createStandardXcmInteriorByTargetXcmLocation(asset?.targetXcmLocation) : {
-            parents: asset?.reserveType === ReserveType.Local ? 1 : 0,
-            interior: createStandardXcmInteriorByFilterParaId(
-              paraId,
-              asset.xcmLocation?.v1?.interior
-            )
+      if (isDotLocation(asset?.xcmLocation)) {
+        assetInfo = {
+          V3: {
+            Concrete: {
+              parents: 1,
+              interior: 'Here'
+            }
           }
-        }
-      };
+        };
+      } else {
+        assetInfo = {
+          V3: {
+            Concrete: asset?.targetXcmLocation
+              ? createStandardXcmInteriorByTargetXcmLocation(
+                  asset?.targetXcmLocation
+                )
+              : {
+                  parents: asset?.reserveType === ReserveType.Local ? 1 : 0,
+                  interior: createStandardXcmInteriorByFilterParaId(
+                    paraId,
+                    asset.xcmLocation?.v1?.interior
+                  )
+                }
+          }
+        };
+      }
     }
 
     console.log('fee token assetInfo', assetInfo);
@@ -430,11 +371,11 @@ export async function calculateWeightFee({
 
     const humanFee = fee.toJSON() as
       | {
-        ok: number;
-      }
+          ok: number;
+        }
       | {
-        err: string;
-      };
+          err: string;
+        };
 
     if (!humanFee || typeof humanFee !== 'object') return null;
     if ('ok' in humanFee) return bnToBn(humanFee.ok);
@@ -521,7 +462,8 @@ export const getXcmWeightFee = async ({
     api,
     asset,
     recipientAddress,
-    isAssetHub: Number(paraId) === 1000
+    isAssetHub: Number(paraId) === 1000,
+    targetChainId: paraId
   });
 
   console.log('weight', weight);
@@ -548,9 +490,10 @@ export const getXcmWeightFee = async ({
     };
   }
 
-  console.log('fee', fee?.toString());
+  // console.log('fee', fee?.toString());
+  console.log('isDotLocation', isDotLocation(asset?.xcmLocation));
 
-  if (paraId === 1000) {
+  if (paraId === 1000 && !isDotLocation(asset?.xcmLocation)) {
     const quote = (await quotePriceTokensForExactTokens({
       api,
       asset,
