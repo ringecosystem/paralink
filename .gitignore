@@ -41,4 +41,5 @@ next-env.d.ts
 
 certificates
 
-xcm-chain-registry-builder/node_modules
+node_modules
+.next
