@@ -29,7 +29,7 @@ export function generateDestReserveXcmMessage({
   isAssetHub
 }: XcmTransferParams) {
   try {
-    const multiLocation = asset.xcmLocation;
+    const multiLocation = asset.targetXcmLocation || asset.xcmLocation;
 
     const assetId = {
       id: {
@@ -55,21 +55,21 @@ export function generateDestReserveXcmMessage({
           BuyExecution: {
             fees: isAssetHub
               ? {
-                id: {
-                  Concrete: {
-                    parents: 1,
-                    interior: {
-                      Here: null
+                  id: {
+                    Concrete: {
+                      parents: 1,
+                      interior: {
+                        Here: null
+                      }
                     }
+                  },
+                  fun: {
+                    Fungible: parseUnits({
+                      value: '1',
+                      decimals: asset.decimals
+                    })?.toString()
                   }
-                },
-                fun: {
-                  Fungible: parseUnits({
-                    value: '1',
-                    decimals: asset.decimals
-                  })?.toString()
                 }
-              }
               : assetId,
             weightLimit: 'Unlimited'
           }
@@ -92,7 +92,7 @@ export function generateLocalReserveXcmMessage({
   recipientAddress,
   isAssetHub
 }: XcmTransferParams) {
-  const multiLocation = asset.xcmLocation;
+  const multiLocation = asset.targetXcmLocation || asset.xcmLocation;
 
   const assetId = {
     id: {
@@ -119,21 +119,21 @@ export function generateLocalReserveXcmMessage({
         BuyExecution: {
           fees: isAssetHub
             ? {
-              id: {
-                Concrete: {
-                  parents: 1,
-                  interior: {
-                    Here: null
+                id: {
+                  Concrete: {
+                    parents: 1,
+                    interior: {
+                      Here: null
+                    }
                   }
+                },
+                fun: {
+                  Fungible: parseUnits({
+                    value: '1',
+                    decimals: asset.decimals
+                  })?.toString()
                 }
-              },
-              fun: {
-                Fungible: parseUnits({
-                  value: '1',
-                  decimals: asset.decimals
-                })?.toString()
               }
-            }
             : assetId,
           weightLimit: 'Unlimited'
         }
@@ -322,8 +322,6 @@ export async function calculateWeightFee({
   weight,
   asset
 }: CalculateWeightFeeParams) {
-
-
   try {
     let assetInfo: Record<string, any> = {};
 
@@ -337,13 +335,17 @@ export async function calculateWeightFee({
     } else {
       assetInfo = {
         V3: {
-          Concrete: asset?.targetXcmLocation ? createStandardXcmInteriorByTargetXcmLocation(asset?.targetXcmLocation) : {
-            parents: asset?.reserveType === ReserveType.Local ? 1 : 0,
-            interior: createStandardXcmInteriorByFilterParaId(
-              paraId,
-              asset.xcmLocation?.v1?.interior
-            )
-          }
+          Concrete: asset?.targetXcmLocation
+            ? createStandardXcmInteriorByTargetXcmLocation(
+                asset?.targetXcmLocation
+              )
+            : {
+                parents: asset?.reserveType === ReserveType.Local ? 1 : 0,
+                interior: createStandardXcmInteriorByFilterParaId(
+                  paraId,
+                  asset.xcmLocation?.v1?.interior
+                )
+              }
         }
       };
     }
@@ -358,11 +360,11 @@ export async function calculateWeightFee({
 
     const humanFee = fee.toJSON() as
       | {
-        ok: number;
-      }
+          ok: number;
+        }
       | {
-        err: string;
-      };
+          err: string;
+        };
 
     if (!humanFee || typeof humanFee !== 'object') return null;
     if ('ok' in humanFee) return bnToBn(humanFee.ok);
