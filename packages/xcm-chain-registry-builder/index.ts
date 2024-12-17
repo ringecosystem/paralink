@@ -325,8 +325,13 @@ async function init() {
     chainsInfoArray,
     assetsInfoArray
   });
+  const envBasePath = process.env.STORE_BASE_PATH;
+  const storeBasePath = path.join(envBasePath ? envBasePath : __dirname, 'output');
+  if (!await fs.exists(storeBasePath)) {
+    await fs.mkdirp(storeBasePath);
+  }
   fs.writeJson(
-    path.join(__dirname, './dist/registry.json'),
+    path.join(storeBasePath, 'registry.json'),
     validatedChains,
     { spaces: 2 }
   )
@@ -344,7 +349,7 @@ async function init() {
   });
 
   fs.writeJson(
-    path.join(__dirname, './dist/transformed-chain-registry.json'),
+    path.join(storeBasePath, 'transformed-chain-registry.json'),
     transformedJson,
     { spaces: 2 }
   )
