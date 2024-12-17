@@ -325,26 +325,17 @@ async function init() {
     chainsInfoArray,
     assetsInfoArray
   });
-  fs.writeJson(
-    path.join(__dirname, './dist/registry.json'),
-    validatedChains,
-    { spaces: 2 }
-  )
-    .then(() => {
-      console.log('Validated chain registry file created successfully!');
-    })
-    .catch((err) => {
-      console.error('Failed to write validated chain registry file:', err);
-    });
 
 
   const transformedJson = await transformChainRegistry({
     originalChainRegistry: validatedChains,
     assetsInfoArray
   });
+  const distPath = path.join(__dirname, './dist');
+  await fs.ensureDir(distPath);
 
   fs.writeJson(
-    path.join(__dirname, './dist/transformed-chain-registry.json'),
+    path.join(distPath, 'transformed-chain-registry.json'),
     transformedJson,
     { spaces: 2 }
   )
