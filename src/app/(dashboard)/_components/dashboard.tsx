@@ -36,35 +36,13 @@ import { TransactionManager } from '@/components/transaction-manager';
 
 import type { Asset, ChainRegistry } from '@/types/xcm-asset';
 import { getTokenList } from '@/utils/xcm/registry';
-import { Sdk } from '@moonbeam-network/xcm-sdk';
-import { getAvailableAssets } from '@/services/xcm/moonbean';
 
 
 interface DashboardProps {
   registryAssets: ChainRegistry;
 }
 
-
-
 export default function Dashboard({ registryAssets }: DashboardProps) {
-
-
-
-
-  useEffect(() => {
-    // const assets = getAvailableAssets(2004, 1000);
-    // console.log('useEffectuseEffectuseEffectuseEffectuseEffectuseEffectuseEffect', assets);
-    const sdkInstance = Sdk();
-    const assets = sdkInstance.assets('polkadot');
-    console.log('assets', assets);
-
-    // console.log('The supported assets are as follows:');
-    // assets.assets.forEach((asset) => {
-    //   console.log(asset);
-    // });
-  }, []);
-
-
 
   const pickerRef = useRef<{ refreshBalances: () => void }>(null);
   const apiLoadingTimerRef = useRef<NodeJS.Timeout | null>(null);
@@ -229,7 +207,10 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
     setIsLoadingCrossChain(false);
   }, [swapChains, chains, sourceChainId, targetChainId]);
 
-  const { executeTransaction } = useTransactionExecution({
+
+
+  const { executeTransaction, executeTransactionFromMoonbeam } = useTransactionExecution({
+    address,
     sourceChain,
     targetChain,
     selectedToken,
@@ -238,21 +219,44 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
   });
 
   const handleClick = useCallback(async () => {
+
+    if (sourceChainId === 2004) {
+      if (!address) {
+        toast.error('Please connect your wallet', {
+          position: 'top-center',
+          className: 'font-sans text-[14px]'
+        });
+        return;
+      }
+      try {
+        setIsTransactionLoading(true);
+        await executeTransactionFromMoonbeam();
+        setIsTransactionLoading(false);
+      } catch (error) {
+        toast.error((typeof error === 'string' ? error : 'Transaction failed'), {
+          position: 'top-center',
+          className: 'font-sans text-[14px]'
+        });
+      } finally {
+        setIsTransactionLoading(false);
+      }
+      return;
+    }
     if (!extrinsic || !address) return;
 
     try {
       setIsTransactionLoading(true);
-      await executeTransaction({ extrinsic, address });
+      await executeTransaction({ extrinsic, });
       pickerRef.current?.refreshBalances();
     } catch (error) {
-      toast.error((error as unknown as string) ?? 'Transaction failed', {
+      toast.error((typeof error === 'string' ? error : 'Transaction failed'), {
         position: 'top-center',
         className: 'font-sans text-[14px]'
       });
     } finally {
       setIsTransactionLoading(false);
     }
-  }, [extrinsic, address, executeTransaction]);
+  }, [extrinsic, address, executeTransaction, amount, targetChainId, address, recipientAddress, selectedToken?.symbol]);
 
   const buttonLoadingText = useMemo(() => {
     if (isApiLoading || isLoadingCrossChain || isToExistentialDepositLoading)

@@ -28,9 +28,9 @@ export function TransactionToastFinished({
     (chain) => chain.id?.toString() === transaction?.targetChainId?.toString()
   );
   const blockExplorerUrl = useMemo(() => {
-    if (transaction?.uniqueId) {
-      return `https://polkadot.subscan.io/xcm_message/polkadot-${transaction.uniqueId}`;
-    }
+    // if (transaction?.uniqueId) {
+    //   return `https://polkadot.subscan.io/xcm_message/polkadot-${transaction.uniqueId}`;
+    // }
     const explorer = sourceChain?.explorer;
     return explorer ? `${explorer}/tx/${txHash}` : '';
   }, [transaction, sourceChain, txHash]);

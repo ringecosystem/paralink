@@ -1,14 +1,18 @@
 import { useCallback } from 'react';
 import { useShallow } from 'zustand/react/shallow';
+import { useConfig } from 'wagmi';
 import { useWalletStore } from '@/store/wallet';
 import {
   TransactionStatus,
   useTransactionHistory
 } from '@/store/transaction-history';
 import { signAndSendExtrinsic } from '@/services/xcm/polkadot-xcm';
+import { transferFromMoonbeam } from '@/services/xcm/moonbean';
 import type { ChainConfig, Asset } from '@/types/xcm-asset';
+import { waitForTransactionReceipt } from '@wagmi/core';
 
 interface UseTransactionExecutionProps {
+  address?: string;
   sourceChain?: ChainConfig;
   targetChain?: ChainConfig;
   selectedToken?: Asset;
@@ -17,12 +21,15 @@ interface UseTransactionExecutionProps {
 }
 
 export function useTransactionExecution({
+  address,
   sourceChain,
   targetChain,
   selectedToken,
   amount,
   recipientAddress
 }: UseTransactionExecutionProps) {
+  const config = useConfig()
+
   const { selectedWallet } = useWalletStore();
 
   const { addTransaction, updateTransaction } = useTransactionHistory(
@@ -32,7 +39,7 @@ export function useTransactionExecution({
     }))
   );
   const executeTransaction = useCallback(
-    async ({ extrinsic, address }: { extrinsic: any; address: string }) => {
+    async ({ extrinsic }: { extrinsic: any; }) => {
       if (
         !extrinsic ||
         !sourceChain?.id ||
@@ -68,10 +75,10 @@ export function useTransactionExecution({
             onSuccess: async ({ txHash }) => {
               if (txHash) {
                 updateTransaction(txHash, {
-                  status: TransactionStatus.SOURCE_CONFIRMED
+                  status: TransactionStatus.COMPLETED
                 });
                 resolve({
-                  status: TransactionStatus.SOURCE_CONFIRMED,
+                  status: TransactionStatus.COMPLETED,
                   txHash
                 });
               }
@@ -102,7 +109,63 @@ export function useTransactionExecution({
     ]
   );
 
+  const executeTransactionFromMoonbeam = useCallback(async () => {
+    if (!sourceChain?.id || !address || !targetChain?.id || !selectedToken || !amount || !recipientAddress) {
+      throw new Error('Missing required parameters for transaction');
+    }
+    return new Promise(async (resolve, reject) => {
+      const { txHash, error, message } = await transferFromMoonbeam({
+        amount,
+        destinationChainId: Number(targetChain?.id),
+        sourceAddress: address,
+        destinationAddress: recipientAddress,
+        token: selectedToken?.symbol,
+      });
+      if (txHash) {
+        addTransaction({
+          txHash,
+          decimals: selectedToken?.decimals ?? 0,
+          sourceChainId: 2004,
+          sourceAddress: address,
+          targetChainId: Number(targetChain?.id),
+          targetAddress: recipientAddress,
+          amount,
+          symbol: selectedToken?.symbol,
+          status: TransactionStatus.PENDING
+        });
+        try {
+          const transactionReceipt = await waitForTransactionReceipt(config as any, {
+            chainId: sourceChain?.isEvm ? Number(sourceChain?.evmChainId) : undefined,
+            hash: txHash as `0x${string}`,
+          })
+          console.log('transactionReceipt', transactionReceipt)
+          if (transactionReceipt.status === 'success') {
+            updateTransaction(txHash, {
+              status: TransactionStatus.COMPLETED
+            });
+            resolve({ status: TransactionStatus.COMPLETED, txHash });
+          } else {
+            updateTransaction(txHash, {
+              status: TransactionStatus.FAILED
+            });
+            reject(new Error('Transaction failed'));
+          }
+        } catch (error) {
+          reject(error)
+          updateTransaction(txHash, {
+            status: TransactionStatus.FAILED
+          });
+          console.error('Error processing transaction:', error);
+        }
+      }
+      if (error) {
+        reject(new Error(message));
+      }
+    })
+  }, [sourceChain, targetChain, selectedToken, amount, recipientAddress]);
+
   return {
-    executeTransaction
+    executeTransaction,
+    executeTransactionFromMoonbeam
   };
 }

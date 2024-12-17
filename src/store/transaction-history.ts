@@ -5,7 +5,7 @@ import { storage } from '@/utils/storage';
 
 export const enum TransactionStatus {
   PENDING = 'PENDING',
-  SOURCE_CONFIRMED = 'SOURCE_CONFIRMED',
+  // SOURCE_CONFIRMED = 'SOURCE_CONFIRMED',
   COMPLETED = 'COMPLETED',
   FAILED = 'FAILED'
 }

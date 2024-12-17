@@ -2,6 +2,7 @@ import { ReserveType, type Asset, type ChainConfig } from '@/types/xcm-asset';
 import { isDotLocation, normalizeInterior } from './helper';
 import { TOKEN_BLACKLIST } from '@/config/blacklist';
 import { isEqual } from 'lodash-es';
+import { getAvailableAssets } from '@/services/xcm/moonbean';
 
 export function getFromChains(chains: ChainConfig[]): ChainConfig[] {
   return chains;
@@ -143,6 +144,11 @@ export const getTokenList = ({
 
 
 
-
-  return filterBlacklistedTokens(tokenList);
+  const filterAssets = filterBlacklistedTokens(tokenList);
+  if (sourceChain.id === 2004) {
+    const availableAssets = getAvailableAssets(sourceChain.id, targetChain.id);
+    console.log('availableAssets', availableAssets);
+    return filterAssets?.filter(asset => availableAssets?.some(v => v.symbol === asset.symbol));
+  }
+  return filterAssets;
 };

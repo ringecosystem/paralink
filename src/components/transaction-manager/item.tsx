@@ -7,10 +7,12 @@ import {
   TransactionRecord,
   useTransactionHistory
 } from '@/store/transaction-history';
-import { checkXcmTransaction, XcmMessageStatus } from '@/services/subscan';
+import { getXcmMessageHash, XcmMessageStatus } from '@/services/subscan';
 import { getSubscanBaseUrl } from '@/config/subscan-api';
 import { TransactionToastPending } from './transaction-toast-pending';
 import { TransactionToastFinished } from './transaction-toast-finished';
+import useChainsStore from '@/store/chains';
+import { useWaitForTransactionReceipt } from 'wagmi';
 
 const AUTO_CLOSE_TIME = 5000;
 
@@ -23,10 +25,22 @@ function TransactionItem({ tx }: TransactionItemProps) {
   const updateTransaction = useTransactionHistory(
     (state) => state.updateTransaction
   );
+  const sourceChain = useChainsStore((state) => state.chains).find(
+    (chain) => chain.id?.toString() === tx.sourceChainId?.toString()
+  );
+
+  const { data: evmTxData, isSuccess: evmTxSuccess, isError: evmTxError } = useWaitForTransactionReceipt({
+    hash: sourceChain?.isEvm ? (tx.txHash as `0x${string}`) : undefined,
+    chainId: sourceChain?.isEvm ? Number(sourceChain?.evmChainId) : undefined,
+    query: {
+      enabled: Boolean(sourceChain?.isEvm) && !!sourceChain?.evmChainId && tx?.status === TransactionStatus.PENDING && !!tx?.txHash
+    }
+  });
+
+
 
   useEffect(() => {
-    async function processTransaction() {
-      const isSubscanSupported = Boolean(getSubscanBaseUrl(tx.sourceChainId));
+    try {
       if (
         tx?.status === TransactionStatus.COMPLETED ||
         tx?.status === TransactionStatus.FAILED
@@ -44,22 +58,12 @@ function TransactionItem({ tx }: TransactionItemProps) {
         );
         toastIdRef.current = toastId;
       }
-      if (
-        toastIdRef.current &&
-        isSubscanSupported &&
-        (tx.status === TransactionStatus.SOURCE_CONFIRMED ||
-          tx.status === TransactionStatus.PENDING)
-      ) {
-        try {
-          const result = await checkXcmTransaction({
-            hash: tx.txHash,
-            sourceParaId: tx.sourceChainId,
-            targetParaId: tx.targetChainId
-          });
-          if (result.status === XcmMessageStatus.SUCCESS) {
+
+      if (sourceChain?.isEvm) {
+        if (evmTxSuccess || evmTxError) {
+          if (evmTxData?.transactionHash) {
             updateTransaction(tx.txHash, {
               status: TransactionStatus.COMPLETED,
-              uniqueId: result.hash
             });
             if (toastIdRef.current) {
               toast.update(toastIdRef.current, {
@@ -74,7 +78,7 @@ function TransactionItem({ tx }: TransactionItemProps) {
               toastIdRef.current = undefined;
             }
           } else {
-            await updateTransaction(tx.txHash, {
+            updateTransaction(tx.txHash, {
               status: TransactionStatus.FAILED
             });
             if (toastIdRef.current) {
@@ -87,46 +91,98 @@ function TransactionItem({ tx }: TransactionItemProps) {
                 progress: undefined,
                 transition: Slide
               });
-              toastIdRef.current = undefined;
             }
           }
-        } catch (error) {
-          console.error(`Error processing transaction ${tx.txHash}:`, error);
         }
-        return;
-      }
+      } else {
+        async function processTransaction() {
+          const isSubscanSupported = Boolean(getSubscanBaseUrl(tx.sourceChainId));
+          if (
+            toastIdRef.current &&
+            isSubscanSupported &&
+            tx.status === TransactionStatus.PENDING
+          ) {
+            try {
+              const xcmResult = await getXcmMessageHash({
+                hash: tx.txHash,
+                paraId: tx.sourceChainId,
+              });
+              if (xcmResult.status === XcmMessageStatus.SUCCESS) {
+                updateTransaction(tx.txHash, {
+                  status: TransactionStatus.COMPLETED,
+                });
+                if (toastIdRef.current) {
+                  toast.update(toastIdRef.current, {
+                    render: <TransactionToastFinished txHash={tx.txHash} />,
+                    type: 'success',
+                    isLoading: false,
+                    autoClose: AUTO_CLOSE_TIME,
+                    closeButton: true,
+                    progress: undefined,
+                    transition: Slide
+                  });
+                  toastIdRef.current = undefined;
+                }
+              } else {
+                await updateTransaction(tx.txHash, {
+                  status: TransactionStatus.FAILED
+                });
+                if (toastIdRef.current) {
+                  toast.update(toastIdRef.current, {
+                    render: <TransactionToastFinished txHash={tx.txHash} />,
+                    type: 'error',
+                    isLoading: false,
+                    autoClose: AUTO_CLOSE_TIME,
+                    closeButton: true,
+                    progress: undefined,
+                    transition: Slide
+                  });
+                  toastIdRef.current = undefined;
+                }
+              }
+            } catch (error) {
+              console.error(`Error processing transaction ${tx.txHash}:`, error);
+            }
+            return;
+          }
 
-      if (
-        !isSubscanSupported &&
-        toastIdRef.current &&
-        tx.status !== TransactionStatus.SOURCE_CONFIRMED
-      ) {
-        updateTransaction(tx.txHash, {
-          status: TransactionStatus.COMPLETED
-        });
-        if (toast.isActive(toastIdRef.current)) {
-          toast.update(toastIdRef.current, {
-            render: <TransactionToastFinished txHash={tx.txHash} />,
-            type: 'success',
-            isLoading: false,
-            autoClose: AUTO_CLOSE_TIME,
-            closeButton: true,
-            progress: undefined,
-            transition: Slide
-          });
-        } else {
-          toast.success(<TransactionToastFinished txHash={tx.txHash} />, {
-            closeButton: true,
-            autoClose: AUTO_CLOSE_TIME
-          });
+          if (
+            !isSubscanSupported &&
+            toastIdRef.current &&
+            tx.status !== TransactionStatus.COMPLETED
+          ) {
+            updateTransaction(tx.txHash, {
+              status: TransactionStatus.COMPLETED
+            });
+            if (toast.isActive(toastIdRef.current)) {
+              toast.update(toastIdRef.current, {
+                render: <TransactionToastFinished txHash={tx.txHash} />,
+                type: 'success',
+                isLoading: false,
+                autoClose: AUTO_CLOSE_TIME,
+                closeButton: true,
+                progress: undefined,
+                transition: Slide
+              });
+            } else {
+              toast.success(<TransactionToastFinished txHash={tx.txHash} />, {
+                closeButton: true,
+                autoClose: AUTO_CLOSE_TIME
+              });
+            }
+            toastIdRef.current = undefined;
+            return;
+          }
         }
-        toastIdRef.current = undefined;
-        return;
+
+        processTransaction();
       }
+    } catch (error) {
+      console.error('Error processing transaction:', error);
     }
 
-    processTransaction();
-  }, [tx, updateTransaction]);
+
+  }, [tx, sourceChain?.isEvm, updateTransaction, evmTxData, evmTxSuccess, evmTxError]);
 
   return null;
 }
