@@ -148,108 +148,180 @@ export function generateLocalReserveXcmMessage({
   };
 }
 
-/**
+export function generateRemoteReserveXcmMessage({
+  amount,
+  token,
+  targetChain,
+  recipientAddress,
+  sourceChain, // 添加源链信息
+  destChain    // 添加目标链信息
+}: XcmTransferParams & {
+  sourceChain: ChainConfig;
+  destChain: ChainConfig;
+}) {
+  const amountInWei = parseUnits({
+    value: amount,
+    decimals: token.decimals
+  });
+  if (amountInWei.isZero()) return undefined;
 
- */
-// export function generateRemoteReserveXcmMessage({
-//   token,
-//   amount,
-//   targetChain,
-//   recipientAddress
-// }: XcmTransferParams) {
-//   const isToEvm = targetChain.isEvmChain;
-//   const amountBN = new BN(amount);
-//   const decimalsBN = new BN(10).pow(new BN(token.decimals));
-//   const amountInWei = amountBN.mul(decimalsBN)?.toString();
+  try {
+    const interior = token?.targetXcmLocation ?
+      createStandardXcmInterior(token?.targetXcmLocation?.v1?.interior)
+      : createStandardXcmInterior(token?.xcmLocation?.v1?.interior);
 
-//   const assetId = {
-//     id: {
-//       Concrete: {
-//         parents: 1,
-//         interior: JSON.parse(token.xcmV1MultiLocation).v1.interior
-//       }
-//     },
-//     fun: {
-//       Fungible: amountInWei
-//     }
-//   };
+    const baseAssetLocation = {
+      parents: 1,
+      interior: interior
+    }
 
-//   const innerMostXcm = [
-//     {
-//       BuyExecution: {
-//         fees: assetId,
-//         weightLimit: 'Unlimited'
-//       }
-//     },
-//     {
-//       DepositAsset: {
-//         assets: { Wild: 'All' },
-//         beneficiary: {
-//           parents: 0,
-//           interior: {
-//             X1: isToEvm
-//               ? {
-//                   AccountKey20: {
-//                     network: null,
-//                     key: recipientAddress
-//                   }
-//                 }
-//               : {
-//                   AccountId32: {
-//                     network: null,
-//                     id: Array.from(decodeAddress(recipientAddress))
-//                   }
-//                 }
-//           }
-//         }
-//       }
-//     }
-//   ];
+    const WithdrawAsset = [
+      {
+        id: {
+          Concrete: baseAssetLocation,
+        },
+        fun: {
+          Fungible: amountInWei
+        }
+      }
+    ]
 
-//   const middleXcm = [
-//     {
-//       BuyExecution: {
-//         fees: assetId,
-//         weightLimit: 'Unlimited'
-//       }
-//     },
-//     {
-//       DepositReserveAsset: {
-//         assets: { Wild: 'All' },
-//         dest: {
-//           parents: 1,
-//           interior: {
-//             X1: {
-//               Parachain: targetChain.id
-//             }
-//           }
-//         },
-//         xcm: innerMostXcm
-//       }
-//     }
-//   ];
+    const SetFeesMode = {
+      jitWithdraw: true
+    }
 
-//   return {
-//     V3: [
-//       { WithdrawAsset: [assetId] },
-//       { SetFeesMode: { jitWithdraw: true } },
-//       {
-//         InitiateReserveWithdraw: {
-//           assets: { Wild: 'All' },
-//           reserve: {
-//             parents: 1,
-//             interior: {
-//               X1: {
-//                 Parachain: targetChain.id
-//               }
-//             }
-//           },
-//           xcm: middleXcm
-//         }
-//       }
-//     ]
-//   };
-// }
+    const InitiateReserveWithdraw = {
+      assets: {
+        Wild: 'All'
+      },
+      reserve: {
+        parents: 1,
+        interior: {
+          X1: {
+            Parachain: sourceChain?.id
+          }
+        }
+      }
+    }
+
+    const
+
+    const xcmInDepositReserveAsset = [
+      {
+        BuyExecution: {
+          fees: {
+            Concrete: baseAssetLocation,
+            fun: {
+              Fungible: amountInWei
+            }
+          },
+          weightLimit: 'Unlimited'
+        },
+      },
+      {
+        DepositAsset: {
+          assets: {
+            Wild: 'All'
+          },
+          beneficiary: generateBeneficiary(recipientAddress)
+        }
+      }
+    ]
+
+
+
+
+
+
+    // 目标链配置
+    const dest = {
+      V3: {
+        parents: 1,
+        interior: {
+          X2: [
+            { Parachain: targetChain?.id },
+            {
+              AccountId32: {
+                network: null,
+                id: recipientAddress
+              }
+            }
+          ]
+        }
+      }
+    };
+
+    // 受益人配置
+    const beneficiary = {
+      V3: {
+        parents: 0,
+        interior: {
+          X1: {
+            AccountId32: {
+              network: null,
+              id: recipientAddress
+            }
+          }
+        }
+      }
+    };
+
+    // 资产配置，需要考虑资产在不同链上的表示
+    const assetItems = [
+      {
+        id: {
+          Concrete: {
+            parents: 1,
+            interior: {
+              X3: [
+                { Parachain: token.originChainId }, // 资产原始链 ID
+                { PalletInstance: token.palletInstance },
+                { GeneralIndex: token.generalIndex }
+              ]
+            }
+          }
+        },
+        fun: { Fungible: amountInWei }
+      }
+    ];
+
+    // 完整的 XCM 参数
+    return {
+      dest,
+      beneficiary,
+      assets: {
+        V3: assetItems
+      },
+      feeAssetItem: 0,
+      weightLimit: {
+        Unlimited: null
+      },
+      // 添加其他必要的参数
+      originLocation: {
+        parents: 1,
+        interior: {
+          X1: {
+            Parachain: sourceChain.id
+          }
+        }
+      },
+      destLocation: {
+        parents: 1,
+        interior: {
+          X1: {
+            Parachain: destChain.id
+          }
+        }
+      },
+      // 添加 XCM 版本信息
+      version: 'V3'
+    };
+  } catch (error) {
+    const errorMessage = (error as Error)?.message ?? 'Unknown error';
+    console.error(errorMessage);
+    return undefined;
+  }
+}
 
 type CalculateExecutionWeightParams = Omit<XcmTransferParams, 'isEvmChain'> & {
   api: ApiPromise;
