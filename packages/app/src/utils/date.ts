@@ -47,3 +47,13 @@ export function withTimeout<T>(
 export function delay(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
+
+export const calculateAndWaitRemainingTime = async (
+  startTime: number,
+  estimatedTime: number
+): Promise<void> => {
+  const elapsedTime = Date.now() - startTime;
+  const remainingWaitTime = Math.max(0, estimatedTime - elapsedTime / 1000);
+  console.log('remainingWaitTime', remainingWaitTime);
+  await delay(remainingWaitTime);
+};

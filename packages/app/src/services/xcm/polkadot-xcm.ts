@@ -11,7 +11,7 @@ import {
   isDotLocation,
   normalizeInterior
 } from '@/utils/xcm/helper';
-import { delay } from '@/utils/date';
+import { calculateAndWaitRemainingTime, delay } from '@/utils/date';
 import { CROSS_CHAIN_TRANSFER_ESTIMATED_TIME } from '@/config/blockTime';
 import { type ChainConfig, type Asset, ReserveType } from '@/types/xcm-asset';
 import type { XcmRequestInteriorParams } from '@/types/xcm-location';
@@ -240,13 +240,10 @@ export const signAndSendExtrinsic = async ({
           );
 
           if (extrinsicEvent?.method === 'ExtrinsicSuccess') {
-            const elapsedTime = Date.now() - startTime;
-            const remainingWaitTime = Math.max(
-              0,
-              CROSS_CHAIN_TRANSFER_ESTIMATED_TIME - elapsedTime / 1000
+            await calculateAndWaitRemainingTime(
+              startTime,
+              CROSS_CHAIN_TRANSFER_ESTIMATED_TIME
             );
-            console.log('remainingWaitTime', remainingWaitTime);
-            await delay(remainingWaitTime);
             onSuccess?.({
               txHash
             });

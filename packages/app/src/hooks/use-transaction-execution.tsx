@@ -12,6 +12,8 @@ import { transferFromMoonbeam } from '@/services/xcm/moonbean';
 import { waitForTransactionReceipt } from '@wagmi/core';
 import { TransactionToastPending } from '@/components/transaction-manager/transaction-toast-pending';
 import { TransactionToastFinished } from '@/components/transaction-manager/transaction-toast-finished';
+import { CROSS_CHAIN_TRANSFER_ESTIMATED_TIME } from '@/config/blockTime';
+import { calculateAndWaitRemainingTime } from '@/utils/date';
 import type { ChainConfig, Asset } from '@/types/xcm-asset';
 
 const AUTO_CLOSE_TIME = 5000;
@@ -197,6 +199,7 @@ export function useTransactionExecution({
         toastIdRef.current = showPendingToast(txHash);
 
         try {
+          const startTime = Date.now();
           const transactionReceipt = await waitForTransactionReceipt(
             config as any,
             {
@@ -210,6 +213,11 @@ export function useTransactionExecution({
           if (transactionReceipt.status === 'success') {
             showSuccessToast(txHash, toastIdRef.current);
             toastIdRef.current = undefined;
+            await calculateAndWaitRemainingTime(
+              startTime,
+              CROSS_CHAIN_TRANSFER_ESTIMATED_TIME
+            );
+
             resolve({ status: TransactionStatus.COMPLETED, txHash });
           } else {
             showErrorToast(txHash, toastIdRef.current);
