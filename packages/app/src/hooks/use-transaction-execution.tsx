@@ -231,7 +231,7 @@ export function useTransactionExecution({
         }
       }
       if (error) {
-        reject(new Error(message));
+        reject(message);
       }
     });
   }, [sourceChain, targetChain, selectedToken, amount, recipientAddress]);
