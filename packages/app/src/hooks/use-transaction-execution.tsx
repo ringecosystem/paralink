@@ -211,13 +211,12 @@ export function useTransactionExecution({
           );
           console.log('transactionReceipt', transactionReceipt);
           if (transactionReceipt.status === 'success') {
-            showSuccessToast(txHash, toastIdRef.current);
-            toastIdRef.current = undefined;
             await calculateAndWaitRemainingTime(
               startTime,
               CROSS_CHAIN_TRANSFER_ESTIMATED_TIME
             );
-
+            showSuccessToast(txHash, toastIdRef.current);
+            toastIdRef.current = undefined;
             resolve({ status: TransactionStatus.COMPLETED, txHash });
           } else {
             showErrorToast(txHash, toastIdRef.current);
