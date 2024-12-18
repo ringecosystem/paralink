@@ -2,7 +2,7 @@
   "1000": {
     "name": "Polkadot Asset Hub",
     "slug": "assethub-polkadot",
-    "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chains/statemint.png",
+    "icon": "https://chain-list-assets.subwallet.app/assets/chains/statemint.png",
     "addressPrefix": 0,
     "providers": [
       "wss://sys.ibp.network/statemint",
@@ -29,7 +29,7 @@
     "nativeToken": {
       "symbol": "DOT",
       "decimals": 10,
-      "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/polkadot-native-dot.png",
+      "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/polkadot-native-dot.png",
       "isNative": true,
       "reserveType": "local",
       "xcmLocation": {
@@ -66,7 +66,7 @@
             }
           }
         },
-        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/hydradx_main-local-wifd.png",
+        "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/hydradx_main-local-wifd.png",
         "registeredChains": {
           "2004": {
             "assetId": "61295607754960722617854661686514597014",
@@ -98,7 +98,7 @@
             }
           }
         },
-        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-ded.png",
+        "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/statemint-local-ded.png",
         "registeredChains": {
           "2004": {
             "assetId": "124463719055550872076363892993240202694",
@@ -137,7 +137,7 @@
             }
           }
         },
-        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/calamari-local-usdc.png",
+        "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/calamari-local-usdc.png",
         "registeredChains": {
           "2004": {
             "assetId": "166377000701797186346254371275954761085",
@@ -186,7 +186,7 @@
             }
           }
         },
-        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-nctr.png",
+        "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/statemint-local-nctr.png",
         "registeredChains": {
           "2004": {
             "assetId": "184218609779515850660274730699350567246",
@@ -218,7 +218,7 @@
             }
           }
         },
-        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/acala-local-usdt.png",
+        "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/acala-local-usdt.png",
         "registeredChains": {
           "2004": {
             "assetId": "311091173110107856861649819128533077277",
@@ -267,7 +267,7 @@
             }
           }
         },
-        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-pink.png",
+        "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/statemint-local-pink.png",
         "registeredChains": {
           "2004": {
             "assetId": "64174511183114006009298114091987195453",
@@ -311,7 +311,7 @@
             }
           }
         },
-        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-stink.png",
+        "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/statemint-local-stink.png",
         "registeredChains": {
           "2004": {
             "assetId": "112679793397406599376365943185137098326",
@@ -343,7 +343,7 @@
             }
           }
         },
-        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-wud.png",
+        "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/statemint-local-wud.png",
         "registeredChains": {
           "2034": {
             "assetId": "1000085",
@@ -357,7 +357,7 @@
   "2004": {
     "name": "Moonbeam",
     "slug": "moonbeam",
-    "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chains/moonbeam.png",
+    "icon": "https://chain-list-assets.subwallet.app/assets/chains/moonbeam.png",
     "addressPrefix": 1284,
     "providers": [
       "wss://wss.api.moonbeam.network",
@@ -525,7 +525,7 @@
     "nativeToken": {
       "symbol": "GLMR",
       "decimals": 18,
-      "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/moonbeam-native-glmr.png",
+      "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/moonbeam-native-glmr.png",
       "isNative": true,
       "reserveType": "local",
       "xcmLocation": {
@@ -543,7 +543,7 @@
           "decimals": 18,
           "isNative": true,
           "reserveType": "local",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/moonbeam-native-glmr.png",
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/moonbeam-native-glmr.png",
           "xcmLocation": {
             "v1": {
               "parents": 1,
@@ -568,7 +568,7 @@
           "decimals": 18,
           "isNative": true,
           "reserveType": "local",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/moonbeam-native-glmr.png",
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/moonbeam-native-glmr.png",
           "xcmLocation": {
             "v1": {
               "parents": 1,
@@ -591,7 +591,7 @@
           "decimals": 18,
           "isNative": true,
           "reserveType": "local",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/moonbeam-native-glmr.png",
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/moonbeam-native-glmr.png",
           "xcmLocation": {
             "v1": {
               "parents": 1,
@@ -625,7 +625,7 @@
             }
           },
           "reserveType": "remote",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/polkadot-native-dot.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/polkadot-native-dot.png"
         }
       ],
       "1000": [
@@ -652,7 +652,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/hydradx_main-local-wifd.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/hydradx_main-local-wifd.png"
         },
         {
           "assetId": "124463719055550872076363892993240202694",
@@ -677,7 +677,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-ded.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/statemint-local-ded.png"
         },
         {
           "assetId": "166377000701797186346254371275954761085",
@@ -702,7 +702,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/calamari-local-usdc.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/calamari-local-usdc.png"
         },
         {
           "assetId": "184218609779515850660274730699350567246",
@@ -727,7 +727,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-nctr.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/statemint-local-nctr.png"
         },
         {
           "assetId": "311091173110107856861649819128533077277",
@@ -752,7 +752,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/acala-local-usdt.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/acala-local-usdt.png"
         },
         {
           "assetId": "64174511183114006009298114091987195453",
@@ -777,7 +777,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-pink.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/statemint-local-pink.png"
         },
         {
           "assetId": "112679793397406599376365943185137098326",
@@ -802,7 +802,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-stink.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/statemint-local-stink.png"
         }
       ],
       "2006": [
@@ -821,7 +821,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/astar-native-astr.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/astar-native-astr.png"
         }
       ],
       "2030": [
@@ -845,7 +845,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vfil.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vfil.png"
         },
         {
           "assetId": "29085784439601774464560083082574142143",
@@ -867,7 +867,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vdot.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vdot.png"
         },
         {
           "assetId": "142155548796783636521833385094843759961",
@@ -889,7 +889,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-bncs.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-bncs.png"
         },
         {
           "assetId": "204507659831918931608354793288110796652",
@@ -911,7 +911,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vglmr.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vglmr.png"
         },
         {
           "assetId": "289989900872525819559124583375550296953",
@@ -933,7 +933,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vmanta.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vmanta.png"
         },
         {
           "assetId": "165823357460190568952172802245839421906",
@@ -955,7 +955,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost-native-bnc.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost-native-bnc.png"
         },
         {
           "assetId": "272547899416482196831721420898811311297",
@@ -977,7 +977,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vfil.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vfil.png"
         },
         {
           "assetId": "114018676402354620972806895487280206446",
@@ -999,7 +999,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vastr.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vastr.png"
         }
       ],
       "2034": [
@@ -1023,7 +1023,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/hydradx_main-native-hdx.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/hydradx_main-native-hdx.png"
         }
       ]
     }
@@ -1031,7 +1031,7 @@
   "2006": {
     "name": "Astar",
     "slug": "astar",
-    "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chains/astar.png",
+    "icon": "https://chain-list-assets.subwallet.app/assets/chains/astar.png",
     "addressPrefix": 5,
     "providers": [
       "wss://rpc.astar.network",
@@ -1342,7 +1342,7 @@
     "nativeToken": {
       "symbol": "ASTR",
       "decimals": 18,
-      "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/astar-native-astr.png",
+      "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/astar-native-astr.png",
       "isNative": true,
       "reserveType": "local",
       "xcmLocation": {
@@ -1360,7 +1360,7 @@
           "decimals": 18,
           "isNative": true,
           "reserveType": "local",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/astar-native-astr.png",
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/astar-native-astr.png",
           "xcmLocation": {
             "v1": {
               "parents": 1,
@@ -1378,7 +1378,7 @@
           "decimals": 18,
           "isNative": true,
           "reserveType": "local",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/astar-native-astr.png",
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/astar-native-astr.png",
           "xcmLocation": {
             "v1": {
               "parents": 1,
@@ -1407,7 +1407,7 @@
             }
           },
           "reserveType": "remote",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/polkadot-native-dot.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/polkadot-native-dot.png"
         }
       ],
       "1000": [
@@ -1434,7 +1434,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/calamari-local-usdc.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/calamari-local-usdc.png"
         },
         {
           "assetId": "4294969280",
@@ -1459,7 +1459,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/acala-local-usdt.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/acala-local-usdt.png"
         },
         {
           "assetId": "18446744073709551633",
@@ -1484,7 +1484,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-pink.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/statemint-local-pink.png"
         }
       ],
       "2004": [
@@ -1508,7 +1508,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/moonbeam-native-glmr.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/moonbeam-native-glmr.png"
         }
       ],
       "2030": [
@@ -1532,7 +1532,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vfil.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vfil.png"
         },
         {
           "assetId": "18446744073709551626",
@@ -1554,7 +1554,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vsdot.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vsdot.png"
         },
         {
           "assetId": "18446744073709551638",
@@ -1576,7 +1576,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vmanta.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vmanta.png"
         },
         {
           "assetId": "18446744073709551624",
@@ -1598,7 +1598,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vdot.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vdot.png"
         },
         {
           "assetId": "18446744073709551640",
@@ -1620,7 +1620,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vfil.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vfil.png"
         },
         {
           "assetId": "18446744073709551632",
@@ -1642,7 +1642,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vastr.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vastr.png"
         },
         {
           "assetId": "18446744073709551623",
@@ -1664,7 +1664,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost-native-bnc.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost-native-bnc.png"
         },
         {
           "assetId": "18446744073709551637",
@@ -1686,7 +1686,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vglmr.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vglmr.png"
         }
       ],
       "2034": [
@@ -1710,7 +1710,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/hydradx_main-native-hdx.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/hydradx_main-native-hdx.png"
         }
       ]
     }
@@ -1718,7 +1718,7 @@
   "2030": {
     "name": "Bifrost Polkadot",
     "slug": "bifrost",
-    "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chains/bifrost_dot.png",
+    "icon": "https://chain-list-assets.subwallet.app/assets/chains/bifrost_dot.png",
     "addressPrefix": 6,
     "providers": [
       "wss://hk.p.bifrost-rpc.liebi.com/ws",
@@ -2021,7 +2021,7 @@
     "nativeToken": {
       "symbol": "BNC",
       "decimals": 12,
-      "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost-native-bnc.png",
+      "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost-native-bnc.png",
       "isNative": true,
       "reserveType": "local",
       "xcmLocation": {
@@ -2039,7 +2039,7 @@
           "decimals": 12,
           "isNative": true,
           "reserveType": "local",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost-native-bnc.png",
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost-native-bnc.png",
           "xcmLocation": {
             "v1": {
               "parents": 1,
@@ -2062,7 +2062,7 @@
           "decimals": 12,
           "isNative": true,
           "reserveType": "local",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost-native-bnc.png",
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost-native-bnc.png",
           "xcmLocation": {
             "v1": {
               "parents": 1,
@@ -2085,7 +2085,7 @@
           "decimals": 12,
           "isNative": true,
           "reserveType": "local",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost-native-bnc.png",
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost-native-bnc.png",
           "xcmLocation": {
             "v1": {
               "parents": 1,
@@ -2111,7 +2111,7 @@
         "assetId": {
           "VToken2": "1"
         },
-        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vglmr.png",
+        "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vglmr.png",
         "xcmLocation": {
           "v1": {
             "parents": 1,
@@ -2152,7 +2152,7 @@
         "assetId": {
           "VToken2": "4"
         },
-        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vfil.png",
+        "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vfil.png",
         "xcmLocation": {
           "v1": {
             "parents": 1,
@@ -2193,7 +2193,7 @@
         "assetId": {
           "Token2": "9"
         },
-        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-bncs.png",
+        "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-bncs.png",
         "xcmLocation": {
           "v1": {
             "parents": 1,
@@ -2229,7 +2229,7 @@
         "assetId": {
           "Token2": "4"
         },
-        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vfil.png",
+        "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vfil.png",
         "xcmLocation": {
           "v1": {
             "parents": 1,
@@ -2270,7 +2270,7 @@
         "assetId": {
           "VToken2": "8"
         },
-        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vmanta.png",
+        "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vmanta.png",
         "xcmLocation": {
           "v1": {
             "parents": 1,
@@ -2311,7 +2311,7 @@
         "assetId": {
           "Token2": "12"
         },
-        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/pendulum-native-pen.png",
+        "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/pendulum-native-pen.png",
         "xcmLocation": {
           "v1": {
             "parents": 1,
@@ -2338,7 +2338,7 @@
         "assetId": {
           "VToken2": "3"
         },
-        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vastr.png",
+        "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vastr.png",
         "xcmLocation": {
           "v1": {
             "parents": 1,
@@ -2384,7 +2384,7 @@
         "assetId": {
           "VToken2": "0"
         },
-        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vdot.png",
+        "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vdot.png",
         "xcmLocation": {
           "v1": {
             "parents": 1,
@@ -2430,7 +2430,7 @@
         "assetId": {
           "VSToken2": "0"
         },
-        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vsdot.png",
+        "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vsdot.png",
         "xcmLocation": {
           "v1": {
             "parents": 1,
@@ -2473,7 +2473,7 @@
             }
           },
           "reserveType": "remote",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/polkadot-native-dot.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/polkadot-native-dot.png"
         }
       ],
       "1000": [
@@ -2502,7 +2502,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/acala-local-usdt.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/acala-local-usdt.png"
         },
         {
           "assetId": {
@@ -2529,7 +2529,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/calamari-local-usdc.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/calamari-local-usdc.png"
         },
         {
           "assetId": {
@@ -2556,7 +2556,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-ded.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/statemint-local-ded.png"
         },
         {
           "assetId": {
@@ -2583,7 +2583,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-pink.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/statemint-local-pink.png"
         }
       ],
       "2004": [
@@ -2609,7 +2609,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/moonbeam-native-glmr.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/moonbeam-native-glmr.png"
         }
       ],
       "2030": [
@@ -2640,7 +2640,7 @@
             }
           },
           "reserveType": "local",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vglmr.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vglmr.png"
         },
         {
           "assetId": {
@@ -2669,7 +2669,7 @@
             }
           },
           "reserveType": "local",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vfil.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vfil.png"
         },
         {
           "assetId": {
@@ -2698,7 +2698,7 @@
             }
           },
           "reserveType": "local",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-bncs.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-bncs.png"
         },
         {
           "assetId": {
@@ -2727,7 +2727,7 @@
             }
           },
           "reserveType": "local",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vfil.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vfil.png"
         },
         {
           "assetId": {
@@ -2756,7 +2756,7 @@
             }
           },
           "reserveType": "local",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vmanta.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vmanta.png"
         },
         {
           "assetId": {
@@ -2782,7 +2782,7 @@
             }
           },
           "reserveType": "local",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/pendulum-native-pen.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/pendulum-native-pen.png"
         },
         {
           "assetId": {
@@ -2811,7 +2811,7 @@
             }
           },
           "reserveType": "local",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vastr.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vastr.png"
         },
         {
           "assetId": {
@@ -2840,7 +2840,7 @@
             }
           },
           "reserveType": "local",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost-native-bnc.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost-native-bnc.png"
         },
         {
           "assetId": {
@@ -2869,7 +2869,7 @@
             }
           },
           "reserveType": "local",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vdot.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vdot.png"
         },
         {
           "assetId": {
@@ -2893,7 +2893,7 @@
             }
           },
           "reserveType": "local",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vsdot.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vsdot.png"
         }
       ]
     }
@@ -2901,7 +2901,7 @@
   "2034": {
     "name": "Hydration",
     "slug": "hydration",
-    "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chains/hydradx_main.png",
+    "icon": "https://chain-list-assets.subwallet.app/assets/chains/hydradx_main.png",
     "addressPrefix": 63,
     "providers": [
       "wss://rpc.hydradx.cloud",
@@ -9351,7 +9351,7 @@
     "nativeToken": {
       "symbol": "HDX",
       "decimals": 12,
-      "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/hydradx_main-native-hdx.png",
+      "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/hydradx_main-native-hdx.png",
       "isNative": true,
       "reserveType": "local",
       "xcmLocation": {
@@ -9369,7 +9369,7 @@
           "decimals": 12,
           "isNative": true,
           "reserveType": "local",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/hydradx_main-native-hdx.png",
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/hydradx_main-native-hdx.png",
           "xcmLocation": {
             "v1": {
               "parents": 1,
@@ -9392,7 +9392,7 @@
           "decimals": 12,
           "isNative": true,
           "reserveType": "local",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/hydradx_main-native-hdx.png",
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/hydradx_main-native-hdx.png",
           "xcmLocation": {
             "v1": {
               "parents": 1,
@@ -9426,7 +9426,7 @@
             }
           },
           "reserveType": "remote",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/polkadot-native-dot.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/polkadot-native-dot.png"
         }
       ],
       "1000": [
@@ -9453,7 +9453,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/acala-local-usdt.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/acala-local-usdt.png"
         },
         {
           "assetId": "1000085",
@@ -9478,7 +9478,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-wud.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/statemint-local-wud.png"
         },
         {
           "assetId": "22",
@@ -9503,7 +9503,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/calamari-local-usdc.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/calamari-local-usdc.png"
         }
       ],
       "2004": [
@@ -9533,7 +9533,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/calamari-local-usdc.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/calamari-local-usdc.png"
         },
         {
           "assetId": "20",
@@ -9561,7 +9561,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/ethereum-erc20-weth-0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/ethereum-erc20-weth-0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png"
         },
         {
           "assetId": "16",
@@ -9583,7 +9583,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/moonbeam-native-glmr.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/moonbeam-native-glmr.png"
         },
         {
           "assetId": "19",
@@ -9611,7 +9611,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/calamari-local-wbtc.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/calamari-local-wbtc.png"
         },
         {
           "assetId": "18",
@@ -9639,7 +9639,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/calamari-local-dai.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/calamari-local-dai.png"
         },
         {
           "assetId": "23",
@@ -9667,7 +9667,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/acala-local-usdt.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/acala-local-usdt.png"
         }
       ],
       "2006": [
@@ -9686,7 +9686,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/astar-native-astr.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/astar-native-astr.png"
         }
       ],
       "2030": [
@@ -9710,7 +9710,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost-native-bnc.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost-native-bnc.png"
         },
         {
           "assetId": "33",
@@ -9732,7 +9732,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vastr.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vastr.png"
         },
         {
           "assetId": "15",
@@ -9754,7 +9754,7 @@
             }
           },
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vdot.png"
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vdot.png"
         }
       ]
     }
