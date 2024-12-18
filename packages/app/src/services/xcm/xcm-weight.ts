@@ -81,6 +81,7 @@ export function generateDestReserveXcmMessage({
         {
           DepositAsset: {
             assets: { Wild: 'All' },
+            maxAssets: 1,
             beneficiary
           }
         }
