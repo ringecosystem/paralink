@@ -11,8 +11,10 @@ import {
   isDotLocation,
   normalizeInterior
 } from '@/utils/xcm/helper';
-import { XcmRequestInteriorParams } from '@/types/xcm-location';
+import { delay } from '@/utils/date';
+import { CROSS_CHAIN_TRANSFER_ESTIMATED_TIME } from '@/config/blockTime';
 import { type ChainConfig, type Asset, ReserveType } from '@/types/xcm-asset';
+import type { XcmRequestInteriorParams } from '@/types/xcm-location';
 
 type XcmTransferParams = {
   token: Asset;
@@ -206,6 +208,7 @@ export const signAndSendExtrinsic = async ({
 }: SignAndSendExtrinsicParams) => {
   try {
     let txHash: string | undefined;
+    const startTime = Date.now();
     const unsub = await extrinsic.signAndSend(
       sender,
       { signer },
@@ -237,6 +240,13 @@ export const signAndSendExtrinsic = async ({
           );
 
           if (extrinsicEvent?.method === 'ExtrinsicSuccess') {
+            const elapsedTime = Date.now() - startTime;
+            const remainingWaitTime = Math.max(
+              0,
+              CROSS_CHAIN_TRANSFER_ESTIMATED_TIME - elapsedTime / 1000
+            );
+            console.log('remainingWaitTime', remainingWaitTime);
+            await delay(remainingWaitTime);
             onSuccess?.({
               txHash
             });
