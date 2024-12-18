@@ -2,6 +2,8 @@
   "name": "paralink",
   "version": "0.1.0",
   "description": "paralink",
-  "private": true
+  "private": true,
+  "scripts": {
+    "dev:ui": "pnpm --filter paralink dev"
+  }
 }
-
