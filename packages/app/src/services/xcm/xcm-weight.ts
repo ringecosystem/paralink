@@ -145,6 +145,7 @@ export function generateLocalReserveXcmMessage({
       {
         DepositAsset: {
           assets: { Wild: 'All' },
+          maxAssets: 1,
           beneficiary
         }
       }

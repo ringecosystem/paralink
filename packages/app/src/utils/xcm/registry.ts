@@ -41,30 +41,22 @@ function findDotToken(chain: ChainConfig): Asset | null {
   return null;
 }
 
-
 function filterBlacklistedTokens(tokenList: Asset[]): Asset[] {
-
-  return tokenList.filter(token => {
-    const tokenInterior = normalizeInterior(token.xcmLocation?.v1?.interior)
+  return tokenList.filter((token) => {
+    const tokenInterior = normalizeInterior(token.xcmLocation?.v1?.interior);
     if (!tokenInterior || !Array.isArray(tokenInterior)) {
       return true;
     }
 
-    const isBlacklisted = TOKEN_BLACKLIST.some(blacklistLocation => {
-      return isEqual(
-        tokenInterior,
-        blacklistLocation
-      )
-    }
-    );
+    const isBlacklisted = TOKEN_BLACKLIST.some((blacklistLocation) => {
+      return isEqual(tokenInterior, blacklistLocation);
+    });
     if (isBlacklisted) {
       console.log('blacklisted token', token);
     }
     return !isBlacklisted;
   });
 }
-
-
 
 export const getTokenList = ({
   sourceChain,
@@ -104,7 +96,8 @@ export const getTokenList = ({
   // by native token
   if (sourceChain?.nativeToken?.registeredChains) {
     // filter by target chain id
-    const nativeTokenInTargetChain = sourceChain?.nativeToken?.registeredChains?.[targetChainId];
+    const nativeTokenInTargetChain =
+      sourceChain?.nativeToken?.registeredChains?.[targetChainId];
     if (nativeTokenInTargetChain) {
       tokenList.push({
         ...sourceChain?.nativeToken,
@@ -113,7 +106,7 @@ export const getTokenList = ({
         reserveType: ReserveType.Local,
         xcmLocation: {
           v1: {
-            parents: 1,
+            parents: 0,
             interior: {
               here: null
             }
@@ -126,12 +119,15 @@ export const getTokenList = ({
 
   // by local assets
   if (sourceChain?.localAssets) {
-    const localAssets = sourceChain?.localAssets?.filter(v => v.registeredChains?.[targetChainId]);
+    const localAssets = sourceChain?.localAssets?.filter(
+      (v) => v.registeredChains?.[targetChainId]
+    );
     if (localAssets?.length) {
-      tokenList.push(...localAssets?.map(v => ({
-        ...v,
-        targetXcmLocation: v.registeredChains?.[targetChainId]?.xcmLocation
-      })));
+      tokenList.push(
+        ...localAssets?.map((v) => ({
+          ...v
+        }))
+      );
     }
   }
 
@@ -142,13 +138,13 @@ export const getTokenList = ({
     }
   }
 
-
-
   const filterAssets = filterBlacklistedTokens(tokenList);
   if (sourceChain.id === 2004) {
     const availableAssets = getAvailableAssets(sourceChain.id, targetChain.id);
     console.log('availableAssets', availableAssets);
-    return filterAssets?.filter(asset => availableAssets?.some(v => v.symbol === asset.symbol));
+    return filterAssets?.filter((asset) =>
+      availableAssets?.some((v) => v.symbol === asset.symbol)
+    );
   }
   return filterAssets;
 };
