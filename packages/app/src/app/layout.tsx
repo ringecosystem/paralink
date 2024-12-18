@@ -60,7 +60,7 @@ export default function RootLayout({
               </footer>
             </div>
 
-            <ToastContainer pauseOnFocusLoss={false} />
+            <ToastContainer />
           </TooltipProvider>
         </DAppProvider>
       </body>
