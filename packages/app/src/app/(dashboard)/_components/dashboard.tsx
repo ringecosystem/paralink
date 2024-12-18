@@ -441,14 +441,14 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
                 isExtrinsicLoading
               }
               loadingText={buttonLoadingText}
-              // isDisabled={
-              //   !hasToEnoughBalance ||
-              //   amount === '' ||
-              //   amount === '0' ||
-              //   recipientAddress === '' ||
-              //   isInsufficientBalance ||
-              //   isInvalid
-              // }
+              isDisabled={
+                !hasToEnoughBalance ||
+                amount === '' ||
+                amount === '0' ||
+                recipientAddress === '' ||
+                isInsufficientBalance ||
+                isInvalid
+              }
             >
               Confirm Transaction
             </ConnectOrActionButton>
