@@ -29,7 +29,7 @@ export function TransactionToastPending({
   );
   const blockExplorerUrl = useMemo(() => {
     const explorer = sourceChain?.explorer;
-    return explorer ? `${explorer}/tx/${txHash}` : '';
+    return explorer ? `${explorer}/tx/${txHash}?tab=xcm_transfer` : '';
   }, [sourceChain, txHash]);
 
   return (

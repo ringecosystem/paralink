@@ -31,11 +31,11 @@ export const HistoryItem = ({
     (chain) => chain.id?.toString() === targetChainId?.toString()
   );
   const blockExplorerUrl = useMemo(() => {
-    if (uniqueId) {
-      return `https://polkadot.subscan.io/xcm_message/polkadot-${uniqueId}`;
-    }
+    // if (uniqueId) {
+    //   return `https://polkadot.subscan.io/xcm_message/polkadot-${uniqueId}`;
+    // }
     const explorer = sourceChain?.explorer;
-    return explorer ? `${explorer}/tx/${txHash}` : '';
+    return explorer ? `${explorer}/tx/${txHash}?tab=xcm_transfer` : '';
   }, [sourceChain, txHash, uniqueId]);
 
   return (

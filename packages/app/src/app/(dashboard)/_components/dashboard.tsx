@@ -32,10 +32,12 @@ import useApiConnectionsStore from '@/store/api-connections';
 import { cn } from '@/lib/utils';
 import { AssetPicker } from './asset-picker';
 import { BN, BN_ZERO, bnMax } from '@polkadot/util';
-import { TransactionManager } from '@/components/transaction-manager';
 
-import type { Asset, ChainRegistry } from '@/types/xcm-asset';
 import { getTokenList } from '@/utils/xcm/registry';
+import { MOCK_ADDRESSES } from '@/config/mock';
+import { formatSubstrateAddress } from '@/utils/address';
+import type { WalletAccount } from '@talismn/connect-wallets';
+import type { Asset, ChainRegistry } from '@/types/xcm-asset';
 
 interface DashboardProps {
   registryAssets: ChainRegistry;
@@ -84,6 +86,18 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
 
   const selectedToken = useTokensStore((state) => state.selectedToken);
 
+  const targetMockAddress = useMemo(() => {
+    if (targetChain?.isEvm) {
+      return MOCK_ADDRESSES.evmAddress;
+    }
+    return formatSubstrateAddress({
+      account: {
+        address: MOCK_ADDRESSES.substrateAddress
+      } as WalletAccount,
+      chain: targetChain
+    });
+  }, [targetChain]);
+
   useChainInitialization({
     registryAssets
   });
@@ -105,7 +119,6 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
     };
   }, [sourceChain, targetChain, setTokens]);
 
-
   const {
     extrinsic,
     partialFee,
@@ -123,13 +136,13 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
     sourceChainId,
     asset: selectedToken,
     targetChainId,
-    recipientAddress,
+    recipientAddress: targetMockAddress,
     partialFee
   });
 
   const { fee: crossFee, isLoading: isCrossFeeLoading } = useCrossFee({
     asset: selectedToken,
-    recipientAddress,
+    recipientAddress: targetMockAddress,
     paraId: targetChain?.id
   });
 
@@ -205,30 +218,63 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
     setIsLoadingCrossChain(false);
   }, [swapChains, chains, sourceChainId, targetChainId]);
 
-  const { executeTransaction } = useTransactionExecution({
-    sourceChain,
-    targetChain,
-    selectedToken,
-    amount,
-    recipientAddress
-  });
+  const { executeTransaction, executeTransactionFromMoonbeam } =
+    useTransactionExecution({
+      address,
+      sourceChain,
+      targetChain,
+      selectedToken,
+      amount,
+      recipientAddress
+    });
 
   const handleClick = useCallback(async () => {
+    if (sourceChainId === 2004) {
+      if (!address) {
+        toast.error('Please connect your wallet', {
+          position: 'top-center',
+          className: 'font-sans text-[14px]'
+        });
+        return;
+      }
+      try {
+        setIsTransactionLoading(true);
+        await executeTransactionFromMoonbeam();
+        pickerRef.current?.refreshBalances();
+      } catch (error) {
+        toast.error(typeof error === 'string' ? error : 'Transaction failed', {
+          position: 'top-center',
+          className: 'font-sans text-[14px]'
+        });
+      } finally {
+        setIsTransactionLoading(false);
+      }
+      return;
+    }
     if (!extrinsic || !address) return;
 
     try {
       setIsTransactionLoading(true);
-      await executeTransaction({ extrinsic, address });
+      await executeTransaction({ extrinsic });
       pickerRef.current?.refreshBalances();
     } catch (error) {
-      toast.error((error as unknown as string) ?? 'Transaction failed', {
+      toast.error(typeof error === 'string' ? error : 'Transaction failed', {
         position: 'top-center',
         className: 'font-sans text-[14px]'
       });
     } finally {
       setIsTransactionLoading(false);
     }
-  }, [extrinsic, address, executeTransaction]);
+  }, [
+    extrinsic,
+    address,
+    executeTransaction,
+    amount,
+    targetChainId,
+    address,
+    recipientAddress,
+    selectedToken?.symbol
+  ]);
 
   const buttonLoadingText = useMemo(() => {
     if (isApiLoading || isLoadingCrossChain || isToExistentialDepositLoading)
@@ -373,10 +419,10 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
                 xcmTokenInfo={
                   selectedToken?.symbol && selectedToken?.decimals
                     ? {
-                      symbol: selectedToken?.symbol,
-                      decimals: selectedToken?.decimals,
-                      icon: selectedToken?.icon
-                    }
+                        symbol: selectedToken?.symbol,
+                        decimals: selectedToken?.decimals,
+                        icon: selectedToken?.icon
+                      }
                     : undefined
                 }
               />
@@ -409,7 +455,6 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
           </div>
         </div>
       </div>
-      <TransactionManager />
     </>
   );
 }

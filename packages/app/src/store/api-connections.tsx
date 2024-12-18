@@ -4,6 +4,7 @@ import { create } from 'zustand';
 import { toast } from 'react-hot-toast';
 import useChainsStore from './chains';
 import { Button } from '@/components/ui/button';
+import { sortEndpoints } from '@/utils/endpoint';
 
 async function connectToChain(endpoints: string[]) {
   for (const endpoint of endpoints) {
@@ -17,31 +18,36 @@ async function connectToChain(endpoints: string[]) {
       console.log(`Successfully connected to ${endpoint}`);
       await api.isReady;
       return api;
-
     } catch (error) {
       console.error(`Failed to connect to ${endpoint}, trying next...`);
       continue;
     }
   }
 
-  toast.error((t) => (
-    <div className="flex items-center gap-2">
-      <p>Connection failed. Please check your network and try again.</p>
-      <div>
-        <Button onClick={() => {
-          window.location.reload();
-        }} size="sm">Refresh</Button>
+  toast.error(
+    (t) => (
+      <div className="flex items-center gap-2">
+        <p>Connection failed. Please check your network and try again.</p>
+        <div>
+          <Button
+            onClick={() => {
+              window.location.reload();
+            }}
+            size="sm"
+          >
+            Refresh
+          </Button>
+        </div>
       </div>
-    </div>
-  ), {
-    position: 'bottom-right',
-    duration: 10_000,
-    className: 'font-sans text-[14px]'
-  });
+    ),
+    {
+      position: 'bottom-right',
+      duration: 10_000,
+      className: 'font-sans text-[14px]'
+    }
+  );
   throw new Error('All connection attempts failed');
 }
-
-
 
 interface ApiConnection {
   api: ApiPromise;
@@ -56,8 +62,6 @@ interface ApiConnectionsStore {
   getValidApi: GetValidApiType;
   clearPendingConnection: (paraId: number) => void;
 }
-
-
 
 const useApiConnectionsStore = create<ApiConnectionsStore>((set, get) => ({
   connections: {},
@@ -150,7 +154,9 @@ const useApiConnectionsStore = create<ApiConnectionsStore>((set, get) => ({
         )?.providers;
         if (!endpoints || !endpoints.length)
           throw new Error('must provide at least one node');
-        const api = await connectToChain(endpoints);
+        const sortedEndpoints = sortEndpoints(endpoints);
+        console.log('sortedEndpoints', sortedEndpoints);
+        const api = await connectToChain(sortedEndpoints);
 
         set((state) => ({
           connections: {

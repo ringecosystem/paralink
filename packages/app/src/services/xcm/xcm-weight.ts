@@ -33,7 +33,7 @@ export function generateDestReserveXcmMessage({
   isAssetHub
 }: XcmTransferParams) {
   try {
-    const multiLocation = asset.xcmLocation;
+    const multiLocation = asset.targetXcmLocation || asset.xcmLocation;
 
     const assetId = {
       id: {
@@ -81,6 +81,7 @@ export function generateDestReserveXcmMessage({
         {
           DepositAsset: {
             assets: { Wild: 'All' },
+            maxAssets: 1,
             beneficiary
           }
         }
@@ -96,7 +97,7 @@ export function generateLocalReserveXcmMessage({
   recipientAddress,
   isAssetHub
 }: XcmTransferParams) {
-  const multiLocation = asset.xcmLocation;
+  const multiLocation = asset.targetXcmLocation || asset.xcmLocation;
 
   const assetId = {
     id: {
@@ -145,6 +146,7 @@ export function generateLocalReserveXcmMessage({
       {
         DepositAsset: {
           assets: { Wild: 'All' },
+          maxAssets: 1,
           beneficiary
         }
       }

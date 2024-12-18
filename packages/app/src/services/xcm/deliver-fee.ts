@@ -35,7 +35,7 @@ export function generateDestReserveXcmMessage({
 
     const beneficiary = generateBeneficiary(recipientAddress);
     return {
-      V3: [
+      V2: [
         { WithdrawAsset: [assetId] },
         { ClearOrigin: null },
         {
@@ -47,6 +47,7 @@ export function generateDestReserveXcmMessage({
         {
           DepositAsset: {
             assets: { Wild: 'All' },
+            maxAssets: 1,
             beneficiary
           }
         }
@@ -84,7 +85,7 @@ export function generateLocalReserveXcmMessage({
     const beneficiary = generateBeneficiary(recipientAddress);
 
     return {
-      V3: [
+      V2: [
         { ReserveAssetDeposited: [assetId] },
         { ClearOrigin: null },
         {
@@ -96,6 +97,7 @@ export function generateLocalReserveXcmMessage({
         {
           DepositAsset: {
             assets: { Wild: 'All' },
+            maxAssets: 1,
             beneficiary
           }
         }
@@ -262,7 +264,7 @@ export async function queryDeliveryFees({
 
     const humanReadableFee = deliveryFee.toJSON() as {
       ok: {
-        v3: {
+        [version: string]: {
           fun: { fungible: number };
         }[];
       };
