@@ -15,7 +15,7 @@ export interface TransactionRecord {
   txHash: string;
   uniqueId?: string;
   createTime: number;
-  status: TransactionStatus;
+  // status: TransactionStatus;
 
   sourceChainId: number;
   sourceAddress: string;
