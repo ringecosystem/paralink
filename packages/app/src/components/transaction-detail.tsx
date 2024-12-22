@@ -1,18 +1,17 @@
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useMemo } from 'react';
 import { stringShorten } from '@polkadot/util';
 import { useTransactionHistory } from '@/store/transaction-history';
-import { useMemo } from 'react';
 import useChainsStore from '@/store/chains';
 
-interface TransactionToastFinishedProps {
+interface TransactionDetailProps {
   txHash: string;
+  status: 'finished' | 'pending';
 }
 
-export function TransactionToastFinished({
-  txHash
-}: TransactionToastFinishedProps) {
+export function TransactionDetail({ txHash, status }: TransactionDetailProps) {
   const chains = useChainsStore((state) => state.chains);
   const records = useTransactionHistory((state) => state.records);
 
@@ -27,18 +26,24 @@ export function TransactionToastFinished({
   const targetChain = chains.find(
     (chain) => chain.id?.toString() === transaction?.targetChainId?.toString()
   );
+
   const blockExplorerUrl = useMemo(() => {
-    // if (transaction?.uniqueId) {
-    //   return `https://polkadot.subscan.io/xcm_message/polkadot-${transaction.uniqueId}`;
-    // }
     const explorer = sourceChain?.explorer;
     return explorer ? `${explorer}/tx/${txHash}?tab=xcm_transfer` : '';
-  }, [transaction, sourceChain, txHash]);
+  }, [sourceChain, txHash]);
+
+  const getStatusText = () => {
+    return status === 'finished' ? 'Sent' : 'Sending';
+  };
+
+  const getEndingSymbol = () => {
+    return status === 'finished' ? '.' : '...';
+  };
 
   return (
     <div className="flex flex-col gap-[5px] rounded-[10px] bg-white">
       <div className="text-[14px] font-normal leading-[24px] text-[#121619]">
-        Sent{' '}
+        {getStatusText()}{' '}
         <span className="font-bold text-[#FF0083]">{transaction?.amount}</span>{' '}
         {transaction?.symbol} from
         <span className="font-bold text-[#FF0083]">
@@ -46,7 +51,7 @@ export function TransactionToastFinished({
           {sourceChain?.name}
         </span>{' '}
         to <span className="font-bold text-[#FF0083]">{targetChain?.name}</span>
-        .
+        {getEndingSymbol()}
       </div>
       <div>
         <Link
@@ -55,7 +60,7 @@ export function TransactionToastFinished({
           target="_blank"
           rel="noopener noreferrer"
         >
-          Tx:{stringShorten(transaction?.uniqueId ?? txHash)}
+          Tx:{stringShorten(txHash)}
           <Image src="/images/link.svg" alt="link" width={8} height={8} />
         </Link>
       </div>
