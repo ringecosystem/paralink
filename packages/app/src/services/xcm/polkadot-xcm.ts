@@ -239,7 +239,10 @@ export const signAndSendExtrinsic = async ({
               event.method === 'ExtrinsicSuccess' ||
               event.method === 'ExtrinsicFailed'
           );
-          if (extrinsicEvent?.method === 'ExtrinsicSuccess' && !isCallbackExecuted) {
+          if (
+            extrinsicEvent?.method === 'ExtrinsicSuccess' &&
+            !isCallbackExecuted
+          ) {
             isCallbackExecuted = true;
             await calculateAndWaitRemainingTime(
               startTime,
@@ -249,8 +252,11 @@ export const signAndSendExtrinsic = async ({
               txHash
             });
             unsub();
-            unsub();
-          } else if (extrinsicEvent?.method === 'ExtrinsicFailed') {
+          } else if (
+            extrinsicEvent?.method === 'ExtrinsicFailed' &&
+            !isCallbackExecuted
+          ) {
+            isCallbackExecuted = true;
             onFailure?.({
               txHash
             });
