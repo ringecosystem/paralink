@@ -1,4 +1,3 @@
-'use server';
 import { createJsonResourceLoader } from './utils/resource-loader';
 import type { ChainInfo, Asset, ChainConfig, Registry } from './types/registry';
 

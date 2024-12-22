@@ -1,6 +1,7 @@
 import { BN, bnToBn } from '@polkadot/util';
 import { formatTokenBalance, parseUnits } from '@/utils/format';
 import type { ApiPromise } from '@polkadot/api';
+import type { Asset } from '@/types/xcm-asset';
 
 function normalizeMinBalance(balance: BN, decimals: number): BN {
   const oneToken = new BN(10).pow(new BN(decimals));
@@ -18,14 +19,16 @@ export async function getTargetMinBalance({
   decimals
 }: {
   api: ApiPromise;
-  assetId: number | string | null;
+  assetId: Asset['assetId'];
   decimals: number;
 }): Promise<{
   balance: BN;
   formatted: string;
 }> {
   try {
+    
     if (api.query.assets?.asset) {
+      console.log('min balance match assets.asset' , assetId);
       const assetDetails = await api.query.assets.asset(assetId);
       const details = assetDetails.toJSON() as { minBalance?: number | string };
       if (details?.minBalance || details?.minBalance === 0) {
@@ -57,8 +60,9 @@ export async function getTargetMinBalance({
     //   }
     // }
     if (api.query.assetRegistry?.assets) {
+      console.log('min balance match assetRegistry.assets' , assetId);
       const assetDetails = await api.query.assetRegistry.assets(assetId);
-
+      console.log('assetDetails', assetDetails?.toJSON());
       const details = assetDetails?.toJSON() as {
         existentialDeposit?: string;
       } | null;
@@ -73,7 +77,7 @@ export async function getTargetMinBalance({
     console.log('no details found for min balance');
 
     return {
-      balance: parseUnits({
+      balance: parseUnits({ 
         value: '1',
         decimals
       }),
