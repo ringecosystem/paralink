@@ -10,8 +10,7 @@ import { Slide, toast } from 'react-toastify';
 import { signAndSendExtrinsic } from '@/services/xcm/polkadot-xcm';
 import { transferFromMoonbeam } from '@/services/xcm/moonbean';
 import { waitForTransactionReceipt } from '@wagmi/core';
-import { TransactionToastPending } from '@/components/transaction-manager/transaction-toast-pending';
-import { TransactionToastFinished } from '@/components/transaction-manager/transaction-toast-finished';
+import { TransactionDetail } from '@/components/transaction-detail';
 import { CROSS_CHAIN_TRANSFER_ESTIMATED_TIME } from '@/config/blockTime';
 import { calculateAndWaitRemainingTime } from '@/utils/date';
 import type { ChainConfig, Asset } from '@/types/xcm-asset';
@@ -19,7 +18,7 @@ import type { ChainConfig, Asset } from '@/types/xcm-asset';
 const AUTO_CLOSE_TIME = 5000;
 
 const showPendingToast = (txHash: string) => {
-  return toast.loading(<TransactionToastPending txHash={txHash} />, {
+  return toast.loading(<TransactionDetail txHash={txHash} status="pending" />, {
     position: 'bottom-right',
     closeButton: true,
     autoClose: AUTO_CLOSE_TIME
@@ -29,7 +28,7 @@ const showPendingToast = (txHash: string) => {
 const showSuccessToast = (txHash: string, toastId?: string | number) => {
   if (toastId && toast.isActive(toastId)) {
     toast.update(toastId, {
-      render: <TransactionToastFinished txHash={txHash} />,
+      render: <TransactionDetail txHash={txHash} status="finished" />,
       type: 'success',
       isLoading: false,
       autoClose: AUTO_CLOSE_TIME,
@@ -38,7 +37,7 @@ const showSuccessToast = (txHash: string, toastId?: string | number) => {
       transition: Slide
     });
   } else {
-    toast.success(<TransactionToastFinished txHash={txHash} />, {
+    toast.success(<TransactionDetail txHash={txHash} status="finished" />, {
       position: 'bottom-right',
       closeButton: true,
       autoClose: AUTO_CLOSE_TIME
@@ -49,7 +48,7 @@ const showSuccessToast = (txHash: string, toastId?: string | number) => {
 const showErrorToast = (txHash: string, toastId?: string | number) => {
   if (toastId && toast.isActive(toastId)) {
     toast.update(toastId, {
-      render: <TransactionToastFinished txHash={txHash} />,
+      render: <TransactionDetail txHash={txHash} status="finished" />,
       type: 'error',
       isLoading: false,
       autoClose: AUTO_CLOSE_TIME,
@@ -58,7 +57,7 @@ const showErrorToast = (txHash: string, toastId?: string | number) => {
       transition: Slide
     });
   } else {
-    toast.error(<TransactionToastFinished txHash={txHash} />, {
+    toast.error(<TransactionDetail txHash={txHash} status="finished" />, {
       position: 'bottom-right',
       closeButton: true,
       autoClose: AUTO_CLOSE_TIME
