@@ -37,10 +37,17 @@ export function generateDestReserveXcmMessage({
 
     const assetId = {
       id: {
-        Concrete: {
-          parents: 0,
-          interior: createStandardXcmInterior(multiLocation?.v1?.interior)
-        }
+        Concrete: isDotLocation(asset?.xcmLocation)
+          ? {
+              parents: 1,
+              interior: {
+                Here: null
+              }
+            }
+          : {
+              parents: 1,
+              interior: createStandardXcmInterior(multiLocation?.v1?.interior)
+            }
       },
       fun: {
         Fungible: parseUnits({
@@ -102,7 +109,7 @@ export function generateLocalReserveXcmMessage({
   const assetId = {
     id: {
       Concrete: {
-        parents: 1,
+        parents: 0,
         interior: createStandardXcmInterior(multiLocation?.v1?.interior)
       }
     },
@@ -274,11 +281,19 @@ export async function calculateExecutionWeight({
       isAssetHub
     });
   } else if (asset?.reserveType === 'remote') {
-    xcmMessage = generateRemoteReserveXcmMessage({
-      asset,
-      targetChainId,
-      recipientAddress
-    });
+    if (isAssetHub && isDotLocation(asset?.xcmLocation)) {
+      xcmMessage = generateDestReserveXcmMessage({
+        asset,
+        recipientAddress,
+        isAssetHub
+      });
+    } else {
+      xcmMessage = generateRemoteReserveXcmMessage({
+        asset,
+        targetChainId,
+        recipientAddress
+      });
+    }
   }
   try {
     if (!xcmMessage) {

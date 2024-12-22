@@ -1,7 +1,7 @@
 import { BN_ZERO, bnToBn } from '@polkadot/util';
 import { createStandardXcmInterior } from '@/utils/xcm/interior-params';
 import { parseUnits } from '@/utils/format';
-import { generateBeneficiary } from '@/utils/xcm/helper';
+import { generateBeneficiary, isDotLocation } from '@/utils/xcm/helper';
 import type { ApiPromise } from '@polkadot/api';
 import type { Asset } from '@/types/xcm-asset';
 
@@ -17,13 +17,19 @@ export function generateDestReserveXcmMessage({
   if (!asset.xcmLocation) return null;
   try {
     const multiLocation = asset.xcmLocation;
+    console.log('generateDestReserveXcmMessage asset', asset);
 
     const assetId = {
       id: {
-        Concrete: {
-          parents: 0,
-          interior: createStandardXcmInterior(multiLocation?.v1?.interior)
-        }
+        Concrete: isDotLocation(asset?.xcmLocation)
+          ? {
+              parents: 1,
+              interior: 'Here'
+            }
+          : {
+              parents: 1,
+              interior: createStandardXcmInterior(multiLocation?.v1?.interior)
+            }
       },
       fun: {
         Fungible: parseUnits({
@@ -70,7 +76,7 @@ export function generateLocalReserveXcmMessage({
     const assetId = {
       id: {
         Concrete: {
-          parents: 1,
+          parents: 0,
           interior: createStandardXcmInterior(multiLocation?.v1?.interior)
         }
       },
@@ -246,11 +252,18 @@ export async function queryDeliveryFees({
         recipientAddress
       });
     } else if (asset.reserveType === 'remote') {
-      xcmMessage = generateRemoteReserveXcmMessage({
-        asset,
-        targetChainId: toParaId,
-        recipientAddress
-      });
+      if (toParaId === 1000 && isDotLocation(asset?.xcmLocation)) {
+        xcmMessage = generateDestReserveXcmMessage({
+          asset,
+          recipientAddress
+        });
+      } else {
+        xcmMessage = generateRemoteReserveXcmMessage({
+          asset,
+          targetChainId: toParaId,
+          recipientAddress
+        });
+      }
     }
     console.log('deliver fee xcmMessage', xcmMessage);
     if (!xcmMessage) return BN_ZERO;
