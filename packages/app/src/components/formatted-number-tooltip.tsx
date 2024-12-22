@@ -1,11 +1,13 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useCallback } from 'react';
+import BN from 'bn.js';
+import { useCopyToClipboard } from 'react-use';
+import { toast } from 'react-hot-toast';
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger
 } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
-import BN from 'bn.js';
 import { formatTokenBalance } from '@/utils/format';
 
 interface FormattedNumberTooltipProps {
@@ -20,6 +22,24 @@ const FormattedNumberTooltip = React.forwardRef<
   HTMLDivElement,
   FormattedNumberTooltipProps
 >(({ value, decimals, displayDecimals = 3, className, children }, ref) => {
+  const [, copyToClipboard] = useCopyToClipboard();
+
+  const handleCopy = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      e.stopPropagation();
+      if (!value) return;
+      const text = formatTokenBalance(value, {
+        decimals,
+        showFullPrecision: true,
+        withZero: true
+      });
+      copyToClipboard(text);
+
+      toast.success('Copied to clipboard');
+    },
+    [copyToClipboard, value]
+  );
+
   const formattedBalance = formatTokenBalance(value, {
     decimals,
     showFullPrecision: false,
@@ -42,7 +62,9 @@ const FormattedNumberTooltip = React.forwardRef<
           {renderContent(formattedBalance)}
         </div>
       </TooltipTrigger>
-      <TooltipContent>{formattedValueWithFullPrecision}</TooltipContent>
+      <TooltipContent onClick={handleCopy} className="cursor-pointer">
+        {formattedValueWithFullPrecision}
+      </TooltipContent>
     </Tooltip>
   );
 });
