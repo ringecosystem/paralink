@@ -208,6 +208,7 @@ export const signAndSendExtrinsic = async ({
 }: SignAndSendExtrinsicParams) => {
   try {
     let txHash: string | undefined;
+    let isCallbackExecuted = false;
     const startTime = Date.now();
     const unsub = await extrinsic.signAndSend(
       sender,
@@ -238,8 +239,8 @@ export const signAndSendExtrinsic = async ({
               event.method === 'ExtrinsicSuccess' ||
               event.method === 'ExtrinsicFailed'
           );
-
-          if (extrinsicEvent?.method === 'ExtrinsicSuccess') {
+          if (extrinsicEvent?.method === 'ExtrinsicSuccess' && !isCallbackExecuted) {
+            isCallbackExecuted = true;
             await calculateAndWaitRemainingTime(
               startTime,
               CROSS_CHAIN_TRANSFER_ESTIMATED_TIME
@@ -247,6 +248,7 @@ export const signAndSendExtrinsic = async ({
             onSuccess?.({
               txHash
             });
+            unsub();
             unsub();
           } else if (extrinsicEvent?.method === 'ExtrinsicFailed') {
             onFailure?.({

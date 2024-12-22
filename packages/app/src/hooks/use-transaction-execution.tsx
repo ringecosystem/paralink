@@ -104,7 +104,6 @@ export function useTransactionExecution({
       ) {
         throw new Error('Missing required parameters for transaction');
       }
-      let txHash: string | undefined;
       return new Promise((resolve, reject) => {
         try {
           signAndSendExtrinsic({
@@ -112,7 +111,6 @@ export function useTransactionExecution({
             signer: selectedWallet.signer,
             sender: address,
             onPending({ txHash }) {
-              txHash = txHash;
               if (sourceChain && targetChain) {
                 addTransaction({
                   txHash,
@@ -126,7 +124,6 @@ export function useTransactionExecution({
                 });
                 toastIdRef.current = showPendingToast(txHash);
               }
-              resolve({ status: TransactionStatus.PENDING, txHash });
             },
             onSuccess: async ({ txHash }) => {
               console.log('transaction success', txHash);
