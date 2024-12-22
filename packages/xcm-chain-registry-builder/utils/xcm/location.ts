@@ -191,6 +191,7 @@ export function determineReserveType({
         return ReserveType.Remote;
       }
     } catch (error) {
+      console.error('Error determining reserve type:', error);
       return ReserveType.Remote;
     }
   }
