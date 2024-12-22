@@ -131,7 +131,7 @@ export function Picker({
 
       handleChangeValue(formattedBalance);
     },
-    [maxBalanceBN, handleChangeValue]
+    [maxBalanceBN, handleChangeValue, selectedToken?.decimals]
   );
 
   const handleCloseDialog = useCallback(() => {

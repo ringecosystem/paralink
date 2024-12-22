@@ -5,9 +5,9 @@
   "private": true,
   "scripts": {
     "dev:ui": "pnpm --filter paralink dev",
-    "build:app": "pnpm --filter app build",
-    "start:app": "pnpm --filter app start",
-    "lint:app": "pnpm --filter app lint",
+    "build:ui": "pnpm --filter paralink build",
+    "start:ui": "pnpm --filter paralink start",
+    "lint:ui": "pnpm --filter paralink lint",
     "dev:builder": "pnpm --filter xcm-chain-registry-builder dev",
     "build:builder": "pnpm --filter xcm-chain-registry-builder build",
     "lint:builder": "pnpm --filter xcm-chain-registry-builder lint"

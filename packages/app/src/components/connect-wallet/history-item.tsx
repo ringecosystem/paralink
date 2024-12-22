@@ -36,7 +36,7 @@ export const HistoryItem = ({
     // }
     const explorer = sourceChain?.explorer;
     return explorer ? `${explorer}/tx/${txHash}?tab=xcm_transfer` : '';
-  }, [sourceChain, txHash, uniqueId]);
+  }, [sourceChain, txHash]);
 
   return (
     <div className="flex w-full flex-col items-center justify-between gap-[5px] rounded-[10px] bg-[#F2F3F5] p-[10px]">

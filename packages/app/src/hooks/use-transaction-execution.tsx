@@ -154,14 +154,14 @@ export function useTransactionExecution({
       });
     },
     [
+      address,
       selectedWallet,
       sourceChain,
       targetChain,
       amount,
       selectedToken,
       recipientAddress,
-      addTransaction,
-      updateTransaction
+      addTransaction
     ]
   );
 
@@ -233,7 +233,16 @@ export function useTransactionExecution({
         reject(message);
       }
     });
-  }, [sourceChain, targetChain, selectedToken, amount, recipientAddress]);
+  }, [
+    address,
+    sourceChain,
+    targetChain,
+    selectedToken,
+    amount,
+    recipientAddress,
+    addTransaction,
+    config
+  ]);
 
   return {
     executeTransaction,

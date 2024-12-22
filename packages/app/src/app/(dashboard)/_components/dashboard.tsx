@@ -267,13 +267,10 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
     }
   }, [
     extrinsic,
-    address,
     executeTransaction,
-    amount,
-    targetChainId,
+    sourceChainId,
     address,
-    recipientAddress,
-    selectedToken?.symbol
+    executeTransactionFromMoonbeam
   ]);
 
   const buttonLoadingText = useMemo(() => {

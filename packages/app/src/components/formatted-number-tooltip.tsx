@@ -37,7 +37,7 @@ const FormattedNumberTooltip = React.forwardRef<
 
       toast.success('Copied to clipboard');
     },
-    [copyToClipboard, value]
+    [copyToClipboard, value, decimals]
   );
 
   const formattedBalance = formatTokenBalance(value, {
