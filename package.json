@@ -4,6 +4,12 @@
   "description": "paralink",
   "private": true,
   "scripts": {
-    "dev:ui": "pnpm --filter paralink dev"
+    "dev:ui": "pnpm --filter paralink dev",
+    "build:app": "pnpm --filter app build",
+    "start:app": "pnpm --filter app start",
+    "lint:app": "pnpm --filter app lint",
+    "dev:builder": "pnpm --filter xcm-chain-registry-builder dev",
+    "build:builder": "pnpm --filter xcm-chain-registry-builder build",
+    "lint:builder": "pnpm --filter xcm-chain-registry-builder lint"
   }
 }
