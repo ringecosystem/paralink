@@ -139,13 +139,16 @@ export function useTransactionExecution({
                 });
               }
             },
-            onError: (error) => {
-              console.log('transaction error', error);
+            onFailure: ({ txHash }) => {
               if (txHash) {
                 showErrorToast(txHash, toastIdRef.current);
                 toastIdRef.current = undefined;
               }
               resolve({ status: TransactionStatus.FAILED, txHash });
+            },
+            onError: (error) => {
+              console.log('transaction error', error);
+              reject(error);
             }
           });
         } catch (error) {
