@@ -41,6 +41,9 @@ interface Asset {
   originSymbol: string;
 }
 
+interface viemError extends Error {
+  shortMessage: string;
+}
 export const getAvailableAssets = (
   sourceParaId: number,
   targetParaId: number
@@ -146,11 +149,18 @@ export const transferFromMoonbeam = async ({
       message: `Successfully transferred ${amount} ${token} to ${chainName}`
     };
   } catch (error) {
-    console.error('Transfer error:', error);
+    const err = error as viemError;
+    console.error('Transfer error:', err);
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error occurred',
-      message: error instanceof Error ? error.message : 'Unknown error occurred'
+      error:
+        error instanceof Error
+          ? (err.shortMessage ?? err.message)
+          : 'Unknown error occurred',
+      message:
+        error instanceof Error
+          ? (err.shortMessage ?? err.message)
+          : 'Unknown error occurred'
     };
   }
 };
