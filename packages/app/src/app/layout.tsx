@@ -49,7 +49,7 @@ export default function RootLayout({
               duration: 3_000
             }}
           />
-          <TooltipProvider>
+          <TooltipProvider delayDuration={0}>
             <div className="flex min-h-dvh w-screen flex-col">
               <header className="h-[var(--header-height)]">
                 <Header />
