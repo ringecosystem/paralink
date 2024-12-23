@@ -1,4 +1,4 @@
-import { BN, bnToBn } from '@polkadot/util';
+import { BN, bnToBn, isFunction } from '@polkadot/util';
 import { formatTokenBalance, parseUnits } from '@/utils/format';
 import type { ApiPromise } from '@polkadot/api';
 import type { Asset } from '@/types/xcm-asset';
@@ -13,7 +13,7 @@ function normalizeMinBalance(balance: BN, decimals: number): BN {
   return balance;
 }
 
-export async function getTargetMinBalance({
+export async function getMinBalance({
   api,
   assetId,
   decimals
@@ -26,15 +26,14 @@ export async function getTargetMinBalance({
   formatted: string;
 }> {
   try {
-    
     if (api.query.assets?.asset) {
-      console.log('min balance match assets.asset' , assetId);
+      console.log('min balance match assets.asset', assetId);
       const assetDetails = await api.query.assets.asset(assetId);
       const details = assetDetails.toJSON() as { minBalance?: number | string };
       if (details?.minBalance || details?.minBalance === 0) {
         let balanceBN =
           typeof details.minBalance === 'string' &&
-            details.minBalance.startsWith('0x')
+          details.minBalance.startsWith('0x')
             ? new BN(details.minBalance.slice(2), 'hex')
             : bnToBn(details.minBalance);
         balanceBN = normalizeMinBalance(balanceBN, decimals);
@@ -44,23 +43,8 @@ export async function getTargetMinBalance({
         };
       }
     }
-    // TODO
-    // if (api.query.assetRegistry?.assetMetadatas) {
-    //   const assetMetadata =
-    //     await api.query.assetRegistry.assetMetadatas(assetId);
-    //   const metadata = assetMetadata.toJSON() as {
-    //     minimalBalance?: string | number;
-    //   };
-    //   if (metadata?.minimalBalance) {
-    //     const balanceBN = bnToBn(metadata.minimalBalance);
-    //     return {
-    //       balance: balanceBN,
-    //       formatted: formatTokenBalance(balanceBN, { decimals })
-    //     };
-    //   }
-    // }
     if (api.query.assetRegistry?.assets) {
-      console.log('min balance match assetRegistry.assets' , assetId);
+      console.log('min balance match assetRegistry.assets', assetId);
       const assetDetails = await api.query.assetRegistry.assets(assetId);
       console.log('assetDetails', assetDetails?.toJSON());
       const details = assetDetails?.toJSON() as {
@@ -74,10 +58,27 @@ export async function getTargetMinBalance({
         };
       }
     }
+
+    if (isFunction(api.query.assetRegistry?.currencyMetadatas)) {
+      console.log('min balance match assetRegistry.currencyMetadatas', assetId);
+      const currencyMetadatas =
+        await api.query.assetRegistry.currencyMetadatas();
+      const details = currencyMetadatas.toJSON() as {
+        minimalBalance?: string | number;
+      } | null;
+      if (details?.minimalBalance) {
+        const balanceBN = bnToBn(details.minimalBalance);
+        return {
+          balance: balanceBN,
+          formatted: formatTokenBalance(balanceBN, { decimals })
+        };
+      }
+    }
+
     console.log('no details found for min balance');
 
     return {
-      balance: parseUnits({ 
+      balance: parseUnits({
         value: '1',
         decimals
       }),

@@ -38,6 +38,7 @@ import { MOCK_ADDRESSES } from '@/config/mock';
 import { formatSubstrateAddress } from '@/utils/address';
 import type { WalletAccount } from '@talismn/connect-wallets';
 import type { Asset, ChainRegistry } from '@/types/xcm-asset';
+import { useSourceChainMinBalance } from '../_hooks/use-sourcechain-min-balance';
 
 interface DashboardProps {
   registryAssets: ChainRegistry;
@@ -105,6 +106,14 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
   const { setupCrossChainConfig, swapChains, updateToChain } =
     useCrossChainSetup();
 
+  const {
+    balance: sourceChainMinBalance,
+    isLoading: isSourceChainMinBalanceLoading
+  } = useSourceChainMinBalance({
+    asset: selectedToken,
+    decimals: selectedToken?.decimals
+  });
+
   useEffect(() => {
     if (!sourceChain || !targetChain) return;
     const tokens = getTokenList({
@@ -143,7 +152,8 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
   const { fee: crossFee, isLoading: isCrossFeeLoading } = useCrossFee({
     asset: selectedToken,
     recipientAddress: targetMockAddress,
-    paraId: targetChain?.id
+    targetChainId: targetChainId,
+    sourceChainId: sourceChainId
   });
 
   const { isLoading: isFromExistentialDepositLoading, deposit: fromDeposit } =
@@ -167,12 +177,22 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
         BN_ZERO,
         selectedTokenBalance
           ?.sub(fromDeposit)
-          ?.sub(networkFee ? networkFee : BN_ZERO) ?? BN_ZERO
+          ?.sub(networkFee ? networkFee : BN_ZERO)
+          ?.sub(sourceChainMinBalance ?? BN_ZERO) ?? BN_ZERO
       );
     }
 
-    return bnMax(BN_ZERO, selectedTokenBalance ?? BN_ZERO);
-  }, [selectedToken, selectedTokenBalance, fromDeposit, networkFee]);
+    return bnMax(
+      BN_ZERO,
+      selectedTokenBalance?.sub(sourceChainMinBalance ?? BN_ZERO) ?? BN_ZERO
+    );
+  }, [
+    selectedToken,
+    selectedTokenBalance,
+    fromDeposit,
+    networkFee,
+    sourceChainMinBalance
+  ]);
 
   const { isInsufficientBalance } = useMemo(() => {
     if (address && amount) {
@@ -370,7 +390,8 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
               isMaxBalanceLoading={
                 isExtrinsicLoading ||
                 isNetworkFeeLoading ||
-                isFromExistentialDepositLoading
+                isFromExistentialDepositLoading ||
+                isToExistentialDepositLoading
               }
               onChangeAmount={setAmount}
               onChangeTokenBalance={setSelectedTokenBalance}
@@ -435,7 +456,8 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
                 isNetworkFeeLoading ||
                 isCrossFeeLoading ||
                 isTransactionLoading ||
-                isExtrinsicLoading
+                isExtrinsicLoading ||
+                isSourceChainMinBalanceLoading
               }
               loadingText={buttonLoadingText}
               isDisabled={

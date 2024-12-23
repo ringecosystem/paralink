@@ -11,27 +11,9 @@ declare enum Ecosystem {
 export const getEvmSigner = (account: `0x${string}`) => {
   if (typeof window === 'undefined') return null;
 
-  const rpcUrls = [
-    'https://rpc.api.moonbeam.network',
-    'https://moonbeam.public.blastapi.io',
-    'https://moonbeam.api.onfinality.io/public'
-  ];
-
-  const moonbeamChain = {
-    ...moonbeam,
-    rpcUrls: {
-      default: {
-        http: rpcUrls
-      },
-      public: {
-        http: rpcUrls
-      }
-    }
-  };
-
   return createWalletClient({
     account,
-    chain: moonbeamChain,
+    chain: moonbeam,
     transport: custom(window.ethereum),
     cacheTime: 0
   });

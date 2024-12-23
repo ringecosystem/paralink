@@ -1,18 +1,25 @@
-import { BN_ZERO, bnToBn } from '@polkadot/util';
+import { BN_ZERO, bnToBn, u8aToHex } from '@polkadot/util';
 import { createStandardXcmInterior } from '@/utils/xcm/interior-params';
 import { parseUnits } from '@/utils/format';
-import { generateBeneficiary, isDotLocation } from '@/utils/xcm/helper';
+import {
+  generateBeneficiary,
+  generateBeneficiaryV4,
+  isDotLocation
+} from '@/utils/xcm/helper';
 import type { ApiPromise } from '@polkadot/api';
 import type { Asset } from '@/types/xcm-asset';
+import type { CalculateExecutionWeightType } from './xcm-weight';
 
 type XcmTransferParams = {
   asset: Asset;
   recipientAddress: string;
+  calculateWeightType: CalculateExecutionWeightType;
 };
 
 export function generateDestReserveXcmMessage({
   asset,
-  recipientAddress
+  recipientAddress,
+  calculateWeightType
 }: XcmTransferParams) {
   if (!asset.xcmLocation) return null;
   try {
@@ -40,25 +47,52 @@ export function generateDestReserveXcmMessage({
     };
 
     const beneficiary = generateBeneficiary(recipientAddress);
-    return {
-      V2: [
-        { WithdrawAsset: [assetId] },
-        { ClearOrigin: null },
-        {
-          BuyExecution: {
-            fees: assetId,
-            weightLimit: 'Unlimited'
-          }
-        },
-        {
-          DepositAsset: {
-            assets: { Wild: 'All' },
-            maxAssets: 1,
-            beneficiary
-          }
+    const beneficiaryV4 = generateBeneficiaryV4(recipientAddress);
+    return calculateWeightType !== 'toAssetHub'
+      ? {
+          V2: [
+            { WithdrawAsset: [assetId] },
+            { ClearOrigin: null },
+            {
+              BuyExecution: {
+                fees: assetId,
+                weightLimit: 'Unlimited'
+              }
+            },
+            {
+              DepositAsset: {
+                assets: { Wild: 'All' },
+                maxAssets: 1,
+                beneficiary
+              }
+            }
+          ]
         }
-      ]
-    };
+      : {
+          V4: [
+            { WithdrawAsset: [assetId] },
+            { ClearOrigin: null },
+            {
+              BuyExecution: {
+                fees: assetId,
+                weightLimit: 'Unlimited'
+              }
+            },
+            {
+              DepositAsset: {
+                assets: {
+                  Wild: {
+                    AllCounted: 1
+                  }
+                },
+                beneficiary: beneficiaryV4
+              }
+            },
+            {
+              SetTopic: u8aToHex(new Uint8Array(32).fill(0))
+            }
+          ]
+        };
   } catch (error) {
     console.error('generateDestReserveXcmMessage error:', error);
     return null;
@@ -67,7 +101,8 @@ export function generateDestReserveXcmMessage({
 
 export function generateLocalReserveXcmMessage({
   asset,
-  recipientAddress
+  recipientAddress,
+  calculateWeightType
 }: XcmTransferParams) {
   if (!asset.xcmLocation) return null;
   try {
@@ -89,26 +124,53 @@ export function generateLocalReserveXcmMessage({
     };
 
     const beneficiary = generateBeneficiary(recipientAddress);
+    const beneficiaryV4 = generateBeneficiaryV4(recipientAddress);
 
-    return {
-      V2: [
-        { ReserveAssetDeposited: [assetId] },
-        { ClearOrigin: null },
-        {
-          BuyExecution: {
-            fees: assetId,
-            weightLimit: 'Unlimited'
-          }
-        },
-        {
-          DepositAsset: {
-            assets: { Wild: 'All' },
-            maxAssets: 1,
-            beneficiary
-          }
+    return calculateWeightType !== 'toAssetHub'
+      ? {
+          V2: [
+            { ReserveAssetDeposited: [assetId] },
+            { ClearOrigin: null },
+            {
+              BuyExecution: {
+                fees: assetId,
+                weightLimit: 'Unlimited'
+              }
+            },
+            {
+              DepositAsset: {
+                assets: { Wild: 'All' },
+                maxAssets: 1,
+                beneficiary
+              }
+            }
+          ]
         }
-      ]
-    };
+      : {
+          V4: [
+            { ReserveAssetDeposited: [assetId] },
+            { ClearOrigin: null },
+            {
+              BuyExecution: {
+                fees: assetId,
+                weightLimit: 'Unlimited'
+              }
+            },
+            {
+              DepositAsset: {
+                assets: {
+                  Wild: {
+                    AllCounted: 1
+                  }
+                },
+                beneficiary: beneficiaryV4
+              }
+            },
+            {
+              SetTopic: u8aToHex(new Uint8Array(32).fill(0))
+            }
+          ]
+        };
   } catch (error) {
     console.error('generateLocalReserveXcmMessage error:', error);
     return null;
@@ -209,7 +271,8 @@ interface QueryDeliveryFeesParams {
   api: ApiPromise;
   asset: Asset;
   recipientAddress: string;
-  toParaId: number;
+  sourceChainId: number;
+  targetChainId: number;
 }
 
 /**
@@ -221,9 +284,20 @@ export async function queryDeliveryFees({
   api,
   asset,
   recipientAddress,
-  toParaId
+  sourceChainId,
+  targetChainId
 }: QueryDeliveryFeesParams) {
   if (!api?.call?.xcmPaymentApi) return BN_ZERO;
+
+  let calculateWeightType: CalculateExecutionWeightType;
+
+  if (targetChainId === 1000) {
+    calculateWeightType = 'toAssetHub';
+  } else if (sourceChainId === 1000) {
+    calculateWeightType = 'leaveAssetHub';
+  } else {
+    calculateWeightType = 'normal';
+  }
 
   try {
     const destLocation = {
@@ -231,7 +305,7 @@ export async function queryDeliveryFees({
         parents: 1,
         interior: {
           X1: {
-            Parachain: toParaId
+            Parachain: targetChainId
           }
         }
       }
@@ -244,24 +318,28 @@ export async function queryDeliveryFees({
     if (asset.reserveType === 'foreign') {
       xcmMessage = generateDestReserveXcmMessage({
         asset,
-        recipientAddress
+        recipientAddress,
+        calculateWeightType
       });
     } else if (asset.reserveType === 'local') {
       xcmMessage = generateLocalReserveXcmMessage({
         asset,
-        recipientAddress
+        recipientAddress,
+        calculateWeightType
       });
     } else if (asset.reserveType === 'remote') {
-      if (toParaId === 1000 && isDotLocation(asset?.xcmLocation)) {
+      if (targetChainId === 1000 && isDotLocation(asset?.xcmLocation)) {
         xcmMessage = generateDestReserveXcmMessage({
           asset,
-          recipientAddress
+          recipientAddress,
+          calculateWeightType
         });
       } else {
         xcmMessage = generateRemoteReserveXcmMessage({
           asset,
-          targetChainId: toParaId,
-          recipientAddress
+          targetChainId: targetChainId,
+          recipientAddress,
+          calculateWeightType
         });
       }
     }
