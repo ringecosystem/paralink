@@ -45,7 +45,7 @@ export function generateDestReserveXcmMessage({
               }
             }
           : {
-              parents: 1,
+              parents: 0,
               interior: createStandardXcmInterior(multiLocation?.v1?.interior)
             }
       },
@@ -109,7 +109,7 @@ export function generateLocalReserveXcmMessage({
   const assetId = {
     id: {
       Concrete: {
-        parents: 0,
+        parents: 1,
         interior: createStandardXcmInterior(multiLocation?.v1?.interior)
       }
     },
