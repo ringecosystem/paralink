@@ -11,5 +11,8 @@
     "dev:builder": "pnpm --filter xcm-chain-registry-builder dev",
     "build:builder": "pnpm --filter xcm-chain-registry-builder build",
     "lint:builder": "pnpm --filter xcm-chain-registry-builder lint"
+  },
+  "devDependencies": {
+    "next": "15.0.2"
   }
 }
