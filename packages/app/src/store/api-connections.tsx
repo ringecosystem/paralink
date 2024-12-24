@@ -155,7 +155,6 @@ const useApiConnectionsStore = create<ApiConnectionsStore>((set, get) => ({
         if (!endpoints || !endpoints.length)
           throw new Error('must provide at least one node');
         const sortedEndpoints = sortEndpoints(endpoints);
-        console.log('sortedEndpoints', sortedEndpoints);
         const api = await connectToChain(sortedEndpoints);
 
         set((state) => ({

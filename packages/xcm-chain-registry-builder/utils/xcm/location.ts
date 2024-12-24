@@ -126,7 +126,7 @@ export function determineReserveType({
   targetParaId: number | string;
   originChainReserveLocation?: string;
 }): ReserveType {
-  if (Number(targetParaId) === 1000) {
+  if (Number(targetParaId) === 1000 || Number(targetParaId) === 0) {
     return ReserveType.Foreign;
   }
   if (originChainReserveLocation) {

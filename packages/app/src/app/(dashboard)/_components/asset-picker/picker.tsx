@@ -71,7 +71,6 @@ export function Picker({
       setSelectedToken: state.setSelectedToken
     }))
   );
-
   const {
     data: updatedBalances,
     isLoading: isBalancesLoading,
@@ -174,8 +173,6 @@ export function Picker({
             setSelectedToken(validTokens[0]);
           }
         } else {
-          console.log('acceptablePaymentTokens', acceptablePaymentTokens);
-          console.log('tokens', tokens);
           if (acceptablePaymentTokens?.length) {
             const matchTokens = tokens.filter((asset) => {
               const isSupported = acceptablePaymentTokens.some((tokenInfo) =>

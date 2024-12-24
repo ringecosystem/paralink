@@ -54,7 +54,6 @@ export const useMinBalance = ({ asset, decimals }: UseMinBalanceProps) => {
   }, [sourceChain, targetChain, asset]);
 
   useEffect(() => {
-    console.log('useMinBalance');
     const fetchMinBalance = async () => {
       if (isNil(targetChainId) || !assetId || !decimals) return;
       if (assetId === '-2') {

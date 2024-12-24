@@ -19,10 +19,7 @@ import {
   processAssetHubAssets,
   processAssetHubAssetsWithRegisteredChains
 } from './utils/xcm/assets';
-import {
-  determineReserveType,
-  hasParachainInLocation
-} from './utils/xcm/location';
+import { determineReserveType } from './utils/xcm/location';
 import { getSupportedParaChains } from './utils/chain/parachain';
 import {
   filterHrmpConnections,
@@ -67,8 +64,15 @@ async function buildChainRegistry({
         return null;
       }
 
+      const isPolkadot = chain?.specName === 'polkadot';
       return {
         ...chainAsset,
+        substrateInfo: isPolkadot
+          ? {
+              ...(chainAsset?.substrateInfo || {}),
+              paraId: 0
+            }
+          : chainAsset?.substrateInfo,
         id: chain?.id?.toString(),
         assetsInfo: chain?.assetsInfo,
         xcAssetsData: chain?.xcAssetsData?.filter(
@@ -118,6 +122,7 @@ async function transformChainRegistry({
 
   for (const chain of filteredChainRegistry) {
     const chainId = chain.id;
+    const isPolkadot = chainId === '0';
     const isAssetHub = chainId === '1000';
     registry[chainId] = {
       name: chain.name,
@@ -177,14 +182,24 @@ async function transformChainRegistry({
       icon: chain.nativeToken.icon,
       isNative: true,
       reserveType: ReserveType.Local,
-      xcmLocation: {
-        v1: {
-          parents: 0,
-          interior: {
-            here: null
-          }
-        }
-      },
+      xcmLocation:
+        isPolkadot || isAssetHub
+          ? {
+              v1: {
+                parents: 1,
+                interior: {
+                  here: null
+                }
+              }
+            }
+          : {
+              v1: {
+                parents: 0,
+                interior: {
+                  here: null
+                }
+              }
+            },
       registeredChains: null
     };
 
@@ -256,14 +271,12 @@ async function transformChainRegistry({
         ?.filter((v) => v.id !== chainId)
         ?.forEach((v) => {
           const destAssetsInfo = v.xcAssetsData?.filter((asset) => {
-            const hasParachain =
-              hasParachainInLocation({
-                multiLocationStr: asset.xcmV1MultiLocation,
-                paraId: chainId
-              }) &&
+            const hasParachain = Number(asset.paraID) === Number(chainId);
+            return (
+              hasParachain &&
               chain?.nativeToken?.symbol?.toLowerCase() ===
-                asset?.symbol?.toLowerCase();
-            return hasParachain;
+                asset?.symbol?.toLowerCase()
+            );
           });
 
           if (destAssetsInfo && destAssetsInfo.length > 0) {
@@ -286,6 +299,31 @@ async function transformChainRegistry({
                 };
               }
             });
+          } else if (chainId === '0' && v.id === '1000') {
+            if (
+              registry?.[chainId]?.nativeToken &&
+              !registry?.[chainId]?.nativeToken?.registeredChains
+            ) {
+              registry[chainId].nativeToken.registeredChains = {};
+            }
+            if (registry?.[chainId]?.nativeToken?.registeredChains) {
+              registry[chainId].nativeToken.registeredChains[v.id] = {
+                symbol: chain.nativeToken.symbol,
+                decimals: chain.nativeToken.decimals,
+                isNative: true,
+                reserveType: ReserveType.Local,
+                icon: chain.nativeToken.icon,
+                xcmLocation: {
+                  v1: {
+                    parents: 1,
+                    interior: {
+                      here: null
+                    }
+                  }
+                },
+                assetId: 'Native'
+              };
+            }
           }
         });
 

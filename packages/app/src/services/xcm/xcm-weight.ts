@@ -23,8 +23,10 @@ export interface XcmV3MultiLocation {
 }
 
 export type CalculateExecutionWeightType =
+  | 'toPolkadot'
+  | 'fromPolkadot'
   | 'toAssetHub'
-  | 'leaveAssetHub'
+  | 'fromAssetHub'
   | 'normal';
 
 type XcmTransferParams = {
@@ -43,17 +45,10 @@ export function generateDestReserveXcmMessage({
 
     const assetId = {
       id: {
-        Concrete: isDotLocation(asset?.xcmLocation)
-          ? {
-              parents: 1,
-              interior: {
-                Here: null
-              }
-            }
-          : {
-              parents: 0,
-              interior: createStandardXcmInterior(multiLocation?.v1?.interior)
-            }
+        Concrete: {
+          parents: 0,
+          interior: createStandardXcmInterior(multiLocation?.v1?.interior)
+        }
       },
       fun: {
         Fungible: parseUnits({
@@ -63,71 +58,44 @@ export function generateDestReserveXcmMessage({
       }
     };
     const beneficiary = generateBeneficiary(recipientAddress);
-    const beneficiaryV4 = generateBeneficiaryV4(recipientAddress);
 
-    return calculateWeightType !== 'leaveAssetHub'
-      ? {
-          V2: [
-            { WithdrawAsset: [assetId] },
-            { ClearOrigin: null },
-            {
-              BuyExecution: {
-                fees:
-                  calculateWeightType === 'toAssetHub'
-                    ? {
-                        id: {
-                          Concrete: {
-                            parents: 1,
-                            interior: {
-                              Here: null
-                            }
-                          }
-                        },
-                        fun: {
-                          Fungible: parseUnits({
-                            value: '1',
-                            decimals: asset.decimals
-                          })?.toString()
+    return {
+      V2: [
+        { WithdrawAsset: [assetId] },
+        { ClearOrigin: null },
+        {
+          BuyExecution: {
+            fees:
+              calculateWeightType === 'toAssetHub'
+                ? {
+                    id: {
+                      Concrete: {
+                        parents: 1,
+                        interior: {
+                          Here: null
                         }
                       }
-                    : assetId,
-                weightLimit: 'Unlimited'
-              }
-            },
-            {
-              DepositAsset: {
-                assets: { Wild: 'All' },
-                maxAssets: 1,
-                beneficiary
-              }
-            }
-          ]
-        }
-      : {
-          V4: [
-            { WithdrawAsset: [assetId] },
-            { ClearOrigin: null },
-            {
-              BuyExecution: {
-                fees: assetId,
-                weightLimit: 'Unlimited'
-              }
-            },
-            {
-              DepositAsset: {
-                assets: {
-                  Wild: {
-                    AllCounted: 1
+                    },
+                    fun: {
+                      Fungible: parseUnits({
+                        value: '1',
+                        decimals: asset.decimals
+                      })?.toString()
+                    }
                   }
-                },
-                beneficiary: beneficiaryV4
-              }
-            },
-            {
-              SetTopic: u8aToHex(new Uint8Array(32).fill(0))
-            }
-          ]
-        };
+                : assetId,
+            weightLimit: 'Unlimited'
+          }
+        },
+        {
+          DepositAsset: {
+            assets: { Wild: 'All' },
+            maxAssets: 1,
+            beneficiary
+          }
+        }
+      ]
+    };
   } catch (error) {
     console.log('error', error);
   }
@@ -140,63 +108,46 @@ export function generateLocalReserveXcmMessage({
 }: XcmTransferParams) {
   const multiLocation = asset.targetXcmLocation || asset.xcmLocation;
 
-  const assetId = {
-    id: {
-      Concrete: {
-        parents: 1,
-        interior: createStandardXcmInterior(multiLocation?.v1?.interior)
-      }
-    },
-    fun: {
-      Fungible: parseUnits({
-        value: '1',
-        decimals: asset.decimals
-      })?.toString()
-    }
-  };
+  // only polkadot has dot location
+  const assetId =
+    calculateWeightType === 'fromPolkadot'
+      ? {
+          id: {
+            Concrete: {
+              parents: 0,
+              interior: {
+                Here: null
+              }
+            }
+          },
+          fun: {
+            Fungible: parseUnits({
+              value: '1',
+              decimals: asset.decimals
+            })?.toString()
+          }
+        }
+      : {
+          id: {
+            Concrete: {
+              parents: 1,
+              interior: createStandardXcmInterior(multiLocation?.v1?.interior)
+            }
+          },
+          fun: {
+            Fungible: parseUnits({
+              value: '1',
+              decimals: asset.decimals
+            })?.toString()
+          }
+        };
 
   const beneficiary = generateBeneficiary(recipientAddress);
   const beneficiaryV4 = generateBeneficiaryV4(recipientAddress);
 
-  return calculateWeightType !== 'leaveAssetHub'
+  return calculateWeightType === 'fromPolkadot' ||
+    calculateWeightType === 'fromAssetHub'
     ? {
-        V2: [
-          { ReserveAssetDeposited: [assetId] },
-          { ClearOrigin: null },
-          {
-            BuyExecution: {
-              fees:
-                calculateWeightType === 'toAssetHub'
-                  ? {
-                      id: {
-                        Concrete: {
-                          parents: 1,
-                          interior: {
-                            Here: null
-                          }
-                        }
-                      },
-                      fun: {
-                        Fungible: parseUnits({
-                          value: '1',
-                          decimals: asset.decimals
-                        })?.toString()
-                      }
-                    }
-                  : assetId,
-              weightLimit: 'Unlimited'
-            }
-          },
-          {
-            DepositAsset: {
-              assets: { Wild: 'All' },
-              maxAssets: 1,
-              beneficiary
-            }
-          }
-        ]
-      }
-    : {
         V4: [
           { ReserveAssetDeposited: [assetId] },
           { ClearOrigin: null },
@@ -218,6 +169,25 @@ export function generateLocalReserveXcmMessage({
           },
           {
             SetTopic: u8aToHex(new Uint8Array(32).fill(0))
+          }
+        ]
+      }
+    : {
+        V2: [
+          { ReserveAssetDeposited: [assetId] },
+          { ClearOrigin: null },
+          {
+            BuyExecution: {
+              fees: assetId,
+              weightLimit: 'Unlimited'
+            }
+          },
+          {
+            DepositAsset: {
+              assets: { Wild: 'All' },
+              maxAssets: 1,
+              beneficiary
+            }
           }
         ]
       };
@@ -314,6 +284,92 @@ export function generateRemoteReserveXcmMessage({
   }
 }
 
+// weight from assethub to polkadot abount dot
+export function generateDotFromAssetHubToPolkadotXcmMessage({
+  recipientAddress
+}: {
+  recipientAddress: string;
+}) {
+  return {
+    V4: [
+      {
+        ReceiveTeleportedAsset: [
+          {
+            id: { Concrete: { parents: 0, interior: 'Here' } },
+            fun: { Fungible: '10000000000' }
+          }
+        ]
+      },
+      {
+        ClearOrigin: null
+      },
+      {
+        BuyExecution: {
+          fees: {
+            Concrete: { parents: 0, interior: 'Here' },
+            fun: { Fungible: '10000000000' }
+          },
+          weightLimit: 'Unlimited'
+        }
+      },
+      {
+        DepositAsset: {
+          assets: {
+            Wild: {
+              AllCounted: 1
+            }
+          },
+          beneficiary: generateBeneficiaryV4(recipientAddress)
+        }
+      },
+      {
+        SetTopic: u8aToHex(new Uint8Array(32).fill(0))
+      }
+    ]
+  };
+}
+
+// weight from polkadot to assethub about dot
+export function generateDotFromPolkadotToAssetHubXcmMessage({
+  recipientAddress
+}: {
+  recipientAddress: string;
+}) {
+  return {
+    V4: [
+      {
+        ReceiveTeleportedAsset: [
+          {
+            id: { Concrete: { parents: 1, interior: 'Here' } },
+            fun: { Fungible: '10000000000' }
+          }
+        ]
+      },
+      {
+        ClearOrigin: null
+      },
+      {
+        BuyExecution: {
+          fees: {
+            Concrete: { parents: 1, interior: 'Here' },
+            fun: { Fungible: '10000000000' }
+          },
+          weightLimit: 'Unlimited'
+        }
+      },
+      {
+        DepositAsset: {
+          assets: { Wild: { AllCounted: 1 } },
+          beneficiary: generateBeneficiaryV4(recipientAddress)
+        }
+      },
+      {
+        SetTopic: u8aToHex(new Uint8Array(32).fill(0))
+      }
+    ]
+  };
+}
+
 type CalculateExecutionWeightParams = Omit<
   XcmTransferParams,
   'isEvmChain' | 'calculateWeightType'
@@ -331,11 +387,14 @@ export async function calculateExecutionWeight({
 }: CalculateExecutionWeightParams) {
   const isAssetHub = Number(targetChainId) === 1000;
   let calculateWeightType: CalculateExecutionWeightType;
-
-  if (targetChainId === 1000) {
+  if (sourceChainId === 0) {
+    calculateWeightType = 'fromPolkadot';
+  } else if (targetChainId === 0) {
+    calculateWeightType = 'toPolkadot';
+  } else if (targetChainId === 1000) {
     calculateWeightType = 'toAssetHub';
   } else if (sourceChainId === 1000) {
-    calculateWeightType = 'leaveAssetHub';
+    calculateWeightType = 'fromAssetHub';
   } else {
     calculateWeightType = 'normal';
   }
@@ -344,9 +403,18 @@ export async function calculateExecutionWeight({
     | ReturnType<typeof generateDestReserveXcmMessage>
     | ReturnType<typeof generateLocalReserveXcmMessage>
     | ReturnType<typeof generateRemoteReserveXcmMessage>
+    | ReturnType<typeof generateDotFromAssetHubToPolkadotXcmMessage>
+    | ReturnType<typeof generateDotFromPolkadotToAssetHubXcmMessage>
     | null = null;
-
-  if (asset?.reserveType === 'local') {
+  if (sourceChainId === 1000 && targetChainId === 0) {
+    xcmMessage = generateDotFromAssetHubToPolkadotXcmMessage({
+      recipientAddress
+    });
+  } else if (sourceChainId === 0 && targetChainId === 1000) {
+    xcmMessage = generateDotFromPolkadotToAssetHubXcmMessage({
+      recipientAddress
+    });
+  } else if (asset?.reserveType === 'local') {
     xcmMessage = generateLocalReserveXcmMessage({
       asset,
       recipientAddress,
@@ -420,8 +488,14 @@ export async function calculateWeightFee({
 }: CalculateWeightFeeParams) {
   try {
     let assetInfo: Record<string, any> = {};
-
-    if (paraId === 1000) {
+    if (paraId === 0) {
+      assetInfo = {
+        V4: {
+          parents: 0,
+          interior: 'Here'
+        }
+      };
+    } else if (paraId === 1000) {
       assetInfo = {
         V4: {
           parents: 1,
@@ -429,32 +503,21 @@ export async function calculateWeightFee({
         }
       };
     } else {
-      if (isDotLocation(asset?.xcmLocation)) {
-        assetInfo = {
-          V3: {
-            Concrete: {
-              parents: 1,
-              interior: 'Here'
-            }
-          }
-        };
-      } else {
-        assetInfo = {
-          V3: {
-            Concrete: asset?.targetXcmLocation
-              ? createStandardXcmInteriorByTargetXcmLocation(
-                  asset?.targetXcmLocation
+      assetInfo = {
+        V3: {
+          Concrete: asset?.targetXcmLocation
+            ? createStandardXcmInteriorByTargetXcmLocation(
+                asset?.targetXcmLocation
+              )
+            : {
+                parents: asset?.reserveType === ReserveType.Local ? 1 : 0,
+                interior: createStandardXcmInteriorByFilterParaId(
+                  paraId,
+                  asset.xcmLocation?.v1?.interior
                 )
-              : {
-                  parents: asset?.reserveType === ReserveType.Local ? 1 : 0,
-                  interior: createStandardXcmInteriorByFilterParaId(
-                    paraId,
-                    asset.xcmLocation?.v1?.interior
-                  )
-                }
-          }
-        };
-      }
+              }
+        }
+      };
     }
 
     console.log('fee token assetInfo', assetInfo);
@@ -587,9 +650,6 @@ export const getXcmWeightFee = async ({
       errMsg
     };
   }
-
-  // console.log('fee', fee?.toString());
-  console.log('isDotLocation', isDotLocation(asset?.xcmLocation));
 
   if (targetChainId === 1000 && !isDotLocation(asset?.xcmLocation)) {
     const quote = (await quotePriceTokensForExactTokens({

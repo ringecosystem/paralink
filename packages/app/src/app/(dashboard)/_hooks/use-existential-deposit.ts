@@ -87,8 +87,7 @@ export function useExistentialDeposit({
             deposit: tokenInfo.deposit,
             tokenInfo: tokenInfo.tokenInfo
           }));
-          console.log('useExistentialDeposit address', address);
-          console.log('useExistentialDepositchain', chain);
+          console.log('useExistentialDeposit', address, chain);
 
           unsubscribeRef.current = (await api.query.system.account(
             address,

@@ -1,5 +1,5 @@
 import { ReserveType, type Asset, type ChainConfig } from '@/types/xcm-asset';
-import { isDotLocation, normalizeInterior } from './helper';
+import { normalizeInterior } from './helper';
 import { TOKEN_BLACKLIST } from '@/config/blacklist';
 import { isEqual } from 'lodash-es';
 import { getAvailableAssets } from '@/services/xcm/moonbean';
@@ -13,32 +13,6 @@ export function getToChains(
   sourceChainId: number
 ): ChainConfig[] {
   return chains?.filter((chain) => chain.id !== sourceChainId);
-}
-
-function findDotToken(chain: ChainConfig): Asset | null {
-  if (chain.id === 1000) {
-    return {
-      ...chain.nativeToken,
-      assetId: 'Native',
-      isNative: true,
-      reserveType: ReserveType.Local,
-      xcmLocation: {
-        v1: {
-          parents: 1,
-          interior: {
-            here: null
-          }
-        }
-      }
-    };
-  }
-
-  for (const assets of Object.values(chain.xcAssetsData || {})) {
-    const dotToken = assets?.find((asset) => isDotLocation(asset.xcmLocation));
-
-    if (dotToken) return dotToken;
-  }
-  return null;
 }
 
 function filterBlacklistedTokens(tokenList: Asset[]): Asset[] {
@@ -65,54 +39,50 @@ export const getTokenList = ({
   sourceChain: ChainConfig;
   targetChain: ChainConfig;
 }) => {
-  // TOKEN_BLACKLIST
   const tokenList: Asset[] = [];
   const targetChainId = targetChain?.id;
-
-  // get dot token
-  if (sourceChain.id === 1000) {
-    const targetDot = findDotToken(targetChain);
-    if (targetDot) {
-      tokenList.push({
-        ...targetDot,
-        isNative: true,
-        assetId: 'Native',
-        reserveType: ReserveType.Local
-      });
-    }
-  } else if (targetChain.id === 1000) {
-    const sourceDot = findDotToken(sourceChain);
-    if (sourceDot) tokenList.push(sourceDot);
-  } else {
-    const sourceDot = findDotToken(sourceChain);
-    const targetDot = findDotToken(targetChain);
-    if (sourceDot && targetDot) {
-      tokenList.push(sourceDot);
-    }
-  }
 
   // by native token
   if (sourceChain?.nativeToken?.registeredChains) {
     // filter by target chain id
     const nativeTokenInTargetChain =
       sourceChain?.nativeToken?.registeredChains?.[targetChainId];
+
     if (nativeTokenInTargetChain) {
       tokenList.push({
         ...sourceChain?.nativeToken,
         assetId: 'Native',
         isNative: true,
         reserveType: ReserveType.Local,
-        xcmLocation: {
-          v1: {
-            parents: 0,
-            interior: {
-              here: null
-            }
-          }
-        },
+        xcmLocation: nativeTokenInTargetChain?.xcmLocation,
         targetXcmLocation: nativeTokenInTargetChain?.xcmLocation
       });
     }
+  }
+
+  if (sourceChain.id === 1000 && targetChain.id === 0) {
+    tokenList.push({
+      ...sourceChain?.nativeToken,
+      assetId: 'Native',
+      isNative: true,
+      reserveType: ReserveType.Local,
+      xcmLocation: {
+        v1: {
+          parents: 1,
+          interior: {
+            here: null
+          }
+        }
+      },
+      targetXcmLocation: {
+        v1: {
+          parents: 1,
+          interior: {
+            here: null
+          }
+        }
+      }
+    });
   }
 
   // by local assets

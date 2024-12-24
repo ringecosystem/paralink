@@ -1,11 +1,7 @@
 import { BN_ZERO, bnToBn, u8aToHex } from '@polkadot/util';
 import { createStandardXcmInterior } from '@/utils/xcm/interior-params';
 import { parseUnits } from '@/utils/format';
-import {
-  generateBeneficiary,
-  generateBeneficiaryV4,
-  isDotLocation
-} from '@/utils/xcm/helper';
+import { generateBeneficiary, generateBeneficiaryV4 } from '@/utils/xcm/helper';
 import type { ApiPromise } from '@polkadot/api';
 import type { Asset } from '@/types/xcm-asset';
 import type { CalculateExecutionWeightType } from './xcm-weight';
@@ -18,9 +14,8 @@ type XcmTransferParams = {
 
 export function generateDestReserveXcmMessage({
   asset,
-  recipientAddress,
-  calculateWeightType
-}: XcmTransferParams) {
+  recipientAddress
+}: Omit<XcmTransferParams, 'calculateWeightType'>) {
   if (!asset.xcmLocation) return null;
   try {
     const multiLocation = asset.xcmLocation;
@@ -28,15 +23,10 @@ export function generateDestReserveXcmMessage({
 
     const assetId = {
       id: {
-        Concrete: isDotLocation(asset?.xcmLocation)
-          ? {
-              parents: 1,
-              interior: 'Here'
-            }
-          : {
-              parents: 1,
-              interior: createStandardXcmInterior(multiLocation?.v1?.interior)
-            }
+        Concrete: {
+          parents: 1,
+          interior: createStandardXcmInterior(multiLocation?.v1?.interior)
+        }
       },
       fun: {
         Fungible: parseUnits({
@@ -47,52 +37,25 @@ export function generateDestReserveXcmMessage({
     };
 
     const beneficiary = generateBeneficiary(recipientAddress);
-    const beneficiaryV4 = generateBeneficiaryV4(recipientAddress);
-    return calculateWeightType !== 'toAssetHub'
-      ? {
-          V2: [
-            { WithdrawAsset: [assetId] },
-            { ClearOrigin: null },
-            {
-              BuyExecution: {
-                fees: assetId,
-                weightLimit: 'Unlimited'
-              }
-            },
-            {
-              DepositAsset: {
-                assets: { Wild: 'All' },
-                maxAssets: 1,
-                beneficiary
-              }
-            }
-          ]
+    return {
+      V2: [
+        { WithdrawAsset: [assetId] },
+        { ClearOrigin: null },
+        {
+          BuyExecution: {
+            fees: assetId,
+            weightLimit: 'Unlimited'
+          }
+        },
+        {
+          DepositAsset: {
+            assets: { Wild: 'All' },
+            maxAssets: 1,
+            beneficiary
+          }
         }
-      : {
-          V4: [
-            { WithdrawAsset: [assetId] },
-            { ClearOrigin: null },
-            {
-              BuyExecution: {
-                fees: assetId,
-                weightLimit: 'Unlimited'
-              }
-            },
-            {
-              DepositAsset: {
-                assets: {
-                  Wild: {
-                    AllCounted: 1
-                  }
-                },
-                beneficiary: beneficiaryV4
-              }
-            },
-            {
-              SetTopic: u8aToHex(new Uint8Array(32).fill(0))
-            }
-          ]
-        };
+      ]
+    };
   } catch (error) {
     console.error('generateDestReserveXcmMessage error:', error);
     return null;
@@ -108,45 +71,40 @@ export function generateLocalReserveXcmMessage({
   try {
     const multiLocation = asset.xcmLocation;
 
-    const assetId = {
-      id: {
-        Concrete: {
-          parents: 0,
-          interior: createStandardXcmInterior(multiLocation?.v1?.interior)
-        }
-      },
-      fun: {
-        Fungible: parseUnits({
-          value: '1',
-          decimals: asset.decimals
-        })?.toString()
-      }
-    };
+    const assetId =
+      calculateWeightType === 'fromPolkadot'
+        ? {
+            id: {
+              Concrete: {
+                parents: 0,
+                interior: {
+                  Here: null
+                }
+              }
+            },
+            fun: { Fungible: '10000000000' }
+          }
+        : {
+            id: {
+              Concrete: {
+                parents: 0,
+                interior: createStandardXcmInterior(multiLocation?.v1?.interior)
+              }
+            },
+            fun: {
+              Fungible: parseUnits({
+                value: '1',
+                decimals: asset.decimals
+              })?.toString()
+            }
+          };
 
     const beneficiary = generateBeneficiary(recipientAddress);
     const beneficiaryV4 = generateBeneficiaryV4(recipientAddress);
 
-    return calculateWeightType !== 'toAssetHub'
+    return calculateWeightType === 'fromAssetHub' ||
+      calculateWeightType === 'toPolkadot'
       ? {
-          V2: [
-            { ReserveAssetDeposited: [assetId] },
-            { ClearOrigin: null },
-            {
-              BuyExecution: {
-                fees: assetId,
-                weightLimit: 'Unlimited'
-              }
-            },
-            {
-              DepositAsset: {
-                assets: { Wild: 'All' },
-                maxAssets: 1,
-                beneficiary
-              }
-            }
-          ]
-        }
-      : {
           V4: [
             { ReserveAssetDeposited: [assetId] },
             { ClearOrigin: null },
@@ -168,6 +126,25 @@ export function generateLocalReserveXcmMessage({
             },
             {
               SetTopic: u8aToHex(new Uint8Array(32).fill(0))
+            }
+          ]
+        }
+      : {
+          V2: [
+            { ReserveAssetDeposited: [assetId] },
+            { ClearOrigin: null },
+            {
+              BuyExecution: {
+                fees: assetId,
+                weightLimit: 'Unlimited'
+              }
+            },
+            {
+              DepositAsset: {
+                assets: { Wild: 'All' },
+                maxAssets: 1,
+                beneficiary
+              }
             }
           ]
         };
@@ -267,6 +244,90 @@ export function generateRemoteReserveXcmMessage({
   }
 }
 
+export function generateDotFromAssetHubToPolkadotXcmMessage({
+  recipientAddress
+}: {
+  recipientAddress: string;
+}) {
+  return {
+    V4: [
+      {
+        ReceiveTeleportedAsset: [
+          {
+            id: { Concrete: { parents: 1, interior: 'Here' } },
+            fun: { Fungible: '10000000000' }
+          }
+        ]
+      },
+      {
+        ClearOrigin: null
+      },
+      {
+        BuyExecution: {
+          fees: {
+            Concrete: { parents: 1, interior: 'Here' },
+            fun: { Fungible: '10000000000' }
+          },
+          weightLimit: 'Unlimited'
+        }
+      },
+      {
+        DepositAsset: {
+          assets: {
+            Wild: {
+              AllCounted: 1
+            }
+          },
+          beneficiary: generateBeneficiaryV4(recipientAddress)
+        }
+      },
+      {
+        SetTopic: u8aToHex(new Uint8Array(32).fill(0))
+      }
+    ]
+  };
+}
+
+export function generateDotFromPolkadotToAssetHubXcmMessage({
+  recipientAddress
+}: {
+  recipientAddress: string;
+}) {
+  return {
+    V4: [
+      {
+        ReceiveTeleportedAsset: [
+          {
+            id: { Concrete: { parents: 0, interior: 'Here' } },
+            fun: { Fungible: '10000000000' }
+          }
+        ]
+      },
+      {
+        ClearOrigin: null
+      },
+      {
+        BuyExecution: {
+          fees: {
+            Concrete: { parents: 0, interior: 'Here' },
+            fun: { Fungible: '10000000000' }
+          },
+          weightLimit: 'Unlimited'
+        }
+      },
+      {
+        DepositAsset: {
+          assets: { Wild: { AllCounted: 1 } },
+          beneficiary: generateBeneficiaryV4(recipientAddress)
+        }
+      },
+      {
+        SetTopic: u8aToHex(new Uint8Array(32).fill(0))
+      }
+    ]
+  };
+}
+
 interface QueryDeliveryFeesParams {
   api: ApiPromise;
   asset: Asset;
@@ -291,35 +352,58 @@ export async function queryDeliveryFees({
 
   let calculateWeightType: CalculateExecutionWeightType;
 
-  if (targetChainId === 1000) {
+  if (sourceChainId === 0) {
+    calculateWeightType = 'fromPolkadot';
+  } else if (targetChainId === 0) {
+    calculateWeightType = 'toPolkadot';
+  } else if (targetChainId === 1000) {
     calculateWeightType = 'toAssetHub';
   } else if (sourceChainId === 1000) {
-    calculateWeightType = 'leaveAssetHub';
+    calculateWeightType = 'fromAssetHub';
   } else {
     calculateWeightType = 'normal';
   }
 
   try {
-    const destLocation = {
-      V3: {
-        parents: 1,
-        interior: {
-          X1: {
-            Parachain: targetChainId
+    const destLocation =
+      targetChainId === 0
+        ? {
+            V3: {
+              parents: 1,
+              interior: {
+                Here: null
+              }
+            }
           }
-        }
-      }
-    };
+        : {
+            V3: {
+              parents: sourceChainId === 0 ? 0 : 1,
+              interior: {
+                X1: {
+                  Parachain: targetChainId
+                }
+              }
+            }
+          };
     let xcmMessage:
       | ReturnType<typeof generateDestReserveXcmMessage>
       | ReturnType<typeof generateLocalReserveXcmMessage>
       | ReturnType<typeof generateRemoteReserveXcmMessage>
+      | ReturnType<typeof generateDotFromAssetHubToPolkadotXcmMessage>
+      | ReturnType<typeof generateDotFromPolkadotToAssetHubXcmMessage>
       | null = null;
-    if (asset.reserveType === 'foreign') {
+    if (sourceChainId === 1000 && targetChainId === 0) {
+      xcmMessage = generateDotFromAssetHubToPolkadotXcmMessage({
+        recipientAddress
+      });
+    } else if (sourceChainId === 0 && targetChainId === 1000) {
+      xcmMessage = generateDotFromPolkadotToAssetHubXcmMessage({
+        recipientAddress
+      });
+    } else if (asset.reserveType === 'foreign') {
       xcmMessage = generateDestReserveXcmMessage({
         asset,
-        recipientAddress,
-        calculateWeightType
+        recipientAddress
       });
     } else if (asset.reserveType === 'local') {
       xcmMessage = generateLocalReserveXcmMessage({
@@ -327,23 +411,8 @@ export async function queryDeliveryFees({
         recipientAddress,
         calculateWeightType
       });
-    } else if (asset.reserveType === 'remote') {
-      if (targetChainId === 1000 && isDotLocation(asset?.xcmLocation)) {
-        xcmMessage = generateDestReserveXcmMessage({
-          asset,
-          recipientAddress,
-          calculateWeightType
-        });
-      } else {
-        xcmMessage = generateRemoteReserveXcmMessage({
-          asset,
-          targetChainId: targetChainId,
-          recipientAddress,
-          calculateWeightType
-        });
-      }
     }
-    console.log('deliver fee xcmMessage', xcmMessage);
+    console.log('deliver fee xcmMessage', destLocation, xcmMessage);
     if (!xcmMessage) return BN_ZERO;
 
     const deliveryFee = await api.call.xcmPaymentApi.queryDeliveryFees(

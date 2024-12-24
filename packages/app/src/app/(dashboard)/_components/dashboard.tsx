@@ -174,6 +174,17 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
 
   const maxBalanceBN = useMemo(() => {
     if (selectedToken?.isNative) {
+      console.log(
+        'fromDeposit',
+        fromDeposit?.toString(),
+        'networkFee',
+        networkFee?.toString(),
+        'sourceChainMinBalance',
+        sourceChainMinBalance?.toString(),
+        'selectedTokenBalance',
+        selectedTokenBalance?.toString()
+      );
+
       return bnMax(
         BN_ZERO,
         selectedTokenBalance
@@ -182,7 +193,6 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
           ?.sub(sourceChainMinBalance ?? BN_ZERO) ?? BN_ZERO
       );
     }
-
     return bnMax(
       BN_ZERO,
       selectedTokenBalance?.sub(sourceChainMinBalance ?? BN_ZERO) ?? BN_ZERO
@@ -194,6 +204,7 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
     networkFee,
     sourceChainMinBalance
   ]);
+  console.log('maxBalanceBN', maxBalanceBN?.toString());
 
   const { isInsufficientBalance } = useMemo(() => {
     if (address && amount) {

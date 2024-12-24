@@ -45,11 +45,9 @@ export function useTokenBalances({
   const result = useQuery({
     queryKey,
     queryFn: async ({ signal }) => {
-      if (!address || !tokens?.length || !paraId || !api) {
+      if (!address || !tokens?.length || isNil(paraId) || !api) {
         throw new Error('Missing required parameters');
       }
-
-      console.log('balances', tokens);
 
       const balances = await Promise.all(
         tokens?.map((token) =>
@@ -68,7 +66,7 @@ export function useTokenBalances({
         balance: balances[index]
       }));
     },
-    enabled: !!address && !!tokens?.length && !!api && !!paraId
+    enabled: !!address && !!tokens?.length && !!api
   });
 
   const refresh = () => {
