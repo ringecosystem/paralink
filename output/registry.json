@@ -1,5 +1,55 @@
 [
   {
+    "slug": "polkadot",
+    "name": "Polkadot",
+    "isTestnet": false,
+    "chainStatus": "ACTIVE",
+    "icon": "https://chain-list-assets.subwallet.app/assets/chains/polkadot.png",
+    "providers": {
+      "Dwellir": "wss://polkadot-rpc.dwellir.com",
+      "RadiumBlock": "wss://polkadot.public.curie.radiumblock.co/ws",
+      "Stakeworld": "wss://dot-rpc.stakeworld.io",
+      "IBP-GeoDNS1": "wss://rpc.ibp.network/polkadot",
+      "Light Client": "light://substrate-connect/polkadot",
+      "BlockOps": "wss://polkadot-public-rpc.blockops.network/ws",
+      "Allnodes": "wss://polkadot-rpc.publicnode.com",
+      "SubWallet": "wss://polkadot-rpc.subwallet.app",
+      "Onfinality": "wss://polkadot.api.onfinality.io/public-ws"
+    },
+    "evmInfo": null,
+    "substrateInfo": {
+      "relaySlug": null,
+      "paraId": 0,
+      "genesisHash": "0x91b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3",
+      "addressPrefix": 0,
+      "chainType": "RELAYCHAIN",
+      "crowdloanUrl": null,
+      "blockExplorer": "https://polkadot.subscan.io/",
+      "existentialDeposit": "10000000000",
+      "symbol": "DOT",
+      "decimals": 10,
+      "hasNativeNft": false,
+      "supportStaking": true,
+      "supportSmartContract": null,
+      "crowdloanParaId": null,
+      "crowdloanFunds": []
+    },
+    "extraInfo": {
+      "subscanSlug": "polkadot",
+      "chainBalanceSlug": "polkadot"
+    },
+    "bitcoinInfo": null,
+    "tonInfo": null,
+    "id": "0",
+    "assetsInfo": {},
+    "nativeToken": {
+      "symbol": "DOT",
+      "decimals": 10,
+      "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/polkadot-native-dot.png"
+    },
+    "isEvm": false
+  },
+  {
     "slug": "statemint",
     "name": "Polkadot Asset Hub",
     "isTestnet": false,
