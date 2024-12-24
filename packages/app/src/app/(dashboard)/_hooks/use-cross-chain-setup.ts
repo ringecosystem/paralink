@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { useShallow } from 'zustand/react/shallow';
+import { isNil } from 'lodash-es';
 import useChainsStore from '@/store/chains';
 import { getFromChains, getToChains } from '@/utils/xcm/registry';
 import type { ChainConfig } from '@/types/xcm-asset';
@@ -58,7 +59,7 @@ export function useCrossChainSetup(): UseCrossChainSetupReturn {
 
         let defaultToChainId = targetChainId;
         if (
-          !defaultToChainId ||
+          isNil(defaultToChainId) ||
           defaultToChainId === sourceChainId ||
           !targetChains?.find((chain) => chain.id === defaultToChainId)
         ) {

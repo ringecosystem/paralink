@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useImperativeHandle, useState } from 'react';
 import { BN, BN_ZERO, bnToBn } from '@polkadot/util';
 import { ChevronDown } from 'lucide-react';
+import { isNil } from 'lodash-es';
 import { cn } from '@/lib/utils';
 import { FallbackImage } from '@/components/ui/fallback-image';
 import { Button } from '@/components/ui/button';
@@ -150,7 +151,7 @@ export function Picker({
   // get available tokens
   useEffect(() => {
     const initTokens = async () => {
-      if (!tokens?.length || !targetChainId) return;
+      if (!tokens?.length || isNil(targetChainId)) return;
       setAvailableTokensLoading(true);
       const targetChainApi = await getValidApi(targetChainId);
 

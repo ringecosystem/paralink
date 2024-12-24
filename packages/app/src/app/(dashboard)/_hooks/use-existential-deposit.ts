@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { useDebounce } from 'react-use';
+import { isNil } from 'lodash-es';
 import { BN, bnToBn } from '@polkadot/util';
 import { formatTokenBalance } from '@/utils/format';
 import useApiConnectionsStore from '@/store/api-connections';
@@ -64,7 +65,7 @@ export function useExistentialDeposit({
       const setupBalanceSubscription = async () => {
         try {
           setIsLoading(true);
-
+          if (isNil(chain?.id)) return;
           const api = await getValidApi(chain?.id);
 
           const properties = await api.registry.getChainProperties();

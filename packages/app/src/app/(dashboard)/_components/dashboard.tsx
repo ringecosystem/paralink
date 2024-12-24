@@ -7,6 +7,7 @@ import React, {
   useState
 } from 'react';
 import { useShallow } from 'zustand/react/shallow';
+import { isNil } from 'lodash-es';
 import { AddressInput } from '@/components/address-input';
 import Alert from '@/components/alert';
 import { FeeBreakdown } from '@/components/fee-breakdown';
@@ -228,7 +229,7 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
   );
 
   const handleSwitch = useCallback(async () => {
-    if (!chains?.length || !sourceChainId || !targetChainId) return;
+    if (!chains?.length || isNil(sourceChainId) || isNil(targetChainId)) return;
     setIsLoadingCrossChain(true);
     await swapChains({
       chains,

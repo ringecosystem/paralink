@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { isNil } from 'lodash-es';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getAssetBalance } from '@/services/xcm/balance';
 import useApiConnectionsStore from '@/store/api-connections';
@@ -22,7 +23,7 @@ export function useTokenBalances({
 
   useEffect(() => {
     const getApi = async () => {
-      if (!paraId) return;
+      if (isNil(paraId)) return;
       const api = await getValidApi(paraId);
       setApi(api);
     };

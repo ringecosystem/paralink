@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { BN, BN_ZERO } from '@polkadot/util';
+import { isNil } from 'lodash-es';
 import { useShallow } from 'zustand/react/shallow';
 import { getMinBalance } from '@/services/xcm/get-min-balance';
 import useApiConnectionsStore from '@/store/api-connections';
@@ -55,7 +56,7 @@ export const useMinBalance = ({ asset, decimals }: UseMinBalanceProps) => {
   useEffect(() => {
     console.log('useMinBalance');
     const fetchMinBalance = async () => {
-      if (!targetChainId || !assetId || !decimals) return;
+      if (isNil(targetChainId) || !assetId || !decimals) return;
       if (assetId === '-2') {
         setFormatted('0');
         setBalance(BN_ZERO);
