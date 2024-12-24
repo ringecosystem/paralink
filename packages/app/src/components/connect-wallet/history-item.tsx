@@ -31,12 +31,12 @@ export const HistoryItem = ({
     (chain) => chain.id?.toString() === targetChainId?.toString()
   );
   const blockExplorerUrl = useMemo(() => {
-    if (uniqueId) {
-      return `https://polkadot.subscan.io/xcm_message/polkadot-${uniqueId}`;
-    }
+    // if (uniqueId) {
+    //   return `https://polkadot.subscan.io/xcm_message/polkadot-${uniqueId}`;
+    // }
     const explorer = sourceChain?.explorer;
-    return explorer ? `${explorer}/tx/${txHash}` : '';
-  }, [sourceChain, txHash, uniqueId]);
+    return explorer ? `${explorer}/tx/${txHash}?tab=xcm_transfer` : '';
+  }, [sourceChain, txHash]);
 
   return (
     <div className="flex w-full flex-col items-center justify-between gap-[5px] rounded-[10px] bg-[#F2F3F5] p-[10px]">

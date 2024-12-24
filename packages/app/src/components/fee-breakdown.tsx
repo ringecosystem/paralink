@@ -84,17 +84,23 @@ export function FeeBreakdown({
           You Will Receive (Estimated)
         </span>
         <div className="flex items-center gap-2">
-          <span
-            className={cn(
-              'max-w-[160px] truncate font-mono text-[14px] font-bold tabular-nums text-[#12161950]',
-              isExpanded && 'text-[#242A2E]'
-            )}
+          <FormattedNumberTooltip
+            value={finalAmount}
+            decimals={xcmTokenInfo?.decimals ?? 3}
+            displayDecimals={3}
           >
-            {formatTokenBalance(finalAmount, {
-              decimals: xcmTokenInfo?.decimals ?? 3,
-              displayDecimals: 3
-            })}
-          </span>
+            {(formattedValue: string) => (
+              <span
+                className={cn(
+                  'max-w-[160px] truncate font-mono text-[14px] font-bold tabular-nums text-[#12161950]',
+                  isExpanded && 'text-[#242A2E]'
+                )}
+              >
+                {formattedValue}
+              </span>
+            )}
+          </FormattedNumberTooltip>
+
           {isExpanded ? (
             <ChevronUp className="h-4 w-4 text-[#121619]" />
           ) : (

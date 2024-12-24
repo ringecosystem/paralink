@@ -3,6 +3,7 @@ import { queryDeliveryFees } from '@/services/xcm/deliver-fee';
 import { BN, BN_ZERO, bnToBn } from '@polkadot/util';
 import useApiConnectionsStore from '@/store/api-connections';
 import type { Asset } from '@/types/xcm-asset';
+import { isNil } from 'lodash-es';
 
 interface UseNetworkFeeProps {
   sourceChainId?: number;
@@ -26,7 +27,12 @@ export function useNetworkFee({
   useEffect(() => {
     const fetchDeliveryFee = async () => {
       try {
-        if (!sourceChainId || !asset || !recipientAddress || !targetChainId)
+        if (
+          isNil(sourceChainId) ||
+          isNil(targetChainId) ||
+          !asset ||
+          !recipientAddress
+        )
           return;
         setIsLoading(true);
         const api = await getValidApi(sourceChainId);
@@ -34,7 +40,8 @@ export function useNetworkFee({
           api,
           asset,
           recipientAddress,
-          toParaId: targetChainId
+          sourceChainId,
+          targetChainId
         });
         setDeliveryFee(fee ? fee : BN_ZERO);
       } catch (error) {

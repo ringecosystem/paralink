@@ -3,16 +3,19 @@ import { getXcmWeightFee } from '@/services/xcm/xcm-weight';
 import { BN, BN_ZERO } from '@polkadot/util';
 import useApiConnectionsStore from '@/store/api-connections';
 import type { Asset } from '@/types/xcm-asset';
+import { isNil } from 'lodash-es';
 
 interface UseCrossFeeProps {
   asset?: Asset;
   recipientAddress?: string;
-  paraId?: number;
+  targetChainId?: number;
+  sourceChainId?: number;
 }
 export const useCrossFee = ({
   asset,
   recipientAddress,
-  paraId
+  targetChainId,
+  sourceChainId
 }: UseCrossFeeProps) => {
   const [fee, setFee] = useState<BN>(BN_ZERO);
   const [isLoading, setIsLoading] = useState(false);
@@ -21,14 +24,22 @@ export const useCrossFee = ({
 
   useEffect(() => {
     const fetchFee = async () => {
-      if (!getValidApi || !asset || !recipientAddress || !paraId) return;
+      if (
+        !getValidApi ||
+        !asset ||
+        !recipientAddress ||
+        isNil(targetChainId) ||
+        isNil(sourceChainId)
+      )
+        return;
       setIsLoading(true);
-      const api = await getValidApi(paraId);
+      const api = await getValidApi(targetChainId);
       const { fee } = await getXcmWeightFee({
         api,
         asset,
         recipientAddress,
-        paraId
+        sourceChainId,
+        targetChainId
       });
       setFee(fee ?? BN_ZERO);
       setIsLoading(false);
@@ -38,7 +49,7 @@ export const useCrossFee = ({
       setFee(BN_ZERO);
       setIsLoading(false);
     };
-  }, [getValidApi, asset, recipientAddress, paraId]);
+  }, [getValidApi, asset, recipientAddress, targetChainId, sourceChainId]);
 
   return {
     fee,

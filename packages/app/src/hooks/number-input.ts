@@ -2,8 +2,6 @@ import { ChangeEvent, useCallback, useState } from 'react';
 
 interface UseNumberInputProps {
   maxDecimals?: number;
-  maxValue?: number;
-  minValue?: number;
   initialValue?: string;
   onChange?: (value: string) => void;
 }
@@ -11,6 +9,7 @@ interface UseNumberInputProps {
 interface UseNumberInputReturn {
   value: string;
   setValue: (value: string) => void;
+  handleChangeValue: (value: string) => void;
   handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
   handleBlur: () => void;
   handleReset: () => void;
@@ -20,29 +19,11 @@ interface UseNumberInputReturn {
 
 export function useNumberInput({
   maxDecimals = 6,
-  maxValue,
-  minValue = 0,
   initialValue = '',
   onChange
 }: UseNumberInputProps): UseNumberInputReturn {
   const [value, setInternalValue] = useState(initialValue);
   const [error, setError] = useState<string>();
-
-  const validateValue = useCallback(
-    (numValue: number): boolean => {
-      if (maxValue !== undefined && numValue > maxValue) {
-        setError(`Value cannot exceed ${maxValue}`);
-        return false;
-      }
-      if (minValue !== undefined && numValue < minValue) {
-        setError(`Value cannot be less than ${minValue}`);
-        return false;
-      }
-      setError(undefined);
-      return true;
-    },
-    [maxValue, minValue]
-  );
 
   const setValue = useCallback(
     (newValue: string) => {
@@ -73,16 +54,15 @@ export function useNumberInput({
         formattedValue = newValue.replace(/^0+/, '');
 
       const numValue = parseFloat(formattedValue);
-      if (!Number.isNaN(numValue) && validateValue(numValue))
-        setValue(formattedValue);
+      if (!Number.isNaN(numValue)) setValue(formattedValue);
     },
-    [setValue, maxDecimals, validateValue]
+    [setValue, maxDecimals]
   );
 
   const handleBlur = useCallback(() => {
     if (!value) return;
     const numValue = parseFloat(value);
-    if (!Number.isNaN(numValue) && validateValue(numValue)) {
+    if (!Number.isNaN(numValue)) {
       const decimalParts = value.split('.');
       if (decimalParts.length === 2 && decimalParts[1].length > maxDecimals) {
         setValue(numValue.toFixed(maxDecimals));
@@ -90,12 +70,19 @@ export function useNumberInput({
       }
       setValue(value);
     }
-  }, [setValue, maxDecimals, value, validateValue]);
+  }, [setValue, maxDecimals, value]);
 
   const handleReset = useCallback(() => {
     setValue('');
     setError(undefined);
   }, [setValue]);
+
+  const handleChangeValue = useCallback(
+    (value: string) => {
+      setValue(value);
+    },
+    [setValue]
+  );
 
   return {
     value,
@@ -103,6 +90,7 @@ export function useNumberInput({
     handleChange,
     handleBlur,
     handleReset,
+    handleChangeValue,
     isValid: !error,
     error
   };

@@ -5,10 +5,11 @@ import { BN, BN_ZERO, bnToBn } from '@polkadot/util';
 import { ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { FallbackImage } from '@/components/ui/fallback-image';
+import { Button } from '@/components/ui/button';
 import FormattedNumberTooltip from '@/components/formatted-number-tooltip';
 import { useNumberInput } from '@/hooks/number-input';
 import { useWalletConnection } from '@/hooks/use-wallet-connection';
-import { parseUnits } from '@/utils/format';
+import { formatTokenBalance, parseUnits } from '@/utils/format';
 import { useTokenBalances } from './_hooks/use-token-balances';
 import { XcmV3MultiLocation } from '@/services/xcm/get-acceptable-payment-token';
 import { checkAssetHubAcceptablePaymentToken } from '@/services/xcm/check-assethub-acceptable-payment-token';
@@ -96,18 +97,19 @@ export function Picker({
 
   const price = undefined;
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const { value, handleChange, handleBlur, handleReset } = useNumberInput({
-    maxDecimals: selectedToken?.decimals ?? 18,
-    initialValue: '',
-    onChange: onChangeAmount
-  });
+  const { value, handleChange, handleBlur, handleReset, handleChangeValue } =
+    useNumberInput({
+      maxDecimals: selectedToken?.decimals ?? 18,
+      initialValue: '',
+      onChange: onChangeAmount
+    });
 
-  function handleOpenDialog() {
+  const handleOpenDialog = useCallback(() => {
     if (!availableTokens?.length) {
       return;
     }
     setIsDialogOpen(true);
-  }
+  }, [availableTokens]);
 
   const handleSelect = useCallback(
     (token: Asset) => {
@@ -116,6 +118,20 @@ export function Picker({
       handleReset();
     },
     [setSelectedToken, handleReset]
+  );
+
+  const handleMax = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation();
+      const formattedBalance = formatTokenBalance(maxBalanceBN, {
+        decimals: selectedToken?.decimals ?? 18,
+        showFullPrecision: true,
+        withZero: true
+      });
+
+      handleChangeValue(formattedBalance);
+    },
+    [maxBalanceBN, handleChangeValue, selectedToken?.decimals]
   );
 
   const handleCloseDialog = useCallback(() => {
@@ -187,7 +203,14 @@ export function Picker({
       }
     };
     initTokens();
-  }, [tokens, setSelectedToken, sourceChainId, getValidApi, targetChainId, acceptablePaymentTokens]);
+  }, [
+    tokens,
+    setSelectedToken,
+    sourceChainId,
+    getValidApi,
+    targetChainId,
+    acceptablePaymentTokens
+  ]);
 
   useEffect(() => {
     let isInvalid = false;
@@ -239,7 +262,6 @@ export function Picker({
       </div>
     );
   }
-  // focus-within:shadow-lg
 
   return (
     <>
@@ -277,10 +299,20 @@ export function Picker({
                 {isBalancesLoading ? (
                   <Skeleton className="h-4 w-10" />
                 ) : typeof tokenBalance?.balance !== 'undefined' ? (
-                  <FormattedNumberTooltip
-                    value={tokenBalance?.balance}
-                    decimals={selectedToken?.decimals ?? 0}
-                  />
+                  <div className="flex items-center gap-1">
+                    <FormattedNumberTooltip
+                      value={tokenBalance?.balance}
+                      decimals={selectedToken?.decimals ?? 0}
+                    />
+                    <Button
+                      size="sm"
+                      className="h-auto rounded-sm px-2 py-[2px] text-[10px]"
+                      variant="outline"
+                      onClick={handleMax}
+                    >
+                      MAX
+                    </Button>
+                  </div>
                 ) : (
                   <span className="font-mono tabular-nums">-</span>
                 )}

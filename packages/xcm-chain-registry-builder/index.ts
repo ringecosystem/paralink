@@ -204,11 +204,8 @@ async function transformChainRegistry({
                 return;
               }
               const matchedAsset = peerChain.xcAssetsData?.find(xcAsset =>
-                xcAsset.symbol.toLowerCase() === asset.symbol.toLowerCase() &&
-                hasParachainInLocation({
-                  multiLocationStr: JSON.stringify(xcAsset.xcmV1MultiLocation),
-                  paraId: chainId
-                })
+                xcAsset?.paraID === Number(chainId) &&
+                xcAsset.symbol.toLowerCase() === asset.symbol.toLowerCase()
               );
               if (matchedAsset) {
                 registeredChains[peerChain.id] = {

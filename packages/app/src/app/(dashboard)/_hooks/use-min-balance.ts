@@ -1,8 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
 import { BN, BN_ZERO } from '@polkadot/util';
-import { getTargetMinBalance } from '@/services/xcm/target-min-balance';
+import { useShallow } from 'zustand/react/shallow';
+import { getMinBalance } from '@/services/xcm/get-min-balance';
 import useApiConnectionsStore from '@/store/api-connections';
-import { normalizeInterior } from '@/utils/xcm/helper';
+import useChainsStore from '@/store/chains';
+import { parseUnits } from '@/utils/format';
 import type { Asset } from '@/types/xcm-asset';
 
 interface UseMinBalanceProps {
@@ -10,33 +12,69 @@ interface UseMinBalanceProps {
   asset?: Asset;
   decimals?: number | null;
 }
-export const useMinBalance = ({
-  chainId,
-  asset,
-  decimals
-}: UseMinBalanceProps) => {
+export const useMinBalance = ({ asset, decimals }: UseMinBalanceProps) => {
   const [formatted, setFormatted] = useState<string>('0');
   const [balance, setBalance] = useState<BN>(BN_ZERO);
   const [isLoading, setIsLoading] = useState(false);
   const getValidApi = useApiConnectionsStore((state) => state.getValidApi);
+
+  const { targetChainId, sourceChain, targetChain } = useChainsStore(
+    useShallow((state) => ({
+      targetChainId: state.targetChainId,
+      sourceChain: state.getFromChain(),
+      targetChain: state.getToChain()
+    }))
+  );
+
   const assetId = useMemo(() => {
-    if (!asset) return null;
-    const interior = normalizeInterior(asset.xcmLocation?.v1?.interior);
-    if (interior) {
-      if (Array.isArray(interior)) {
-        return interior?.find((item) => item.generalIndex)?.generalIndex;
+    if (!sourceChain || !targetChain) return null;
+    if (
+      asset?.symbol?.toLowerCase() ===
+      targetChain?.nativeToken?.symbol?.toLowerCase()
+    ) {
+      return '-2';
+    }
+    if (asset?.isNative) {
+      return asset?.registeredChains?.[targetChain?.id]?.assetId ?? '-1';
+    }
+    if (targetChain?.localAssets && !!targetChain?.localAssets.length) {
+      const result = targetChain?.localAssets.find(
+        (value) => value?.symbol?.toLowerCase() === asset?.symbol?.toLowerCase()
+      );
+      if (result) {
+        return result?.assetId;
       }
     }
-    return null;
-  }, [asset]);
+    const targetXcAssets = targetChain?.xcAssetsData?.[sourceChain?.id];
+    const result = targetXcAssets?.find(
+      (value) => value?.symbol?.toLowerCase() === asset?.symbol?.toLowerCase()
+    );
+    return result?.assetId ?? '-1';
+  }, [sourceChain, targetChain, asset]);
 
   useEffect(() => {
+    console.log('useMinBalance');
     const fetchMinBalance = async () => {
-      if (!chainId || !assetId || !decimals) return;
+      if (!targetChainId || !assetId || !decimals) return;
+      if (assetId === '-2') {
+        setFormatted('0');
+        setBalance(BN_ZERO);
+        return;
+      }
+      if (assetId === '-1') {
+        setFormatted('1');
+        setBalance(
+          parseUnits({
+            value: '1',
+            decimals
+          })
+        );
+        return;
+      }
       setIsLoading(true);
-
-      const api = await getValidApi(chainId);
-      const { balance, formatted } = await getTargetMinBalance({
+      console.log('fetching min balance');
+      const api = await getValidApi(targetChainId);
+      const { balance, formatted } = await getMinBalance({
         api,
         assetId,
         decimals
@@ -52,7 +90,7 @@ export const useMinBalance = ({
       setBalance(BN_ZERO);
       setIsLoading(false);
     };
-  }, [getValidApi, chainId, assetId, decimals]);
+  }, [getValidApi, targetChainId, assetId, decimals]);
   return {
     formatted,
     balance,

@@ -2,6 +2,7 @@ import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { isEthereumAddress } from '@polkadot/util-crypto';
 import { decodeAddress, encodeAddress } from '@polkadot/util-crypto';
+import { sortEndpoints } from '@/utils/endpoint';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -57,7 +58,7 @@ export const convertToEvmRpcUrls = (providers: string[]) => {
 
   return {
     default: {
-      http: httpUrls
+      http: sortEndpoints(httpUrls)
     }
   };
 };

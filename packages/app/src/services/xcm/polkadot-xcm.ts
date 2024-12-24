@@ -6,15 +6,52 @@ import {
   createStandardXcmInteriorByFlatInterior
 } from '@/utils/xcm/interior-params';
 
-import { generateBeneficiary, isDotLocation, normalizeInterior } from '@/utils/xcm/helper';
-import { XcmRequestInteriorParams } from '@/types/xcm-location';
+import {
+  generateBeneficiary,
+  isDotLocation,
+  normalizeInterior
+} from '@/utils/xcm/helper';
+import { calculateAndWaitRemainingTime, delay } from '@/utils/date';
+import { CROSS_CHAIN_TRANSFER_ESTIMATED_TIME } from '@/config/blockTime';
 import { type ChainConfig, type Asset, ReserveType } from '@/types/xcm-asset';
+import type { XcmRequestInteriorParams } from '@/types/xcm-location';
 
 type XcmTransferParams = {
   token: Asset;
   amount: string;
   targetChain: ChainConfig;
   recipientAddress: string;
+};
+
+export type TransactionStatus = {
+  inBlock?: string;
+  finalized?: string;
+};
+
+export type EventData = {
+  section: string;
+  method: string;
+  data: any;
+  documentation: string[];
+};
+
+export type DecodedResult = {
+  txHash: string;
+  status: TransactionStatus;
+  events: EventData[];
+};
+
+export type TransactionEvent = {
+  event: {
+    section: string;
+    method: string;
+    data: any[];
+    meta: {
+      docs: {
+        toString: () => string;
+      }[];
+    };
+  };
 };
 
 export function createXcmTransfer({
@@ -31,18 +68,21 @@ export function createXcmTransfer({
   try {
     let interior: XcmRequestInteriorParams | XcmRequestInteriorParams[] | null =
       null;
-    const flatInterior = normalizeInterior(token.xcmLocation?.v1?.interior);
-    if (
-      token?.reserveType === ReserveType.Local &&
-      Array.isArray(flatInterior) &&
-      flatInterior.length > 0
-    ) {
-      interior = createStandardXcmInteriorByFlatInterior(
-        flatInterior?.filter((v) => !v.parachain)
+    if (token?.reserveType === ReserveType.Local) {
+      const flatInterior = normalizeInterior(
+        token?.targetXcmLocation
+          ? token?.targetXcmLocation?.v1?.interior
+          : token?.xcmLocation?.v1?.interior
       );
+      if (Array.isArray(flatInterior) && flatInterior.length > 0) {
+        interior = createStandardXcmInteriorByFlatInterior(
+          flatInterior?.filter((v) => !v.parachain)
+        );
+      }
     } else {
-      interior = createStandardXcmInterior(token.xcmLocation?.v1?.interior);
+      interior = createStandardXcmInterior(token?.xcmLocation?.v1?.interior);
     }
+
     const dest = {
       V3: {
         parents: 1,
@@ -60,7 +100,7 @@ export function createXcmTransfer({
       {
         id: {
           Concrete: isDotLocation(token.xcmLocation)
-            ?  {
+            ? {
                 parents: 1,
                 interior: {
                   Here: null
@@ -168,25 +208,65 @@ export const signAndSendExtrinsic = async ({
 }: SignAndSendExtrinsicParams) => {
   try {
     let txHash: string | undefined;
+    let isCallbackExecuted = false;
+    const startTime = Date.now();
     const unsub = await extrinsic.signAndSend(
       sender,
       { signer },
       async (result) => {
-        console.log('result', result);
+        const decodedResult = {
+          status: result.status.toJSON(),
+          events: result.events.map(({ event }) => ({
+            section: event.section,
+            method: event.method,
+            data: event.data.toHuman(),
+            documentation: event.meta.docs.map((d) => d.toString())
+          }))
+        } as DecodedResult;
+
         if (!txHash) {
           txHash = result.txHash.toHex();
           onPending?.({
             txHash
           });
-          if (result.status.isFinalized || result.status.isInBlock) {
-            handleRegularTransaction(result, onSuccess, onFailure);
-            if (result.isCompleted) unsub();
-          } else if (result.isError) {
-            onFailure?.({
-              txHash: result.txHash.toHex()
+        }
+        if (
+          decodedResult?.status?.finalized ||
+          decodedResult?.status?.inBlock
+        ) {
+          const extrinsicEvent = decodedResult.events.find(
+            (event) =>
+              event.method === 'ExtrinsicSuccess' ||
+              event.method === 'ExtrinsicFailed'
+          );
+          if (
+            extrinsicEvent?.method === 'ExtrinsicSuccess' &&
+            !isCallbackExecuted
+          ) {
+            isCallbackExecuted = true;
+            await calculateAndWaitRemainingTime(
+              startTime,
+              CROSS_CHAIN_TRANSFER_ESTIMATED_TIME
+            );
+            onSuccess?.({
+              txHash
             });
-            if (result.isCompleted) unsub();
+            unsub();
+          } else if (
+            extrinsicEvent?.method === 'ExtrinsicFailed' &&
+            !isCallbackExecuted
+          ) {
+            isCallbackExecuted = true;
+            onFailure?.({
+              txHash
+            });
+            unsub();
           }
+        } else if (result.isError) {
+          onFailure?.({
+            txHash: result.txHash.toHex()
+          });
+          if (result.isCompleted) unsub();
         }
       }
     );
@@ -196,33 +276,3 @@ export const signAndSendExtrinsic = async ({
     throw new Error('Transaction failed');
   }
 };
-
-function handleRegularTransaction(
-  result: any,
-  onSuccess?: ({
-    txHash,
-    messageHash,
-    uniqueId
-  }: {
-    txHash: string;
-    messageHash?: string;
-    uniqueId?: string;
-  }) => void,
-  onFailure?: ({ txHash }: { txHash?: string }) => void
-) {
-  result.events
-    .filter(({ event }: { event: any }) => event.section === 'system')
-    .forEach(({ event }: { event: any }) => {
-      if (event.method === 'ExtrinsicFailed') {
-        onFailure?.({
-          txHash: result.txHash.toHex()
-        });
-      } else if (event.method === 'ExtrinsicSuccess') {
-        onSuccess?.({
-          txHash: result.txHash.toHex(),
-          messageHash: undefined,
-          uniqueId: undefined
-        });
-      }
-    });
-}

@@ -6,10 +6,7 @@ import { ReserveType } from '@/types/xcm-asset';
 
 import { areInteriorsEqual } from './interior-match';
 
-import type {
-  XcmInterior,
-  XcmJunction
-} from '@/types/xcm-location';
+import type { XcmInterior, XcmJunction } from '@/types/xcm-location';
 import type { Asset } from '@/types/xcm-asset';
 import type { XcmV1Location } from '@/types/xcm-location';
 
@@ -26,21 +23,18 @@ function normalizeGeneralKey(key: any): string {
   return '';
 }
 
-export const isGeneralKeyV3 = (
-  key: XcmJunction
-) => {
+export const isGeneralKeyV3 = (key: XcmJunction) => {
   if (typeof key?.generalKey === 'string') {
     return true;
   }
   if (key?.generalKey?.data) {
-    return true
+    return true;
   }
   if (Array.isArray(key)) {
-    return key?.[0]?.generalKey && key?.[0]?.generalKey?.data
+    return key?.[0]?.generalKey && key?.[0]?.generalKey?.data;
   }
   return false;
 };
-
 
 const processItem = (item: XcmJunction) => {
   if (item && isGeneralKeyV3(item)) {
@@ -52,16 +46,18 @@ const processItem = (item: XcmJunction) => {
   return item;
 };
 
-
 export function normalizeInterior(
   interior: XcmInterior | null
 ): XcmJunction[] | null {
   if (!interior) return null;
   if ('here' in interior) return [];
   if ('x1' in interior && interior.x1) return [processItem(interior.x1)];
-  if ('x2' in interior && Array.isArray(interior.x2)) return interior.x2.map(processItem);
-  if ('x3' in interior && Array.isArray(interior.x3)) return interior.x3.map(processItem);
-  if ('x4' in interior && Array.isArray(interior.x4)) return interior.x4.map(processItem);
+  if ('x2' in interior && Array.isArray(interior.x2))
+    return interior.x2.map(processItem);
+  if ('x3' in interior && Array.isArray(interior.x3))
+    return interior.x3.map(processItem);
+  if ('x4' in interior && Array.isArray(interior.x4))
+    return interior.x4.map(processItem);
   return null;
 }
 
@@ -81,6 +77,28 @@ export function generateBeneficiary(recipientAddress: string) {
           )
         }
       }
+    }
+  };
+}
+
+export function generateBeneficiaryV4(recipientAddress: string) {
+  const accountType = isAddress(recipientAddress)
+    ? 'AccountKey20'
+    : 'AccountId32';
+
+  return {
+    parents: 0,
+    interior: {
+      X1: [
+        {
+          [accountType]: {
+            network: null,
+            [accountType === 'AccountKey20' ? 'key' : 'id']: u8aToHex(
+              decodeAddress(recipientAddress)
+            )
+          }
+        }
+      ]
     }
   };
 }

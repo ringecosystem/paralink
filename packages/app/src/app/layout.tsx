@@ -45,11 +45,12 @@ export default function RootLayout({
         <DAppProvider>
           <Toaster
             toastOptions={{
-              className: 'font-sans antialiased text-[14px]',
+              className:
+                'font-sans antialiased !max-w-full md:!max-w-[500px] text-xs overflow-auto',
               duration: 3_000
             }}
           />
-          <TooltipProvider>
+          <TooltipProvider delayDuration={300}>
             <div className="flex min-h-dvh w-screen flex-col">
               <header className="h-[var(--header-height)]">
                 <Header />
@@ -60,7 +61,7 @@ export default function RootLayout({
               </footer>
             </div>
 
-            <ToastContainer pauseOnFocusLoss={false} />
+            <ToastContainer />
           </TooltipProvider>
         </DAppProvider>
       </body>

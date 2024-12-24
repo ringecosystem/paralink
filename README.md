@@ -15,7 +15,6 @@ Assets within your parachains will be automatically supported if they meet the f
 
 As long as your parachain and assets meet these requirements, they will be automatically supported by ParaLink. Enjoy the seamless integration!
 
-
 ## Tech Stack
 
 - Next.js 15 (App Router)
@@ -39,13 +38,7 @@ git clone https://github.com/ringecosystem/paralink.git
 cd paralink
 ```
 
-2. Initialize submodules
-
-```bash
-git submodule update --init --recursive
-```
-
-3. Install dependencies
+2. Install dependencies
 
 ```bash
 pnpm install
@@ -53,10 +46,22 @@ pnpm install
 
 ### Development
 
-Start the development server:
+#### UI Commands
+
+Start the development server for the UI:
 
 ```bash
-pnpm run dev
+pnpm run dev:ui
+```
+
+#### Builder Commands
+
+Here are some common Builder command line examples:
+
+1. **Run the Builder**:
+
+```bash
+pnpm run dev:builder
 ```
 
 ### Production
@@ -64,11 +69,19 @@ pnpm run dev
 1. Build for production:
 
 ```bash
-pnpm run build
+pnpm run build:ui
 ```
 
 2. Start production server:
 
 ```bash
-pnpm start
+pnpm run start:ui
+```
+
+### Additional Builder Commands
+
+1. **Build the project**:
+
+```bash
+pnpm run build:builder
 ```

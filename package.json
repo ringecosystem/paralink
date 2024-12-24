@@ -2,5 +2,18 @@
   "name": "paralink",
   "version": "0.1.0",
   "description": "paralink",
-  "private": true
+  "private": true,
+  "scripts": {
+    "dev:ui": "pnpm --filter paralink dev",
+    "build:ui": "pnpm --filter paralink build",
+    "start:ui": "pnpm --filter paralink start",
+    "lint:ui": "pnpm --filter paralink lint",
+    "dev:builder": "pnpm --filter xcm-chain-registry-builder dev",
+    "build:builder": "pnpm --filter xcm-chain-registry-builder build",
+    "lint:builder": "pnpm --filter xcm-chain-registry-builder lint"
+  },
+  "devDependencies": {
+    "next": "15.0.2"
+  }
 }
+
