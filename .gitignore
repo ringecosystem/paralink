@@ -40,5 +40,6 @@ yarn-error.log*
 next-env.d.ts
 
 certificates
+packages/**/.next
 
-xcm-chain-registry-builder/node_modules
+packages/**/node_modules
