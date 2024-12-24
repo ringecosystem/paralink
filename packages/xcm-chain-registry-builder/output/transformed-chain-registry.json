@@ -1,4 +1,54 @@
 {
+  "0": {
+    "name": "Polkadot",
+    "slug": "polkadot",
+    "icon": "https://chain-list-assets.subwallet.app/assets/chains/polkadot.png",
+    "addressPrefix": 0,
+    "providers": [
+      "wss://polkadot-rpc.dwellir.com",
+      "wss://polkadot.public.curie.radiumblock.co/ws",
+      "wss://dot-rpc.stakeworld.io",
+      "wss://rpc.ibp.network/polkadot",
+      "wss://polkadot-public-rpc.blockops.network/ws",
+      "wss://polkadot-rpc.publicnode.com",
+      "wss://polkadot-rpc.subwallet.app",
+      "wss://polkadot.api.onfinality.io/public-ws"
+    ],
+    "alive": true,
+    "existentialDeposit": "10000000000",
+    "assetsType": null,
+    "xcmPaymentAcceptTokens": [
+      {
+        "v3": {
+          "concrete": {
+            "parents": 0,
+            "interior": {
+              "here": null
+            }
+          }
+        }
+      }
+    ],
+    "isEvm": false,
+    "explorer": "https://polkadot.subscan.io/",
+    "nativeToken": {
+      "symbol": "DOT",
+      "decimals": 10,
+      "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/polkadot-native-dot.png",
+      "isNative": true,
+      "reserveType": "local",
+      "xcmLocation": {
+        "v1": {
+          "parents": 0,
+          "interior": {
+            "here": null
+          }
+        }
+      },
+      "registeredChains": null
+    },
+    "xcAssetsData": {}
+  },
   "1000": {
     "name": "Polkadot Asset Hub",
     "slug": "assethub-polkadot",
