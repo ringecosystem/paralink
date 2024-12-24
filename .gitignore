@@ -21,7 +21,7 @@ next-env.d.ts
 
 certificates
 packages/**/.next
-
 packages/**/node_modules
+packages/xcm-chain-registry-builder/output
 .next
 
