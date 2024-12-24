@@ -15,10 +15,12 @@ import { calculateAndWaitRemainingTime, delay } from '@/utils/date';
 import { CROSS_CHAIN_TRANSFER_ESTIMATED_TIME } from '@/config/blockTime';
 import { type ChainConfig, type Asset, ReserveType } from '@/types/xcm-asset';
 import type { XcmRequestInteriorParams } from '@/types/xcm-location';
+import { ISubmittableResult } from '@polkadot/types/types/extrinsic';
 
 type XcmTransferParams = {
   token: Asset;
   amount: string;
+  sourceChainId: number;
   targetChain: ChainConfig;
   recipientAddress: string;
 };
@@ -57,6 +59,7 @@ export type TransactionEvent = {
 export function createXcmTransfer({
   token,
   amount,
+  sourceChainId,
   targetChain,
   recipientAddress
 }: XcmTransferParams) {
@@ -83,16 +86,26 @@ export function createXcmTransfer({
       interior = createStandardXcmInterior(token?.xcmLocation?.v1?.interior);
     }
 
-    const dest = {
-      V3: {
-        parents: 1,
-        interior: {
-          X1: {
-            Parachain: targetChain?.id
+    const dest =
+      targetChain?.id === 0
+        ? {
+            V3: {
+              parents: 1,
+              interior: {
+                Here: null
+              }
+            }
           }
-        }
-      }
-    };
+        : {
+            V3: {
+              parents: sourceChainId === 0 ? 0 : 1,
+              interior: {
+                X1: {
+                  Parachain: targetChain?.id
+                }
+              }
+            }
+          };
 
     const beneficiary = generateBeneficiary(recipientAddress);
 
@@ -101,7 +114,7 @@ export function createXcmTransfer({
         id: {
           Concrete: isDotLocation(token.xcmLocation)
             ? {
-                parents: 1,
+                parents: sourceChainId === 0 ? 0 : 1,
                 interior: {
                   Here: null
                 }
@@ -156,27 +169,54 @@ export const createXcmTransferExtrinsic = async ({
   const xcmTransferParams = createXcmTransfer({
     token,
     amount,
+    sourceChainId,
     targetChain,
     recipientAddress
   });
   console.log('xcmTransferParams', xcmTransferParams);
   if (!xcmTransferParams || !fromChainApi) return undefined;
+  let extrinsic: SubmittableExtrinsic<'promise', ISubmittableResult>;
+  if (sourceChainId === 2006) {
+    extrinsic = fromChainApi.tx.polkadotXcm.reserveTransferAssets(
+      xcmTransferParams.dest,
+      xcmTransferParams.beneficiary,
+      xcmTransferParams.assets,
+      xcmTransferParams.feeAssetItem
+    );
+  } else if (sourceChainId === 0) {
+    if (targetChain?.id < 2000) {
+      extrinsic = fromChainApi.tx.xcmPallet.teleportAssets(
+        xcmTransferParams.dest,
+        xcmTransferParams.beneficiary,
+        xcmTransferParams.assets,
+        xcmTransferParams.feeAssetItem
+      );
+    } else {
+      extrinsic = fromChainApi.tx.xcmPallet.transferAssets(
+        xcmTransferParams.dest,
+        xcmTransferParams.beneficiary,
+        xcmTransferParams.assets,
+        xcmTransferParams.feeAssetItem,
+        xcmTransferParams.weightLimit
+      );
+    }
+  } else if (targetChain?.id === 0 && sourceChainId < 2000) {
+    extrinsic = fromChainApi.tx.polkadotXcm.teleportAssets(
+      xcmTransferParams.dest,
+      xcmTransferParams.beneficiary,
+      xcmTransferParams.assets,
+      xcmTransferParams.feeAssetItem
+    );
+  } else {
+    extrinsic = fromChainApi.tx.polkadotXcm.transferAssets(
+      xcmTransferParams.dest,
+      xcmTransferParams.beneficiary,
+      xcmTransferParams.assets,
+      xcmTransferParams.feeAssetItem,
+      xcmTransferParams.weightLimit
+    );
+  }
 
-  const extrinsic =
-    sourceChainId !== 2006
-      ? fromChainApi.tx.polkadotXcm.transferAssets(
-          xcmTransferParams.dest,
-          xcmTransferParams.beneficiary,
-          xcmTransferParams.assets,
-          xcmTransferParams.feeAssetItem,
-          xcmTransferParams.weightLimit
-        )
-      : fromChainApi.tx.polkadotXcm.reserveTransferAssets(
-          xcmTransferParams.dest,
-          xcmTransferParams.beneficiary,
-          xcmTransferParams.assets,
-          xcmTransferParams.feeAssetItem
-        );
   return extrinsic;
 };
 

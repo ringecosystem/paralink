@@ -1,20 +1,30 @@
 import fs from 'fs-extra';
 import path from 'path';
 import { isFunction } from '@polkadot/util';
-import { Asset, ChainInfo, ChainRegistry, ParaChainConfig, } from './types/registry';
+import {
+  Asset,
+  ChainInfo,
+  ChainRegistry,
+  ParaChainConfig
+} from './types/registry';
 import { ReserveType } from './types/enum';
 
 import {
   connectToChain,
-  getValidWssEndpoints,
+  getValidWssEndpoints
 } from './utils/network/endpoints';
-import { findIconBySymbol, filterXcmTokensByString, processAssetHubAssets, processAssetHubAssetsWithRegisteredChains } from './utils/xcm/assets';
 import {
-  determineReserveType,
-  hasParachainInLocation
-} from './utils/xcm/location';
+  findIconBySymbol,
+  filterXcmTokensByString,
+  processAssetHubAssets,
+  processAssetHubAssetsWithRegisteredChains
+} from './utils/xcm/assets';
+import { determineReserveType } from './utils/xcm/location';
 import { getSupportedParaChains } from './utils/chain/parachain';
-import { filterHrmpConnections, validateChains } from './utils/chain/validation';
+import {
+  filterHrmpConnections,
+  validateChains
+} from './utils/chain/validation';
 import { ApiPromise } from '@polkadot/api';
 import ss58 from '@substrate/ss58-registry';
 import {
@@ -36,7 +46,9 @@ async function buildChainRegistry({
   const supportedChains = supportedParaChains
     ?.map((chain) => {
       const chainAsset = chainsInfoArray?.find(
-        (v) => v.substrateInfo?.paraId?.toString() === chain.id
+        (v) =>
+          v.substrateInfo?.paraId?.toString() === chain.id ||
+          (chain?.specName === 'polkadot' && v.slug === 'polkadot')
       );
       const ss58Format = ss58.find(
         (v) => v.prefix === chainAsset?.substrateInfo?.addressPrefix
@@ -52,8 +64,15 @@ async function buildChainRegistry({
         return null;
       }
 
+      const isPolkadot = chain?.specName === 'polkadot';
       return {
         ...chainAsset,
+        substrateInfo: isPolkadot
+          ? {
+              ...(chainAsset?.substrateInfo || {}),
+              paraId: 0
+            }
+          : chainAsset?.substrateInfo,
         id: chain?.id?.toString(),
         assetsInfo: chain?.assetsInfo,
         xcAssetsData: chain?.xcAssetsData?.filter(
@@ -73,7 +92,9 @@ async function buildChainRegistry({
     })
     ?.filter((v): v is NonNullable<typeof v> => !!v);
 
-  return await validateChains(supportedChains as unknown as ChainRegistryItem[]);
+  return await validateChains(
+    supportedChains as unknown as ChainRegistryItem[]
+  );
 }
 
 async function transformChainRegistry({
@@ -101,6 +122,7 @@ async function transformChainRegistry({
 
   for (const chain of filteredChainRegistry) {
     const chainId = chain.id;
+    const isPolkadot = chainId === '0';
     const isAssetHub = chainId === '1000';
     registry[chainId] = {
       name: chain.name,
@@ -110,9 +132,8 @@ async function transformChainRegistry({
       providers: getValidWssEndpoints(chain.providers),
       alive: chain.chainStatus === 'ACTIVE',
       existentialDeposit: chain.substrateInfo.existentialDeposit,
-      assetsType: null,
+      assetsType: null
     };
-
 
     let api: ApiPromise | null = null;
 
@@ -161,60 +182,82 @@ async function transformChainRegistry({
       icon: chain.nativeToken.icon,
       isNative: true,
       reserveType: ReserveType.Local,
-      xcmLocation: {
-        v1: {
-          parents: 0,
-          interior: {
-            here: null
-          }
-        }
-      },
+      xcmLocation:
+        isPolkadot || isAssetHub
+          ? {
+              v1: {
+                parents: 1,
+                interior: {
+                  here: null
+                }
+              }
+            }
+          : {
+              v1: {
+                parents: 0,
+                interior: {
+                  here: null
+                }
+              }
+            },
       registeredChains: null
     };
 
-
-    const peerChains = filteredChainRegistry?.filter((v) => v.id !== chainId)
+    const peerChains = filteredChainRegistry?.filter((v) => v.id !== chainId);
 
     if (isAssetHub) {
-      const processedAssets = processAssetHubAssets(chain, peerChains, assetsInfoArray);
-      const enhancedAssets = processAssetHubAssetsWithRegisteredChains(processedAssets, peerChains);
+      const processedAssets = processAssetHubAssets(
+        chain,
+        peerChains,
+        assetsInfoArray
+      );
+      const enhancedAssets = processAssetHubAssetsWithRegisteredChains(
+        processedAssets,
+        peerChains
+      );
       if (registry[chainId]) {
         registry[chainId].localAssets = enhancedAssets;
       }
     } else {
-      const processedAssets = chain.xcAssetsData?.filter(
-        (asset) => asset.paraID === Number(chainId)
-      )?.filter(v => v.symbol.toLowerCase() !== chain.nativeToken.symbol.toLowerCase())
+      const processedAssets = chain.xcAssetsData
+        ?.filter((asset) => asset.paraID === Number(chainId))
+        ?.filter(
+          (v) =>
+            v.symbol.toLowerCase() !== chain.nativeToken.symbol.toLowerCase()
+        );
 
       if (processedAssets && processedAssets.length > 0) {
-        const localAssets = processedAssets.map(asset => ({
+        const localAssets = processedAssets.map((asset) => ({
           symbol: asset.symbol,
           decimals: asset.decimals,
           assetId: asset.asset,
           icon: findIconBySymbol(asset.symbol, assetsInfoArray),
           xcmLocation: JSON.parse(asset.xcmV1MultiLocation),
-          reserveType: ReserveType.Local,
+          reserveType: ReserveType.Local
         }));
 
-        const enhancedLocalAssets = localAssets.map(asset => {
+        const enhancedLocalAssets = localAssets.map((asset) => {
           const registeredChains = {};
-          peerChains
-            ?.forEach(peerChain => {
-              if (!peerChain.xcAssetsData || peerChain.xcAssetsData.length === 0) {
-                return;
-              }
-              const matchedAsset = peerChain.xcAssetsData?.find(xcAsset =>
+          peerChains?.forEach((peerChain) => {
+            if (
+              !peerChain.xcAssetsData ||
+              peerChain.xcAssetsData.length === 0
+            ) {
+              return;
+            }
+            const matchedAsset = peerChain.xcAssetsData?.find(
+              (xcAsset) =>
                 xcAsset?.paraID === Number(chainId) &&
                 xcAsset.symbol.toLowerCase() === asset.symbol.toLowerCase()
-              );
-              if (matchedAsset) {
-                registeredChains[peerChain.id] = {
-                  assetId: matchedAsset.asset,
-                  symbol: matchedAsset.symbol,
-                  decimals: matchedAsset.decimals,
-                };
-              }
-            });
+            );
+            if (matchedAsset) {
+              registeredChains[peerChain.id] = {
+                assetId: matchedAsset.asset,
+                symbol: matchedAsset.symbol,
+                decimals: matchedAsset.decimals
+              };
+            }
+          });
 
           return {
             ...asset,
@@ -224,21 +267,16 @@ async function transformChainRegistry({
         registry[chainId].localAssets = enhancedLocalAssets;
       }
 
-
-
-
       filteredChainRegistry
         ?.filter((v) => v.id !== chainId)
         ?.forEach((v) => {
           const destAssetsInfo = v.xcAssetsData?.filter((asset) => {
-            const hasParachain =
-              hasParachainInLocation({
-                multiLocationStr: asset.xcmV1MultiLocation,
-                paraId: chainId
-              }) &&
+            const hasParachain = Number(asset.paraID) === Number(chainId);
+            return (
+              hasParachain &&
               chain?.nativeToken?.symbol?.toLowerCase() ===
-              asset?.symbol?.toLowerCase();
-            return hasParachain;
+                asset?.symbol?.toLowerCase()
+            );
           });
 
           if (destAssetsInfo && destAssetsInfo.length > 0) {
@@ -261,6 +299,31 @@ async function transformChainRegistry({
                 };
               }
             });
+          } else if (chainId === '0' && v.id === '1000') {
+            if (
+              registry?.[chainId]?.nativeToken &&
+              !registry?.[chainId]?.nativeToken?.registeredChains
+            ) {
+              registry[chainId].nativeToken.registeredChains = {};
+            }
+            if (registry?.[chainId]?.nativeToken?.registeredChains) {
+              registry[chainId].nativeToken.registeredChains[v.id] = {
+                symbol: chain.nativeToken.symbol,
+                decimals: chain.nativeToken.decimals,
+                isNative: true,
+                reserveType: ReserveType.Local,
+                icon: chain.nativeToken.icon,
+                xcmLocation: {
+                  v1: {
+                    parents: 1,
+                    interior: {
+                      here: null
+                    }
+                  }
+                },
+                assetId: 'Native'
+              };
+            }
           }
         });
 
@@ -323,37 +386,37 @@ async function init() {
     assetsInfoArray
   });
   const envBasePath = process.env.STORE_BASE_PATH;
-  const storeBasePath = path.join(envBasePath ? envBasePath : __dirname, 'output');
-  if (!await fs.exists(storeBasePath)) {
+  const storeBasePath = path.join(
+    envBasePath ? envBasePath : __dirname,
+    'output'
+  );
+  if (!(await fs.exists(storeBasePath))) {
     await fs.mkdirp(storeBasePath);
   }
   const registryPath = path.join(storeBasePath, 'registry.json');
-  fs.writeJson(
-    registryPath,
-    validatedChains,
-    { spaces: 2 }
-  )
+  fs.writeJson(registryPath, validatedChains, { spaces: 2 })
     .then(() => {
-      console.log('Validated chain registry file created successfully!', );
+      console.log('Validated chain registry file created successfully!');
     })
     .catch((err) => {
       console.error('Failed to write validated chain registry file:', err);
     });
-
 
   const transformedJson = await transformChainRegistry({
     originalChainRegistry: validatedChains,
     assetsInfoArray
   });
 
-  const transformedPath = path.join(storeBasePath, 'transformed-chain-registry.json');
-  fs.writeJson(
-    transformedPath,
-    transformedJson,
-    { spaces: 2 }
-  )
+  const transformedPath = path.join(
+    storeBasePath,
+    'transformed-chain-registry.json'
+  );
+  fs.writeJson(transformedPath, transformedJson, { spaces: 2 })
     .then(() => {
-      console.log('Transformed chain registry file created successfully!', transformedPath);
+      console.log(
+        'Transformed chain registry file created successfully!',
+        transformedPath
+      );
       process.exit(0);
     })
     .catch((err) => {

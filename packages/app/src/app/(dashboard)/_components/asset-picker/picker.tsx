@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useImperativeHandle, useState } from 'react';
 import { BN, BN_ZERO, bnToBn } from '@polkadot/util';
 import { ChevronDown } from 'lucide-react';
+import { isNil } from 'lodash-es';
 import { cn } from '@/lib/utils';
 import { FallbackImage } from '@/components/ui/fallback-image';
 import { Button } from '@/components/ui/button';
@@ -70,7 +71,6 @@ export function Picker({
       setSelectedToken: state.setSelectedToken
     }))
   );
-
   const {
     data: updatedBalances,
     isLoading: isBalancesLoading,
@@ -150,7 +150,7 @@ export function Picker({
   // get available tokens
   useEffect(() => {
     const initTokens = async () => {
-      if (!tokens?.length || !targetChainId) return;
+      if (!tokens?.length || isNil(targetChainId)) return;
       setAvailableTokensLoading(true);
       const targetChainApi = await getValidApi(targetChainId);
 
@@ -173,8 +173,6 @@ export function Picker({
             setSelectedToken(validTokens[0]);
           }
         } else {
-          console.log('acceptablePaymentTokens', acceptablePaymentTokens);
-          console.log('tokens', tokens);
           if (acceptablePaymentTokens?.length) {
             const matchTokens = tokens.filter((asset) => {
               const isSupported = acceptablePaymentTokens.some((tokenInfo) =>

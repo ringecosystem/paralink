@@ -23,13 +23,17 @@ export const useSourceChainMinBalance = ({
   const sourceChainId = useChainsStore((state) => state.sourceChainId);
 
   useEffect(() => {
-    if (asset?.isNative) {
+    let isCurrentEffect = true;
+
+    if (!asset || asset?.isNative) {
+      setFormatted('0');
+      setBalance(BN_ZERO);
+      setIsLoading(false);
       return;
     }
     const assetId = asset?.assetId;
     const fetchMinBalance = async () => {
       if (isNil(sourceChainId) || isNil(assetId) || isNil(decimals)) return;
-
       setIsLoading(true);
       const api = await getValidApi(sourceChainId);
       const { balance, formatted } = await getMinBalance({
@@ -38,17 +42,24 @@ export const useSourceChainMinBalance = ({
         decimals
       });
 
-      setFormatted(formatted);
-      setBalance(balance);
-      setIsLoading(false);
+      if (isCurrentEffect) {
+        setFormatted(formatted);
+        setBalance(balance);
+        setIsLoading(false);
+      }
     };
     fetchMinBalance();
+
     return () => {
+      isCurrentEffect = false;
       setFormatted('0');
       setBalance(BN_ZERO);
       setIsLoading(false);
     };
   }, [getValidApi, sourceChainId, asset, decimals]);
+
+  console.log('asset', asset, formatted);
+
   return {
     formatted,
     balance,

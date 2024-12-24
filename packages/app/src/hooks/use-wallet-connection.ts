@@ -45,4 +45,3 @@ export function useWalletConnection(): WalletConnection {
     currentAddress: sourceChain.isEvm ? address : selectedAccount?.address
   };
 }
-

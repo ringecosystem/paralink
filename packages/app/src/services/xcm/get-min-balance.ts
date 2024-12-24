@@ -62,7 +62,7 @@ export async function getMinBalance({
     if (isFunction(api.query.assetRegistry?.currencyMetadatas)) {
       console.log('min balance match assetRegistry.currencyMetadatas', assetId);
       const currencyMetadatas =
-        await api.query.assetRegistry.currencyMetadatas();
+        await api.query.assetRegistry.currencyMetadatas(assetId);
       const details = currencyMetadatas.toJSON() as {
         minimalBalance?: string | number;
       } | null;

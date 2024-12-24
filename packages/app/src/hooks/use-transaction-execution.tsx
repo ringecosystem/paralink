@@ -1,5 +1,4 @@
 import { useCallback, useRef } from 'react';
-import { useShallow } from 'zustand/react/shallow';
 import { useConfig } from 'wagmi';
 import { useWalletStore } from '@/store/wallet';
 import {
@@ -14,6 +13,7 @@ import { TransactionDetail } from '@/components/transaction-detail';
 import { CROSS_CHAIN_TRANSFER_ESTIMATED_TIME } from '@/config/blockTime';
 import { calculateAndWaitRemainingTime } from '@/utils/date';
 import type { ChainConfig, Asset } from '@/types/xcm-asset';
+import { isNil } from 'lodash-es';
 
 const AUTO_CLOSE_TIME = 5000;
 
@@ -87,18 +87,13 @@ export function useTransactionExecution({
 
   const { selectedWallet } = useWalletStore();
 
-  const { addTransaction, updateTransaction } = useTransactionHistory(
-    useShallow((state) => ({
-      addTransaction: state.addTransaction,
-      updateTransaction: state.updateTransaction
-    }))
-  );
+  const addTransaction = useTransactionHistory((state) => state.addTransaction);
 
   const executeTransaction = useCallback(
     async ({ extrinsic }: { extrinsic: any }) => {
       if (
         !extrinsic ||
-        !sourceChain?.id ||
+        isNil(sourceChain?.id) ||
         !selectedWallet?.signer ||
         !address
       ) {
@@ -166,10 +161,11 @@ export function useTransactionExecution({
   );
 
   const executeTransactionFromMoonbeam = useCallback(async () => {
+    console.log('executeTransactionFromMoonbeam', sourceChain, targetChain);
     if (
-      !sourceChain?.id ||
+      isNil(sourceChain?.id) ||
       !address ||
-      !targetChain?.id ||
+      isNil(targetChain?.id) ||
       !selectedToken ||
       !amount ||
       !recipientAddress

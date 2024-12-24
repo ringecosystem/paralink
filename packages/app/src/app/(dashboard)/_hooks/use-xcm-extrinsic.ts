@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { isNil } from 'lodash-es';
 import { createXcmTransferExtrinsic } from '@/services/xcm/polkadot-xcm';
 import { SubmittableExtrinsic } from '@polkadot/api/types';
 import { BN, BN_ZERO, bnToBn } from '@polkadot/util';
@@ -32,7 +33,12 @@ export function useXcmExtrinsic({
 
   useEffect(() => {
     const getExtrinsic = async () => {
-      if (!sourceChainId || !selectedToken || !targetChain || !recipientAddress)
+      if (
+        isNil(sourceChainId) ||
+        !selectedToken ||
+        !targetChain ||
+        !recipientAddress
+      )
         return;
 
       setIsLoading(true);

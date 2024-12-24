@@ -1,4 +1,137 @@
 {
+  "0": {
+    "name": "Polkadot",
+    "slug": "polkadot",
+    "icon": "https://chain-list-assets.subwallet.app/assets/chains/polkadot.png",
+    "addressPrefix": 0,
+    "providers": [
+      "wss://polkadot-rpc.dwellir.com",
+      "wss://polkadot.public.curie.radiumblock.co/ws",
+      "wss://dot-rpc.stakeworld.io",
+      "wss://rpc.ibp.network/polkadot",
+      "wss://polkadot-public-rpc.blockops.network/ws",
+      "wss://polkadot-rpc.publicnode.com",
+      "wss://polkadot-rpc.subwallet.app",
+      "wss://polkadot.api.onfinality.io/public-ws"
+    ],
+    "alive": true,
+    "existentialDeposit": "10000000000",
+    "assetsType": null,
+    "xcmPaymentAcceptTokens": [
+      {
+        "v3": {
+          "concrete": {
+            "parents": 0,
+            "interior": {
+              "here": null
+            }
+          }
+        }
+      }
+    ],
+    "isEvm": false,
+    "explorer": "https://polkadot.subscan.io/",
+    "nativeToken": {
+      "symbol": "DOT",
+      "decimals": 10,
+      "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/polkadot-native-dot.png",
+      "isNative": true,
+      "reserveType": "local",
+      "xcmLocation": {
+        "v1": {
+          "parents": 1,
+          "interior": {
+            "here": null
+          }
+        }
+      },
+      "registeredChains": {
+        "1000": {
+          "symbol": "DOT",
+          "decimals": 10,
+          "isNative": true,
+          "reserveType": "local",
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/polkadot-native-dot.png",
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "here": null
+              }
+            }
+          },
+          "assetId": "Native"
+        },
+        "2004": {
+          "assetId": "42259045809535163221576417993425387648",
+          "symbol": "DOT",
+          "decimals": 10,
+          "isNative": true,
+          "reserveType": "local",
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/polkadot-native-dot.png",
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "here": null
+              }
+            }
+          }
+        },
+        "2006": {
+          "assetId": "340282366920938463463374607431768211455",
+          "symbol": "DOT",
+          "decimals": 10,
+          "isNative": true,
+          "reserveType": "local",
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/polkadot-native-dot.png",
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "here": null
+              }
+            }
+          }
+        },
+        "2030": {
+          "assetId": {
+            "Token2": "0"
+          },
+          "symbol": "DOT",
+          "decimals": 10,
+          "isNative": true,
+          "reserveType": "local",
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/polkadot-native-dot.png",
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "here": null
+              }
+            }
+          }
+        },
+        "2034": {
+          "assetId": "5",
+          "symbol": "DOT",
+          "decimals": 10,
+          "isNative": true,
+          "reserveType": "local",
+          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/polkadot-native-dot.png",
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "here": null
+              }
+            }
+          }
+        }
+      }
+    },
+    "xcAssetsData": {}
+  },
   "1000": {
     "name": "Polkadot Asset Hub",
     "slug": "assethub-polkadot",
@@ -34,7 +167,7 @@
       "reserveType": "local",
       "xcmLocation": {
         "v1": {
-          "parents": 0,
+          "parents": 1,
           "interior": {
             "here": null
           }
@@ -624,7 +757,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/polkadot-native-dot.png"
         }
       ],
@@ -1406,7 +1539,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/polkadot-native-dot.png"
         }
       ],
@@ -2472,7 +2605,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/polkadot-native-dot.png"
         }
       ],
@@ -9425,7 +9558,7 @@
               }
             }
           },
-          "reserveType": "remote",
+          "reserveType": "foreign",
           "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/polkadot-native-dot.png"
         }
       ],

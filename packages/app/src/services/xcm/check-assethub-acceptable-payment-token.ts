@@ -9,7 +9,6 @@ export async function checkAssetHubAcceptablePaymentToken({
   api,
   asset
 }: CheckAssetHubAcceptablePaymentTokenParams) {
-  console.log('checkAssetHubAcceptablePaymentToken asset', asset);
   if (asset?.symbol)
     try {
       if (!asset?.xcmLocation) {
@@ -18,7 +17,10 @@ export async function checkAssetHubAcceptablePaymentToken({
       }
       // match dot location
       if (asset?.symbol?.toLowerCase() === 'dot') {
-        if (Number(asset?.xcmLocation?.v1?.parents) === 1 && asset?.xcmLocation?.v1?.interior?.here === null) {
+        if (
+          Number(asset?.xcmLocation?.v1?.parents) === 1 &&
+          asset?.xcmLocation?.v1?.interior?.here === null
+        ) {
           return true;
         }
       }

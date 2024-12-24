@@ -7,6 +7,7 @@ import React, {
   useState
 } from 'react';
 import { useShallow } from 'zustand/react/shallow';
+import { isNil } from 'lodash-es';
 import { AddressInput } from '@/components/address-input';
 import Alert from '@/components/alert';
 import { FeeBreakdown } from '@/components/fee-breakdown';
@@ -173,6 +174,17 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
 
   const maxBalanceBN = useMemo(() => {
     if (selectedToken?.isNative) {
+      console.log(
+        'fromDeposit',
+        fromDeposit?.toString(),
+        'networkFee',
+        networkFee?.toString(),
+        'sourceChainMinBalance',
+        sourceChainMinBalance?.toString(),
+        'selectedTokenBalance',
+        selectedTokenBalance?.toString()
+      );
+
       return bnMax(
         BN_ZERO,
         selectedTokenBalance
@@ -181,7 +193,6 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
           ?.sub(sourceChainMinBalance ?? BN_ZERO) ?? BN_ZERO
       );
     }
-
     return bnMax(
       BN_ZERO,
       selectedTokenBalance?.sub(sourceChainMinBalance ?? BN_ZERO) ?? BN_ZERO
@@ -193,6 +204,7 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
     networkFee,
     sourceChainMinBalance
   ]);
+  console.log('maxBalanceBN', maxBalanceBN?.toString());
 
   const { isInsufficientBalance } = useMemo(() => {
     if (address && amount) {
@@ -228,7 +240,7 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
   );
 
   const handleSwitch = useCallback(async () => {
-    if (!chains?.length || !sourceChainId || !targetChainId) return;
+    if (!chains?.length || isNil(sourceChainId) || isNil(targetChainId)) return;
     setIsLoadingCrossChain(true);
     await swapChains({
       chains,
