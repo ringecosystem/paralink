@@ -4,7 +4,7 @@
     "name": "Polkadot",
     "isTestnet": false,
     "chainStatus": "ACTIVE",
-    "icon": "https://chain-list-assets.subwallet.app/assets/chains/polkadot.png",
+    "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chains/polkadot.png",
     "providers": {
       "Dwellir": "wss://polkadot-rpc.dwellir.com",
       "RadiumBlock": "wss://polkadot.public.curie.radiumblock.co/ws",
@@ -45,7 +45,7 @@
     "nativeToken": {
       "symbol": "DOT",
       "decimals": 10,
-      "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/polkadot-native-dot.png"
+      "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/polkadot-native-dot.png"
     },
     "isEvm": false
   },
@@ -54,7 +54,7 @@
     "name": "Polkadot Asset Hub",
     "isTestnet": false,
     "chainStatus": "ACTIVE",
-    "icon": "https://chain-list-assets.subwallet.app/assets/chains/statemint.png",
+    "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chains/statemint.png",
     "providers": {
       "IBP-GeoDNS1": "wss://sys.ibp.network/statemint",
       "StakeWorld": "wss://dot-rpc.stakeworld.io/assethub",
@@ -450,7 +450,7 @@
     "nativeToken": {
       "symbol": "DOT",
       "decimals": 10,
-      "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/polkadot-native-dot.png"
+      "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/polkadot-native-dot.png"
     },
     "isEvm": false
   },
@@ -459,7 +459,7 @@
     "name": "Moonbeam",
     "isTestnet": false,
     "chainStatus": "ACTIVE",
-    "icon": "https://chain-list-assets.subwallet.app/assets/chains/moonbeam.png",
+    "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chains/moonbeam.png",
     "providers": {
       "Moonbeam Foundation": "wss://wss.api.moonbeam.network",
       "Blast": "wss://moonbeam.public.blastapi.io"
@@ -851,7 +851,7 @@
     "nativeToken": {
       "symbol": "GLMR",
       "decimals": 18,
-      "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/moonbeam-native-glmr.png"
+      "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/moonbeam-native-glmr.png"
     },
     "isEvm": true
   },
@@ -860,7 +860,7 @@
     "name": "Astar",
     "isTestnet": false,
     "chainStatus": "ACTIVE",
-    "icon": "https://chain-list-assets.subwallet.app/assets/chains/astar.png",
+    "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chains/astar.png",
     "providers": {
       "Astar": "wss://rpc.astar.network",
       "OnFinality": "wss://astar.api.onfinality.io/public-ws",
@@ -1160,7 +1160,7 @@
     "nativeToken": {
       "symbol": "ASTR",
       "decimals": 18,
-      "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/astar-native-astr.png"
+      "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/astar-native-astr.png"
     },
     "isEvm": false
   },
@@ -1169,7 +1169,7 @@
     "name": "Bifrost Polkadot",
     "isTestnet": false,
     "chainStatus": "ACTIVE",
-    "icon": "https://chain-list-assets.subwallet.app/assets/chains/bifrost_dot.png",
+    "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chains/bifrost_dot.png",
     "providers": {
       "Liebi": "wss://hk.p.bifrost-rpc.liebi.com/ws",
       "LiebiEU": "wss://eu.bifrost-polkadot-rpc.liebi.com/ws",
@@ -1452,7 +1452,7 @@
     "nativeToken": {
       "symbol": "BNC",
       "decimals": 12,
-      "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost-native-bnc.png"
+      "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost-native-bnc.png"
     },
     "isEvm": false
   },
@@ -1461,7 +1461,7 @@
     "name": "Hydration",
     "isTestnet": false,
     "chainStatus": "ACTIVE",
-    "icon": "https://chain-list-assets.subwallet.app/assets/chains/hydradx_main.png",
+    "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chains/hydradx_main.png",
     "providers": {
       "Galactic Council": "wss://rpc.hydradx.cloud",
       "Dwellir": "wss://hydradx-rpc.dwellir.com",
@@ -1867,7 +1867,7 @@
     "nativeToken": {
       "symbol": "HDX",
       "decimals": 12,
-      "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/hydradx_main-native-hdx.png"
+      "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/hydradx_main-native-hdx.png"
     },
     "isEvm": false
   }
