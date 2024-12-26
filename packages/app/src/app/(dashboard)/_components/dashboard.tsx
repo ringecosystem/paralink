@@ -81,7 +81,7 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
 
   const setPriceIds = usePriceStore((state) => state.setPriceIds);
 
-  // const { data: prices } = useFetchPrice();
+  const { data: prices } = useFetchPrice();
 
   const { sourceLoading, targetLoading } = useApiConnectionsStore(
     useShallow((state) => ({
@@ -394,7 +394,7 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
           />
           <div className="relative flex flex-col gap-[20px]">
             <AssetPicker
-              prices={{}}
+              prices={prices}
               ref={pickerRef}
               tokens={tokens}
               crossFee={crossFee}
@@ -442,7 +442,7 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
                   decimals: selectedToken?.decimals ?? 3
                 })}
                 networkFee={networkFee}
-                prices={{}}
+                prices={prices}
                 crossFee={crossFee}
                 nativeTokenInfo={sourceChain?.nativeToken}
                 loading={
