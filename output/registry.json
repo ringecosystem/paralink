@@ -45,7 +45,13 @@
     "nativeToken": {
       "symbol": "DOT",
       "decimals": 10,
-      "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/polkadot-native-dot.png"
+      "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/polkadot-native-dot.png",
+      "priceId": "polkadot",
+      "minAmount": "10000000000",
+      "xcmLocation": {
+        "parents": 0,
+        "interior": "Here"
+      }
     },
     "isEvm": false
   },
@@ -450,7 +456,13 @@
     "nativeToken": {
       "symbol": "DOT",
       "decimals": 10,
-      "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/polkadot-native-dot.png"
+      "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-native-dot.png",
+      "priceId": "polkadot",
+      "minAmount": "100000000",
+      "xcmLocation": {
+        "parents": 1,
+        "interior": "Here"
+      }
     },
     "isEvm": false
   },
@@ -851,7 +863,13 @@
     "nativeToken": {
       "symbol": "GLMR",
       "decimals": 18,
-      "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/moonbeam-native-glmr.png"
+      "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/moonbeam-native-glmr.png",
+      "priceId": "moonbeam",
+      "minAmount": "0",
+      "xcmLocation": {
+        "parents": 0,
+        "interior": "Here"
+      }
     },
     "isEvm": true
   },
@@ -1160,7 +1178,13 @@
     "nativeToken": {
       "symbol": "ASTR",
       "decimals": 18,
-      "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/astar-native-astr.png"
+      "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/astar-native-astr.png",
+      "priceId": "astar",
+      "minAmount": "1000000",
+      "xcmLocation": {
+        "parents": 0,
+        "interior": "Here"
+      }
     },
     "isEvm": false
   },
@@ -1452,7 +1476,10 @@
     "nativeToken": {
       "symbol": "BNC",
       "decimals": 12,
-      "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost-native-bnc.png"
+      "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-native-bnc.png",
+      "priceId": "bifrost-native-coin",
+      "minAmount": "10000000000",
+      "xcmLocation": null
     },
     "isEvm": false
   },
@@ -1867,7 +1894,10 @@
     "nativeToken": {
       "symbol": "HDX",
       "decimals": 12,
-      "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/hydradx_main-native-hdx.png"
+      "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/hydradx_main-native-hdx.png",
+      "priceId": "hydradx",
+      "minAmount": "1000000000000",
+      "xcmLocation": null
     },
     "isEvm": false
   }
