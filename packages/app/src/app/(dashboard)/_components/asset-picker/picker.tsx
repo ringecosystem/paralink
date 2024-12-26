@@ -23,10 +23,12 @@ import { Skeleton } from '@/components/ui/skeleton';
 import useApiConnectionsStore from '@/store/api-connections';
 import { isXcmLocationMatch } from '@/utils/xcm/helper';
 import type { Asset } from '@/types/xcm-asset';
+import FormattedUsdTooltip from '@/components/formatted-usd-tooltip';
 
 export interface PickerProps {
   ref: React.RefObject<{ refreshBalances: () => void }>;
   tokens?: Asset[];
+  prices?: Record<string, number>;
   tokenBalance?: BalanceWithSymbol;
   tokenBalances?: BalanceWithSymbol[];
   sourceChainId?: number;
@@ -45,6 +47,7 @@ export interface PickerProps {
 
 export function Picker({
   ref,
+  prices,
   tokens,
   sourceChainId,
   targetChainId,
@@ -95,7 +98,6 @@ export function Picker({
 
   const minBalanceBN = bnToBn(minBalance).add(crossFee);
 
-  const price = undefined;
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { value, handleChange, handleBlur, handleReset, handleChangeValue } =
     useNumberInput({
@@ -332,11 +334,20 @@ export function Picker({
                 onBlur={handleBlur}
               />
               <span className="flex items-center text-[12px] font-normal leading-normal text-[#12161950]">
-                ≈ ${' '}
-                {price ? (
-                  <FormattedNumberTooltip
-                    // value={token.price ?? BN_ZERO}
-                    value={BN_ZERO}
+                ≈ 
+                {selectedToken?.priceId && prices?.[selectedToken?.priceId] ? (
+                  <FormattedUsdTooltip
+                    price={prices?.[selectedToken?.priceId ?? ''] ?? 0}
+                    value={
+                      value !== ''
+                        ? bnToBn(
+                            parseUnits({
+                              value: value,
+                              decimals: selectedToken?.decimals ?? 0
+                            })
+                          )
+                        : BN_ZERO
+                    }
                     decimals={selectedToken?.decimals ?? 0}
                   />
                 ) : (

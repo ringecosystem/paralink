@@ -9,6 +9,8 @@ export enum ReserveType {
 
 export type Asset = {
   isNative?: boolean;
+  priceId?: string;
+  minAmount?: string;
   assetId: string | number | { [key: string]: string | number };
   symbol: string;
   decimals: number;
@@ -42,7 +44,7 @@ export type Chain = {
   isEvm: boolean;
   explorer: string;
   evmChainId?: number;
-  nativeToken: NativeToken;
+  nativeToken: Asset;
   xcAssetsData?: XcAssetsData;
   localAssets?: (Asset & { id: number })[];
   xcmPaymentAcceptTokens?: XcmV3MultiLocation[];

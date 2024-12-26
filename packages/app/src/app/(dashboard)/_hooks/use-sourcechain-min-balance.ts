@@ -5,6 +5,7 @@ import useApiConnectionsStore from '@/store/api-connections';
 import useChainsStore from '@/store/chains';
 import type { Asset } from '@/types/xcm-asset';
 import { isNil } from 'lodash-es';
+import { useDebounceEffect } from '@/hooks/use-debounce-effect';
 
 interface UseSourceChainMinBalanceProps {
   chainId?: number;
@@ -22,9 +23,7 @@ export const useSourceChainMinBalance = ({
 
   const sourceChainId = useChainsStore((state) => state.sourceChainId);
 
-  useEffect(() => {
-    let isCurrentEffect = true;
-
+  useDebounceEffect(() => {
     if (!asset || asset?.isNative) {
       setFormatted('0');
       setBalance(BN_ZERO);
@@ -42,23 +41,18 @@ export const useSourceChainMinBalance = ({
         decimals
       });
 
-      if (isCurrentEffect) {
-        setFormatted(formatted);
-        setBalance(balance);
-        setIsLoading(false);
-      }
+      setFormatted(formatted);
+      setBalance(balance);
+      setIsLoading(false);
     };
     fetchMinBalance();
 
     return () => {
-      isCurrentEffect = false;
       setFormatted('0');
       setBalance(BN_ZERO);
       setIsLoading(false);
     };
   }, [getValidApi, sourceChainId, asset, decimals]);
-
-  console.log('asset', asset, formatted);
 
   return {
     formatted,

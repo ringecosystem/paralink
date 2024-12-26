@@ -40,6 +40,8 @@ import { formatSubstrateAddress } from '@/utils/address';
 import type { WalletAccount } from '@talismn/connect-wallets';
 import type { Asset, ChainRegistry } from '@/types/xcm-asset';
 import { useSourceChainMinBalance } from '../_hooks/use-sourcechain-min-balance';
+import { usePriceStore } from '@/store/price';
+import { useFetchPrice } from '@/hooks/use-fetch-price';
 
 interface DashboardProps {
   registryAssets: ChainRegistry;
@@ -76,6 +78,10 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
       targetChain: state.getToChain()
     }))
   );
+
+  const setPriceIds = usePriceStore((state) => state.setPriceIds);
+
+  // const { data: prices } = useFetchPrice();
 
   const { sourceLoading, targetLoading } = useApiConnectionsStore(
     useShallow((state) => ({
@@ -123,11 +129,17 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
     });
     if (tokens.length) {
       setTokens(tokens);
+      setPriceIds(
+        tokens
+          .filter((token) => token.priceId)
+          .map((token) => token.priceId ?? '')
+      );
     }
     return () => {
       setTokens([]);
+      setPriceIds([]);
     };
-  }, [sourceChain, targetChain, setTokens]);
+  }, [sourceChain, targetChain, setTokens, setPriceIds]);
 
   const {
     extrinsic,
@@ -174,17 +186,6 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
 
   const maxBalanceBN = useMemo(() => {
     if (selectedToken?.isNative) {
-      console.log(
-        'fromDeposit',
-        fromDeposit?.toString(),
-        'networkFee',
-        networkFee?.toString(),
-        'sourceChainMinBalance',
-        sourceChainMinBalance?.toString(),
-        'selectedTokenBalance',
-        selectedTokenBalance?.toString()
-      );
-
       return bnMax(
         BN_ZERO,
         selectedTokenBalance
@@ -204,7 +205,6 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
     networkFee,
     sourceChainMinBalance
   ]);
-  console.log('maxBalanceBN', maxBalanceBN?.toString());
 
   const { isInsufficientBalance } = useMemo(() => {
     if (address && amount) {
@@ -394,6 +394,7 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
           />
           <div className="relative flex flex-col gap-[20px]">
             <AssetPicker
+              prices={{}}
               ref={pickerRef}
               tokens={tokens}
               crossFee={crossFee}
@@ -441,20 +442,13 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
                   decimals: selectedToken?.decimals ?? 3
                 })}
                 networkFee={networkFee}
+                prices={{}}
                 crossFee={crossFee}
                 nativeTokenInfo={sourceChain?.nativeToken}
                 loading={
                   isNetworkFeeLoading || isCrossFeeLoading || isExtrinsicLoading
                 }
-                xcmTokenInfo={
-                  selectedToken?.symbol && selectedToken?.decimals
-                    ? {
-                        symbol: selectedToken?.symbol,
-                        decimals: selectedToken?.decimals,
-                        icon: selectedToken?.icon
-                      }
-                    : undefined
-                }
+                xcmTokenInfo={selectedToken}
               />
             }
             <div className="h-[1px] w-full bg-[#F2F3F5]"></div>

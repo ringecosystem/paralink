@@ -4,6 +4,7 @@ import { BN, BN_ZERO, bnToBn } from '@polkadot/util';
 import useApiConnectionsStore from '@/store/api-connections';
 import type { Asset } from '@/types/xcm-asset';
 import { isNil } from 'lodash-es';
+import { useDebounceEffect } from '@/hooks/use-debounce-effect';
 
 interface UseNetworkFeeProps {
   sourceChainId?: number;
@@ -24,7 +25,7 @@ export function useNetworkFee({
   const [deliveryFee, setDeliveryFee] = useState<BN>(BN_ZERO);
   const getValidApi = useApiConnectionsStore((state) => state.getValidApi);
 
-  useEffect(() => {
+  useDebounceEffect(() => {
     const fetchDeliveryFee = async () => {
       try {
         if (

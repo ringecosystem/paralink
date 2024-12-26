@@ -1,6 +1,5 @@
 import fs from 'fs-extra';
 import path from 'path';
-import { isFunction } from '@polkadot/util';
 import {
   Asset,
   ChainInfo,
@@ -17,7 +16,10 @@ import {
   findIconBySymbol,
   filterXcmTokensByString,
   processAssetHubAssets,
-  processAssetHubAssetsWithRegisteredChains
+  processAssetHubAssetsWithRegisteredChains,
+  findNativeAssetBySymbol,
+  findLocalAssetBySymbol,
+  getChainByParaId
 } from './utils/xcm/assets';
 import { determineReserveType } from './utils/xcm/location';
 import { getSupportedParaChains } from './utils/chain/parachain';
@@ -65,6 +67,13 @@ async function buildChainRegistry({
       }
 
       const isPolkadot = chain?.specName === 'polkadot';
+
+      const nativeAsset = findNativeAssetBySymbol({
+        assets: assetsInfoArray,
+        symbol: ss58Format?.symbols?.[0],
+        chainSlug: chainAsset?.slug
+      });
+
       return {
         ...chainAsset,
         substrateInfo: isPolkadot
@@ -84,7 +93,10 @@ async function buildChainRegistry({
         nativeToken: {
           symbol: ss58Format?.symbols?.[0],
           decimals: ss58Format?.decimals?.[0],
-          icon: findIconBySymbol(ss58Format?.symbols?.[0], assetsInfoArray)
+          icon: nativeAsset?.icon || null,
+          priceId: nativeAsset?.priceId || null,
+          minAmount: nativeAsset?.minAmount || null,
+          xcmLocation: nativeAsset?.metadata?.multilocation || null
         },
         isEvm:
           ss58Format?.standardAccount === 'secp256k1' && !!chainAsset?.evmInfo
@@ -126,13 +138,17 @@ async function transformChainRegistry({
     const isAssetHub = chainId === '1000';
     registry[chainId] = {
       name: chain.name,
-      slug: chain.extraInfo?.subscanSlug,
+      slug: chain.slug,
       icon: chain.icon,
       addressPrefix: chain.substrateInfo.addressPrefix,
       providers: getValidWssEndpoints(chain.providers),
       alive: chain.chainStatus === 'ACTIVE',
       existentialDeposit: chain.substrateInfo.existentialDeposit,
-      assetsType: null
+      isEvm: chain.isEvm,
+      explorer: chain.isEvm
+        ? chain.evmInfo?.blockExplorer
+        : chain.substrateInfo.blockExplorer,
+      evmChainId: chain.isEvm ? Number(chain.evmInfo?.evmChainId) : undefined
     };
 
     let api: ApiPromise | null = null;
@@ -141,11 +157,6 @@ async function transformChainRegistry({
       const validProviders = getValidWssEndpoints(chain.providers);
       if (validProviders.length) {
         api = await connectToChain(validProviders);
-        if (isFunction(api.query.assets?.account)) {
-          registry[chainId].assetsType = 'assets';
-        } else if (isFunction(api.query.tokens?.accounts)) {
-          registry[chainId].assetsType = 'tokens';
-        }
 
         const tokenXcm: any =
           await api.call.xcmPaymentApi.queryAcceptablePaymentAssets(3);
@@ -169,21 +180,15 @@ async function transformChainRegistry({
       }
     }
 
-    registry[chainId].isEvm = chain.isEvm;
-    registry[chainId].explorer = chain.isEvm
-      ? chain.evmInfo?.blockExplorer
-      : chain.substrateInfo.blockExplorer;
-    registry[chainId].evmChainId = chain.isEvm
-      ? Number(chain.evmInfo?.evmChainId)
-      : undefined;
     registry[chainId].nativeToken = {
-      symbol: chain.nativeToken.symbol,
-      decimals: chain.nativeToken.decimals,
-      icon: chain.nativeToken.icon,
+      ...(chain.nativeToken || {}),
       isNative: true,
       reserveType: ReserveType.Local,
-      xcmLocation:
-        isPolkadot || isAssetHub
+      xcmLocation: chain?.nativeToken?.xcmLocation
+        ? {
+            v1: chain?.nativeToken?.xcmLocation
+          }
+        : isPolkadot || isAssetHub
           ? {
               v1: {
                 parents: 1,
@@ -213,8 +218,11 @@ async function transformChainRegistry({
       );
       const enhancedAssets = processAssetHubAssetsWithRegisteredChains(
         processedAssets,
-        peerChains
+        chain,
+        peerChains,
+        assetsInfoArray
       );
+
       if (registry[chainId]) {
         registry[chainId].localAssets = enhancedAssets;
       }
@@ -231,12 +239,16 @@ async function transformChainRegistry({
           symbol: asset.symbol,
           decimals: asset.decimals,
           assetId: asset.asset,
-          icon: findIconBySymbol(asset.symbol, assetsInfoArray),
           xcmLocation: JSON.parse(asset.xcmV1MultiLocation),
           reserveType: ReserveType.Local
         }));
 
         const enhancedLocalAssets = localAssets.map((asset) => {
+          const localAsset = findLocalAssetBySymbol({
+            assets: assetsInfoArray,
+            chainSlug: chain.slug,
+            symbol: asset.symbol
+          });
           const registeredChains = {};
           peerChains?.forEach((peerChain) => {
             if (
@@ -251,16 +263,26 @@ async function transformChainRegistry({
                 xcAsset.symbol.toLowerCase() === asset.symbol.toLowerCase()
             );
             if (matchedAsset) {
+              const targetAsset = findLocalAssetBySymbol({
+                assets: assetsInfoArray,
+                chainSlug: chain.slug,
+                symbol: matchedAsset.symbol
+              });
               registeredChains[peerChain.id] = {
                 assetId: matchedAsset.asset,
                 symbol: matchedAsset.symbol,
-                decimals: matchedAsset.decimals
+                decimals: matchedAsset.decimals,
+                minAmount: targetAsset?.minAmount,
+                priceId: targetAsset?.priceId || localAsset?.priceId
               };
             }
           });
 
           return {
             ...asset,
+            icon: localAsset?.icon,
+            minAmount: localAsset?.minAmount,
+            priceId: localAsset?.priceId,
             registeredChains
           };
         });
@@ -287,11 +309,19 @@ async function transformChainRegistry({
               ) {
                 registry[chainId].nativeToken.registeredChains = {};
               }
+
+              const targetAsset = findLocalAssetBySymbol({
+                assets: assetsInfoArray,
+                chainSlug: chain.slug,
+                symbol: asset.symbol
+              });
               if (registry?.[chainId]?.nativeToken?.registeredChains) {
                 registry[chainId].nativeToken.registeredChains[v.id] = {
                   assetId: asset.asset,
                   symbol: asset.symbol,
                   decimals: asset.decimals,
+                  minAmount: targetAsset?.minAmount,
+                  priceId: targetAsset?.priceId || chain?.nativeToken?.priceId,
                   isNative: true,
                   reserveType: ReserveType.Local,
                   icon: findIconBySymbol(asset.symbol, assetsInfoArray),
@@ -306,10 +336,17 @@ async function transformChainRegistry({
             ) {
               registry[chainId].nativeToken.registeredChains = {};
             }
+            const targetAsset = findLocalAssetBySymbol({
+              assets: assetsInfoArray,
+              chainSlug: chain.slug,
+              symbol: chain.nativeToken.symbol
+            });
             if (registry?.[chainId]?.nativeToken?.registeredChains) {
               registry[chainId].nativeToken.registeredChains[v.id] = {
                 symbol: chain.nativeToken.symbol,
                 decimals: chain.nativeToken.decimals,
+                minAmount: targetAsset?.minAmount,
+                priceId: targetAsset?.priceId || chain?.nativeToken?.priceId,
                 isNative: true,
                 reserveType: ReserveType.Local,
                 icon: chain.nativeToken.icon,
@@ -338,18 +375,50 @@ async function transformChainRegistry({
           }
 
           const xcmLocation = JSON.parse(asset.xcmV1MultiLocation);
+          const currentAsset =
+            chain?.nativeToken?.symbol === asset?.symbol
+              ? findNativeAssetBySymbol({
+                  assets: assetsInfoArray,
+                  symbol: asset.symbol,
+                  chainSlug: chain.slug
+                })
+              : findLocalAssetBySymbol({
+                  assets: assetsInfoArray,
+                  chainSlug: chain.slug,
+                  symbol: asset.symbol
+                });
+
+          const chainInArray = getChainByParaId({
+            paraId,
+            chainRegistry: peerChains
+          });
+
+          const sourceAsset =
+            chainInArray?.nativeToken?.symbol === asset?.symbol
+              ? findNativeAssetBySymbol({
+                  assets: assetsInfoArray,
+                  chainSlug: chainInArray?.slug,
+                  symbol: asset.symbol
+                })
+              : findLocalAssetBySymbol({
+                  assets: assetsInfoArray,
+                  chainSlug: chainInArray?.slug || '',
+                  symbol: asset.symbol
+                });
 
           groupedAssets[paraId].push({
             assetId: asset.asset,
             symbol: asset.symbol,
             decimals: asset.decimals,
             xcmLocation: xcmLocation,
+            minAmount: currentAsset?.minAmount,
+            priceId: currentAsset?.priceId || sourceAsset?.priceId,
             reserveType: determineReserveType({
               sourceParaId: chainId,
               targetParaId: paraId,
               originChainReserveLocation: asset.originChainReserveLocation
             }),
-            icon: findIconBySymbol(asset.symbol, assetsInfoArray)
+            icon: currentAsset?.icon || sourceAsset?.icon
           });
         });
 
@@ -368,7 +437,11 @@ async function init() {
     return;
   }
   const chainsInfoArray = Object.values(chainsInfo);
-  const assetsInfoArray = Object.values(assetsInfo);
+  const assetsInfoArray = Object.entries(assetsInfo)?.map(([key, asset]) => ({
+    ...asset,
+    id: key
+  }));
+
   if (!polkadotAssetRegistry || !chainsInfo || !assetsInfo) {
     console.error('polkadotAssetRegistry or chainsInfo is not found');
     return;

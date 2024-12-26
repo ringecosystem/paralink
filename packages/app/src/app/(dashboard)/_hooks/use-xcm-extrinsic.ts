@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { isNil } from 'lodash-es';
 import { createXcmTransferExtrinsic } from '@/services/xcm/polkadot-xcm';
 import { SubmittableExtrinsic } from '@polkadot/api/types';
 import { BN, BN_ZERO, bnToBn } from '@polkadot/util';
 import useApiConnectionsStore from '@/store/api-connections';
 import type { Asset, ChainConfig } from '@/types/xcm-asset';
+import { useDebounceEffect } from '@/hooks/use-debounce-effect';
 
 interface UseXcmExtrinsicParams {
   sourceChainId?: number;
@@ -31,67 +32,85 @@ export function useXcmExtrinsic({
 
   const getValidApi = useApiConnectionsStore((state) => state.getValidApi);
 
-  useEffect(() => {
-    const getExtrinsic = async () => {
-      if (
-        isNil(sourceChainId) ||
-        !selectedToken ||
-        !targetChain ||
-        !recipientAddress
-      )
-        return;
+  useDebounceEffect(
+    () => {
+      const controller = new AbortController();
+      let mounted = true;
 
-      setIsLoading(true);
-      try {
-        const api = await getValidApi(sourceChainId);
-
-        const result = await createXcmTransferExtrinsic({
-          sourceChainId: sourceChainId,
-          fromChainApi: api,
-          token: selectedToken,
-          amount,
-          targetChain,
-          recipientAddress
-        });
-        setExtrinsic(result);
-      } catch (error) {
-        console.error(error);
-      } finally {
+      const fetchData = async () => {
+        setPartialFee(BN_ZERO);
+        setExtrinsic(undefined);
         setIsLoading(false);
-      }
-    };
 
-    getExtrinsic();
-    return () => setExtrinsic(undefined);
-  }, [
-    sourceChainId,
-    selectedToken,
-    targetChain,
-    recipientAddress,
-    amount,
-    getValidApi
-  ]);
+        if (
+          isNil(sourceChainId) ||
+          !selectedToken ||
+          !targetChain ||
+          !recipientAddress
+        ) {
+          return;
+        }
 
-  useEffect(() => {
-    if (!extrinsic || !address) return;
+        setIsLoading(true);
+        try {
+          const api = await getValidApi(sourceChainId);
+          if (!mounted) return;
 
-    const getPaymentInfo = async () => {
-      setIsLoading(true);
-      try {
-        const paymentInfo = await extrinsic.paymentInfo(address);
+          const result = await createXcmTransferExtrinsic({
+            sourceChainId,
+            fromChainApi: api,
+            token: selectedToken,
+            amount,
+            targetChain,
+            recipientAddress
+          });
 
-        const fee = paymentInfo?.toJSON()?.partialFee as number;
-        if (fee) setPartialFee(bnToBn(fee));
-      } catch (error) {
-        console.error(error);
-      } finally {
+          if (!mounted) return;
+          setExtrinsic(result);
+
+          if (result && address) {
+            try {
+              const paymentInfo = await result.paymentInfo(address);
+              if (!mounted) return;
+
+              const fee = paymentInfo?.toJSON()?.partialFee as number;
+              if (fee) {
+                setPartialFee(bnToBn(fee));
+              }
+            } catch (error) {
+              console.error('Payment info error:', error);
+            }
+          }
+        } catch (error) {
+          console.error('Extrinsic creation error:', error);
+        } finally {
+          if (mounted) {
+            setIsLoading(false);
+          }
+        }
+      };
+
+      fetchData();
+
+      return () => {
+        mounted = false;
+        controller.abort();
+        setExtrinsic(undefined);
+        setPartialFee(BN_ZERO);
         setIsLoading(false);
-      }
-    };
-
-    getPaymentInfo();
-    return () => setPartialFee(BN_ZERO);
-  }, [extrinsic, address]);
+      };
+    },
+    [
+      sourceChainId,
+      selectedToken,
+      targetChain,
+      recipientAddress,
+      amount,
+      address,
+      getValidApi
+    ],
+    { delay: 300 }
+  );
 
   return {
     extrinsic,

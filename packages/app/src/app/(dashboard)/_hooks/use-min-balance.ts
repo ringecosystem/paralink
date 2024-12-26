@@ -7,6 +7,7 @@ import useApiConnectionsStore from '@/store/api-connections';
 import useChainsStore from '@/store/chains';
 import { parseUnits } from '@/utils/format';
 import type { Asset } from '@/types/xcm-asset';
+import { useDebounceEffect } from '@/hooks/use-debounce-effect';
 
 interface UseMinBalanceProps {
   chainId?: number;
@@ -53,7 +54,7 @@ export const useMinBalance = ({ asset, decimals }: UseMinBalanceProps) => {
     return result?.assetId ?? '-1';
   }, [sourceChain, targetChain, asset]);
 
-  useEffect(() => {
+  useDebounceEffect(() => {
     const fetchMinBalance = async () => {
       if (isNil(targetChainId) || !assetId || !decimals) return;
       if (assetId === '-2') {
