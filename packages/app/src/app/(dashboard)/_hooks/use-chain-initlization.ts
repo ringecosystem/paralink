@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useCrossChainSetup } from './use-cross-chain-setup';
 import useChainsStore from '@/store/chains';
 import type { ChainRegistry } from '@/types/xcm-asset';

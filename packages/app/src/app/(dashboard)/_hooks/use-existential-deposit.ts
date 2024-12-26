@@ -1,11 +1,11 @@
 import { useRef, useState } from 'react';
-import { useDebounce } from 'react-use';
 import { isNil } from 'lodash-es';
 import { BN, bnToBn } from '@polkadot/util';
 import { formatTokenBalance } from '@/utils/format';
 import useApiConnectionsStore from '@/store/api-connections';
 import type { AccountInfo } from '@polkadot/types/interfaces';
 import type { ChainConfig } from '@/types/xcm-asset';
+import { useDebounceEffect } from '@/hooks/use-debounce-effect';
 
 interface ExistentialDepositInfo {
   isLoading: boolean;
@@ -51,72 +51,68 @@ export function useExistentialDeposit({
   const [state, setState] = useState<TokenState>(DEFAULT_TOKEN_STATE);
   const getValidApi = useApiConnectionsStore((state) => state.getValidApi);
 
-  useDebounce(
-    () => {
+  useDebounceEffect(() => {
+    setIsLoading(false);
+    setState(DEFAULT_TOKEN_STATE);
+    setError(undefined);
+    if (!chain || !address) {
       setIsLoading(false);
       setState(DEFAULT_TOKEN_STATE);
-      setError(undefined);
-      if (!chain || !address) {
-        setIsLoading(false);
-        setState(DEFAULT_TOKEN_STATE);
-        return;
-      }
+      return;
+    }
 
-      const setupBalanceSubscription = async () => {
-        try {
-          setIsLoading(true);
-          if (isNil(chain?.id)) return;
-          const api = await getValidApi(chain?.id);
+    const setupBalanceSubscription = async () => {
+      try {
+        setIsLoading(true);
+        if (isNil(chain?.id)) return;
+        const api = await getValidApi(chain?.id);
 
-          const properties = await api.registry.getChainProperties();
-          if (!properties) {
-            console.error('Failed to fetch chain properties');
-            return;
+        const properties = await api.registry.getChainProperties();
+        if (!properties) {
+          console.error('Failed to fetch chain properties');
+          return;
+        }
+
+        const tokenInfo = {
+          deposit: bnToBn(chain?.existentialDeposit),
+          tokenInfo: {
+            symbol: properties.tokenSymbol.value[0]?.toString() || '',
+            decimals: properties.tokenDecimals.value[0]?.toNumber() || 0
           }
+        };
 
-          const tokenInfo = {
-            deposit: bnToBn(chain?.existentialDeposit),
-            tokenInfo: {
-              symbol: properties.tokenSymbol.value[0]?.toString() || '',
-              decimals: properties.tokenDecimals.value[0]?.toNumber() || 0
-            }
-          };
+        setState((prev) => ({
+          ...prev,
+          deposit: tokenInfo.deposit,
+          tokenInfo: tokenInfo.tokenInfo
+        }));
+        console.log('useExistentialDeposit', address, chain);
 
-          setState((prev) => ({
-            ...prev,
-            deposit: tokenInfo.deposit,
-            tokenInfo: tokenInfo.tokenInfo
-          }));
-          console.log('useExistentialDeposit', address, chain);
+        unsubscribeRef.current = (await api.query.system.account(
+          address,
+          (accountInfo: AccountInfo) => {
+            setState((prev) => ({
+              ...prev,
+              balance: accountInfo.data.free
+            }));
+          }
+        )) as unknown as Unsubscribe;
+      } catch (err) {
+        console.error('Balance subscription error:', err);
+        setError(err instanceof Error ? err : new Error('Unknown error'));
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-          unsubscribeRef.current = (await api.query.system.account(
-            address,
-            (accountInfo: AccountInfo) => {
-              setState((prev) => ({
-                ...prev,
-                balance: accountInfo.data.free
-              }));
-            }
-          )) as unknown as Unsubscribe;
-        } catch (err) {
-          console.error('Balance subscription error:', err);
-          setError(err instanceof Error ? err : new Error('Unknown error'));
-        } finally {
-          setIsLoading(false);
-        }
-      };
+    setupBalanceSubscription();
 
-      setupBalanceSubscription();
-
-      return () => {
-        if (unsubscribeRef.current) {
-          unsubscribeRef.current();
-        }
-      };
-    },
-    300,
-    [getValidApi, address, chain?.id]
-  );
+    return () => {
+      if (unsubscribeRef.current) {
+        unsubscribeRef.current();
+      }
+    };
+  }, [getValidApi, address, chain?.id]);
 
   return {
     isLoading,

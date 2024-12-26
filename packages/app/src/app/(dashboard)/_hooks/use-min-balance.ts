@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { BN, BN_ZERO } from '@polkadot/util';
 import { isNil } from 'lodash-es';
 import { useShallow } from 'zustand/react/shallow';
@@ -7,14 +7,20 @@ import useApiConnectionsStore from '@/store/api-connections';
 import useChainsStore from '@/store/chains';
 import { parseUnits } from '@/utils/format';
 import type { Asset } from '@/types/xcm-asset';
+import { useDebounceEffect } from '@/hooks/use-debounce-effect';
 
 interface UseMinBalanceProps {
   chainId?: number;
   asset?: Asset;
   decimals?: number | null;
 }
+
+interface AssetInfo {
+  assetId: string | number;
+  minAmount?: BN;
+}
+
 export const useMinBalance = ({ asset, decimals }: UseMinBalanceProps) => {
-  const [formatted, setFormatted] = useState<string>('0');
   const [balance, setBalance] = useState<BN>(BN_ZERO);
   const [isLoading, setIsLoading] = useState(false);
   const getValidApi = useApiConnectionsStore((state) => state.getValidApi);
@@ -27,72 +33,102 @@ export const useMinBalance = ({ asset, decimals }: UseMinBalanceProps) => {
     }))
   );
 
-  const assetId = useMemo(() => {
-    if (!sourceChain || !targetChain) return null;
+  const assetInfo = useMemo((): AssetInfo => {
+    if (!sourceChain || !targetChain) return { assetId: '-1' };
+
+    // Native token of target chain
     if (
       asset?.symbol?.toLowerCase() ===
       targetChain?.nativeToken?.symbol?.toLowerCase()
     ) {
-      return '-2';
+      return { assetId: '-2' };
     }
+
+    // Native asset in source chain
     if (asset?.isNative) {
-      return asset?.registeredChains?.[targetChain?.id]?.assetId ?? '-1';
+      const registeredAsset = asset?.registeredChains?.[targetChain?.id];
+      return {
+        assetId: (registeredAsset?.assetId as string | number) ?? '-1',
+        minAmount: registeredAsset?.minAmount
+          ? parseUnits({
+              value: registeredAsset.minAmount,
+              decimals: decimals ?? 0
+            })
+          : undefined
+      };
     }
-    if (targetChain?.localAssets && !!targetChain?.localAssets.length) {
-      const result = targetChain?.localAssets.find(
+
+    // Local assets in target chain
+    if (targetChain?.localAssets?.length) {
+      const localAsset = targetChain.localAssets.find(
         (value) => value?.symbol?.toLowerCase() === asset?.symbol?.toLowerCase()
       );
-      if (result) {
-        return result?.assetId;
+      if (localAsset) {
+        return {
+          assetId: localAsset.assetId as string | number,
+          minAmount: localAsset.minAmount
+            ? parseUnits({
+                value: localAsset.minAmount,
+                decimals: decimals ?? 0
+              })
+            : undefined
+        };
       }
     }
+
+    // Cross-chain assets
     const targetXcAssets = targetChain?.xcAssetsData?.[sourceChain?.id];
-    const result = targetXcAssets?.find(
+    const xcAsset = targetXcAssets?.find(
       (value) => value?.symbol?.toLowerCase() === asset?.symbol?.toLowerCase()
     );
-    return result?.assetId ?? '-1';
-  }, [sourceChain, targetChain, asset]);
 
-  useEffect(() => {
+    return {
+      assetId: (xcAsset?.assetId as string | number) ?? '-1',
+      minAmount: xcAsset?.minAmount
+        ? parseUnits({
+            value: xcAsset.minAmount,
+            decimals: decimals ?? 0
+          })
+        : undefined
+    };
+  }, [sourceChain, targetChain, asset, decimals]);
+
+  useDebounceEffect(() => {
     const fetchMinBalance = async () => {
-      if (isNil(targetChainId) || !assetId || !decimals) return;
-      if (assetId === '-2') {
-        setFormatted('0');
+      if (isNil(targetChainId) || !assetInfo.assetId || !decimals) return;
+
+      // Use predefined minAmount for special cases
+      if (assetInfo.assetId === '-2') {
         setBalance(BN_ZERO);
         return;
       }
-      if (assetId === '-1') {
-        setFormatted('1');
-        setBalance(
-          parseUnits({
-            value: '1',
-            decimals
-          })
-        );
+
+      // Use the minAmount from asset info
+      if (assetInfo.minAmount && assetInfo.minAmount.gt(BN_ZERO)) {
+        setBalance(assetInfo.minAmount);
         return;
       }
+
+      // if minAmount isZero or undefined, Fallback to API call for other cases
       setIsLoading(true);
-      console.log('fetching min balance');
       const api = await getValidApi(targetChainId);
-      const { balance, formatted } = await getMinBalance({
+      const { balance } = await getMinBalance({
         api,
-        assetId,
+        assetId: assetInfo.assetId,
         decimals
       });
 
-      setFormatted(formatted);
       setBalance(balance);
       setIsLoading(false);
     };
+
     fetchMinBalance();
     return () => {
-      setFormatted('0');
       setBalance(BN_ZERO);
       setIsLoading(false);
     };
-  }, [getValidApi, targetChainId, assetId, decimals]);
+  }, [getValidApi, targetChainId, assetInfo, decimals]);
   return {
-    formatted,
     balance,
     isLoading
   };

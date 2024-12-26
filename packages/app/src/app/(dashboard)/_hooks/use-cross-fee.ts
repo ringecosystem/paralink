@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { getXcmWeightFee } from '@/services/xcm/xcm-weight';
 import { BN, BN_ZERO } from '@polkadot/util';
 import useApiConnectionsStore from '@/store/api-connections';
 import type { Asset } from '@/types/xcm-asset';
 import { isNil } from 'lodash-es';
+import { useDebounceEffect } from '@/hooks/use-debounce-effect';
 
 interface UseCrossFeeProps {
   asset?: Asset;
@@ -22,7 +23,7 @@ export const useCrossFee = ({
 
   const getValidApi = useApiConnectionsStore((state) => state.getValidApi);
 
-  useEffect(() => {
+  useDebounceEffect(() => {
     const fetchFee = async () => {
       if (
         !getValidApi ||

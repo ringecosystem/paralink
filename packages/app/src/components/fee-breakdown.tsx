@@ -5,10 +5,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { FallbackImage } from './ui/fallback-image';
-import { formatTokenBalance } from '@/utils/format';
 import { BN, BN_ZERO, bnMax } from '@polkadot/util';
 import { Skeleton } from './ui/skeleton';
 import FormattedNumberTooltip from './formatted-number-tooltip';
+import { Asset } from '@/types/xcm-asset';
+import FormattedUsdTooltip from './formatted-usd-tooltip';
 
 const variants = {
   initial: { height: 0, opacity: 0 },
@@ -41,19 +42,15 @@ const variants = {
   }
 };
 
-type TokenInfo = {
-  icon: string;
-  symbol: string;
-  decimals: number;
-};
 interface FeeBreakdownProps {
   showValue: boolean;
   amount: BN;
   networkFee: BN;
   crossFee: BN;
-  nativeTokenInfo?: TokenInfo;
-  xcmTokenInfo?: TokenInfo;
+  nativeTokenInfo?: Asset;
+  xcmTokenInfo?: Asset;
   loading?: boolean;
+  prices?: Record<string, number>;
 }
 
 export function FeeBreakdown({
@@ -63,7 +60,8 @@ export function FeeBreakdown({
   crossFee,
   nativeTokenInfo,
   xcmTokenInfo,
-  loading
+  loading,
+  prices
 }: FeeBreakdownProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const finalAmount = bnMax(amount.sub(crossFee), BN_ZERO);
@@ -121,16 +119,24 @@ export function FeeBreakdown({
               <div className="flex items-center justify-between">
                 <span className="leading-[24px]">Network Fee</span>
                 {typeof networkFee !== 'boolean' && showValue ? (
-                  <div className="flex items-center gap-[10px]">
-                    <span className="hidden text-[#12161950] sm:block">
-                      ≈ $
-                      <span className="font-mono tabular-nums">
-                        {formatTokenBalance(networkFee, {
-                          decimals: nativeTokenInfo?.decimals ?? 3,
-                          displayDecimals: 3
-                        })}
+                  <div className="flex flex-shrink-0 items-center gap-[10px]">
+                    {nativeTokenInfo?.priceId &&
+                    prices?.[nativeTokenInfo?.priceId] ? (
+                      <span className="hidden text-[#12161950] sm:block">
+                        <FormattedUsdTooltip
+                          value={networkFee}
+                          decimals={nativeTokenInfo?.decimals ?? 3}
+                          displayDecimals={3}
+                          price={prices?.[nativeTokenInfo?.priceId] ?? 0}
+                        >
+                          {(formattedValue: string) => (
+                            <span className="font-mono tabular-nums">
+                              ≈ {formattedValue}
+                            </span>
+                          )}
+                        </FormattedUsdTooltip>
                       </span>
-                    </span>
+                    ) : null}
                     {loading ? (
                       <Skeleton className="h-4 w-10" />
                     ) : (
@@ -164,15 +170,23 @@ export function FeeBreakdown({
                 <span className="leading-[24px]">Cross-Chain Fee</span>
                 {showValue ? (
                   <div className="flex items-center gap-[10px]">
-                    <span className="hidden text-[#12161950] sm:block">
-                      ≈ $
-                      <span className="font-mono tabular-nums">
-                        {formatTokenBalance(crossFee, {
-                          decimals: xcmTokenInfo?.decimals ?? 3,
-                          displayDecimals: 3
-                        })}
+                    {xcmTokenInfo?.priceId &&
+                    prices?.[xcmTokenInfo?.priceId] ? (
+                      <span className="hidden items-center whitespace-nowrap text-[#12161950] sm:flex">
+                        <FormattedUsdTooltip
+                          value={crossFee}
+                          decimals={xcmTokenInfo?.decimals ?? 3}
+                          displayDecimals={3}
+                          price={prices?.[xcmTokenInfo?.priceId] ?? 0}
+                        >
+                          {(formattedValue: string) => (
+                            <span className="font-mono tabular-nums">
+                              ≈ {formattedValue}
+                            </span>
+                          )}
+                        </FormattedUsdTooltip>
                       </span>
-                    </span>
+                    ) : null}
                     {loading ? (
                       <Skeleton className="h-4 w-10" />
                     ) : (
@@ -207,15 +221,23 @@ export function FeeBreakdown({
                 </span>
                 {showValue ? (
                   <div className="flex items-center gap-[10px]">
-                    <span className="hidden text-[#12161950] sm:block">
-                      ≈ $
-                      <span className="font-mono tabular-nums">
-                        {formatTokenBalance(finalAmount, {
-                          decimals: xcmTokenInfo?.decimals ?? 3,
-                          displayDecimals: 3
-                        })}
+                    {xcmTokenInfo?.priceId &&
+                    prices?.[xcmTokenInfo?.priceId] ? (
+                      <span className="hidden text-[#12161950] sm:block">
+                        <FormattedUsdTooltip
+                          value={finalAmount}
+                          decimals={xcmTokenInfo?.decimals ?? 3}
+                          displayDecimals={3}
+                          price={prices?.[xcmTokenInfo?.priceId] ?? 0}
+                        >
+                          {(formattedValue: string) => (
+                            <span className="font-mono tabular-nums">
+                              ≈ {formattedValue}
+                            </span>
+                          )}
+                        </FormattedUsdTooltip>
                       </span>
-                    </span>
+                    ) : null}
                     {loading ? (
                       <Skeleton className="h-4 w-10" />
                     ) : (
