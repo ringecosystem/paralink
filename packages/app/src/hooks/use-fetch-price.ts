@@ -17,7 +17,6 @@ export function useFetchPrice() {
       setPrices: state.setPrices
     }))
   );
-  console.log('priceIds', priceIds);
   return useQuery({
     queryKey: ['prices', priceIds],
     queryFn: async () => {

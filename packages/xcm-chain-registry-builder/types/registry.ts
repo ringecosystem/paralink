@@ -203,6 +203,7 @@ export interface PoolPairInfo {
 export interface RegisteredAssetInfo {
   assetId?: AssetType;
   symbol?: string;
+  name?: string;
   decimals?: number;
   icon?: string;
   reserveType?: ReserveType;

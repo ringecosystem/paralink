@@ -430,12 +430,17 @@ export async function queryDeliveryFees({
       };
     };
 
-    if (!humanReadableFee?.ok?.v3 || humanReadableFee.ok.v3.length === 0)
-      return BN_ZERO;
+    if (!humanReadableFee?.ok) return BN_ZERO;
 
-    if (!humanReadableFee.ok.v3[0]?.fun?.fungible) return BN_ZERO;
+    const feeVersion = humanReadableFee.ok.v4 ? 'v4' : 'v3';
+    const versionData = humanReadableFee.ok[feeVersion];
 
-    return bnToBn(humanReadableFee.ok.v3[0].fun.fungible);
+    if (!versionData || versionData.length === 0) return BN_ZERO;
+
+    const fungible = versionData[0]?.fun?.fungible;
+    if (!fungible) return BN_ZERO;
+
+    return bnToBn(fungible);
   } catch (error) {
     console.error('Failed to query XCM delivery fees:', error);
     return BN_ZERO;

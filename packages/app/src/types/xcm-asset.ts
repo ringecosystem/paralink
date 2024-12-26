@@ -13,6 +13,7 @@ export type Asset = {
   minAmount?: string;
   assetId: string | number | { [key: string]: string | number };
   symbol: string;
+  name: string;
   decimals: number;
   xcmLocation: XcmV1Location;
   targetXcmLocation?: XcmV1Location;

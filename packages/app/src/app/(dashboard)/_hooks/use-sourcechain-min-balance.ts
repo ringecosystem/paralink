@@ -23,7 +23,7 @@ export const useSourceChainMinBalance = ({
   const sourceChainId = useChainsStore((state) => state.sourceChainId);
 
   useDebounceEffect(() => {
-    if (!asset) {
+    if (!asset || asset.isNative) {
       setBalance(BN_ZERO);
       setIsLoading(false);
       return;
@@ -40,13 +40,6 @@ export const useSourceChainMinBalance = ({
         console.error('Failed to parse minAmount:', error);
         // Continue with normal flow if parsing fails
       }
-    }
-
-    // Original logic for native assets
-    if (asset.isNative) {
-      setBalance(BN_ZERO);
-      setIsLoading(false);
-      return;
     }
 
     const assetId = asset?.assetId;

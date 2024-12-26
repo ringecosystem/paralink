@@ -42,7 +42,7 @@ export function AssetPickerItem({
             {token?.symbol}
           </span>
           <div className="item-start flex flex-col gap-[5px] md:flex-row md:items-center">
-            <span className="text-[12px] text-[#121619]">{token?.symbol}</span>
+            <span className="text-[12px] text-[#121619]">{token?.name}</span>
             {/* {token?.contractAddress && (
               <div className="flex items-center gap-[5px]">
                 <span className="font-mono text-[12px] tabular-nums text-[#878A92]">

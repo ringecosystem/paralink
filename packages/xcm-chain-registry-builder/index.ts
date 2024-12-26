@@ -93,6 +93,7 @@ async function buildChainRegistry({
         nativeToken: {
           symbol: ss58Format?.symbols?.[0],
           decimals: ss58Format?.decimals?.[0],
+          name: nativeAsset?.name || ss58Format?.symbols?.[0],
           icon: nativeAsset?.icon || null,
           priceId: nativeAsset?.priceId || null,
           minAmount: nativeAsset?.minAmount || null,
@@ -271,6 +272,7 @@ async function transformChainRegistry({
               registeredChains[peerChain.id] = {
                 assetId: matchedAsset.asset,
                 symbol: matchedAsset.symbol,
+                name: targetAsset?.name || localAsset?.name,
                 decimals: matchedAsset.decimals,
                 minAmount: targetAsset?.minAmount,
                 priceId: targetAsset?.priceId || localAsset?.priceId
@@ -319,6 +321,7 @@ async function transformChainRegistry({
                 registry[chainId].nativeToken.registeredChains[v.id] = {
                   assetId: asset.asset,
                   symbol: asset.symbol,
+                  name: targetAsset?.name || asset.symbol,
                   decimals: asset.decimals,
                   minAmount: targetAsset?.minAmount,
                   priceId: targetAsset?.priceId || chain?.nativeToken?.priceId,
@@ -344,6 +347,7 @@ async function transformChainRegistry({
             if (registry?.[chainId]?.nativeToken?.registeredChains) {
               registry[chainId].nativeToken.registeredChains[v.id] = {
                 symbol: chain.nativeToken.symbol,
+                name: targetAsset?.name || chain.nativeToken.symbol,
                 decimals: chain.nativeToken.decimals,
                 minAmount: targetAsset?.minAmount,
                 priceId: targetAsset?.priceId || chain?.nativeToken?.priceId,
@@ -409,6 +413,7 @@ async function transformChainRegistry({
           groupedAssets[paraId].push({
             assetId: asset.asset,
             symbol: asset.symbol,
+            name: currentAsset?.name || sourceAsset?.name || asset.symbol,
             decimals: asset.decimals,
             xcmLocation: xcmLocation,
             minAmount: currentAsset?.minAmount,

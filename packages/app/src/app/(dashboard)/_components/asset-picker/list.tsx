@@ -39,10 +39,14 @@ export function AssetPickerList({
   const filteredTokens = useMemo(() => {
     if (!searchQuery) return tokens;
 
-    const query = searchQuery.toLowerCase();
-    return tokens.filter((token) =>
-      token?.symbol?.toLowerCase().includes(query)
-    );
+    const query = searchQuery.toLowerCase().trim();
+    return tokens.filter((token) => {
+      const searchFields = [
+        token?.symbol?.toLowerCase(),
+        token?.name?.toLowerCase()
+      ];
+      return searchFields.some((field) => field?.includes(query));
+    });
   }, [tokens, searchQuery]);
 
   useEffect(() => {
@@ -65,7 +69,7 @@ export function AssetPickerList({
             <input
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Enter Token Symbol"
+              placeholder="Enter Token Symbol,Name"
               className="h-[24px] flex-1 bg-transparent text-[12px] font-normal leading-[24px] text-[#12161950] focus-visible:outline-none md:text-[14px]"
             />
             <Search
