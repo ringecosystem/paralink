@@ -74,6 +74,10 @@ export function Picker({
       setSelectedToken: state.setSelectedToken
     }))
   );
+  useEffect(() => {
+    console.log('selectedToken', selectedToken);
+  }, [selectedToken]);
+
   const {
     data: updatedBalances,
     isLoading: isBalancesLoading,

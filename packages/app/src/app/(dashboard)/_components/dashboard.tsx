@@ -130,7 +130,7 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
     if (tokens.length) {
       setTokens(tokens);
       setPriceIds(
-        tokens
+        [sourceChain?.nativeToken, ...tokens]
           .filter((token) => token.priceId)
           .map((token) => token.priceId ?? '')
       );
@@ -205,6 +205,8 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
     networkFee,
     sourceChainMinBalance
   ]);
+
+  console.log('maxBalanceBN', maxBalanceBN?.toString());
 
   const { isInsufficientBalance } = useMemo(() => {
     if (address && amount) {

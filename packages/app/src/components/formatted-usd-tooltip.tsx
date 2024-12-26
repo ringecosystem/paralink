@@ -35,8 +35,6 @@ const FormattedUsdTooltip = React.forwardRef<
         try {
           const result = formatUnits(BigInt(tokenAmount?.toString()), decimals);
 
-          console.log('calculateUsdValue', result);
-
           const resultBig = new BigNumber(result);
           return resultBig.times(price)?.toString();
         } catch (error) {

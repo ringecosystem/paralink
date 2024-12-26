@@ -1,13 +1,12 @@
 import { useMemo, useState } from 'react';
-import { BN, BN_ZERO } from '@polkadot/util';
+import { BN, BN_ZERO, bnToBn } from '@polkadot/util';
 import { isNil } from 'lodash-es';
 import { useShallow } from 'zustand/react/shallow';
+import { useDebounceEffect } from '@/hooks/use-debounce-effect';
 import { getMinBalance } from '@/services/xcm/get-min-balance';
 import useApiConnectionsStore from '@/store/api-connections';
 import useChainsStore from '@/store/chains';
-import { parseUnits } from '@/utils/format';
 import type { Asset } from '@/types/xcm-asset';
-import { useDebounceEffect } from '@/hooks/use-debounce-effect';
 
 interface UseMinBalanceProps {
   chainId?: number;
@@ -50,10 +49,7 @@ export const useMinBalance = ({ asset, decimals }: UseMinBalanceProps) => {
       return {
         assetId: (registeredAsset?.assetId as string | number) ?? '-1',
         minAmount: registeredAsset?.minAmount
-          ? parseUnits({
-              value: registeredAsset.minAmount,
-              decimals: decimals ?? 0
-            })
+          ? bnToBn(registeredAsset?.minAmount)
           : undefined
       };
     }
@@ -67,10 +63,7 @@ export const useMinBalance = ({ asset, decimals }: UseMinBalanceProps) => {
         return {
           assetId: localAsset.assetId as string | number,
           minAmount: localAsset.minAmount
-            ? parseUnits({
-                value: localAsset.minAmount,
-                decimals: decimals ?? 0
-              })
+            ? bnToBn(localAsset.minAmount)
             : undefined
         };
       }
@@ -84,12 +77,7 @@ export const useMinBalance = ({ asset, decimals }: UseMinBalanceProps) => {
 
     return {
       assetId: (xcAsset?.assetId as string | number) ?? '-1',
-      minAmount: xcAsset?.minAmount
-        ? parseUnits({
-            value: xcAsset.minAmount,
-            decimals: decimals ?? 0
-          })
-        : undefined
+      minAmount: xcAsset?.minAmount ? bnToBn(xcAsset?.minAmount) : undefined
     };
   }, [sourceChain, targetChain, asset, decimals]);
 

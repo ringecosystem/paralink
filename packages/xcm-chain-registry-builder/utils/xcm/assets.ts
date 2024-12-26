@@ -105,6 +105,7 @@ export function deduplicateAssets(
     return {
       assetId: localAsset?.metadata?.assetId || generalIndex,
       symbol: assetInfo || asset!.symbol,
+      name: localAsset?.name || assetInfo || asset!.symbol,
       decimals: asset!.decimals,
       icon: localAsset?.icon,
       priceId: localAsset?.priceId,
@@ -174,6 +175,7 @@ export function processAssetHubAssetsWithRegisteredChains(
         registeredChains[chain.id] = {
           assetId: matchedAsset.asset,
           symbol: matchedAsset.symbol,
+          name: targetAsset?.name || localAsset?.name || matchedAsset.symbol,
           decimals: matchedAsset.decimals,
           minAmount: targetAsset?.minAmount,
           priceId: targetAsset?.priceId || localAsset?.priceId

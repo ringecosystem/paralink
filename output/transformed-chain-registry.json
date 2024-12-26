@@ -33,6 +33,7 @@
     "nativeToken": {
       "symbol": "DOT",
       "decimals": 10,
+      "name": "Polkadot",
       "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/polkadot-native-dot.png",
       "priceId": "polkadot",
       "minAmount": "10000000000",
@@ -47,6 +48,7 @@
       "registeredChains": {
         "1000": {
           "symbol": "DOT",
+          "name": "DOT",
           "decimals": 10,
           "priceId": "polkadot",
           "isNative": true,
@@ -65,6 +67,7 @@
         "2004": {
           "assetId": "42259045809535163221576417993425387648",
           "symbol": "DOT",
+          "name": "DOT",
           "decimals": 10,
           "priceId": "polkadot",
           "isNative": true,
@@ -82,6 +85,7 @@
         "2006": {
           "assetId": "340282366920938463463374607431768211455",
           "symbol": "DOT",
+          "name": "DOT",
           "decimals": 10,
           "priceId": "polkadot",
           "isNative": true,
@@ -101,6 +105,7 @@
             "Token2": "0"
           },
           "symbol": "DOT",
+          "name": "DOT",
           "decimals": 10,
           "priceId": "polkadot",
           "isNative": true,
@@ -118,6 +123,7 @@
         "2034": {
           "assetId": "5",
           "symbol": "DOT",
+          "name": "DOT",
           "decimals": 10,
           "priceId": "polkadot",
           "isNative": true,
@@ -165,6 +171,7 @@
     "nativeToken": {
       "symbol": "DOT",
       "decimals": 10,
+      "name": "Polkadot",
       "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-native-dot.png",
       "priceId": "polkadot",
       "minAmount": "100000000",
@@ -182,6 +189,7 @@
       {
         "assetId": "17",
         "symbol": "WIFD",
+        "name": "Dog Wif Dots",
         "decimals": 10,
         "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-wifd.png",
         "priceId": null,
@@ -209,6 +217,7 @@
           "2004": {
             "assetId": "61295607754960722617854661686514597014",
             "symbol": "WIFD",
+            "name": "Dog Wif Dots",
             "decimals": 10,
             "priceId": null
           }
@@ -217,6 +226,7 @@
       {
         "assetId": "30",
         "symbol": "DED",
+        "name": "DED",
         "decimals": 10,
         "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-ded.png",
         "priceId": "dot-is-ded",
@@ -244,6 +254,7 @@
           "2004": {
             "assetId": "124463719055550872076363892993240202694",
             "symbol": "DED",
+            "name": "DED",
             "decimals": 10,
             "priceId": "dot-is-ded"
           },
@@ -252,6 +263,7 @@
               "Token2": "11"
             },
             "symbol": "DED",
+            "name": "DED",
             "decimals": 10,
             "priceId": "dot-is-ded"
           }
@@ -260,6 +272,7 @@
       {
         "assetId": "1337",
         "symbol": "USDC",
+        "name": "USD Coin",
         "decimals": 6,
         "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-usdc.png",
         "priceId": "usd-coin",
@@ -287,12 +300,14 @@
           "2004": {
             "assetId": "166377000701797186346254371275954761085",
             "symbol": "USDC",
+            "name": "USD Coin",
             "decimals": 6,
             "priceId": "usd-coin"
           },
           "2006": {
             "assetId": "4294969281",
             "symbol": "USDC",
+            "name": "USD Coin",
             "decimals": 6,
             "priceId": "usd-coin"
           },
@@ -301,12 +316,14 @@
               "Token2": "5"
             },
             "symbol": "USDC",
+            "name": "USD Coin",
             "decimals": 6,
             "priceId": "usd-coin"
           },
           "2034": {
             "assetId": "22",
             "symbol": "USDC",
+            "name": "USDC (Polkadot Asset Hub)",
             "decimals": 6,
             "minAmount": "10000",
             "priceId": "usd-coin"
@@ -316,6 +333,7 @@
       {
         "assetId": "1024",
         "symbol": "NCTR",
+        "name": "Apillon",
         "decimals": 18,
         "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-nctr.png",
         "priceId": null,
@@ -343,6 +361,7 @@
           "2004": {
             "assetId": "184218609779515850660274730699350567246",
             "symbol": "NCTR",
+            "name": "Apillon",
             "decimals": 18,
             "priceId": null
           }
@@ -351,6 +370,7 @@
       {
         "assetId": "1984",
         "symbol": "USDt",
+        "name": "Tether USD",
         "decimals": 6,
         "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-usdt.png",
         "priceId": "tether",
@@ -378,12 +398,14 @@
           "2004": {
             "assetId": "311091173110107856861649819128533077277",
             "symbol": "USDT",
+            "name": "Tether USD",
             "decimals": 6,
             "priceId": "tether"
           },
           "2006": {
             "assetId": "4294969280",
             "symbol": "USDT",
+            "name": "Tether USD",
             "decimals": 6,
             "minAmount": "1",
             "priceId": "tether"
@@ -393,6 +415,7 @@
               "Token2": "2"
             },
             "symbol": "USDT",
+            "name": "Tether USD",
             "decimals": 6,
             "minAmount": "1000",
             "priceId": "tether"
@@ -400,6 +423,7 @@
           "2034": {
             "assetId": "10",
             "symbol": "USDT",
+            "name": "Statemint USDT",
             "decimals": 6,
             "minAmount": "10000",
             "priceId": "tether"
@@ -409,6 +433,7 @@
       {
         "assetId": "23",
         "symbol": "PINK",
+        "name": "Statemint Pink",
         "decimals": 10,
         "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-pink.png",
         "priceId": null,
@@ -436,12 +461,14 @@
           "2004": {
             "assetId": "64174511183114006009298114091987195453",
             "symbol": "PINK",
+            "name": "Statemint Pink",
             "decimals": 10,
             "priceId": null
           },
           "2006": {
             "assetId": "18446744073709551633",
             "symbol": "PINK",
+            "name": "Pink",
             "decimals": 10,
             "minAmount": "1",
             "priceId": null
@@ -451,6 +478,7 @@
               "Token2": "10"
             },
             "symbol": "PINK",
+            "name": "Pink",
             "decimals": 10,
             "minAmount": "100000000",
             "priceId": null
@@ -460,6 +488,7 @@
       {
         "assetId": "42069",
         "symbol": "STINK",
+        "name": "STINK",
         "decimals": 10,
         "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-stink.png",
         "priceId": null,
@@ -487,6 +516,7 @@
           "2004": {
             "assetId": "112679793397406599376365943185137098326",
             "symbol": "STINK",
+            "name": "STINK",
             "decimals": 10,
             "priceId": null
           }
@@ -495,6 +525,7 @@
       {
         "assetId": "31337",
         "symbol": "WUD",
+        "name": "Gavun Wud",
         "decimals": 10,
         "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-wud.png",
         "priceId": null,
@@ -522,6 +553,7 @@
           "2034": {
             "assetId": "1000085",
             "symbol": "WUD",
+            "name": "Gavun Wud",
             "decimals": 10,
             "minAmount": "200000000000000",
             "priceId": null
@@ -700,6 +732,7 @@
     "nativeToken": {
       "symbol": "GLMR",
       "decimals": 18,
+      "name": "Moonbeam",
       "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/moonbeam-native-glmr.png",
       "priceId": "moonbeam",
       "minAmount": "0",
@@ -715,6 +748,7 @@
         "2006": {
           "assetId": "18446744073709551619",
           "symbol": "GLMR",
+          "name": "GLMR",
           "decimals": 18,
           "priceId": "moonbeam",
           "isNative": true,
@@ -741,6 +775,7 @@
             "Token2": "1"
           },
           "symbol": "GLMR",
+          "name": "GLMR",
           "decimals": 18,
           "priceId": "moonbeam",
           "isNative": true,
@@ -765,6 +800,7 @@
         "2034": {
           "assetId": "16",
           "symbol": "GLMR",
+          "name": "GLMR",
           "decimals": 18,
           "priceId": "moonbeam",
           "isNative": true,
@@ -793,6 +829,7 @@
         {
           "assetId": "42259045809535163221576417993425387648",
           "symbol": "DOT",
+          "name": "Polkadot",
           "decimals": 10,
           "xcmLocation": {
             "v1": {
@@ -811,6 +848,7 @@
         {
           "assetId": "61295607754960722617854661686514597014",
           "symbol": "WIFD",
+          "name": "Dog Wif Dots",
           "decimals": 10,
           "xcmLocation": {
             "v1": {
@@ -837,6 +875,7 @@
         {
           "assetId": "124463719055550872076363892993240202694",
           "symbol": "DED",
+          "name": "DED",
           "decimals": 10,
           "xcmLocation": {
             "v1": {
@@ -863,6 +902,7 @@
         {
           "assetId": "166377000701797186346254371275954761085",
           "symbol": "USDC",
+          "name": "USD Coin",
           "decimals": 6,
           "xcmLocation": {
             "v1": {
@@ -889,6 +929,7 @@
         {
           "assetId": "184218609779515850660274730699350567246",
           "symbol": "NCTR",
+          "name": "Apillon",
           "decimals": 18,
           "xcmLocation": {
             "v1": {
@@ -915,6 +956,7 @@
         {
           "assetId": "311091173110107856861649819128533077277",
           "symbol": "USDT",
+          "name": "Tether USD",
           "decimals": 6,
           "xcmLocation": {
             "v1": {
@@ -941,6 +983,7 @@
         {
           "assetId": "64174511183114006009298114091987195453",
           "symbol": "PINK",
+          "name": "Statemint Pink",
           "decimals": 10,
           "xcmLocation": {
             "v1": {
@@ -967,6 +1010,7 @@
         {
           "assetId": "112679793397406599376365943185137098326",
           "symbol": "STINK",
+          "name": "STINK",
           "decimals": 10,
           "xcmLocation": {
             "v1": {
@@ -995,6 +1039,7 @@
         {
           "assetId": "224077081838586484055667086558292981199",
           "symbol": "ASTR",
+          "name": "Astar",
           "decimals": 18,
           "xcmLocation": {
             "v1": {
@@ -1015,6 +1060,7 @@
         {
           "assetId": "144012926827374458669278577633504620722",
           "symbol": "FIL",
+          "name": "FIL",
           "decimals": 18,
           "xcmLocation": {
             "v1": {
@@ -1036,6 +1082,7 @@
         {
           "assetId": "29085784439601774464560083082574142143",
           "symbol": "vDOT",
+          "name": "Voucher DOT",
           "decimals": 10,
           "xcmLocation": {
             "v1": {
@@ -1059,6 +1106,7 @@
         {
           "assetId": "142155548796783636521833385094843759961",
           "symbol": "BNCS",
+          "name": "BNCS Inscription Token",
           "decimals": 12,
           "xcmLocation": {
             "v1": {
@@ -1082,6 +1130,7 @@
         {
           "assetId": "204507659831918931608354793288110796652",
           "symbol": "vGLMR",
+          "name": "Voucher GLMR",
           "decimals": 18,
           "xcmLocation": {
             "v1": {
@@ -1105,6 +1154,7 @@
         {
           "assetId": "289989900872525819559124583375550296953",
           "symbol": "vMANTA",
+          "name": "Voucher MANTA",
           "decimals": 18,
           "xcmLocation": {
             "v1": {
@@ -1128,6 +1178,7 @@
         {
           "assetId": "165823357460190568952172802245839421906",
           "symbol": "BNC",
+          "name": "Bifrost Polkadot",
           "decimals": 12,
           "xcmLocation": {
             "v1": {
@@ -1151,6 +1202,7 @@
         {
           "assetId": "272547899416482196831721420898811311297",
           "symbol": "vFIL",
+          "name": "Voucher FIL",
           "decimals": 18,
           "xcmLocation": {
             "v1": {
@@ -1174,6 +1226,7 @@
         {
           "assetId": "114018676402354620972806895487280206446",
           "symbol": "vASTR",
+          "name": "Bifrost Voucher ASTR",
           "decimals": 18,
           "xcmLocation": {
             "v1": {
@@ -1199,6 +1252,7 @@
         {
           "assetId": "69606720909260275826784788104880799692",
           "symbol": "HDX",
+          "name": "Hydration",
           "decimals": 12,
           "xcmLocation": {
             "v1": {
@@ -1535,6 +1589,7 @@
     "nativeToken": {
       "symbol": "ASTR",
       "decimals": 18,
+      "name": "Astar",
       "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/astar-native-astr.png",
       "priceId": "astar",
       "minAmount": "1000000",
@@ -1550,6 +1605,7 @@
         "2004": {
           "assetId": "224077081838586484055667086558292981199",
           "symbol": "ASTR",
+          "name": "ASTR",
           "decimals": 18,
           "priceId": "astar",
           "isNative": true,
@@ -1569,6 +1625,7 @@
         "2034": {
           "assetId": "9",
           "symbol": "ASTR",
+          "name": "ASTR",
           "decimals": 18,
           "priceId": "astar",
           "isNative": true,
@@ -1592,6 +1649,7 @@
         {
           "assetId": "340282366920938463463374607431768211455",
           "symbol": "DOT",
+          "name": "Polkadot",
           "decimals": 10,
           "xcmLocation": {
             "v1": {
@@ -1611,6 +1669,7 @@
         {
           "assetId": "4294969281",
           "symbol": "USDC",
+          "name": "USD Coin",
           "decimals": 6,
           "xcmLocation": {
             "v1": {
@@ -1637,6 +1696,7 @@
         {
           "assetId": "4294969280",
           "symbol": "USDT",
+          "name": "Tether USD",
           "decimals": 6,
           "xcmLocation": {
             "v1": {
@@ -1664,6 +1724,7 @@
         {
           "assetId": "18446744073709551633",
           "symbol": "PINK",
+          "name": "Pink",
           "decimals": 10,
           "xcmLocation": {
             "v1": {
@@ -1693,6 +1754,7 @@
         {
           "assetId": "18446744073709551619",
           "symbol": "GLMR",
+          "name": "Moonbeam",
           "decimals": 18,
           "xcmLocation": {
             "v1": {
@@ -1718,6 +1780,7 @@
         {
           "assetId": "18446744073709551639",
           "symbol": "FIL",
+          "name": "FIL",
           "decimals": 18,
           "xcmLocation": {
             "v1": {
@@ -1739,6 +1802,7 @@
         {
           "assetId": "18446744073709551626",
           "symbol": "vsDOT",
+          "name": "Voucher Slot DOT",
           "decimals": 10,
           "xcmLocation": {
             "v1": {
@@ -1762,6 +1826,7 @@
         {
           "assetId": "18446744073709551638",
           "symbol": "vMANTA",
+          "name": "Voucher MANTA",
           "decimals": 18,
           "xcmLocation": {
             "v1": {
@@ -1785,6 +1850,7 @@
         {
           "assetId": "18446744073709551624",
           "symbol": "vDOT",
+          "name": "Voucher DOT",
           "decimals": 10,
           "xcmLocation": {
             "v1": {
@@ -1808,6 +1874,7 @@
         {
           "assetId": "18446744073709551640",
           "symbol": "vFIL",
+          "name": "Voucher FIL",
           "decimals": 18,
           "xcmLocation": {
             "v1": {
@@ -1831,6 +1898,7 @@
         {
           "assetId": "18446744073709551632",
           "symbol": "vASTR",
+          "name": "Bifrost Voucher ASTR",
           "decimals": 18,
           "xcmLocation": {
             "v1": {
@@ -1854,6 +1922,7 @@
         {
           "assetId": "18446744073709551623",
           "symbol": "BNC",
+          "name": "Bifrost Polkadot",
           "decimals": 12,
           "xcmLocation": {
             "v1": {
@@ -1877,6 +1946,7 @@
         {
           "assetId": "18446744073709551637",
           "symbol": "vGLMR",
+          "name": "Voucher GLMR",
           "decimals": 18,
           "xcmLocation": {
             "v1": {
@@ -1902,6 +1972,7 @@
         {
           "assetId": "18446744073709551630",
           "symbol": "HDX",
+          "name": "Hydration",
           "decimals": 12,
           "xcmLocation": {
             "v1": {
@@ -2230,6 +2301,7 @@
     "nativeToken": {
       "symbol": "BNC",
       "decimals": 12,
+      "name": "Bifrost Polkadot",
       "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-native-bnc.png",
       "priceId": "bifrost-native-coin",
       "minAmount": "10000000000",
@@ -2247,6 +2319,7 @@
         "2004": {
           "assetId": "165823357460190568952172802245839421906",
           "symbol": "BNC",
+          "name": "BNC",
           "decimals": 12,
           "priceId": "bifrost-native-coin",
           "isNative": true,
@@ -2271,6 +2344,7 @@
         "2006": {
           "assetId": "18446744073709551623",
           "symbol": "BNC",
+          "name": "BNC",
           "decimals": 12,
           "priceId": "bifrost-native-coin",
           "isNative": true,
@@ -2295,6 +2369,7 @@
         "2034": {
           "assetId": "14",
           "symbol": "BNC",
+          "name": "BNC",
           "decimals": 12,
           "priceId": "bifrost-native-coin",
           "isNative": true,
@@ -2353,6 +2428,7 @@
           "2004": {
             "assetId": "204507659831918931608354793288110796652",
             "symbol": "vGLMR",
+            "name": "Voucher GLMR",
             "decimals": 18,
             "minAmount": "1000000000000",
             "priceId": "voucher-glmr"
@@ -2360,6 +2436,7 @@
           "2006": {
             "assetId": "18446744073709551637",
             "symbol": "vGLMR",
+            "name": "Voucher GLMR",
             "decimals": 18,
             "minAmount": "1000000000000",
             "priceId": "voucher-glmr"
@@ -2400,6 +2477,7 @@
           "2004": {
             "assetId": "272547899416482196831721420898811311297",
             "symbol": "vFIL",
+            "name": "Voucher FIL",
             "decimals": 18,
             "minAmount": "1000000000000",
             "priceId": null
@@ -2407,6 +2485,7 @@
           "2006": {
             "assetId": "18446744073709551640",
             "symbol": "vFIL",
+            "name": "Voucher FIL",
             "decimals": 18,
             "minAmount": "1000000000000",
             "priceId": null
@@ -2447,6 +2526,7 @@
           "2004": {
             "assetId": "142155548796783636521833385094843759961",
             "symbol": "BNCS",
+            "name": "BNCS Inscription Token",
             "decimals": 12,
             "minAmount": "10000000000",
             "priceId": null
@@ -2527,6 +2607,7 @@
           "2004": {
             "assetId": "289989900872525819559124583375550296953",
             "symbol": "vMANTA",
+            "name": "Voucher MANTA",
             "decimals": 18,
             "minAmount": "10000000000000",
             "priceId": "bifrost-voucher-manta"
@@ -2534,6 +2615,7 @@
           "2006": {
             "assetId": "18446744073709551638",
             "symbol": "vMANTA",
+            "name": "Voucher MANTA",
             "decimals": 18,
             "minAmount": "10000000000000",
             "priceId": "bifrost-voucher-manta"
@@ -2600,6 +2682,7 @@
           "2004": {
             "assetId": "114018676402354620972806895487280206446",
             "symbol": "vASTR",
+            "name": "Bifrost Voucher ASTR",
             "decimals": 18,
             "minAmount": "10000000000000000",
             "priceId": "bifrost-voucher-astr"
@@ -2607,6 +2690,7 @@
           "2006": {
             "assetId": "18446744073709551632",
             "symbol": "vASTR",
+            "name": "Bifrost Voucher ASTR",
             "decimals": 18,
             "minAmount": "10000000000000000",
             "priceId": "bifrost-voucher-astr"
@@ -2614,6 +2698,7 @@
           "2034": {
             "assetId": "33",
             "symbol": "vASTR",
+            "name": "Bifrost Voucher ASTR",
             "decimals": 18,
             "minAmount": "10000000000000000",
             "priceId": "bifrost-voucher-astr"
@@ -2654,6 +2739,7 @@
           "2004": {
             "assetId": "29085784439601774464560083082574142143",
             "symbol": "vDOT",
+            "name": "Voucher DOT",
             "decimals": 10,
             "minAmount": "1000000",
             "priceId": "voucher-dot"
@@ -2661,6 +2747,7 @@
           "2006": {
             "assetId": "18446744073709551624",
             "symbol": "vDOT",
+            "name": "Voucher DOT",
             "decimals": 10,
             "minAmount": "1000000",
             "priceId": "voucher-dot"
@@ -2668,6 +2755,7 @@
           "2034": {
             "assetId": "15",
             "symbol": "vDOT",
+            "name": "Voucher DOT",
             "decimals": 10,
             "minAmount": "1000000",
             "priceId": "voucher-dot"
@@ -2703,6 +2791,7 @@
           "2006": {
             "assetId": "18446744073709551626",
             "symbol": "vsDOT",
+            "name": "Voucher Slot DOT",
             "decimals": 10,
             "minAmount": "1000000",
             "priceId": null
@@ -2717,6 +2806,7 @@
             "Token2": "0"
           },
           "symbol": "DOT",
+          "name": "Polkadot DOT",
           "decimals": 10,
           "xcmLocation": {
             "v1": {
@@ -2738,6 +2828,7 @@
             "Token2": "2"
           },
           "symbol": "USDT",
+          "name": "Tether USD",
           "decimals": 6,
           "xcmLocation": {
             "v1": {
@@ -2767,6 +2858,7 @@
             "Token2": "5"
           },
           "symbol": "USDC",
+          "name": "USD Coin",
           "decimals": 6,
           "xcmLocation": {
             "v1": {
@@ -2795,6 +2887,7 @@
             "Token2": "11"
           },
           "symbol": "DED",
+          "name": "DED",
           "decimals": 10,
           "xcmLocation": {
             "v1": {
@@ -2823,6 +2916,7 @@
             "Token2": "10"
           },
           "symbol": "PINK",
+          "name": "Pink",
           "decimals": 10,
           "xcmLocation": {
             "v1": {
@@ -2854,6 +2948,7 @@
             "Token2": "1"
           },
           "symbol": "GLMR",
+          "name": "Moonbeam",
           "decimals": 18,
           "xcmLocation": {
             "v1": {
@@ -2881,6 +2976,7 @@
             "VToken2": "1"
           },
           "symbol": "vGLMR",
+          "name": "Voucher GLMR",
           "decimals": 18,
           "xcmLocation": {
             "v1": {
@@ -2912,6 +3008,7 @@
             "VToken2": "4"
           },
           "symbol": "vFIL",
+          "name": "Voucher FIL",
           "decimals": 18,
           "xcmLocation": {
             "v1": {
@@ -2942,6 +3039,7 @@
             "Token2": "9"
           },
           "symbol": "BNCS",
+          "name": "BNCS Inscription Token",
           "decimals": 12,
           "xcmLocation": {
             "v1": {
@@ -2972,6 +3070,7 @@
             "Token2": "4"
           },
           "symbol": "FIL",
+          "name": "FIL",
           "decimals": 18,
           "xcmLocation": {
             "v1": {
@@ -3000,6 +3099,7 @@
             "VToken2": "8"
           },
           "symbol": "vMANTA",
+          "name": "Voucher MANTA",
           "decimals": 18,
           "xcmLocation": {
             "v1": {
@@ -3031,6 +3131,7 @@
             "Token2": "12"
           },
           "symbol": "PEN",
+          "name": "PEN",
           "decimals": 12,
           "xcmLocation": {
             "v1": {
@@ -3056,6 +3157,7 @@
             "VToken2": "3"
           },
           "symbol": "vASTR",
+          "name": "Bifrost Voucher ASTR",
           "decimals": 18,
           "xcmLocation": {
             "v1": {
@@ -3087,6 +3189,7 @@
             "Native": "BNC"
           },
           "symbol": "BNC",
+          "name": "Bifrost Polkadot",
           "decimals": 12,
           "xcmLocation": {
             "v1": {
@@ -3118,6 +3221,7 @@
             "VToken2": "0"
           },
           "symbol": "vDOT",
+          "name": "Voucher DOT",
           "decimals": 10,
           "xcmLocation": {
             "v1": {
@@ -3149,6 +3253,7 @@
             "VSToken2": "0"
           },
           "symbol": "vsDOT",
+          "name": "Voucher Slot DOT",
           "decimals": 10,
           "xcmLocation": {
             "v1": {
@@ -9624,6 +9729,7 @@
     "nativeToken": {
       "symbol": "HDX",
       "decimals": 12,
+      "name": "Hydration",
       "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/hydradx_main-native-hdx.png",
       "priceId": "hydradx",
       "minAmount": "1000000000000",
@@ -9641,6 +9747,7 @@
         "2004": {
           "assetId": "69606720909260275826784788104880799692",
           "symbol": "HDX",
+          "name": "HDX",
           "decimals": 12,
           "priceId": "hydradx",
           "isNative": true,
@@ -9665,6 +9772,7 @@
         "2006": {
           "assetId": "18446744073709551630",
           "symbol": "HDX",
+          "name": "HDX",
           "decimals": 12,
           "priceId": "hydradx",
           "isNative": true,
@@ -9693,6 +9801,7 @@
         {
           "assetId": "5",
           "symbol": "DOT",
+          "name": "DOT",
           "decimals": 10,
           "xcmLocation": {
             "v1": {
@@ -9712,6 +9821,7 @@
         {
           "assetId": "10",
           "symbol": "USDT",
+          "name": "Statemint USDT",
           "decimals": 6,
           "xcmLocation": {
             "v1": {
@@ -9739,6 +9849,7 @@
         {
           "assetId": "1000085",
           "symbol": "WUD",
+          "name": "Gavun Wud",
           "decimals": 10,
           "xcmLocation": {
             "v1": {
@@ -9766,6 +9877,7 @@
         {
           "assetId": "22",
           "symbol": "USDC",
+          "name": "USDC (Polkadot Asset Hub)",
           "decimals": 6,
           "xcmLocation": {
             "v1": {
@@ -9795,6 +9907,7 @@
         {
           "assetId": "21",
           "symbol": "USDC",
+          "name": "USDC (Polkadot Asset Hub)",
           "decimals": 6,
           "xcmLocation": {
             "v1": {
@@ -9825,6 +9938,7 @@
         {
           "assetId": "20",
           "symbol": "WETH",
+          "name": "Ethereum (via Moonbeam)",
           "decimals": 18,
           "xcmLocation": {
             "v1": {
@@ -9855,6 +9969,7 @@
         {
           "assetId": "16",
           "symbol": "GLMR",
+          "name": "Moonbeam",
           "decimals": 18,
           "xcmLocation": {
             "v1": {
@@ -9879,6 +9994,7 @@
         {
           "assetId": "19",
           "symbol": "WBTC",
+          "name": "Wrapped Bitcoin (via Wormhole)",
           "decimals": 8,
           "xcmLocation": {
             "v1": {
@@ -9909,6 +10025,7 @@
         {
           "assetId": "18",
           "symbol": "DAI",
+          "name": "DAI Stablecoin (via Wormhole)",
           "decimals": 18,
           "xcmLocation": {
             "v1": {
@@ -9939,6 +10056,7 @@
         {
           "assetId": "23",
           "symbol": "USDT",
+          "name": "Statemint USDT",
           "decimals": 6,
           "xcmLocation": {
             "v1": {
@@ -9971,6 +10089,7 @@
         {
           "assetId": "9",
           "symbol": "ASTR",
+          "name": "Astar",
           "decimals": 18,
           "xcmLocation": {
             "v1": {
@@ -9992,6 +10111,7 @@
         {
           "assetId": "14",
           "symbol": "BNC",
+          "name": "Bifrost Native Coin",
           "decimals": 12,
           "xcmLocation": {
             "v1": {
@@ -10016,6 +10136,7 @@
         {
           "assetId": "33",
           "symbol": "vASTR",
+          "name": "Bifrost Voucher ASTR",
           "decimals": 18,
           "xcmLocation": {
             "v1": {
@@ -10040,6 +10161,7 @@
         {
           "assetId": "15",
           "symbol": "vDOT",
+          "name": "Bifrost Voucher DOT",
           "decimals": 10,
           "xcmLocation": {
             "v1": {
