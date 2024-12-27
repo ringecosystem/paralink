@@ -14,7 +14,6 @@ async function fetchLatestTag(owner: string, repo: string): Promise<string> {
     throw new Error('No tags found');
   }
 
-  // 返回第一个 tag（最新的）
   return tags[0].name;
 }
 
