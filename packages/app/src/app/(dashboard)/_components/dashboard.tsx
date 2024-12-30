@@ -169,11 +169,14 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
     sourceChainId: sourceChainId
   });
 
-  const { isLoading: isFromExistentialDepositLoading, deposit: fromDeposit } =
-    useExistentialDeposit({
-      chain: sourceChain,
-      address: address
-    });
+  const {
+    isLoading: isFromExistentialDepositLoading,
+    deposit: fromDeposit,
+    balance: fromBalance
+  } = useExistentialDeposit({
+    chain: sourceChain,
+    address: address
+  });
 
   const {
     isLoading: isToExistentialDepositLoading,
@@ -222,6 +225,13 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
       isInsufficientBalance: false
     };
   }, [amount, selectedTokenBalance, address]);
+
+  const isFromBalanceEnough = useMemo(() => {
+    if (fromBalance && networkFee) {
+      return fromBalance.gt(networkFee);
+    }
+    return false;
+  }, [fromBalance, networkFee]);
 
   const handleChangeFromChainId = useCallback(
     async (id: number) => {
@@ -310,6 +320,7 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
   const buttonLoadingText = useMemo(() => {
     if (isApiLoading || isLoadingCrossChain || isToExistentialDepositLoading)
       return 'Connecting...';
+
     return undefined;
   }, [isApiLoading, isLoadingCrossChain, isToExistentialDepositLoading]);
 
@@ -474,10 +485,13 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
                 amount === '0' ||
                 recipientAddress === '' ||
                 isInsufficientBalance ||
-                isInvalid
+                isInvalid ||
+                !isFromBalanceEnough
               }
             >
-              Confirm Transaction
+              {isFromBalanceEnough
+                ? 'Confirm Transaction'
+                : 'Insufficient Network Fee'}
             </ConnectOrActionButton>
           </div>
         </div>
