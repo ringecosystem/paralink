@@ -1208,7 +1208,7 @@
       "relaySlug": "polkadot",
       "paraId": 2030,
       "genesisHash": "0x262e1b2ad728475fd6fe88e62d34c200abe6fd693931ddad144059b1eb884e5b",
-      "addressPrefix": 6,
+      "addressPrefix": 0,
       "chainType": "PARACHAIN",
       "crowdloanUrl": "https://bifrost.app/vcrowdloan",
       "blockExplorer": "https://bifrost.subscan.io",
@@ -1478,12 +1478,12 @@
       }
     ],
     "nativeToken": {
-      "symbol": "BNC",
-      "decimals": 12,
-      "name": "Bifrost Polkadot",
-      "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-native-bnc.png",
-      "priceId": "bifrost-native-coin",
-      "minAmount": "10000000000",
+      "symbol": "DOT",
+      "decimals": 10,
+      "name": "DOT",
+      "icon": null,
+      "priceId": null,
+      "minAmount": null,
       "xcmLocation": null
     },
     "isEvm": false
