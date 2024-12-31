@@ -1478,12 +1478,12 @@
       }
     ],
     "nativeToken": {
-      "symbol": "DOT",
-      "decimals": 10,
-      "name": "DOT",
-      "icon": null,
-      "priceId": null,
-      "minAmount": null,
+      "symbol": "BNC",
+      "decimals": 12,
+      "name": "Bifrost Polkadot",
+      "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-native-bnc.png",
+      "priceId": "bifrost-native-coin",
+      "minAmount": "10000000000",
       "xcmLocation": null
     },
     "isEvm": false
