@@ -61,16 +61,11 @@ async function buildChainRegistry({
         return null;
       }
 
-      if (!ss58Format?.symbols?.[0] || !ss58Format?.decimals?.[0]) {
-        console.warn(`Invalid ss58 format for chain ID: ${chain.id}`);
-        return null;
-      }
-
       const isPolkadot = chain?.specName === 'polkadot';
 
       const nativeAsset = findNativeAssetBySymbol({
         assets: assetsInfoArray,
-        symbol: ss58Format?.symbols?.[0],
+        symbol: chainAsset?.substrateInfo?.symbol,
         chainSlug: chainAsset?.slug
       });
 
@@ -91,9 +86,9 @@ async function buildChainRegistry({
               ?.includes('globalconsensus')
         ),
         nativeToken: {
-          symbol: ss58Format?.symbols?.[0],
-          decimals: ss58Format?.decimals?.[0],
-          name: nativeAsset?.name || ss58Format?.symbols?.[0],
+          symbol: chainAsset?.substrateInfo?.symbol,
+          decimals: chainAsset?.substrateInfo?.decimals,
+          name: nativeAsset?.name || chainAsset?.substrateInfo?.symbol,
           icon: nativeAsset?.icon || null,
           priceId: nativeAsset?.priceId || null,
           minAmount: nativeAsset?.minAmount || null,

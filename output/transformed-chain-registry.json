@@ -1178,7 +1178,7 @@
         {
           "assetId": "165823357460190568952172802245839421906",
           "symbol": "BNC",
-          "name": "BNC",
+          "name": "Bifrost Polkadot",
           "decimals": 12,
           "xcmLocation": {
             "v1": {
@@ -1195,7 +1195,9 @@
               }
             }
           },
-          "reserveType": "foreign"
+          "priceId": "bifrost-native-coin",
+          "reserveType": "foreign",
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-native-bnc.png"
         },
         {
           "assetId": "272547899416482196831721420898811311297",
@@ -1920,7 +1922,7 @@
         {
           "assetId": "18446744073709551623",
           "symbol": "BNC",
-          "name": "BNC",
+          "name": "Bifrost Polkadot",
           "decimals": 12,
           "xcmLocation": {
             "v1": {
@@ -1937,7 +1939,9 @@
               }
             }
           },
-          "reserveType": "foreign"
+          "priceId": "bifrost-native-coin",
+          "reserveType": "foreign",
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-native-bnc.png"
         },
         {
           "assetId": "18446744073709551637",
@@ -2295,12 +2299,12 @@
       }
     ],
     "nativeToken": {
-      "symbol": "DOT",
-      "decimals": 10,
-      "name": "DOT",
-      "icon": null,
-      "priceId": null,
-      "minAmount": null,
+      "symbol": "BNC",
+      "decimals": 12,
+      "name": "Bifrost Polkadot",
+      "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-native-bnc.png",
+      "priceId": "bifrost-native-coin",
+      "minAmount": "10000000000",
       "xcmLocation": {
         "v1": {
           "parents": 0,
@@ -2311,7 +2315,83 @@
       },
       "isNative": true,
       "reserveType": "local",
-      "registeredChains": null
+      "registeredChains": {
+        "2004": {
+          "assetId": "165823357460190568952172802245839421906",
+          "symbol": "BNC",
+          "name": "BNC",
+          "decimals": 12,
+          "priceId": "bifrost-native-coin",
+          "isNative": true,
+          "reserveType": "local",
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost-native-bnc.png",
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "x2": [
+                  {
+                    "parachain": 2030
+                  },
+                  {
+                    "generalKey": "0x0001"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "2006": {
+          "assetId": "18446744073709551623",
+          "symbol": "BNC",
+          "name": "BNC",
+          "decimals": 12,
+          "priceId": "bifrost-native-coin",
+          "isNative": true,
+          "reserveType": "local",
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost-native-bnc.png",
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "x2": [
+                  {
+                    "parachain": 2030
+                  },
+                  {
+                    "generalKey": "0x0001"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "2034": {
+          "assetId": "14",
+          "symbol": "BNC",
+          "name": "BNC",
+          "decimals": 12,
+          "priceId": "bifrost-native-coin",
+          "isNative": true,
+          "reserveType": "local",
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost-native-bnc.png",
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "x2": [
+                  {
+                    "parachain": 2030
+                  },
+                  {
+                    "generalKey": "0x0001"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
     },
     "localAssets": [
       {
@@ -2626,51 +2706,6 @@
         }
       },
       {
-        "symbol": "BNC",
-        "decimals": 12,
-        "assetId": {
-          "Native": "BNC"
-        },
-        "xcmLocation": {
-          "v1": {
-            "parents": 1,
-            "interior": {
-              "x2": [
-                {
-                  "parachain": 2030
-                },
-                [
-                  {
-                    "generalKey": {
-                      "length": 2,
-                      "data": "0x0001000000000000000000000000000000000000000000000000000000000000"
-                    }
-                  }
-                ]
-              ]
-            }
-          }
-        },
-        "reserveType": "local",
-        "registeredChains": {
-          "2004": {
-            "assetId": "165823357460190568952172802245839421906",
-            "symbol": "BNC",
-            "decimals": 12
-          },
-          "2006": {
-            "assetId": "18446744073709551623",
-            "symbol": "BNC",
-            "decimals": 12
-          },
-          "2034": {
-            "assetId": "14",
-            "symbol": "BNC",
-            "decimals": 12
-          }
-        }
-      },
-      {
         "symbol": "vDOT",
         "decimals": 10,
         "assetId": {
@@ -2771,7 +2806,7 @@
             "Token2": "0"
           },
           "symbol": "DOT",
-          "name": "Polkadot",
+          "name": "Polkadot DOT",
           "decimals": 10,
           "xcmLocation": {
             "v1": {
@@ -2781,9 +2816,10 @@
               }
             }
           },
+          "minAmount": "1000000",
           "priceId": "polkadot",
           "reserveType": "foreign",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/polkadot-native-dot.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-dot.png"
         }
       ],
       "1000": [
@@ -3153,7 +3189,7 @@
             "Native": "BNC"
           },
           "symbol": "BNC",
-          "name": "BNC",
+          "name": "Bifrost Polkadot",
           "decimals": 12,
           "xcmLocation": {
             "v1": {
@@ -3175,7 +3211,10 @@
               }
             }
           },
-          "reserveType": "local"
+          "minAmount": "10000000000",
+          "priceId": "bifrost-native-coin",
+          "reserveType": "local",
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-native-bnc.png"
         },
         {
           "assetId": {
