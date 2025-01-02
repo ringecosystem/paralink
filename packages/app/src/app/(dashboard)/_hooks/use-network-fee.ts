@@ -1,11 +1,11 @@
 import { useMemo, useState } from 'react';
-import { queryDeliveryFees } from '@/services/xcm/deliver-fee';
-import { BN, BN_ZERO, bnToBn } from '@polkadot/util';
-import useApiConnectionsStore from '@/store/api-connections';
-import type { Asset } from '@/types/xcm-asset';
 import { isNil } from 'lodash-es';
+import { BN, BN_ZERO, bnToBn } from '@polkadot/util';
+import { queryDeliveryFees } from '@/services/xcm/deliver-fee';
+import useApiConnectionsStore from '@/store/api-connections';
 import { useDebounceEffect } from '@/hooks/use-debounce-effect';
-
+import { adjustFee } from '@/config/feeAdjustments';
+import type { Asset } from '@/types/xcm-asset';
 interface UseNetworkFeeProps {
   sourceChainId?: number;
   asset?: Asset;
@@ -66,6 +66,6 @@ export function useNetworkFee({
 
   return {
     isLoading,
-    networkFee
+    networkFee: adjustFee(networkFee, 'networkFee')
   };
 }

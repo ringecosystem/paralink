@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { isNil } from 'lodash-es';
-import { createXcmTransferExtrinsic } from '@/services/xcm/polkadot-xcm';
 import { SubmittableExtrinsic } from '@polkadot/api/types';
 import { BN, BN_ZERO, bnToBn } from '@polkadot/util';
+import { createXcmTransferExtrinsic } from '@/services/xcm/polkadot-xcm';
 import useApiConnectionsStore from '@/store/api-connections';
-import type { Asset, ChainConfig } from '@/types/xcm-asset';
 import { useDebounceEffect } from '@/hooks/use-debounce-effect';
-
+import { adjustFee } from '@/config/feeAdjustments';
+import type { Asset, ChainConfig } from '@/types/xcm-asset';
 interface UseXcmExtrinsicParams {
   sourceChainId?: number;
   selectedToken?: Asset;
@@ -114,7 +114,7 @@ export function useXcmExtrinsic({
 
   return {
     extrinsic,
-    partialFee,
+    partialFee: adjustFee(partialFee, 'paymentInfo'),
     isLoading
   };
 }

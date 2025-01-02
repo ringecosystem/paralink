@@ -3,6 +3,7 @@ import { BN, BN_ZERO, bnToBn } from '@polkadot/util';
 import { isNil } from 'lodash-es';
 import { useShallow } from 'zustand/react/shallow';
 import { useDebounceEffect } from '@/hooks/use-debounce-effect';
+import { adjustFee } from '@/config/feeAdjustments';
 import { getMinBalance } from '@/services/xcm/get-min-balance';
 import useApiConnectionsStore from '@/store/api-connections';
 import useChainsStore from '@/store/chains';
@@ -117,7 +118,7 @@ export const useMinBalance = ({ asset, decimals }: UseMinBalanceProps) => {
     };
   }, [getValidApi, targetChainId, assetInfo, decimals]);
   return {
-    balance,
+    balance: adjustFee(balance, 'minBalance'),
     isLoading
   };
 };
