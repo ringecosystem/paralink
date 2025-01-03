@@ -1,8 +1,18 @@
 import { createJsonResourceLoader } from './resource-loader';
 
 async function fetchLatestTag(owner: string, repo: string): Promise<string> {
+  const token = process.env.GITHUB_TOKEN;
+  const headers: HeadersInit = {
+    Accept: 'application/vnd.github.v3+json'
+  };
+
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
   const response = await fetch(
-    `https://api.github.com/repos/${owner}/${repo}/tags`
+    `https://api.github.com/repos/${owner}/${repo}/tags`,
+    { headers }
   );
 
   if (!response.ok) {
