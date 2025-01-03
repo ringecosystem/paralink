@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { getXcmWeightFee } from '@/services/xcm/xcm-weight';
 import { BN, BN_ZERO } from '@polkadot/util';
-import useApiConnectionsStore from '@/store/api-connections';
-import type { Asset } from '@/types/xcm-asset';
 import { isNil } from 'lodash-es';
+import { adjustFee } from '@/config/feeAdjustments';
+import useApiConnectionsStore from '@/store/api-connections';
 import { useDebounceEffect } from '@/hooks/use-debounce-effect';
+import type { Asset } from '@/types/xcm-asset';
 
 interface UseCrossFeeProps {
   asset?: Asset;
@@ -53,7 +54,7 @@ export const useCrossFee = ({
   }, [getValidApi, asset, recipientAddress, targetChainId, sourceChainId]);
 
   return {
-    fee,
+    fee: adjustFee(fee, 'crossChainFee'),
     isLoading
   };
 };

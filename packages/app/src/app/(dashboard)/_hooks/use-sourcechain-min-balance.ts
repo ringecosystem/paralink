@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { BN, BN_ZERO, bnToBn } from '@polkadot/util';
+import { isNil } from 'lodash-es';
 import { getMinBalance } from '@/services/xcm/get-min-balance';
 import useApiConnectionsStore from '@/store/api-connections';
 import useChainsStore from '@/store/chains';
-import type { Asset } from '@/types/xcm-asset';
-import { isNil } from 'lodash-es';
+import { adjustFee } from '@/config/feeAdjustments';
 import { useDebounceEffect } from '@/hooks/use-debounce-effect';
-
+import type { Asset } from '@/types/xcm-asset';
 interface UseSourceChainMinBalanceProps {
   chainId?: number;
   asset?: Asset;
@@ -65,7 +65,7 @@ export const useSourceChainMinBalance = ({
   }, [getValidApi, sourceChainId, asset, decimals]);
 
   return {
-    balance,
+    balance: adjustFee(balance, 'minBalance'),
     isLoading
   };
 };
