@@ -1,4 +1,3 @@
-import { Inter, JetBrains_Mono } from 'next/font/google';
 import { Toaster } from 'react-hot-toast';
 import { APP_NAME } from '@/config/site';
 import { DAppProvider } from '@/providers/dapp-provider';
@@ -10,22 +9,6 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './globals.css';
 import type { Metadata } from 'next';
-
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-sans',
-  display: 'swap',
-  preload: true,
-  adjustFontFallback: false
-});
-
-const jetBrainsMono = JetBrains_Mono({
-  subsets: ['latin'],
-  variable: '--font-mono',
-  display: 'swap',
-  preload: true,
-  adjustFontFallback: false
-});
 
 export const metadata: Metadata = {
   title: APP_NAME,
@@ -39,14 +22,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${inter.variable} ${jetBrainsMono.variable} font-sans antialiased`}
-      >
+      <body className="antialiased">
         <DAppProvider>
           <Toaster
             toastOptions={{
               className:
-                'font-sans antialiased !max-w-full md:!max-w-[500px] text-xs overflow-auto',
+                'antialiased !max-w-full md:!max-w-[500px] text-xs overflow-auto',
               duration: 3_000
             }}
           />
@@ -61,7 +42,7 @@ export default function RootLayout({
               </footer>
             </div>
 
-            <ToastContainer />
+            <ToastContainer className="w-auto md:w-[360px]" />
           </TooltipProvider>
         </DAppProvider>
       </body>

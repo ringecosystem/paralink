@@ -65,6 +65,8 @@ export function Picker({
   const [availableTokens, setAvailableTokens] = useState<Asset[]>([]);
   const [availableTokensLoading, setAvailableTokensLoading] = useState(false);
   const [isInvalid, setIsInvalid] = useState(false);
+  const [isLessThanMinBalance, setIsLessThanMinBalance] = useState(false);
+  const [isMoreThanMaxBalance, setIsMoreThanMaxBalance] = useState(false);
 
   const getValidApi = useApiConnectionsStore((state) => state.getValidApi);
 
@@ -219,15 +221,26 @@ export function Picker({
   useEffect(() => {
     let isInvalid = false;
     if (!value || value === '0') {
+      setIsLessThanMinBalance(false);
+      setIsMoreThanMaxBalance(false);
+      setIsInvalid(false);
+      onChangeInvalid?.(false);
       return;
     }
+
     const valueBN = parseUnits({
       value: value,
       decimals: selectedToken?.decimals ?? 18
     });
-    if (valueBN.gt(maxBalanceBN) || valueBN.lt(minBalanceBN)) {
-      isInvalid = true;
-    }
+
+    // Always set these states based on current conditions
+    const isLessThanMin = valueBN.lt(minBalanceBN);
+    const isMoreThanMax = valueBN.gt(maxBalanceBN);
+
+    setIsLessThanMinBalance(isLessThanMin);
+    setIsMoreThanMaxBalance(isMoreThanMax);
+
+    isInvalid = isLessThanMin || isMoreThanMax;
     setIsInvalid(isInvalid);
     onChangeInvalid?.(isInvalid);
   }, [
@@ -245,6 +258,8 @@ export function Picker({
       setSelectedToken(undefined);
       setAvailableTokens([]);
       setAvailableTokensLoading(false);
+      setIsLessThanMinBalance(false);
+      setIsMoreThanMaxBalance(false);
       handleReset();
     };
   }, [setSelectedToken, handleReset]);
@@ -270,128 +285,132 @@ export function Picker({
   return (
     <>
       <div>
-        <div
-          className={cn(
-            'flex items-center gap-[10px] rounded-[10px] bg-[#F2F3F5] p-[10px]'
-          )}
-        >
-          <div className="relative h-[40px] w-[40px] flex-shrink-0">
-            <FallbackImage
-              src={selectedToken?.icon ?? '/images/default-token.svg'}
-              fallbackSrc="/images/default-token.svg"
-              alt={selectedToken?.symbol ?? 'no icon'}
-              fill
-            />
-          </div>
+        <div className="rounded-[10px] bg-[#F2F3F5] p-[10px]">
+          <div className={cn('flex items-center gap-[10px]')}>
+            <div className="relative h-[40px] w-[40px] flex-shrink-0">
+              <FallbackImage
+                src={selectedToken?.icon ?? '/images/default-token.svg'}
+                fallbackSrc="/images/default-token.svg"
+                alt={selectedToken?.symbol ?? 'no icon'}
+                fill
+              />
+            </div>
 
-          <div className="grid w-full grid-cols-2 items-center gap-[10px]">
-            <div
-              className={cn(
-                'flex cursor-pointer flex-col items-start transition-opacity hover:opacity-80',
-                !tokens?.length && 'pointer-events-none opacity-50'
-              )}
-              onClick={handleOpenDialog}
-            >
-              <div className="flex items-center gap-[5px] leading-normal">
-                <span className="text-[18px] font-bold">
-                  {selectedToken?.symbol || ''}
+            <div className="grid w-full grid-cols-[2fr_3fr] items-center gap-[10px]">
+              <div
+                className={cn(
+                  'flex cursor-pointer flex-col items-start transition-opacity hover:opacity-80',
+                  !tokens?.length && 'pointer-events-none opacity-50'
+                )}
+                onClick={handleOpenDialog}
+              >
+                <div className="flex items-center gap-[5px] leading-normal">
+                  <span className="text-[18px] font-bold">
+                    {selectedToken?.symbol || ''}
+                  </span>
+                  <ChevronDown className="h-4 w-4" />
+                </div>
+                <span className="flex items-center text-[12px] font-normal leading-normal text-[#12161950]">
+                  Balance:
+                  {isBalancesLoading ? (
+                    <Skeleton className="h-4 w-10" />
+                  ) : typeof tokenBalance?.balance !== 'undefined' ? (
+                    <div className="flex items-center gap-1">
+                      <FormattedNumberTooltip
+                        value={tokenBalance?.balance}
+                        decimals={selectedToken?.decimals ?? 0}
+                      />
+                      <Button
+                        size="sm"
+                        className="h-auto rounded-sm px-2 py-[2px] text-[10px]"
+                        variant="outline"
+                        onClick={handleMax}
+                      >
+                        MAX
+                      </Button>
+                    </div>
+                  ) : (
+                    <span className="tabular-nums">-</span>
+                  )}
                 </span>
-                <ChevronDown className="h-4 w-4" />
               </div>
-              <span className="flex items-center text-[12px] font-normal leading-normal text-[#12161950]">
-                Balance:
-                {isBalancesLoading ? (
-                  <Skeleton className="h-4 w-10" />
-                ) : typeof tokenBalance?.balance !== 'undefined' ? (
-                  <div className="flex items-center gap-1">
-                    <FormattedNumberTooltip
-                      value={tokenBalance?.balance}
+              <div className="flex flex-col items-end">
+                <input
+                  className={cn(
+                    'w-full bg-transparent text-right text-[18px] font-bold tabular-nums text-[#12161950] focus-visible:outline-none',
+                    'md:text-[24px]',
+                    value && 'text-[#121619]',
+                    isInvalid && 'text-[#FF2D20]'
+                  )}
+                  placeholder="0.000"
+                  type="number"
+                  value={value}
+                  disabled={isMinBalanceLoading}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                <span className="flex items-center text-[12px] font-normal leading-normal text-[#12161950]">
+                  ≈ 
+                  {selectedToken?.priceId &&
+                  prices?.[selectedToken?.priceId] ? (
+                    <FormattedUsdTooltip
+                      price={prices?.[selectedToken?.priceId ?? ''] ?? 0}
+                      value={
+                        value !== ''
+                          ? bnToBn(
+                              parseUnits({
+                                value: value,
+                                decimals: selectedToken?.decimals ?? 0
+                              })
+                            )
+                          : BN_ZERO
+                      }
                       decimals={selectedToken?.decimals ?? 0}
                     />
-                    <Button
-                      size="sm"
-                      className="h-auto rounded-sm px-2 py-[2px] text-[10px]"
-                      variant="outline"
-                      onClick={handleMax}
-                    >
-                      MAX
-                    </Button>
-                  </div>
-                ) : (
-                  <span className="font-mono tabular-nums">-</span>
-                )}
-              </span>
-            </div>
-            <div className="flex flex-col items-end">
-              <input
-                className={cn(
-                  'w-full bg-transparent text-right font-mono text-[18px] font-bold tabular-nums text-[#12161950] focus-visible:outline-none',
-                  'md:text-[24px]',
-                  value && 'text-[#121619]',
-                  isInvalid && 'text-[#ff2d20]'
-                )}
-                placeholder="0.000"
-                type="number"
-                value={value}
-                disabled={isMinBalanceLoading}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-              <span className="flex items-center text-[12px] font-normal leading-normal text-[#12161950]">
-                ≈ 
-                {selectedToken?.priceId && prices?.[selectedToken?.priceId] ? (
-                  <FormattedUsdTooltip
-                    price={prices?.[selectedToken?.priceId ?? ''] ?? 0}
-                    value={
-                      value !== ''
-                        ? bnToBn(
-                            parseUnits({
-                              value: value,
-                              decimals: selectedToken?.decimals ?? 0
-                            })
-                          )
-                        : BN_ZERO
-                    }
-                    decimals={selectedToken?.decimals ?? 0}
-                  />
-                ) : (
-                  <span className="font-mono tabular-nums">0.000</span>
-                )}
-              </span>
+                  ) : (
+                    <span className="tabular-nums">0.000</span>
+                  )}
+                </span>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="mt-1 flex items-center justify-between">
-          <div className="text-left">{error}</div>
-          <div className="flex items-center gap-2 px-2 text-xs text-gray-500">
-            <div className="flex items-center gap-1">
-              Min:{' '}
-              {isMinBalanceLoading || isCrossFeeLoading ? (
-                <Skeleton className="h-4 w-10" />
-              ) : (
-                <FormattedNumberTooltip
-                  value={minBalanceBN ?? BN_ZERO}
-                  decimals={selectedToken?.decimals ?? 0}
-                  displayDecimals={3}
-                />
+
+          {(isLessThanMinBalance || isMoreThanMaxBalance) && (
+            <div className="mt-[10px] flex items-center justify-end gap-2 text-xs text-[#FF2D20]">
+              {isLessThanMinBalance && (
+                <div className="flex items-center gap-1">
+                  Min:{' '}
+                  {isMinBalanceLoading || isCrossFeeLoading ? (
+                    <Skeleton className="h-4 w-10" />
+                  ) : (
+                    <FormattedNumberTooltip
+                      value={minBalanceBN ?? BN_ZERO}
+                      decimals={selectedToken?.decimals ?? 0}
+                      displayDecimals={3}
+                    />
+                  )}
+                </div>
+              )}
+              {isMoreThanMaxBalance && (
+                <div className="flex items-center gap-1">
+                  Max:{' '}
+                  {isMaxBalanceLoading ? (
+                    <Skeleton className="h-4 w-10" />
+                  ) : (
+                    <FormattedNumberTooltip
+                      value={maxBalanceBN ?? BN_ZERO}
+                      decimals={selectedToken?.decimals ?? 0}
+                      displayDecimals={3}
+                    />
+                  )}
+                </div>
               )}
             </div>
-            {<span>•</span>}
-            <div className="flex items-center gap-1">
-              Max:{' '}
-              {isMaxBalanceLoading ? (
-                <Skeleton className="h-4 w-10" />
-              ) : (
-                <FormattedNumberTooltip
-                  value={maxBalanceBN ?? BN_ZERO}
-                  decimals={selectedToken?.decimals ?? 0}
-                  displayDecimals={3}
-                />
-              )}
-            </div>
-          </div>
+          )}
         </div>
+        <div className="text-left">{error}</div>
       </div>
+
       <AssetPickerList
         isOpen={isDialogOpen}
         isLoading={isBalancesLoading}

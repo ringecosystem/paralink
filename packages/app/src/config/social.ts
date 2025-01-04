@@ -22,8 +22,8 @@ function createSocialConfig(
 }
 
 export const socialConfig: SocialConfig[] = [
-  createSocialConfig('X', 12, 12, 'https://x.com/ringecosystem'),
-  createSocialConfig('Telegram', 12, 10, 'https://t.me/ringecosystem'),
-  createSocialConfig('Github', 12, 14, 'https://github.com/ringecosystem/'),
-  createSocialConfig('Discord', 12, 10, 'https://discord.gg/BhNbKWWfGV')
+  createSocialConfig('X', 24, 24, 'https://x.com/ringecosystem'),
+  createSocialConfig('Telegram', 24, 24, 'https://t.me/ringecosystem'),
+  createSocialConfig('Github', 24, 24, 'https://github.com/ringecosystem/'),
+  createSocialConfig('Discord', 24, 24, 'https://discord.gg/BhNbKWWfGV')
 ];

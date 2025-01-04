@@ -11,6 +11,7 @@ import { isNil } from 'lodash-es';
 import { AddressInput } from '@/components/address-input';
 import Alert from '@/components/alert';
 import { FeeBreakdown } from '@/components/fee-breakdown';
+import { ConfirmTransaction } from '@/components/confirm-transaction';
 import { ConnectOrActionButton } from '@/components/connect-or-action-button';
 import useChainsStore from '@/store/chains';
 import useTokensStore from '@/store/tokens';
@@ -29,8 +30,10 @@ import { useCrossFee } from '../_hooks/use-cross-fee';
 import { parseUnits } from '@/utils/format';
 import { useTransactionExecution } from '@/hooks/use-transaction-execution';
 import toast from 'react-hot-toast';
+import { toast as toastify } from 'react-toastify';
+
 import useApiConnectionsStore from '@/store/api-connections';
-import { cn } from '@/lib/utils';
+import { cn, isValidAddress } from '@/lib/utils';
 import { AssetPicker } from './asset-picker';
 import { BN, BN_ZERO, bnMax } from '@polkadot/util';
 
@@ -57,6 +60,8 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
   const [recipientAddress, setRecipientAddress] = useState<string>('');
   const [isTransactionLoading, setIsTransactionLoading] = useState(false);
   const [isInvalid, setIsInvalid] = useState(false);
+  const [isConfirmTransactionOpen, setIsConfirmTransactionOpen] =
+    useState(false);
   const { address } = useWalletConnection();
   const {
     chains,
@@ -273,38 +278,56 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
     });
 
   const handleClick = useCallback(async () => {
+    if (!address) {
+      toast.error('Please connect your wallet', {
+        position: 'top-center',
+        className: 'text-[14px]'
+      });
+      return;
+    }
     if (sourceChainId === 2004) {
-      if (!address) {
-        toast.error('Please connect your wallet', {
-          position: 'top-center',
-          className: 'font-sans text-[14px]'
-        });
-        return;
-      }
+      setIsConfirmTransactionOpen(true);
+      return;
+    }
+    if (!extrinsic) return;
+
+    setIsConfirmTransactionOpen(true);
+  }, [sourceChainId, address, extrinsic]);
+
+  const handleTransaction = useCallback(async () => {
+    if (sourceChainId === 2004) {
       try {
         setIsTransactionLoading(true);
-        await executeTransactionFromMoonbeam();
+        await executeTransactionFromMoonbeam({
+          onSuccessImmediate: () => {
+            setIsConfirmTransactionOpen(false);
+          }
+        });
         pickerRef.current?.refreshBalances();
       } catch (error) {
         toast.error(typeof error === 'string' ? error : 'Transaction failed', {
           position: 'top-center',
-          className: 'font-sans text-[14px]'
+          className: 'text-[14px]'
         });
       } finally {
         setIsTransactionLoading(false);
       }
       return;
     }
-    if (!extrinsic || !address) return;
 
     try {
       setIsTransactionLoading(true);
-      await executeTransaction({ extrinsic });
+      await executeTransaction({
+        extrinsic,
+        onSuccessImmediate: () => {
+          setIsConfirmTransactionOpen(false);
+        }
+      });
       pickerRef.current?.refreshBalances();
     } catch (error) {
       toast.error(typeof error === 'string' ? error : 'Transaction failed', {
         position: 'top-center',
-        className: 'font-sans text-[14px]'
+        className: 'text-[14px]'
       });
     } finally {
       setIsTransactionLoading(false);
@@ -313,7 +336,6 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
     extrinsic,
     executeTransaction,
     sourceChainId,
-    address,
     executeTransactionFromMoonbeam
   ]);
 
@@ -329,6 +351,18 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
   }, [targetChainId]);
 
   useEffect(() => {
+    toastify.loading('Loading...', {
+      autoClose: false
+    });
+    toastify.loading('Loading2...', {
+      autoClose: false
+    });
+    toastify.loading('Loading3...', {
+      autoClose: false
+    });
+  }, []);
+
+  useEffect(() => {
     const LOADING_TIMEOUT = 60_000;
     let toastId: string | undefined;
 
@@ -339,7 +373,7 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
           {
             position: 'bottom-right',
             duration: 10_000,
-            className: 'font-sans text-[14px]'
+            className: 'text-[14px]'
           }
         );
       }, LOADING_TIMEOUT);
@@ -438,13 +472,43 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
 
             <AddressInput
               value={recipientAddress}
-              chain={targetChain}
               onChange={setRecipientAddress}
               error={
-                <AnimatedErrorMessage
-                  show={!hasToEnoughBalance && !isToExistentialDepositLoading}
-                  message={`You need at least ${toDepositFormatted} in your recipient account on ${targetChain?.name} to keep the account alive.`}
-                />
+                <>
+                  <AnimatedErrorMessage
+                    show={
+                      !hasToEnoughBalance &&
+                      !isToExistentialDepositLoading &&
+                      !!recipientAddress &&
+                      isValidAddress({
+                        address: recipientAddress,
+                        chainType: targetChain?.isEvm ? 'evm' : 'substrate',
+                        expectedPrefix: targetChain?.addressPrefix
+                      })
+                    }
+                    message={`You need at least ${toDepositFormatted} in your recipient account on ${targetChain?.name} to keep the account alive.`}
+                  />
+
+                  <AnimatedErrorMessage
+                    show={
+                      !!recipientAddress &&
+                      !isValidAddress({
+                        address: recipientAddress,
+                        chainType: targetChain?.isEvm ? 'evm' : 'substrate',
+                        expectedPrefix: targetChain?.addressPrefix
+                      })
+                    }
+                    message={
+                      <p className="text-[12px] font-normal leading-normal text-[#000]">
+                        Wallet address is invalid for selected destination chain{' '}
+                        <span className="text-[#FF0083]">
+                          {targetChain?.name}
+                        </span>
+                        .
+                      </p>
+                    }
+                  />
+                </>
               }
             />
             {
@@ -474,7 +538,6 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
                 isToExistentialDepositLoading ||
                 isNetworkFeeLoading ||
                 isCrossFeeLoading ||
-                isTransactionLoading ||
                 isExtrinsicLoading ||
                 isSourceChainMinBalanceLoading
               }
@@ -493,6 +556,28 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
                 ? 'Confirm Transaction'
                 : 'Insufficient Network Fee'}
             </ConnectOrActionButton>
+            {sourceChain && targetChain && address && (
+              <ConfirmTransaction
+                isOpen={isConfirmTransactionOpen}
+                onClose={() => setIsConfirmTransactionOpen(false)}
+                showValue={amount !== '' && !!address}
+                amount={parseUnits({
+                  value: amount,
+                  decimals: selectedToken?.decimals ?? 3
+                })}
+                networkFee={networkFee}
+                prices={prices}
+                crossFee={crossFee}
+                isLoading={isTransactionLoading || isApiLoading}
+                nativeTokenInfo={sourceChain?.nativeToken}
+                xcmTokenInfo={selectedToken}
+                sourceChain={sourceChain}
+                fromAddress={address}
+                targetChain={targetChain}
+                toAddress={recipientAddress}
+                onConfirm={handleTransaction}
+              />
+            )}
           </div>
         </div>
       </div>

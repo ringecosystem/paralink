@@ -234,6 +234,15 @@ type SignAndSendExtrinsicParams = {
     messageHash?: string;
     uniqueId?: string;
   }) => void;
+  onSuccessImmediate?: ({
+    txHash,
+    messageHash,
+    uniqueId
+  }: {
+    txHash: string;
+    messageHash?: string;
+    uniqueId?: string;
+  }) => void;
   onFailure?: ({ txHash }: { txHash?: string }) => void;
   onError?: (message: string) => void;
 };
@@ -243,6 +252,7 @@ export const signAndSendExtrinsic = async ({
   sender,
   onPending,
   onSuccess,
+  onSuccessImmediate,
   onFailure,
   onError
 }: SignAndSendExtrinsicParams) => {
@@ -284,6 +294,9 @@ export const signAndSendExtrinsic = async ({
             !isCallbackExecuted
           ) {
             isCallbackExecuted = true;
+            onSuccessImmediate?.({
+              txHash
+            });
             await calculateAndWaitRemainingTime(
               startTime,
               CROSS_CHAIN_TRANSFER_ESTIMATED_TIME

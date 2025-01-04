@@ -1,121 +1,71 @@
 'use client';
 
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, ChevronUp } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { FallbackImage } from './ui/fallback-image';
-import { BN, BN_ZERO, bnMax } from '@polkadot/util';
-import { Skeleton } from './ui/skeleton';
-import FormattedNumberTooltip from './formatted-number-tooltip';
-import { Asset } from '@/types/xcm-asset';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 import FormattedUsdTooltip from './formatted-usd-tooltip';
+import FormattedNumberTooltip from './formatted-number-tooltip';
+import { FallbackImage } from './ui/fallback-image';
+import BN from 'bn.js';
+import { BN_ZERO, bnMax } from '@polkadot/util';
+import type { Asset, ChainConfig } from '@/types/xcm-asset';
+import { ConnectOrActionButton } from './connect-or-action-button';
 
-const variants = {
-  initial: { height: 0, opacity: 0 },
-  animate: {
-    height: 'auto',
-    opacity: 1,
-    transition: {
-      height: {
-        duration: 0.3,
-        ease: [0.4, 0, 0.2, 1]
-      },
-      opacity: {
-        duration: 0.2,
-        delay: 0.1
-      }
-    }
-  },
-  exit: {
-    height: 0,
-    opacity: 0,
-    transition: {
-      height: {
-        duration: 0.3,
-        ease: [0.4, 0, 0.2, 1]
-      },
-      opacity: {
-        duration: 0.2
-      }
-    }
-  }
-};
-
-interface FeeBreakdownProps {
+interface ConfirmTransactionProps {
+  isOpen: boolean;
+  onClose: () => void;
   showValue: boolean;
   amount: BN;
   networkFee: BN;
   crossFee: BN;
   nativeTokenInfo?: Asset;
   xcmTokenInfo?: Asset;
-  loading?: boolean;
+  sourceChain: ChainConfig;
+  fromAddress: string;
+  targetChain: ChainConfig;
+  toAddress: string;
+  isLoading?: boolean;
+  onConfirm: () => void;
   prices?: Record<string, number>;
 }
 
-export function FeeBreakdown({
+export function ConfirmTransaction({
+  isOpen,
+  onClose,
   showValue,
   amount,
   networkFee,
   crossFee,
   nativeTokenInfo,
   xcmTokenInfo,
-  loading,
+  sourceChain,
+  fromAddress,
+  targetChain,
+  toAddress,
+  isLoading,
+  onConfirm,
   prices
-}: FeeBreakdownProps) {
-  const [isExpanded, setIsExpanded] = useState(false);
+}: ConfirmTransactionProps) {
   const finalAmount = bnMax(amount.sub(crossFee), BN_ZERO);
 
   return (
-    <div className="flex w-full flex-col gap-[10px] rounded-[10px] bg-[#F2F3F5] p-[10px] text-[14px] font-normal">
-      <motion.div
-        className="flex w-full cursor-pointer items-center justify-between gap-[10px] rounded-[10px]"
-        onClick={() => setIsExpanded(!isExpanded)}
-        whileTap={{ scale: 0.98 }}
-      >
-        <span
-          className={cn(
-            'text-sm leading-[24px] text-[#12161950]',
-            isExpanded && 'text-[#242A2E]'
-          )}
-        >
-          Receive (Estimated)
-        </span>
-        <div className="flex items-center gap-2">
-          <FormattedNumberTooltip
-            value={finalAmount}
-            decimals={xcmTokenInfo?.decimals ?? 3}
-            displayDecimals={3}
-          >
-            {(formattedValue: string) => (
-              <span
-                className={cn(
-                  'max-w-[160px] truncate text-[14px] font-bold tabular-nums text-[#12161950]',
-                  isExpanded && 'text-[#242A2E]'
-                )}
-              >
-                {formattedValue}
-              </span>
-            )}
-          </FormattedNumberTooltip>
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="w-[calc(100vw-20px)] gap-0 rounded-[20px] p-[20px] md:w-[500px]">
+        <DialogHeader>
+          <DialogTitle className="text-[14px] font-bold text-[#121619]">
+            Transaction Confirm
+          </DialogTitle>
+        </DialogHeader>
+        <div className="my-[20px] h-[1px] w-full bg-[#12161910]"></div>
 
-          {isExpanded ? (
-            <ChevronUp className="h-4 w-4 text-[#121619]" />
-          ) : (
-            <ChevronDown className="h-4 w-4 text-[#121619]" />
-          )}
-        </div>
-      </motion.div>
-      <AnimatePresence>
-        {isExpanded && (
-          <motion.div
-            variants={variants}
-            initial="initial"
-            animate="animate"
-            exit="exit"
-            className="overflow-hidden"
-          >
+        <div className="flex w-full flex-col gap-[10px] rounded-[10px] bg-[#F2F3F5] p-[10px] text-[14px] font-normal">
+          <div className="overflow-hidden">
             <div className="space-y-[10px]">
+              <div className="flex items-center justify-between gap-[20px]">
+                <span className="flex-shrink-0 leading-[24px]">
+                  From On {sourceChain.name}
+                </span>
+                <div className="break-all text-right">{fromAddress}</div>
+              </div>
+
               <div className="flex items-center justify-between">
                 <span className="leading-[24px]">Network Fee</span>
                 {typeof networkFee !== 'boolean' && showValue ? (
@@ -137,19 +87,15 @@ export function FeeBreakdown({
                         </FormattedUsdTooltip>
                       </span>
                     ) : null}
-                    {loading ? (
-                      <Skeleton className="h-4 w-10" />
-                    ) : (
-                      <FormattedNumberTooltip
-                        value={networkFee}
-                        decimals={nativeTokenInfo?.decimals ?? 3}
-                        displayDecimals={3}
-                      >
-                        {(formattedValue: string) => (
-                          <span className="tabular-nums">{formattedValue}</span>
-                        )}
-                      </FormattedNumberTooltip>
-                    )}
+                    <FormattedNumberTooltip
+                      value={networkFee}
+                      decimals={nativeTokenInfo?.decimals ?? 3}
+                      displayDecimals={3}
+                    >
+                      {(formattedValue: string) => (
+                        <span className="tabular-nums">{formattedValue}</span>
+                      )}
+                    </FormattedNumberTooltip>
 
                     <FallbackImage
                       src={nativeTokenInfo?.icon}
@@ -185,19 +131,15 @@ export function FeeBreakdown({
                         </FormattedUsdTooltip>
                       </span>
                     ) : null}
-                    {loading ? (
-                      <Skeleton className="h-4 w-10" />
-                    ) : (
-                      <FormattedNumberTooltip
-                        value={crossFee}
-                        decimals={xcmTokenInfo?.decimals ?? 3}
-                        displayDecimals={3}
-                      >
-                        {(formattedValue: string) => (
-                          <span className="tabular-nums">{formattedValue}</span>
-                        )}
-                      </FormattedNumberTooltip>
-                    )}
+                    <FormattedNumberTooltip
+                      value={crossFee}
+                      decimals={xcmTokenInfo?.decimals ?? 3}
+                      displayDecimals={3}
+                    >
+                      {(formattedValue: string) => (
+                        <span className="tabular-nums">{formattedValue}</span>
+                      )}
+                    </FormattedNumberTooltip>
                     <FallbackImage
                       src={xcmTokenInfo?.icon}
                       fallbackSrc="/images/default-token.svg"
@@ -232,19 +174,15 @@ export function FeeBreakdown({
                         </FormattedUsdTooltip>
                       </span>
                     ) : null}
-                    {loading ? (
-                      <Skeleton className="h-4 w-10" />
-                    ) : (
-                      <FormattedNumberTooltip
-                        value={finalAmount}
-                        decimals={xcmTokenInfo?.decimals ?? 3}
-                        displayDecimals={3}
-                      >
-                        {(formattedValue: string) => (
-                          <span className="tabular-nums">{formattedValue}</span>
-                        )}
-                      </FormattedNumberTooltip>
-                    )}
+                    <FormattedNumberTooltip
+                      value={finalAmount}
+                      decimals={xcmTokenInfo?.decimals ?? 3}
+                      displayDecimals={3}
+                    >
+                      {(formattedValue: string) => (
+                        <span className="tabular-nums">{formattedValue}</span>
+                      )}
+                    </FormattedNumberTooltip>
                     <FallbackImage
                       src={xcmTokenInfo?.icon}
                       fallbackSrc="/images/default-token.svg"
@@ -257,10 +195,22 @@ export function FeeBreakdown({
                   '-'
                 )}
               </div>
+
+              <div className="flex items-center justify-between gap-[20px]">
+                <span className="flex-shrink-0 leading-[24px]">
+                  Receive Address on {targetChain.name}
+                </span>
+                <div className="break-all text-right">{toAddress}</div>
+              </div>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+          </div>
+        </div>
+        <div className="mt-[20px] flex gap-4">
+          <ConnectOrActionButton onAction={onConfirm} isLoading={isLoading}>
+            Confirm Transaction
+          </ConnectOrActionButton>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 }

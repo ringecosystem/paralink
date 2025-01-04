@@ -45,7 +45,7 @@ export function AssetPickerItem({
             <span className="text-[12px] text-[#121619]">{token?.name}</span>
             {/* {token?.contractAddress && (
               <div className="flex items-center gap-[5px]">
-                <span className="font-mono text-[12px] tabular-nums text-[#878A92]">
+                <span className="text-[12px] tabular-nums text-[#878A92]">
                   {toShortAddress(token.contractAddress)}
                 </span>
                 <ExternalLink className="h-3 w-3" color="#12161950" />
@@ -58,11 +58,11 @@ export function AssetPickerItem({
         ) : balance ? (
           <FormattedNumberTooltip
             value={balance ?? BN_ZERO}
-            className="text-right font-mono text-[16px] font-bold tabular-nums"
+            className="text-right text-[16px] font-bold tabular-nums"
             decimals={token.decimals ?? 0}
           />
         ) : (
-          <span className="font-mono tabular-nums">-</span>
+          <span className="tabular-nums">-</span>
         )}
       </div>
     </div>
