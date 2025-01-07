@@ -25,7 +25,7 @@ const FormattedUsdTooltip = React.forwardRef<
   FormattedUsdTooltipProps
 >(
   (
-    { value, decimals, price, displayDecimals = 2, className, children },
+    { value, decimals, price, displayDecimals = 4, className, children },
     ref
   ) => {
     const [, copyToClipboard] = useCopyToClipboard();

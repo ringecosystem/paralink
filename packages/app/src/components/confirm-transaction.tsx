@@ -76,7 +76,6 @@ export function ConfirmTransaction({
                         <FormattedUsdTooltip
                           value={networkFee}
                           decimals={nativeTokenInfo?.decimals ?? 3}
-                          displayDecimals={3}
                           price={prices?.[nativeTokenInfo?.priceId] ?? 0}
                         >
                           {(formattedValue: string) => (
@@ -119,7 +118,6 @@ export function ConfirmTransaction({
                         <FormattedUsdTooltip
                           value={crossFee}
                           decimals={xcmTokenInfo?.decimals ?? 3}
-                          displayDecimals={3}
                           price={prices?.[xcmTokenInfo?.priceId] ?? 0}
                         >
                           {(formattedValue: string) => (
@@ -161,7 +159,6 @@ export function ConfirmTransaction({
                         <FormattedUsdTooltip
                           value={finalAmount}
                           decimals={xcmTokenInfo?.decimals ?? 3}
-                          displayDecimals={3}
                           price={prices?.[xcmTokenInfo?.priceId] ?? 0}
                         >
                           {(formattedValue: string) => (
