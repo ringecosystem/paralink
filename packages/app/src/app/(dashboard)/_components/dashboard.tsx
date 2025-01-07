@@ -30,7 +30,6 @@ import { useCrossFee } from '../_hooks/use-cross-fee';
 import { parseUnits } from '@/utils/format';
 import { useTransactionExecution } from '@/hooks/use-transaction-execution';
 import toast from 'react-hot-toast';
-import { toast as toastify } from 'react-toastify';
 
 import useApiConnectionsStore from '@/store/api-connections';
 import { cn, isValidAddress } from '@/lib/utils';
@@ -349,18 +348,6 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
   useEffect(() => {
     setRecipientAddress('');
   }, [targetChainId]);
-
-  useEffect(() => {
-    toastify.loading('Loading...', {
-      autoClose: false
-    });
-    toastify.loading('Loading2...', {
-      autoClose: false
-    });
-    toastify.loading('Loading3...', {
-      autoClose: false
-    });
-  }, []);
 
   useEffect(() => {
     const LOADING_TIMEOUT = 60_000;
