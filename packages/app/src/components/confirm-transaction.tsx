@@ -90,7 +90,6 @@ export function ConfirmTransaction({
                     <FormattedNumberTooltip
                       value={networkFee}
                       decimals={nativeTokenInfo?.decimals ?? 3}
-                      displayDecimals={3}
                     >
                       {(formattedValue: string) => (
                         <span className="tabular-nums">{formattedValue}</span>
@@ -134,7 +133,6 @@ export function ConfirmTransaction({
                     <FormattedNumberTooltip
                       value={crossFee}
                       decimals={xcmTokenInfo?.decimals ?? 3}
-                      displayDecimals={3}
                     >
                       {(formattedValue: string) => (
                         <span className="tabular-nums">{formattedValue}</span>
@@ -177,7 +175,6 @@ export function ConfirmTransaction({
                     <FormattedNumberTooltip
                       value={finalAmount}
                       decimals={xcmTokenInfo?.decimals ?? 3}
-                      displayDecimals={3}
                     >
                       {(formattedValue: string) => (
                         <span className="tabular-nums">{formattedValue}</span>

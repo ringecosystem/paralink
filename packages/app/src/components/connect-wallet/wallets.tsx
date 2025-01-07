@@ -65,7 +65,7 @@ export const Wallets = () => {
               height={20}
             />
             <span className="text-[14px] font-bold leading-normal text-[#242A2E]">
-              POLKADOT
+              Polkadot
             </span>
           </div>
           <div className="flex w-full items-center justify-between rounded-[10px] bg-[#F2F3F5] px-[10px] py-[5px] text-[12px] font-normal leading-normal">

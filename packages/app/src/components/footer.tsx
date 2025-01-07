@@ -5,7 +5,7 @@ export default function Footer() {
   return (
     <div className="mx-auto flex h-full items-center justify-between px-[40px]">
       <span className="text-[12px] font-normal leading-normal text-[#121619]">
-        © {currentYear} ParaLink instead of Paralink
+        © {currentYear} Paralink Powerd by RingDAO
       </span>
       <FooterSocials />
     </div>

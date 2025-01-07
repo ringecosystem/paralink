@@ -386,7 +386,6 @@ export function Picker({
                     <FormattedNumberTooltip
                       value={minBalanceBN ?? BN_ZERO}
                       decimals={selectedToken?.decimals ?? 0}
-                      displayDecimals={3}
                     />
                   )}
                 </div>
@@ -400,7 +399,6 @@ export function Picker({
                     <FormattedNumberTooltip
                       value={maxBalanceBN ?? BN_ZERO}
                       decimals={selectedToken?.decimals ?? 0}
-                      displayDecimals={3}
                     />
                   )}
                 </div>
