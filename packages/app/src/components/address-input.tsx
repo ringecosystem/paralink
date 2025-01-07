@@ -25,9 +25,6 @@ export function AddressInput({ value, onChange, error }: AddressInputProps) {
             'w-full bg-transparent p-[10px] text-[14px] font-normal text-[#242A2E] placeholder:text-[#12161950] focus-visible:outline-none'
           )}
         />
-        <span className="flex h-[22px] w-[22px] cursor-pointer items-center justify-center">
-          <Image src="/images/edit.svg" alt="edit" width={16} height={16} />
-        </span>
       </div>
       {error && <div className="mt-1 text-xs">{error}</div>}
     </div>
