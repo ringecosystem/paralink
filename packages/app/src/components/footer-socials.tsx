@@ -3,7 +3,7 @@ import { socialConfig } from '@/config/social';
 
 const FooterSocials = () => {
   return (
-    <div className="flex items-center justify-center gap-[10px]">
+    <div className="flex items-center justify-center gap-[20px]">
       {socialConfig.map(({ url, name, iconPath, width, height }) => (
         <a
           key={name}

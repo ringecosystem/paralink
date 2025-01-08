@@ -21,7 +21,7 @@ interface FormattedNumberTooltipProps {
 const FormattedNumberTooltip = React.forwardRef<
   HTMLDivElement,
   FormattedNumberTooltipProps
->(({ value, decimals, displayDecimals = 3, className, children }, ref) => {
+>(({ value, decimals, displayDecimals = 4, className, children }, ref) => {
   const [, copyToClipboard] = useCopyToClipboard();
 
   const handleCopy = useCallback(

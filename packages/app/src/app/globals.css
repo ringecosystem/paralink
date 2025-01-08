@@ -4,9 +4,6 @@
 
 @layer base {
   :root {
-    --font-sans: Inter, system-ui, sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
-
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
@@ -41,6 +38,7 @@
     /* toastify */
     --toastify-text-color-light: #121619;
     --toastify-toast-bd-radius: 10px;
+    --toastify-toast-top: 60px;
     --toastify-color-error: var(--error-color);
   }
 }
@@ -117,8 +115,8 @@
 .loader-mobile:after {
   content: '';
   grid-area: 1/1;
-  background: repeating-linear-gradient(90deg, #ff0083 0 8px, #0000 0 100%) 0 0 /
-    calc(100% / 4) 100%;
+  background: repeating-linear-gradient(90deg, #ff0083 0 8px, #0000 0 100%) 0
+    0 / calc(100% / 4) 100%;
   clip-path: inset(0 50% 0 0);
   animation: l1 1s infinite linear;
 }
@@ -143,8 +141,8 @@
 .loader:after {
   content: '';
   grid-area: 1/1;
-  background: repeating-linear-gradient(90deg, #ff0083 0 14px, #0000 0 100%) 0 0 /
-    calc(100% / 6) 100%;
+  background: repeating-linear-gradient(90deg, #ff0083 0 14px, #0000 0 100%) 0
+    0 / calc(100% / 6) 100%;
   clip-path: inset(0 50% 0 0);
   animation: l2 1s infinite linear;
 }
@@ -156,5 +154,22 @@
 @keyframes l2 {
   100% {
     background-position: calc(100% / 5) 0;
+  }
+}
+
+@media only screen and (width <= 480px) {
+  .Toastify__toast {
+    margin-bottom: 10px;
+    border-radius: 10px;
+  }
+}
+
+@media only screen and (width <= 480px) {
+  .Toastify__toast-container {
+    width: calc(100vw - 20px);
+    padding: 0;
+    left: max(env(safe-area-inset-left), 10px);
+    right: max(env(safe-area-inset-right), 10px);
+    margin: 0;
   }
 }

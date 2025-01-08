@@ -79,18 +79,17 @@ export function FeeBreakdown({
             isExpanded && 'text-[#242A2E]'
           )}
         >
-          You Will Receive (Estimated)
+          Receive (Estimated)
         </span>
         <div className="flex items-center gap-2">
           <FormattedNumberTooltip
             value={finalAmount}
             decimals={xcmTokenInfo?.decimals ?? 3}
-            displayDecimals={3}
           >
             {(formattedValue: string) => (
               <span
                 className={cn(
-                  'max-w-[160px] truncate font-mono text-[14px] font-bold tabular-nums text-[#12161950]',
+                  'max-w-[160px] truncate text-[14px] font-bold tabular-nums text-[#12161950]',
                   isExpanded && 'text-[#242A2E]'
                 )}
               >
@@ -126,11 +125,10 @@ export function FeeBreakdown({
                         <FormattedUsdTooltip
                           value={networkFee}
                           decimals={nativeTokenInfo?.decimals ?? 3}
-                          displayDecimals={3}
                           price={prices?.[nativeTokenInfo?.priceId] ?? 0}
                         >
                           {(formattedValue: string) => (
-                            <span className="font-mono tabular-nums">
+                            <span className="tabular-nums">
                               ≈ {formattedValue}
                             </span>
                           )}
@@ -143,12 +141,9 @@ export function FeeBreakdown({
                       <FormattedNumberTooltip
                         value={networkFee}
                         decimals={nativeTokenInfo?.decimals ?? 3}
-                        displayDecimals={3}
                       >
                         {(formattedValue: string) => (
-                          <span className="font-mono tabular-nums">
-                            {formattedValue}
-                          </span>
+                          <span className="tabular-nums">{formattedValue}</span>
                         )}
                       </FormattedNumberTooltip>
                     )}
@@ -176,11 +171,10 @@ export function FeeBreakdown({
                         <FormattedUsdTooltip
                           value={crossFee}
                           decimals={xcmTokenInfo?.decimals ?? 3}
-                          displayDecimals={3}
                           price={prices?.[xcmTokenInfo?.priceId] ?? 0}
                         >
                           {(formattedValue: string) => (
-                            <span className="font-mono tabular-nums">
+                            <span className="tabular-nums">
                               ≈ {formattedValue}
                             </span>
                           )}
@@ -193,63 +187,9 @@ export function FeeBreakdown({
                       <FormattedNumberTooltip
                         value={crossFee}
                         decimals={xcmTokenInfo?.decimals ?? 3}
-                        displayDecimals={3}
                       >
                         {(formattedValue: string) => (
-                          <span className="font-mono tabular-nums">
-                            {formattedValue}
-                          </span>
-                        )}
-                      </FormattedNumberTooltip>
-                    )}
-                    <FallbackImage
-                      src={xcmTokenInfo?.icon}
-                      fallbackSrc="/images/default-token.svg"
-                      alt={xcmTokenInfo?.symbol ?? 'token icon'}
-                      width={18}
-                      height={18}
-                    />
-                  </div>
-                ) : (
-                  '-'
-                )}
-              </div>
-
-              <div className="flex items-center justify-between">
-                <span className="leading-[24px]">
-                  You Will Receive (Estimated)
-                </span>
-                {showValue ? (
-                  <div className="flex items-center gap-[10px]">
-                    {xcmTokenInfo?.priceId &&
-                    prices?.[xcmTokenInfo?.priceId] ? (
-                      <span className="hidden text-[#12161950] sm:block">
-                        <FormattedUsdTooltip
-                          value={finalAmount}
-                          decimals={xcmTokenInfo?.decimals ?? 3}
-                          displayDecimals={3}
-                          price={prices?.[xcmTokenInfo?.priceId] ?? 0}
-                        >
-                          {(formattedValue: string) => (
-                            <span className="font-mono tabular-nums">
-                              ≈ {formattedValue}
-                            </span>
-                          )}
-                        </FormattedUsdTooltip>
-                      </span>
-                    ) : null}
-                    {loading ? (
-                      <Skeleton className="h-4 w-10" />
-                    ) : (
-                      <FormattedNumberTooltip
-                        value={finalAmount}
-                        decimals={xcmTokenInfo?.decimals ?? 3}
-                        displayDecimals={3}
-                      >
-                        {(formattedValue: string) => (
-                          <span className="font-mono tabular-nums">
-                            {formattedValue}
-                          </span>
+                          <span className="tabular-nums">{formattedValue}</span>
                         )}
                       </FormattedNumberTooltip>
                     )}

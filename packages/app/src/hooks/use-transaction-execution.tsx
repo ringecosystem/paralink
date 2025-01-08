@@ -15,11 +15,11 @@ import { calculateAndWaitRemainingTime } from '@/utils/date';
 import type { ChainConfig, Asset } from '@/types/xcm-asset';
 import { isNil } from 'lodash-es';
 
-const AUTO_CLOSE_TIME = 5000;
+const AUTO_CLOSE_TIME = 5_000;
 
 const showPendingToast = (txHash: string) => {
   return toast.loading(<TransactionDetail txHash={txHash} status="pending" />, {
-    position: 'bottom-right',
+    position: 'top-right',
     closeButton: true,
     autoClose: AUTO_CLOSE_TIME
   });
@@ -38,7 +38,7 @@ const showSuccessToast = (txHash: string, toastId?: string | number) => {
     });
   } else {
     toast.success(<TransactionDetail txHash={txHash} status="finished" />, {
-      position: 'bottom-right',
+      position: 'top-right',
       closeButton: true,
       autoClose: AUTO_CLOSE_TIME
     });
@@ -58,7 +58,7 @@ const showErrorToast = (txHash: string, toastId?: string | number) => {
     });
   } else {
     toast.error(<TransactionDetail txHash={txHash} status="finished" />, {
-      position: 'bottom-right',
+      position: 'top-right',
       closeButton: true,
       autoClose: AUTO_CLOSE_TIME
     });
@@ -90,7 +90,13 @@ export function useTransactionExecution({
   const addTransaction = useTransactionHistory((state) => state.addTransaction);
 
   const executeTransaction = useCallback(
-    async ({ extrinsic }: { extrinsic: any }) => {
+    async ({
+      extrinsic,
+      onSuccessImmediate
+    }: {
+      extrinsic: any;
+      onSuccessImmediate: () => void;
+    }) => {
       if (
         !extrinsic ||
         isNil(sourceChain?.id) ||
@@ -119,6 +125,9 @@ export function useTransactionExecution({
                 });
                 toastIdRef.current = showPendingToast(txHash);
               }
+            },
+            onSuccessImmediate: async ({ txHash }) => {
+              onSuccessImmediate?.();
             },
             onSuccess: async ({ txHash }) => {
               console.log('transaction success', txHash);
@@ -160,85 +169,89 @@ export function useTransactionExecution({
     ]
   );
 
-  const executeTransactionFromMoonbeam = useCallback(async () => {
-    console.log('executeTransactionFromMoonbeam', sourceChain, targetChain);
-    if (
-      isNil(sourceChain?.id) ||
-      !address ||
-      isNil(targetChain?.id) ||
-      !selectedToken ||
-      !amount ||
-      !recipientAddress
-    ) {
-      throw new Error('Missing required parameters for transaction');
-    }
-    return new Promise(async (resolve, reject) => {
-      const { txHash, error, message } = await transferFromMoonbeam({
-        amount,
-        destinationChainId: Number(targetChain?.id),
-        sourceAddress: address,
-        destinationAddress: recipientAddress,
-        token: selectedToken?.symbol
-      });
-      if (txHash) {
-        addTransaction({
-          txHash,
-          decimals: selectedToken?.decimals ?? 0,
-          sourceChainId: 2004,
-          sourceAddress: address,
-          targetChainId: Number(targetChain?.id),
-          targetAddress: recipientAddress,
+  const executeTransactionFromMoonbeam = useCallback(
+    async ({ onSuccessImmediate }: { onSuccessImmediate: () => void }) => {
+      console.log('executeTransactionFromMoonbeam', sourceChain, targetChain);
+      if (
+        isNil(sourceChain?.id) ||
+        !address ||
+        isNil(targetChain?.id) ||
+        !selectedToken ||
+        !amount ||
+        !recipientAddress
+      ) {
+        throw new Error('Missing required parameters for transaction');
+      }
+      return new Promise(async (resolve, reject) => {
+        const { txHash, error, message } = await transferFromMoonbeam({
           amount,
-          symbol: selectedToken?.symbol
+          destinationChainId: Number(targetChain?.id),
+          sourceAddress: address,
+          destinationAddress: recipientAddress,
+          token: selectedToken?.symbol
         });
-        toastIdRef.current = showPendingToast(txHash);
+        if (txHash) {
+          onSuccessImmediate?.();
+          addTransaction({
+            txHash,
+            decimals: selectedToken?.decimals ?? 0,
+            sourceChainId: 2004,
+            sourceAddress: address,
+            targetChainId: Number(targetChain?.id),
+            targetAddress: recipientAddress,
+            amount,
+            symbol: selectedToken?.symbol
+          });
+          toastIdRef.current = showPendingToast(txHash);
 
-        try {
-          const startTime = Date.now();
-          const transactionReceipt = await waitForTransactionReceipt(
-            config as any,
-            {
-              chainId: sourceChain?.isEvm
-                ? Number(sourceChain?.evmChainId)
-                : undefined,
-              hash: txHash as `0x${string}`
-            }
-          );
-          console.log('transactionReceipt', transactionReceipt);
-          if (transactionReceipt.status === 'success') {
-            await calculateAndWaitRemainingTime(
-              startTime,
-              CROSS_CHAIN_TRANSFER_ESTIMATED_TIME
+          try {
+            const startTime = Date.now();
+            const transactionReceipt = await waitForTransactionReceipt(
+              config as any,
+              {
+                chainId: sourceChain?.isEvm
+                  ? Number(sourceChain?.evmChainId)
+                  : undefined,
+                hash: txHash as `0x${string}`
+              }
             );
-            showSuccessToast(txHash, toastIdRef.current);
-            toastIdRef.current = undefined;
-            resolve({ status: TransactionStatus.COMPLETED, txHash });
-          } else {
+            console.log('transactionReceipt', transactionReceipt);
+            if (transactionReceipt.status === 'success') {
+              await calculateAndWaitRemainingTime(
+                startTime,
+                CROSS_CHAIN_TRANSFER_ESTIMATED_TIME
+              );
+              showSuccessToast(txHash, toastIdRef.current);
+              toastIdRef.current = undefined;
+              resolve({ status: TransactionStatus.COMPLETED, txHash });
+            } else {
+              showErrorToast(txHash, toastIdRef.current);
+              toastIdRef.current = undefined;
+              resolve({ status: TransactionStatus.FAILED, txHash });
+            }
+          } catch (error) {
             showErrorToast(txHash, toastIdRef.current);
             toastIdRef.current = undefined;
             resolve({ status: TransactionStatus.FAILED, txHash });
+            console.error('Error processing transaction:', error);
           }
-        } catch (error) {
-          showErrorToast(txHash, toastIdRef.current);
-          toastIdRef.current = undefined;
-          resolve({ status: TransactionStatus.FAILED, txHash });
-          console.error('Error processing transaction:', error);
         }
-      }
-      if (error) {
-        reject(message);
-      }
-    });
-  }, [
-    address,
-    sourceChain,
-    targetChain,
-    selectedToken,
-    amount,
-    recipientAddress,
-    addTransaction,
-    config
-  ]);
+        if (error) {
+          reject(message);
+        }
+      });
+    },
+    [
+      address,
+      sourceChain,
+      targetChain,
+      selectedToken,
+      amount,
+      recipientAddress,
+      addTransaction,
+      config
+    ]
+  );
 
   return {
     executeTransaction,

@@ -56,7 +56,7 @@ export function TransactionDetail({ txHash, status }: TransactionDetailProps) {
       <div>
         <Link
           href={blockExplorerUrl}
-          className="flex items-center gap-[10px] font-mono text-[12px] font-normal tabular-nums leading-normal text-[#12161950]"
+          className="flex items-center gap-[10px] text-[12px] font-normal tabular-nums leading-normal text-[#12161950]"
           target="_blank"
           rel="noopener noreferrer"
         >

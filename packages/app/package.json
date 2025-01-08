@@ -30,6 +30,7 @@
     "@wagmi/core": "^2.16.0",
     "big.js": "^6.2.2",
     "bignumber.js": "^9.1.2",
+    "blo": "^1.2.0",
     "bn.js": "^5.2.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",

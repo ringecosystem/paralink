@@ -9,7 +9,7 @@ export const Tabs = () => {
   const [activeTab, setActiveTab] = useState<'wallet' | 'history'>('wallet');
 
   return (
-    <div className="mx-auto w-[calc(100vw-40px)] rounded-[10px] bg-white p-[10px] md:w-[300px]">
+    <div className="mx-auto w-[calc(100vw-40px)] rounded-[10px] bg-white p-[10px] md:w-[450px]">
       <div className="relative flex w-full items-center justify-between text-[12px] text-[#FF0083]">
         <div
           className={cn(

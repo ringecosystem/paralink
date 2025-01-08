@@ -1,6 +1,7 @@
 'use client';
 import Image from 'next/image';
 import { LogOut } from 'lucide-react';
+import { blo } from 'blo';
 import { useWalletConnection } from '@/hooks/use-wallet-connection';
 import { useDisconnectWallet } from '@/hooks/disconnect-wallet';
 import { toShortAddress } from '@/lib/utils';
@@ -17,18 +18,25 @@ export const Wallets = () => {
         <div className="flex flex-col gap-[10px]">
           <div className="flex items-center gap-[5px]">
             <Image
-              src="/images/wallet/metamask.png"
+              src="/images/wallet/ethereum.svg"
               alt="wallet"
               width={20}
               height={20}
             />
             <span className="text-[14px] font-bold leading-normal text-[#242A2E]">
-              EVM
+              Ethereum
             </span>
           </div>
           <div className="flex w-full items-center justify-between rounded-[10px] bg-[#F2F3F5] px-[10px] py-[5px] text-[12px] font-normal leading-normal">
             <div className="flex items-center gap-[5px]">
-              <span className="font-mono text-[12px] font-normal tabular-nums leading-normal text-[#242A2E]">
+              <Image
+                src={blo(evmAddress as `0x${string}`)}
+                alt={evmAddress}
+                width={20}
+                height={20}
+                className="rounded-full"
+              />
+              <span className="text-[12px] font-normal tabular-nums leading-normal text-[#242A2E]">
                 {toShortAddress(evmAddress as `0x${string}`)}
               </span>
               <ClipboardIconButton
@@ -51,18 +59,25 @@ export const Wallets = () => {
         <div className="flex flex-col gap-[10px]">
           <div className="flex items-center gap-[5px]">
             <Image
-              src="/images/wallet/polkadot.png"
+              src="/images/wallet/polkadot.svg"
               alt="wallet"
               width={20}
               height={20}
             />
             <span className="text-[14px] font-bold leading-normal text-[#242A2E]">
-              POLKADOT
+              Polkadot
             </span>
           </div>
           <div className="flex w-full items-center justify-between rounded-[10px] bg-[#F2F3F5] px-[10px] py-[5px] text-[12px] font-normal leading-normal">
             <div className="flex items-center gap-[5px]">
-              <span className="font-mono text-[12px] font-normal tabular-nums leading-normal text-[#242A2E]">
+              <Image
+                src={blo(substrateAddress as `0x${string}`)}
+                alt={substrateAddress as `0x${string}`}
+                width={20}
+                height={20}
+                className="rounded-full"
+              />
+              <span className="text-[12px] font-normal tabular-nums leading-normal text-[#242A2E]">
                 {toShortAddress(substrateAddress || '')}
               </span>
               <ClipboardIconButton

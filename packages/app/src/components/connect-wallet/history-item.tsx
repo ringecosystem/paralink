@@ -46,7 +46,7 @@ export const HistoryItem = ({
             className="text-[12px] font-normal leading-normal text-[#121619]"
             title={sourceChain?.name}
           >
-            {sourceChain?.slug}
+            {sourceChain?.name}
           </span>
           <Image
             src="/images/arrow-right.svg"
@@ -58,10 +58,10 @@ export const HistoryItem = ({
             className="text-[12px] font-normal leading-normal text-[#121619]"
             title={targetChain?.name}
           >
-            {targetChain?.slug}
+            {targetChain?.name}
           </span>
         </div>
-        <div className="font-mono text-[12px] font-normal tabular-nums leading-normal text-[#121619]">
+        <div className="text-[12px] font-normal tabular-nums leading-normal text-[#121619]">
           {amount} {symbol}
         </div>
       </div>
@@ -69,7 +69,7 @@ export const HistoryItem = ({
       <div className="flex w-full items-center justify-between">
         <Link
           href={blockExplorerUrl}
-          className="flex items-center gap-[5px] font-mono text-[11px] font-normal tabular-nums leading-[15px] text-[#12161950]"
+          className="flex items-center gap-[5px] text-[11px] font-normal tabular-nums leading-[15px] text-[#12161950]"
           target={blockExplorerUrl}
           rel="noopener noreferrer"
         >

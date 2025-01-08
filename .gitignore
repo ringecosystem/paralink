@@ -20,6 +20,7 @@ yarn-error.log*
 next-env.d.ts
 
 certificates
+packages/app/.env.local
 packages/**/.next
 packages/**/node_modules
 packages/xcm-chain-registry-builder/output
