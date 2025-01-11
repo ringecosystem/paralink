@@ -522,6 +522,39 @@
         }
       },
       {
+        "assetId": 555,
+        "symbol": "GAME",
+        "name": "GAME",
+        "decimals": 10,
+        "reserveType": "local",
+        "xcmLocation": {
+          "v1": {
+            "parents": 0,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 555
+                }
+              ]
+            }
+          }
+        },
+        "registeredChains": {
+          "2006": {
+            "assetId": "18446744073709551641",
+            "symbol": "GAME",
+            "name": "GAME",
+            "decimals": 10
+          }
+        }
+      },
+      {
         "assetId": "31337",
         "symbol": "WUD",
         "name": "Gavun Wud",
@@ -1077,6 +1110,30 @@
             }
           },
           "reserveType": "foreign"
+        },
+        {
+          "assetId": "66249247788835743307843320271452141931",
+          "symbol": "vBNC",
+          "name": "Voucher BNC",
+          "decimals": 12,
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "x2": [
+                  {
+                    "parachain": 2030
+                  },
+                  {
+                    "generalKey": "0x0101"
+                  }
+                ]
+              }
+            }
+          },
+          "priceId": "voucher-bnc",
+          "reserveType": "foreign",
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vbnc.png"
         },
         {
           "assetId": "29085784439601774464560083082574142143",
@@ -1665,6 +1722,31 @@
         }
       ],
       "1000": [
+        {
+          "assetId": "18446744073709551641",
+          "symbol": "GAME",
+          "name": "GAME",
+          "decimals": 10,
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "x3": [
+                  {
+                    "parachain": 1000
+                  },
+                  {
+                    "palletInstance": 50
+                  },
+                  {
+                    "generalIndex": 555
+                  }
+                ]
+              }
+            }
+          },
+          "reserveType": "foreign"
+        },
         {
           "assetId": "4294969281",
           "symbol": "USDC",
@@ -2443,6 +2525,47 @@
         }
       },
       {
+        "symbol": "vBNC",
+        "decimals": 12,
+        "assetId": {
+          "VToken": "BNC"
+        },
+        "xcmLocation": {
+          "v1": {
+            "parents": 1,
+            "interior": {
+              "x2": [
+                {
+                  "parachain": 2030
+                },
+                [
+                  {
+                    "generalKey": {
+                      "length": 2,
+                      "data": "0x0101000000000000000000000000000000000000000000000000000000000000"
+                    }
+                  }
+                ]
+              ]
+            }
+          }
+        },
+        "reserveType": "local",
+        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vbnc.png",
+        "minAmount": "10000000000",
+        "priceId": "voucher-bnc",
+        "registeredChains": {
+          "2004": {
+            "assetId": "66249247788835743307843320271452141931",
+            "symbol": "vBNC",
+            "name": "Voucher BNC",
+            "decimals": 12,
+            "minAmount": "10000000000",
+            "priceId": "voucher-bnc"
+          }
+        }
+      },
+      {
         "symbol": "vFIL",
         "decimals": 18,
         "assetId": {
@@ -3001,6 +3124,38 @@
           "priceId": "voucher-glmr",
           "reserveType": "local",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vglmr.png"
+        },
+        {
+          "assetId": {
+            "VToken": "BNC"
+          },
+          "symbol": "vBNC",
+          "name": "Voucher BNC",
+          "decimals": 12,
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "x2": [
+                  {
+                    "parachain": 2030
+                  },
+                  [
+                    {
+                      "generalKey": {
+                        "length": 2,
+                        "data": "0x0101000000000000000000000000000000000000000000000000000000000000"
+                      }
+                    }
+                  ]
+                ]
+              }
+            }
+          },
+          "minAmount": "10000000000",
+          "priceId": "voucher-bnc",
+          "reserveType": "local",
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vbnc.png"
         },
         {
           "assetId": {
@@ -9882,6 +10037,133 @@
         }
       }
     },
+    "localAssets": [
+      {
+        "symbol": "aDOT",
+        "decimals": 10,
+        "assetId": "1001",
+        "xcmLocation": {
+          "v1": {
+            "parents": 1,
+            "interior": {
+              "x2": [
+                {
+                  "parachain": 2034
+                },
+                {
+                  "accountKey20": {
+                    "network": null,
+                    "key": "0x02639ec01313c8775fae74f2dad1118c8a8a86da"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "reserveType": "local",
+        "registeredChains": {}
+      },
+      {
+        "symbol": "aUSDT",
+        "decimals": 6,
+        "assetId": "1002",
+        "xcmLocation": {
+          "v1": {
+            "parents": 1,
+            "interior": {
+              "x2": [
+                {
+                  "parachain": 2034
+                },
+                {
+                  "accountKey20": {
+                    "network": null,
+                    "key": "0xc64980e4eaf9a1151bd21712b9946b81e41e2b92"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "reserveType": "local",
+        "registeredChains": {}
+      },
+      {
+        "symbol": "aUSDC",
+        "decimals": 6,
+        "assetId": "1003",
+        "xcmLocation": {
+          "v1": {
+            "parents": 1,
+            "interior": {
+              "x2": [
+                {
+                  "parachain": 2034
+                },
+                {
+                  "accountKey20": {
+                    "network": null,
+                    "key": "0x2ec4884088d84e5c2970a034732e5209b0acfa93"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "reserveType": "local",
+        "registeredChains": {}
+      },
+      {
+        "symbol": "avDOT",
+        "decimals": 10,
+        "assetId": "1005",
+        "xcmLocation": {
+          "v1": {
+            "parents": 1,
+            "interior": {
+              "x2": [
+                {
+                  "parachain": 2034
+                },
+                {
+                  "accountKey20": {
+                    "network": null,
+                    "key": "0x0e13b904f4168f93814216b6874ca8349457f263"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "reserveType": "local",
+        "registeredChains": {}
+      },
+      {
+        "symbol": "aWBTC",
+        "decimals": 8,
+        "assetId": "1004",
+        "xcmLocation": {
+          "v1": {
+            "parents": 1,
+            "interior": {
+              "x2": [
+                {
+                  "parachain": 2034
+                },
+                {
+                  "accountKey20": {
+                    "network": null,
+                    "key": "0x02759d14d0d4f452b9c76f5a230750e8857d36f2"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "reserveType": "local",
+        "registeredChains": {}
+      }
+    ],
     "xcAssetsData": {
       "0": [
         {
@@ -10109,6 +10391,62 @@
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/hydradx_main-local-wbtc.png"
         },
         {
+          "assetId": "1000745",
+          "symbol": "sUSDS",
+          "name": "sUSDS",
+          "decimals": 18,
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "x3": [
+                  {
+                    "parachain": 2004
+                  },
+                  {
+                    "palletInstance": 110
+                  },
+                  {
+                    "accountKey20": {
+                      "network": null,
+                      "key": "0xda430218862d3db25de9f61458645dde49a9e9c1"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "reserveType": "foreign"
+        },
+        {
+          "assetId": "1000753",
+          "symbol": "SUI",
+          "name": "SUI",
+          "decimals": 9,
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "x3": [
+                  {
+                    "parachain": 2004
+                  },
+                  {
+                    "palletInstance": 110
+                  },
+                  {
+                    "accountKey20": {
+                      "network": null,
+                      "key": "0x484ecce6775143d3335ed2c7bcb22151c53b9f49"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "reserveType": "foreign"
+        },
+        {
           "assetId": "18",
           "symbol": "DAI",
           "name": "DAI Stablecoin (via Wormhole)",
@@ -10169,6 +10507,34 @@
           "priceId": "tether",
           "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/hydradx_main-local-usdt.png"
+        },
+        {
+          "assetId": "1000752",
+          "symbol": "SOL",
+          "name": "SOL",
+          "decimals": 9,
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "x3": [
+                  {
+                    "parachain": 2004
+                  },
+                  {
+                    "palletInstance": 110
+                  },
+                  {
+                    "accountKey20": {
+                      "network": null,
+                      "key": "0x99fec54a5ad36d50a4bba3a41cab983a5bb86a7d"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "reserveType": "foreign"
         }
       ],
       "2006": [
@@ -10268,6 +10634,133 @@
           "priceId": "voucher-dot",
           "reserveType": "foreign",
           "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/hydradx_main-local-vdot.png"
+        }
+      ],
+      "2034": [
+        {
+          "assetId": "1001",
+          "symbol": "aDOT",
+          "name": "aDOT",
+          "decimals": 10,
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "x2": [
+                  {
+                    "parachain": 2034
+                  },
+                  {
+                    "accountKey20": {
+                      "network": null,
+                      "key": "0x02639ec01313c8775fae74f2dad1118c8a8a86da"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "reserveType": "local"
+        },
+        {
+          "assetId": "1002",
+          "symbol": "aUSDT",
+          "name": "aUSDT",
+          "decimals": 6,
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "x2": [
+                  {
+                    "parachain": 2034
+                  },
+                  {
+                    "accountKey20": {
+                      "network": null,
+                      "key": "0xc64980e4eaf9a1151bd21712b9946b81e41e2b92"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "reserveType": "local"
+        },
+        {
+          "assetId": "1003",
+          "symbol": "aUSDC",
+          "name": "aUSDC",
+          "decimals": 6,
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "x2": [
+                  {
+                    "parachain": 2034
+                  },
+                  {
+                    "accountKey20": {
+                      "network": null,
+                      "key": "0x2ec4884088d84e5c2970a034732e5209b0acfa93"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "reserveType": "local"
+        },
+        {
+          "assetId": "1005",
+          "symbol": "avDOT",
+          "name": "avDOT",
+          "decimals": 10,
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "x2": [
+                  {
+                    "parachain": 2034
+                  },
+                  {
+                    "accountKey20": {
+                      "network": null,
+                      "key": "0x0e13b904f4168f93814216b6874ca8349457f263"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "reserveType": "local"
+        },
+        {
+          "assetId": "1004",
+          "symbol": "aWBTC",
+          "name": "aWBTC",
+          "decimals": 8,
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "x2": [
+                  {
+                    "parachain": 2034
+                  },
+                  {
+                    "accountKey20": {
+                      "network": null,
+                      "key": "0x02759d14d0d4f452b9c76f5a230750e8857d36f2"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "reserveType": "local"
         }
       ],
       "3344": [
