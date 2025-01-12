@@ -9027,6 +9027,26 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000074
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 19
                 }
               ]
