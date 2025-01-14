@@ -1403,7 +1403,7 @@
         "nativeChainID": "bifrost",
         "symbol": "vGLMR",
         "decimals": 18,
-        "xcmV1MultiLocation": "{\"v1\":{\"parents\":1,\"interior\":{\"x2\":[{\"parachain\":2030},[{\"generalKey\":{\"length\":2,\"data\":\"0x0901000000000000000000000000000000000000000000000000000000000000\"}}]]}}}",
+        "xcmV1MultiLocation": "{\"v1\":{\"parents\":1,\"interior\":{\"x2\":[{\"parachain\":2030},{\"generalKey\":{\"length\":2,\"data\":\"0x0901000000000000000000000000000000000000000000000000000000000000\"}}]}}}",
         "asset": {
           "VToken2": "1"
         },
@@ -1415,7 +1415,7 @@
         "nativeChainID": "bifrost",
         "symbol": "vBNC",
         "decimals": 12,
-        "xcmV1MultiLocation": "{\"v1\":{\"parents\":1,\"interior\":{\"x2\":[{\"parachain\":2030},[{\"generalKey\":{\"length\":2,\"data\":\"0x0101000000000000000000000000000000000000000000000000000000000000\"}}]]}}}",
+        "xcmV1MultiLocation": "{\"v1\":{\"parents\":1,\"interior\":{\"x2\":[{\"parachain\":2030},{\"generalKey\":{\"length\":2,\"data\":\"0x0101000000000000000000000000000000000000000000000000000000000000\"}}]}}}",
         "asset": {
           "VToken": "BNC"
         },
@@ -1427,7 +1427,7 @@
         "nativeChainID": "bifrost",
         "symbol": "vFIL",
         "decimals": 18,
-        "xcmV1MultiLocation": "{\"v1\":{\"parents\":1,\"interior\":{\"x2\":[{\"parachain\":2030},[{\"generalKey\":{\"length\":2,\"data\":\"0x0904000000000000000000000000000000000000000000000000000000000000\"}}]]}}}",
+        "xcmV1MultiLocation": "{\"v1\":{\"parents\":1,\"interior\":{\"x2\":[{\"parachain\":2030},{\"generalKey\":{\"length\":2,\"data\":\"0x0904000000000000000000000000000000000000000000000000000000000000\"}}]}}}",
         "asset": {
           "VToken2": "4"
         },
@@ -1439,7 +1439,7 @@
         "nativeChainID": "bifrost",
         "symbol": "BNCS",
         "decimals": 12,
-        "xcmV1MultiLocation": "{\"v1\":{\"parents\":1,\"interior\":{\"x2\":[{\"parachain\":2030},[{\"generalKey\":{\"length\":2,\"data\":\"0x0809000000000000000000000000000000000000000000000000000000000000\"}}]]}}}",
+        "xcmV1MultiLocation": "{\"v1\":{\"parents\":1,\"interior\":{\"x2\":[{\"parachain\":2030},{\"generalKey\":{\"length\":2,\"data\":\"0x0809000000000000000000000000000000000000000000000000000000000000\"}}]}}}",
         "asset": {
           "Token2": "9"
         },
@@ -1451,7 +1451,7 @@
         "nativeChainID": "bifrost",
         "symbol": "FIL",
         "decimals": 18,
-        "xcmV1MultiLocation": "{\"v1\":{\"parents\":1,\"interior\":{\"x2\":[{\"parachain\":2030},[{\"generalKey\":{\"length\":2,\"data\":\"0x0804000000000000000000000000000000000000000000000000000000000000\"}}]]}}}",
+        "xcmV1MultiLocation": "{\"v1\":{\"parents\":1,\"interior\":{\"x2\":[{\"parachain\":2030},{\"generalKey\":{\"length\":2,\"data\":\"0x0804000000000000000000000000000000000000000000000000000000000000\"}}]}}}",
         "asset": {
           "Token2": "4"
         },
@@ -1463,7 +1463,7 @@
         "nativeChainID": "bifrost",
         "symbol": "vMANTA",
         "decimals": 18,
-        "xcmV1MultiLocation": "{\"v1\":{\"parents\":1,\"interior\":{\"x2\":[{\"parachain\":2030},[{\"generalKey\":{\"length\":2,\"data\":\"0x0908000000000000000000000000000000000000000000000000000000000000\"}}]]}}}",
+        "xcmV1MultiLocation": "{\"v1\":{\"parents\":1,\"interior\":{\"x2\":[{\"parachain\":2030},{\"generalKey\":{\"length\":2,\"data\":\"0x0908000000000000000000000000000000000000000000000000000000000000\"}}]}}}",
         "asset": {
           "VToken2": "8"
         },
@@ -1475,7 +1475,7 @@
         "nativeChainID": "bifrost",
         "symbol": "PEN",
         "decimals": 12,
-        "xcmV1MultiLocation": "{\"v1\":{\"parents\":1,\"interior\":{\"x2\":[{\"parachain\":2030},[{\"palletInstance\":10}]]}}}",
+        "xcmV1MultiLocation": "{\"v1\":{\"parents\":1,\"interior\":{\"x2\":[{\"parachain\":2030},{\"palletInstance\":10}]}}}",
         "asset": {
           "Token2": "12"
         },
@@ -1487,7 +1487,7 @@
         "nativeChainID": "bifrost",
         "symbol": "vASTR",
         "decimals": 18,
-        "xcmV1MultiLocation": "{\"v1\":{\"parents\":1,\"interior\":{\"x2\":[{\"parachain\":2030},[{\"generalKey\":{\"length\":2,\"data\":\"0x0903000000000000000000000000000000000000000000000000000000000000\"}}]]}}}",
+        "xcmV1MultiLocation": "{\"v1\":{\"parents\":1,\"interior\":{\"x2\":[{\"parachain\":2030},{\"generalKey\":{\"length\":2,\"data\":\"0x0903000000000000000000000000000000000000000000000000000000000000\"}}]}}}",
         "asset": {
           "VToken2": "3"
         },
@@ -1499,7 +1499,7 @@
         "nativeChainID": "bifrost",
         "symbol": "BNC",
         "decimals": 12,
-        "xcmV1MultiLocation": "{\"v1\":{\"parents\":1,\"interior\":{\"x2\":[{\"parachain\":2030},[{\"generalKey\":{\"length\":2,\"data\":\"0x0001000000000000000000000000000000000000000000000000000000000000\"}}]]}}}",
+        "xcmV1MultiLocation": "{\"v1\":{\"parents\":1,\"interior\":{\"x2\":[{\"parachain\":2030},{\"generalKey\":{\"length\":2,\"data\":\"0x0001000000000000000000000000000000000000000000000000000000000000\"}}]}}}",
         "asset": {
           "Native": "BNC"
         },
@@ -1511,7 +1511,7 @@
         "nativeChainID": "bifrost",
         "symbol": "vDOT",
         "decimals": 10,
-        "xcmV1MultiLocation": "{\"v1\":{\"parents\":1,\"interior\":{\"x2\":[{\"parachain\":2030},[{\"generalKey\":{\"length\":2,\"data\":\"0x0900000000000000000000000000000000000000000000000000000000000000\"}}]]}}}",
+        "xcmV1MultiLocation": "{\"v1\":{\"parents\":1,\"interior\":{\"x2\":[{\"parachain\":2030},{\"generalKey\":{\"length\":2,\"data\":\"0x0900000000000000000000000000000000000000000000000000000000000000\"}}]}}}",
         "asset": {
           "VToken2": "0"
         },
