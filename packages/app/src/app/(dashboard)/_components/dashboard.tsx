@@ -387,7 +387,7 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
 
   return (
     <>
-      <div className="container absolute left-0 right-0 top-[calc(var(--header-height)+10px)]">
+      <div className="absolute left-0 right-0 top-[calc(var(--header-height)+10px)]">
         <Alert
           message={
             <p className="space-x-[6px]">
