@@ -1,5 +1,5 @@
 # ParaLink
-ParaLink is an asset exchange hub based on [XCM](https://wiki.polkadot.network/docs/learn/xcm/overview-summary) within Polkadot parachains. Unlike other exchange tools, it automatically supports parachains and assets that meet the [Support Requirements](#support-requirements). Once these requirements are met, your parachain and its assets are supported by ParaLink with no manual intervention, significantly simplifying integration and enhancing asset exchange efficiency for the Polkadot community.
+ParaLink is an asset exchange hub based on [XCM](https://wiki.polkadot.network/docs/learn/xcm/overview-summary) within Polkadot parachains. Unlike other exchange tools, it automatically supports parachains and assets that meet the [Support Requirements](#support-requirements). Once these requirements are met, your parachain and its asset pairs are supported by ParaLink with no manual intervention, significantly simplifying integration and enhancing asset exchange efficiency for the Polkadot community.
 
 ## **Support Requirements**
 
