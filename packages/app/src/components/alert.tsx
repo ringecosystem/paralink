@@ -35,7 +35,7 @@ const Alert = ({ message, closable = false, duration }: AlertProps) => {
       {isVisible && (
         <motion.div
           className={
-            'flex items-center justify-between gap-2 rounded-sm bg-primary px-4 py-2 text-white'
+            'flex items-center justify-between gap-2 bg-primary px-4 py-2 text-white'
           }
           initial="hidden"
           animate="visible"

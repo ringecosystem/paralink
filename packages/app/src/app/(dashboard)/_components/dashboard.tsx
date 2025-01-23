@@ -387,21 +387,31 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
 
   return (
     <>
-      <div className="container absolute left-0 right-0 top-[calc(var(--header-height)+10px)]">
+      <div className="absolute left-0 right-0 top-[calc(var(--header-height)+10px)]">
         <Alert
           message={
-            <p className="space-x-[10px]">
-              <strong>Bridge Tokens with Paralink!</strong>
-              <span>
-                Paralink makes it easy to take your tokens interchain. Issues?
-              </span>
+            <p className="space-x-[6px]">
+              <span>For parachains and assets that meet this</span>
               <a
-                className="font-bold"
-                href="https://github.com/ringecosystem/paralink/issues/new/choose"
+                className="font-bold underline"
+                href="https://github.com/ringecosystem/paralink?tab=readme-ov-file#support-requirements"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Report here↗
+                requirement
+              </a>
+              ,
+              <span>
+                they will be automatically supported by ParaLink. Enjoy the
+                seamless integration!
+              </span>
+              <a
+                className="font-bold underline"
+                href="https://github.com/ringecosystem/paralink/issues"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Issues? Report here↗
               </a>
             </p>
           }
