@@ -1,3 +1,4 @@
+'use server';
 import { createJsonResourceLoader } from './resource-loader';
 
 async function fetchLatestTag(owner: string, repo: string): Promise<string> {
@@ -12,7 +13,7 @@ async function fetchLatestTag(owner: string, repo: string): Promise<string> {
 
   const response = await fetch(
     `https://api.github.com/repos/${owner}/${repo}/tags`,
-    { headers }
+    { headers, cache: 'no-store' }
   );
 
   if (!response.ok) {
