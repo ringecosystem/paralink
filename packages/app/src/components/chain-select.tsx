@@ -79,7 +79,7 @@ export const ChainSelect = ({
             <div className="h-[1px] w-full bg-[#12161910]"></div>
           </div>
           <div>
-            <ScrollArea className="h-[300px]">
+            <ScrollArea className="h-[375px]">
               <div className="pt-[20px]">
                 {chains?.length ? (
                   chains?.map((chain, index) => (
