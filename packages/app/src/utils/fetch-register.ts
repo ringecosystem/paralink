@@ -17,7 +17,8 @@ async function fetchLatestTag(owner: string, repo: string): Promise<string> {
   );
 
   if (!response.ok) {
-    throw new Error(`Failed to fetch tags: ${response.statusText}`);
+    // throw new Error(`Failed to fetch tags: ${response.statusText}`);
+    return '0.2.0';
   }
 
   const tags = await response.json();
