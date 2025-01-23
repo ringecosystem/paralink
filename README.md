@@ -1,8 +1,7 @@
 # ParaLink
+ParaLink is an asset exchange hub based on [XCM](https://wiki.polkadot.network/docs/learn/xcm/overview-summary) within Polkadot parachains. Unlike other exchange tools, it automatically supports parachains and assets that meet the [Support Requirements](#support-requirements). Once these requirements are met, your parachain and its asset pairs are supported by ParaLink with no manual intervention, significantly simplifying integration and enhancing asset exchange efficiency for the Polkadot community.
 
-ParaLink is an asset exchange hub integrated with [XCM](https://wiki.polkadot.network/docs/learn/xcm/overview-summary) within the Polkadot parachains. It automatically supports parachains and assets, so if you are part of a parachain or token team, no additional action is required. Your parachain and its assets will be supported by ParaLink, simplifying the integration process and enhancing the efficiency of asset exchanges.
-
-## Support Requirements
+## **Support Requirements**
 
 ParaLink will automatically support chains that meet the following criteria:
 
@@ -12,6 +11,7 @@ ParaLink will automatically support chains that meet the following criteria:
 Assets within your parachains will be automatically supported if they meet the following requirement:
 
 1. The asset is listed in the [asset-transfer-api-registry](https://github.com/paritytech/asset-transfer-api-registry), which we use to obtain asset registry details.
+2. The asset should be included in the target chain’s `xcmPaymentAcceptTokens` list.
 
 As long as your parachain and assets meet these requirements, they will be automatically supported by ParaLink. Enjoy the seamless integration!
 
