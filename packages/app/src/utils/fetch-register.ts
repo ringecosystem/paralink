@@ -1,36 +1,31 @@
 'use server';
-import simpleGit from 'simple-git';
 import { createJsonResourceLoader } from './resource-loader';
 
-const git = simpleGit();
+async function fetchLatestTag(owner: string, repo: string): Promise<string> {
+  const token = process.env.GITHUB_TOKEN;
+  const headers: HeadersInit = {
+    Accept: 'application/vnd.github.v3+json'
+  };
 
-async function getRemoteTags(repoUrl) {
-  try {
-    const tags = await git.listRemote(['--tags', repoUrl]);
-
-    const tagList = tags
-      .split('\n')
-      .filter((tag) => tag)
-      .map((tag) => {
-        const match = tag.match(/refs\/tags\/(.+)$/);
-        return match ? match[1] : null;
-      })
-      .filter((tag) => tag)
-      .map((tag) => tag?.replace(/\^\{\}$/, ''));
-
-    return tagList;
-  } catch (err) {
-    console.error('Error fetching remote tags:', err);
-    throw err;
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
   }
-}
 
-async function fetchLatestTag(repoUrl): Promise<string> {
-  const tagsList = await getRemoteTags(repoUrl);
-  if (tagsList.length) {
-    return tagsList[tagsList.length - 1] as string;
+  const response = await fetch(
+    `https://api.github.com/repos/${owner}/${repo}/tags`,
+    { headers, cache: 'no-store' }
+  );
+
+  if (!response.ok) {
+    return 'latest';
   }
-  return 'latest';
+
+  const tags = await response.json();
+  if (!tags.length) {
+    return 'latest';
+  }
+
+  return tags[0].name;
 }
 
 export async function fetchRegistry() {
@@ -38,9 +33,9 @@ export async function fetchRegistry() {
     preferredCDN: 'github-raw'
   });
 
-  const latestTag = await fetchLatestTag(
-    'https://github.com/ringecosystem/paralink.git'
-  );
+  const latestTag = await fetchLatestTag('ringecosystem', 'paralink');
+
+  console.log('latestTag', latestTag);
 
   return response.fetchJson({
     owner: 'ringecosystem',
