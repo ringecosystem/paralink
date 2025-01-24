@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { usePriceStore } from '@/store/price';
 import { useShallow } from 'zustand/react/shallow';
 
-const API_URL = '/api/prices';
+const COINMARKETCAP_API_URL = 'https://api.coingecko.com/api/v3/simple/price';
 
 interface CoinGeckoResponse {
   [coinId: string]: {
@@ -21,15 +21,23 @@ export function useFetchPrice() {
     queryKey: ['prices', priceIds],
     queryFn: async () => {
       if (priceIds.length === 0) return {};
-
       const response = await fetch(
-        `${API_URL}?ids=${priceIds.join(',')}` // 简化的 URL 构造
+        COINMARKETCAP_API_URL +
+          '?ids=' +
+          priceIds.join(',') +
+          '&vs_currencies=usd',
+        {
+          headers: {
+            Accept: 'application/json'
+          }
+        }
       );
 
       if (!response.ok) {
-        throw new Error('Failed to fetch prices');
+        throw new Error(
+          `Failed to fetch prices: ${response.status} ${response.statusText}`
+        );
       }
-
       const data = (await response.json()) as CoinGeckoResponse;
 
       // 直接从响应中提取 USD 价格
