@@ -49,6 +49,7 @@
     "react-hot-toast": "^2.4.1",
     "react-toastify": "^10.0.6",
     "react-use": "^17.5.1",
+    "simple-git": "^3.27.0",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
     "viem": "2.x",
