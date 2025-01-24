@@ -28,7 +28,6 @@ export function useFetchPrice() {
           '&vs_currencies=usd',
         {
           headers: {
-            x_cg_pro_api_key: process.env.NEXT_PUBLIC_CMC_API_KEY || '',
             Accept: 'application/json'
           }
         }

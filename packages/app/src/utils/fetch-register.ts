@@ -1,3 +1,4 @@
+'use server';
 import { createJsonResourceLoader } from './resource-loader';
 
 async function fetchLatestTag(owner: string, repo: string): Promise<string> {
@@ -12,16 +13,18 @@ async function fetchLatestTag(owner: string, repo: string): Promise<string> {
 
   const response = await fetch(
     `https://api.github.com/repos/${owner}/${repo}/tags`,
-    { headers }
+    { headers, cache: 'no-store' }
   );
 
   if (!response.ok) {
-    throw new Error(`Failed to fetch tags: ${response.statusText}`);
+    // return 'latest';
+    throw new Error('Failed to fetch tags');
   }
 
   const tags = await response.json();
   if (!tags.length) {
-    throw new Error('No tags found');
+    // return 'latest';
+    throw new Error('Failed to fetch tags');
   }
 
   return tags[0].name;
