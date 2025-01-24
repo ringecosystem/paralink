@@ -6,10 +6,9 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const ids = searchParams.get('ids');
     const url = `${COINGECKO_API_URL}?ids=${ids}&vs_currencies=usd`;
-    console.log('url', url);
     const response = await fetch(url, {
       headers: {
-        'x-cg-demo-api-key': process.env.CMC_API_KEY!,
+        // 'x-cg-demo-api-key': process.env.CMC_API_KEY!,
         Accept: 'application/json'
       },
       cache: 'no-store'
