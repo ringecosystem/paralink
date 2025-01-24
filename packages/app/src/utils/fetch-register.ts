@@ -17,12 +17,14 @@ async function fetchLatestTag(owner: string, repo: string): Promise<string> {
   );
 
   if (!response.ok) {
-    return 'latest';
+    // return 'latest';
+    throw new Error('Failed to fetch tags');
   }
 
   const tags = await response.json();
   if (!tags.length) {
-    return 'latest';
+    // return 'latest';
+    throw new Error('Failed to fetch tags');
   }
 
   return tags[0].name;
