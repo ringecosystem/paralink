@@ -9,7 +9,7 @@ export async function GET(request: Request) {
     console.log('url', url);
     const response = await fetch(url, {
       headers: {
-        x_cg_pro_api_key: process.env.COINGECKO_API_KEY!,
+        x_cg_pro_api_key: process.env.CMC_API_KEY!,
         Accept: 'application/json'
       },
       cache: 'no-store'
