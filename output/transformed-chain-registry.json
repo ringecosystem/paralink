@@ -9935,6 +9935,26 @@
           "concrete": {
             "parents": 0,
             "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 669
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 0,
+            "interior": {
               "x1": {
                 "accountKey20": {
                   "network": null,
