@@ -35,7 +35,7 @@ jobs:
       - name: Check for changes
         id: check_changes
         run: |
-          if [ -n "$(git status --porcelain)" ]; then
+          if [ -n "$(git status outputs --porcelain)" ]; then
             echo "CHANGED=true" >> $GITHUB_OUTPUT
           else
             echo "CHANGED=false" >> $GITHUB_OUTPUT
@@ -57,13 +57,13 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.ref }}
 
-      - name: Trigger deploy
-        if: steps.check_changes.outputs.CHANGED == 'true'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh workflow run \
-            deploy-stg.yml \
-            --ref=main \
-            --repo=ringecosystem/paralink \
+      # - name: Trigger deploy
+      #   if: steps.check_changes.outputs.CHANGED == 'true'
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   run: |
+      #     gh workflow run \
+      #       deploy-stg.yml \
+      #       --ref=main \
+      #       --repo=ringecosystem/paralink \
 
