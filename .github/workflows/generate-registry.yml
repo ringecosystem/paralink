@@ -32,7 +32,17 @@ jobs:
           export STORE_BASE_PATH=$(pwd)
           pnpm --filter=xcm-chain-registry-builder build
 
+      - name: Check for changes
+        id: check_changes
+        run: |
+          if git diff --quiet HEAD; then
+            echo "CHANGED=false" >> $GITHUB_OUTPUT
+          else
+            echo "CHANGED=true" >> $GITHUB_OUTPUT
+          fi
+
       - name: Commit files
+        if: steps.check_changes.outputs.CHANGED == 'true'
         run: |
           MSG="Update xcm chain registry"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
@@ -42,11 +52,13 @@ jobs:
   
       - name: Push changes
         uses: ad-m/github-push-action@master
+        if: steps.check_changes.outputs.CHANGED == 'true'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.ref }}
 
       - name: Trigger deploy
+        if: steps.check_changes.outputs.CHANGED == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
