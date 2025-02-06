@@ -35,10 +35,10 @@ jobs:
       - name: Check for changes
         id: check_changes
         run: |
-          if git diff --quiet HEAD; then
-            echo "CHANGED=false" >> $GITHUB_OUTPUT
-          else
+          if [ -n "$(git status --porcelain)" ]; then
             echo "CHANGED=true" >> $GITHUB_OUTPUT
+          else
+            echo "CHANGED=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Commit files
