@@ -35,11 +35,9 @@ jobs:
       - name: Check for changes
         id: check_changes
         run: |
-          if [ -n "$(git status --porcelain)" ]; then
-            echo 'changed git status'
+          if [ -n "$(git status outputs --porcelain)" ]; then
             echo "CHANGED=true" >> $GITHUB_OUTPUT
           else
-            echo 'unchanged git status'
             echo "CHANGED=false" >> $GITHUB_OUTPUT
           fi
 
