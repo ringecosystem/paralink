@@ -12,7 +12,51 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: APP_NAME,
-  description: APP_NAME
+  description: APP_NAME,
+  icons: [
+    {
+      url: '/images/favicon/favicon32.png',
+      sizes: '32x32',
+      type: 'image/png',
+      rel: 'icon'
+    },
+    {
+      url: '/images/favicon/favicon48.png',
+      sizes: '48x48',
+      type: 'image/png',
+      rel: 'icon'
+    },
+    {
+      url: '/images/favicon/favicon96.png',
+      sizes: '96x96',
+      type: 'image/png',
+      rel: 'icon'
+    },
+    {
+      url: '/images/favicon/favicon167.png',
+      sizes: '167x167',
+      type: 'image/png',
+      rel: 'apple-touch-icon'
+    },
+    {
+      url: '/images/favicon/favicon180.png',
+      sizes: '180x180',
+      type: 'image/png',
+      rel: 'apple-touch-icon'
+    },
+    {
+      url: '/images/favicon/favicon192.png',
+      sizes: '192x192',
+      type: 'image/png',
+      rel: 'icon'
+    },
+    {
+      url: '/images/favicon/favicon512.png',
+      sizes: '512x512',
+      type: 'image/png',
+      rel: 'icon'
+    }
+  ]
 };
 
 export default function RootLayout({
