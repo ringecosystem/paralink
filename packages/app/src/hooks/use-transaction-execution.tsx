@@ -13,7 +13,10 @@ import { TransactionDetail } from '@/components/transaction-detail';
 import { CROSS_CHAIN_TRANSFER_ESTIMATED_TIME } from '@/config/blockTime';
 import { calculateAndWaitRemainingTime } from '@/utils/date';
 import type { ChainConfig, Asset } from '@/types/xcm-asset';
+import { useSendTransaction } from 'wagmi';
 import { isNil } from 'lodash-es';
+import { DARWINIA_EVM_CONTRACT_ADDRESS } from '@/config/evmContractAddress';
+import { u8aToHex } from '@polkadot/util';
 
 const AUTO_CLOSE_TIME = 5_000;
 
@@ -84,10 +87,100 @@ export function useTransactionExecution({
 }: UseTransactionExecutionProps) {
   const toastIdRef = useRef<string | number>();
   const config = useConfig();
+  const { sendTransactionAsync, error: sendTransactionError } =
+    useSendTransaction();
 
   const { selectedWallet } = useWalletStore();
 
   const addTransaction = useTransactionHistory((state) => state.addTransaction);
+
+  const executeTransactionFromDarwinia = useCallback(
+    async ({
+      extrinsic,
+      onSuccessImmediate
+    }: {
+      extrinsic: any;
+      onSuccessImmediate: () => void;
+    }) => {
+      if (
+        isNil(sourceChain?.id) ||
+        !address ||
+        isNil(targetChain?.id) ||
+        !selectedToken ||
+        !amount ||
+        !recipientAddress
+      ) {
+        throw new Error('Missing required parameters for transaction');
+      }
+      return new Promise(async (resolve, reject) => {
+        const txHash = await sendTransactionAsync({
+          to: DARWINIA_EVM_CONTRACT_ADDRESS as `0x${string}`,
+          data: u8aToHex(extrinsic.method.toU8a())
+        });
+        if (txHash) {
+          onSuccessImmediate?.();
+          addTransaction({
+            txHash,
+            decimals: selectedToken?.decimals ?? 0,
+            sourceChainId: 2046,
+            sourceAddress: address,
+            targetChainId: Number(targetChain?.id),
+            targetAddress: recipientAddress,
+            amount,
+            symbol: selectedToken?.symbol
+          });
+          toastIdRef.current = showPendingToast(txHash);
+
+          try {
+            const startTime = Date.now();
+            const transactionReceipt = await waitForTransactionReceipt(
+              config as any,
+              {
+                chainId: sourceChain?.isEvm
+                  ? Number(sourceChain?.evmChainId)
+                  : undefined,
+                hash: txHash as `0x${string}`
+              }
+            );
+            console.log('transactionReceipt', transactionReceipt);
+            if (transactionReceipt.status === 'success') {
+              await calculateAndWaitRemainingTime(
+                startTime,
+                CROSS_CHAIN_TRANSFER_ESTIMATED_TIME
+              );
+              showSuccessToast(txHash, toastIdRef.current);
+              toastIdRef.current = undefined;
+              resolve({ status: TransactionStatus.COMPLETED, txHash });
+            } else {
+              showErrorToast(txHash, toastIdRef.current);
+              toastIdRef.current = undefined;
+              resolve({ status: TransactionStatus.FAILED, txHash });
+            }
+          } catch (error) {
+            showErrorToast(txHash, toastIdRef.current);
+            toastIdRef.current = undefined;
+            resolve({ status: TransactionStatus.FAILED, txHash });
+            console.error('Error processing transaction:', error);
+          }
+        }
+        if (sendTransactionError) {
+          reject(sendTransactionError);
+        }
+      });
+    },
+    [
+      address,
+      sendTransactionAsync,
+      sendTransactionError,
+      sourceChain,
+      targetChain,
+      selectedToken,
+      amount,
+      recipientAddress,
+      addTransaction,
+      config
+    ]
+  );
 
   const executeTransaction = useCallback(
     async ({
@@ -255,6 +348,7 @@ export function useTransactionExecution({
 
   return {
     executeTransaction,
+    executeTransactionFromDarwinia,
     executeTransactionFromMoonbeam
   };
 }

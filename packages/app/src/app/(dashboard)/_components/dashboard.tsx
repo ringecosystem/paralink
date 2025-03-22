@@ -266,15 +266,18 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
     setIsLoadingCrossChain(false);
   }, [swapChains, chains, sourceChainId, targetChainId]);
 
-  const { executeTransaction, executeTransactionFromMoonbeam } =
-    useTransactionExecution({
-      address,
-      sourceChain,
-      targetChain,
-      selectedToken,
-      amount,
-      recipientAddress
-    });
+  const {
+    executeTransaction,
+    executeTransactionFromMoonbeam,
+    executeTransactionFromDarwinia
+  } = useTransactionExecution({
+    address,
+    sourceChain,
+    targetChain,
+    selectedToken,
+    amount,
+    recipientAddress
+  });
 
   const handleClick = useCallback(async () => {
     if (!address) {
@@ -313,6 +316,26 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
       }
       return;
     }
+    if (sourceChainId === 2046) {
+      try {
+        setIsTransactionLoading(true);
+        await executeTransactionFromDarwinia({
+          extrinsic,
+          onSuccessImmediate: () => {
+            setIsConfirmTransactionOpen(false);
+          }
+        });
+        pickerRef.current?.refreshBalances();
+      } catch (error) {
+        toast.error(typeof error === 'string' ? error : 'Transaction failed', {
+          position: 'top-center',
+          className: 'text-[14px]'
+        });
+      } finally {
+        setIsTransactionLoading(false);
+      }
+      return;
+    }
 
     try {
       setIsTransactionLoading(true);
@@ -335,7 +358,8 @@ export default function Dashboard({ registryAssets }: DashboardProps) {
     extrinsic,
     executeTransaction,
     sourceChainId,
-    executeTransactionFromMoonbeam
+    executeTransactionFromMoonbeam,
+    executeTransactionFromDarwinia
   ]);
 
   const buttonLoadingText = useMemo(() => {
