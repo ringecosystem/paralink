@@ -2,16 +2,22 @@
   "0": {
     "name": "Polkadot",
     "slug": "polkadot",
-    "icon": "https://chain-list-assets.subwallet.app/assets/chains/polkadot.png",
+    "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chains/polkadot.png",
     "addressPrefix": 0,
     "providers": [
       "wss://polkadot-rpc.dwellir.com",
       "wss://polkadot.public.curie.radiumblock.co/ws",
       "wss://dot-rpc.stakeworld.io",
+      "wss://rpc-polkadot.luckyfriday.io",
+      "wss://polkadot-rpc-tn.dwellir.com",
       "wss://rpc.ibp.network/polkadot",
       "wss://polkadot-public-rpc.blockops.network/ws",
+      "wss://rockx-dot.w3node.com/polka-public-dot/ws",
       "wss://polkadot-rpc.publicnode.com",
-      "wss://polkadot.api.onfinality.io/public-ws"
+      "wss://polkadot.api.onfinality.io/public-ws",
+      "wss://rpc-polkadot.helixstreet.io",
+      "wss://polkadot.dotters.network",
+      "wss://polkadot.rpc.permanence.io"
     ],
     "alive": true,
     "existentialDeposit": "10000000000",
@@ -33,7 +39,7 @@
       "symbol": "DOT",
       "decimals": 10,
       "name": "Polkadot",
-      "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/polkadot-native-dot.png",
+      "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/polkadot-native-dot.png",
       "priceId": "polkadot",
       "minAmount": "10000000000",
       "xcmLocation": {
@@ -52,7 +58,7 @@
           "priceId": "polkadot",
           "isNative": true,
           "reserveType": "local",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/polkadot-native-dot.png",
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/polkadot-native-dot.png",
           "xcmLocation": {
             "v1": {
               "parents": 1,
@@ -71,7 +77,7 @@
           "priceId": "polkadot",
           "isNative": true,
           "reserveType": "local",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/polkadot-native-dot.png",
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/polkadot-native-dot.png",
           "xcmLocation": {
             "v1": {
               "parents": 1,
@@ -89,7 +95,7 @@
           "priceId": "polkadot",
           "isNative": true,
           "reserveType": "local",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/polkadot-native-dot.png",
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/polkadot-native-dot.png",
           "xcmLocation": {
             "v1": {
               "parents": 1,
@@ -109,7 +115,7 @@
           "priceId": "polkadot",
           "isNative": true,
           "reserveType": "local",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/polkadot-native-dot.png",
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/polkadot-native-dot.png",
           "xcmLocation": {
             "v1": {
               "parents": 1,
@@ -127,7 +133,25 @@
           "priceId": "polkadot",
           "isNative": true,
           "reserveType": "local",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/polkadot-native-dot.png",
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/polkadot-native-dot.png",
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "here": null
+              }
+            }
+          }
+        },
+        "2046": {
+          "assetId": "1029",
+          "symbol": "DOT",
+          "name": "DOT",
+          "decimals": 10,
+          "priceId": "polkadot",
+          "isNative": true,
+          "reserveType": "local",
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/polkadot-native-dot.png",
           "xcmLocation": {
             "v1": {
               "parents": 1,
@@ -144,12 +168,19 @@
   "1000": {
     "name": "Polkadot Asset Hub",
     "slug": "statemint",
-    "icon": "https://chain-list-assets.subwallet.app/assets/chains/statemint.png",
+    "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chains/statemint.png",
     "addressPrefix": 0,
     "providers": [
+      "wss://statemint-rpc-tn.dwellir.com",
       "wss://sys.ibp.network/statemint",
+      "wss://rpc-asset-hub-polkadot.luckyfriday.io",
+      "wss://polkadot-asset-hub-rpc.polkadot.io",
       "wss://dot-rpc.stakeworld.io/assethub",
-      "wss://statemint.api.onfinality.io/public-ws"
+      "wss://statemint.api.onfinality.io/public-ws",
+      "wss://polkadot-assethub-rpc.blockops.network/ws",
+      "wss://asset-hub-polkadot-rpc.dwellir.com",
+      "wss://sys.ibp.network/asset-hub-polkadot",
+      "wss://asset-hub-polkadot.dotters.network"
     ],
     "alive": true,
     "existentialDeposit": "100000000",
@@ -165,13 +196,501 @@
             }
           }
         }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 0,
+            "interior": {
+              "x2": [
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 22222052
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 0,
+            "interior": {
+              "x2": [
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 6543
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 0,
+            "interior": {
+              "x2": [
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 23
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 0,
+            "interior": {
+              "x2": [
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 1994
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 0,
+            "interior": {
+              "x2": [
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000058
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 0,
+            "interior": {
+              "x2": [
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 22222030
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 0,
+            "interior": {
+              "x2": [
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 42069
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x2": [
+                {
+                  "parachain": 2004
+                },
+                {
+                  "palletInstance": 10
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 0,
+            "interior": {
+              "x2": [
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 30
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 0,
+            "interior": {
+              "x2": [
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 6594
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 0,
+            "interior": {
+              "x2": [
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 1337
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 0,
+            "interior": {
+              "x2": [
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 1313
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 0,
+            "interior": {
+              "x2": [
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 18
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 0,
+            "interior": {
+              "x2": [
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 112233
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 0,
+            "interior": {
+              "x2": [
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 12746
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 0,
+            "interior": {
+              "x2": [
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 2567
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 0,
+            "interior": {
+              "x2": [
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 1984
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 0,
+            "interior": {
+              "x2": [
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 1148
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 0,
+            "interior": {
+              "x2": [
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 5361
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 0,
+            "interior": {
+              "x2": [
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 111
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 0,
+            "interior": {
+              "x2": [
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000075
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 0,
+            "interior": {
+              "x2": [
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 22222060
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 0,
+            "interior": {
+              "x2": [
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 22222051
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 0,
+            "interior": {
+              "x2": [
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 2361
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 0,
+            "interior": {
+              "x2": [
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 888
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x1": {
+                "parachain": 3370
+              }
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 0,
+            "interior": {
+              "x2": [
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 1107
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 0,
+            "interior": {
+              "x2": [
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 3164
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 0,
+            "interior": {
+              "x2": [
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 323
+                }
+              ]
+            }
+          }
+        }
       }
     ],
     "nativeToken": {
       "symbol": "DOT",
       "decimals": 10,
       "name": "Polkadot",
-      "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/statemint-native-dot.png",
+      "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-native-dot.png",
       "priceId": "polkadot",
       "minAmount": "100000000",
       "xcmLocation": {
@@ -190,7 +709,7 @@
         "symbol": "WIFD",
         "name": "Dog Wif Dots",
         "decimals": 10,
-        "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/statemint-local-wifd.png",
+        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-wifd.png",
         "priceId": null,
         "minAmount": "1",
         "reserveType": "local",
@@ -227,7 +746,7 @@
         "symbol": "DED",
         "name": "DED",
         "decimals": 10,
-        "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/statemint-local-ded.png",
+        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-ded.png",
         "priceId": "dot-is-ded",
         "minAmount": "1",
         "reserveType": "local",
@@ -273,7 +792,7 @@
         "symbol": "USDC",
         "name": "USD Coin",
         "decimals": 6,
-        "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/statemint-local-usdc.png",
+        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-usdc.png",
         "priceId": "usd-coin",
         "minAmount": "10000",
         "reserveType": "local",
@@ -334,8 +853,8 @@
         "symbol": "NCTR",
         "name": "Apillon",
         "decimals": 18,
-        "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/statemint-local-nctr.png",
-        "priceId": null,
+        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-nctr.png",
+        "priceId": "apillon",
         "minAmount": "100000000",
         "reserveType": "local",
         "xcmLocation": {
@@ -362,7 +881,7 @@
             "symbol": "NCTR",
             "name": "Apillon",
             "decimals": 18,
-            "priceId": null
+            "priceId": "apillon"
           }
         }
       },
@@ -371,7 +890,7 @@
         "symbol": "USDt",
         "name": "Tether USD",
         "decimals": 6,
-        "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/statemint-local-usdt.png",
+        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-usdt.png",
         "priceId": "tether",
         "minAmount": "10000",
         "reserveType": "local",
@@ -434,7 +953,7 @@
         "symbol": "PINK",
         "name": "Statemint Pink",
         "decimals": 10,
-        "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/statemint-local-pink.png",
+        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-pink.png",
         "priceId": null,
         "minAmount": "1",
         "reserveType": "local",
@@ -489,7 +1008,7 @@
         "symbol": "STINK",
         "name": "STINK",
         "decimals": 10,
-        "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/statemint-local-stink.png",
+        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-stink.png",
         "priceId": null,
         "minAmount": "1000000",
         "reserveType": "local",
@@ -559,7 +1078,7 @@
         "symbol": "WUD",
         "name": "Gavun Wud",
         "decimals": 10,
-        "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/statemint-local-wud.png",
+        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-wud.png",
         "priceId": "gavun-wud",
         "minAmount": "10000000",
         "reserveType": "local",
@@ -597,11 +1116,18 @@
   "2004": {
     "name": "Moonbeam",
     "slug": "moonbeam",
-    "icon": "https://chain-list-assets.subwallet.app/assets/chains/moonbeam.png",
+    "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chains/moonbeam.png",
     "addressPrefix": 1284,
     "providers": [
       "wss://wss.api.moonbeam.network",
-      "wss://moonbeam.public.blastapi.io"
+      "wss://moonbeam.public.blastapi.io",
+      "wss://moonbeam.api.onfinality.io/public-ws",
+      "wss://moonbeam.unitedbloc.com",
+      "wss://moonbeam-rpc.publicnode.com",
+      "wss://moonbeam-rpc.n.dwellir.com",
+      "wss://moonbeam.ibp.network",
+      "wss://moonbeam.dotters.network",
+      "wss://moonbeam.public.curie.radiumblock.co/ws"
     ],
     "alive": true,
     "existentialDeposit": "0",
@@ -698,6 +1224,35 @@
           "concrete": {
             "parents": 1,
             "interior": {
+              "x1": {
+                "parachain": 3370
+              }
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x2": [
+                {
+                  "parachain": 2046
+                },
+                {
+                  "palletInstance": 5
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
               "x2": [
                 {
                   "parachain": 2030
@@ -765,7 +1320,7 @@
       "symbol": "GLMR",
       "decimals": 18,
       "name": "Moonbeam",
-      "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/moonbeam-native-glmr.png",
+      "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/moonbeam-native-glmr.png",
       "priceId": "moonbeam",
       "minAmount": "0",
       "xcmLocation": {
@@ -785,7 +1340,7 @@
           "priceId": "moonbeam",
           "isNative": true,
           "reserveType": "local",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/moonbeam-native-glmr.png",
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/moonbeam-native-glmr.png",
           "xcmLocation": {
             "v1": {
               "parents": 1,
@@ -812,7 +1367,7 @@
           "priceId": "moonbeam",
           "isNative": true,
           "reserveType": "local",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/moonbeam-native-glmr.png",
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/moonbeam-native-glmr.png",
           "xcmLocation": {
             "v1": {
               "parents": 1,
@@ -837,7 +1392,7 @@
           "priceId": "moonbeam",
           "isNative": true,
           "reserveType": "local",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/moonbeam-native-glmr.png",
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/moonbeam-native-glmr.png",
           "xcmLocation": {
             "v1": {
               "parents": 1,
@@ -873,7 +1428,7 @@
           },
           "priceId": "polkadot",
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/polkadot-native-dot.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/polkadot-native-dot.png"
         }
       ],
       "1000": [
@@ -902,7 +1457,7 @@
           },
           "priceId": null,
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/statemint-local-wifd.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-wifd.png"
         },
         {
           "assetId": "124463719055550872076363892993240202694",
@@ -929,7 +1484,7 @@
           },
           "priceId": "dot-is-ded",
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/statemint-local-ded.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-ded.png"
         },
         {
           "assetId": "166377000701797186346254371275954761085",
@@ -956,7 +1511,7 @@
           },
           "priceId": "usd-coin",
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/statemint-local-usdc.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-usdc.png"
         },
         {
           "assetId": "184218609779515850660274730699350567246",
@@ -981,9 +1536,9 @@
               }
             }
           },
-          "priceId": null,
+          "priceId": "apillon",
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/statemint-local-nctr.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-nctr.png"
         },
         {
           "assetId": "311091173110107856861649819128533077277",
@@ -1010,7 +1565,7 @@
           },
           "priceId": "tether",
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/statemint-local-usdt.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-usdt.png"
         },
         {
           "assetId": "64174511183114006009298114091987195453",
@@ -1037,7 +1592,7 @@
           },
           "priceId": null,
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/statemint-local-pink.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-pink.png"
         },
         {
           "assetId": "112679793397406599376365943185137098326",
@@ -1064,7 +1619,7 @@
           },
           "priceId": null,
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/statemint-local-stink.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-stink.png"
         }
       ],
       "2006": [
@@ -1085,7 +1640,7 @@
           },
           "priceId": "astar",
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/astar-native-astr.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/astar-native-astr.png"
         }
       ],
       "2030": [
@@ -1133,7 +1688,7 @@
           },
           "priceId": "voucher-bnc",
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vbnc.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vbnc.png"
         },
         {
           "assetId": "29085784439601774464560083082574142143",
@@ -1157,7 +1712,7 @@
           },
           "priceId": "voucher-dot",
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vdot.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vdot.png"
         },
         {
           "assetId": "142155548796783636521833385094843759961",
@@ -1181,7 +1736,7 @@
           },
           "priceId": null,
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-bncs.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-bncs.png"
         },
         {
           "assetId": "204507659831918931608354793288110796652",
@@ -1205,7 +1760,7 @@
           },
           "priceId": "voucher-glmr",
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vglmr.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vglmr.png"
         },
         {
           "assetId": "289989900872525819559124583375550296953",
@@ -1229,7 +1784,7 @@
           },
           "priceId": "bifrost-voucher-manta",
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vmanta.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vmanta.png"
         },
         {
           "assetId": "165823357460190568952172802245839421906",
@@ -1253,7 +1808,7 @@
           },
           "priceId": "bifrost-native-coin",
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-native-bnc.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-native-bnc.png"
         },
         {
           "assetId": "272547899416482196831721420898811311297",
@@ -1277,7 +1832,7 @@
           },
           "priceId": null,
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vfil.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vfil.png"
         },
         {
           "assetId": "114018676402354620972806895487280206446",
@@ -1301,7 +1856,7 @@
           },
           "priceId": "bifrost-voucher-astr",
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vastr.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vastr.png"
         }
       ],
       "2034": [
@@ -1327,7 +1882,33 @@
           },
           "priceId": "hydradx",
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/hydradx_main-native-hdx.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/hydradx_main-native-hdx.png"
+        }
+      ],
+      "2046": [
+        {
+          "assetId": "125699734534028342599692732320197985871",
+          "symbol": "RING",
+          "name": "Darwinia Network",
+          "decimals": 18,
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "x2": [
+                  {
+                    "parachain": 2046
+                  },
+                  {
+                    "palletInstance": 5
+                  }
+                ]
+              }
+            }
+          },
+          "priceId": "darwinia-network-native-token",
+          "reserveType": "foreign",
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/darwinia2-native-ring.png"
         }
       ]
     }
@@ -1335,12 +1916,14 @@
   "2006": {
     "name": "Astar",
     "slug": "astar",
-    "icon": "https://chain-list-assets.subwallet.app/assets/chains/astar.png",
+    "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chains/astar.png",
     "addressPrefix": 5,
     "providers": [
       "wss://rpc.astar.network",
       "wss://astar.api.onfinality.io/public-ws",
-      "wss://astar.public.blastapi.io"
+      "wss://astar-rpc.dwellir.com",
+      "wss://astar.public.blastapi.io",
+      "wss://astar.public.curie.radiumblock.co/ws"
     ],
     "alive": true,
     "existentialDeposit": "1000000",
@@ -1353,6 +1936,23 @@
             "parents": 0,
             "interior": {
               "here": null
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x2": [
+                {
+                  "parachain": 2046
+                },
+                {
+                  "palletInstance": 5
+                }
+              ]
             }
           }
         }
@@ -1646,7 +2246,7 @@
       "symbol": "ASTR",
       "decimals": 18,
       "name": "Astar",
-      "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/astar-native-astr.png",
+      "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/astar-native-astr.png",
       "priceId": "astar",
       "minAmount": "1000000",
       "xcmLocation": {
@@ -1666,7 +2266,7 @@
           "priceId": "astar",
           "isNative": true,
           "reserveType": "local",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/astar-native-astr.png",
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/astar-native-astr.png",
           "xcmLocation": {
             "v1": {
               "parents": 1,
@@ -1686,7 +2286,7 @@
           "priceId": "astar",
           "isNative": true,
           "reserveType": "local",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/astar-native-astr.png",
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/astar-native-astr.png",
           "xcmLocation": {
             "v1": {
               "parents": 1,
@@ -1718,7 +2318,7 @@
           "minAmount": "1",
           "priceId": "polkadot",
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/astar-local-dot.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/astar-local-dot.png"
         }
       ],
       "1000": [
@@ -1772,7 +2372,7 @@
           },
           "priceId": "usd-coin",
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/statemint-local-usdc.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-usdc.png"
         },
         {
           "assetId": "4294969280",
@@ -1800,7 +2400,7 @@
           "minAmount": "1",
           "priceId": "tether",
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/astar-local-usdt.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/astar-local-usdt.png"
         },
         {
           "assetId": "18446744073709551633",
@@ -1828,7 +2428,7 @@
           "minAmount": "1",
           "priceId": null,
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/astar-local-pink.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/astar-local-pink.png"
         }
       ],
       "2004": [
@@ -1854,7 +2454,7 @@
           },
           "priceId": "moonbeam",
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/moonbeam-native-glmr.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/moonbeam-native-glmr.png"
         }
       ],
       "2030": [
@@ -1902,7 +2502,7 @@
           },
           "priceId": null,
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vsdot.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vsdot.png"
         },
         {
           "assetId": "18446744073709551638",
@@ -1926,7 +2526,7 @@
           },
           "priceId": "bifrost-voucher-manta",
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vmanta.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vmanta.png"
         },
         {
           "assetId": "18446744073709551624",
@@ -1950,7 +2550,7 @@
           },
           "priceId": "voucher-dot",
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vdot.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vdot.png"
         },
         {
           "assetId": "18446744073709551640",
@@ -1974,7 +2574,7 @@
           },
           "priceId": null,
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vfil.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vfil.png"
         },
         {
           "assetId": "18446744073709551632",
@@ -1998,7 +2598,7 @@
           },
           "priceId": "bifrost-voucher-astr",
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vastr.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vastr.png"
         },
         {
           "assetId": "18446744073709551623",
@@ -2022,7 +2622,7 @@
           },
           "priceId": "bifrost-native-coin",
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-native-bnc.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-native-bnc.png"
         },
         {
           "assetId": "18446744073709551637",
@@ -2046,7 +2646,7 @@
           },
           "priceId": "voucher-glmr",
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vglmr.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vglmr.png"
         }
       ],
       "2034": [
@@ -2072,7 +2672,33 @@
           },
           "priceId": "hydradx",
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/hydradx_main-native-hdx.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/hydradx_main-native-hdx.png"
+        }
+      ],
+      "2046": [
+        {
+          "assetId": "18446744073709551627",
+          "symbol": "RING",
+          "name": "Darwinia Network",
+          "decimals": 18,
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "x2": [
+                  {
+                    "parachain": 2046
+                  },
+                  {
+                    "palletInstance": 5
+                  }
+                ]
+              }
+            }
+          },
+          "priceId": "darwinia-network-native-token",
+          "reserveType": "foreign",
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/darwinia2-native-ring.png"
         }
       ]
     }
@@ -2080,12 +2706,13 @@
   "2030": {
     "name": "Bifrost Polkadot",
     "slug": "bifrost_dot",
-    "icon": "https://chain-list-assets.subwallet.app/assets/chains/bifrost_dot.png",
+    "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chains/bifrost_dot.png",
     "addressPrefix": 0,
     "providers": [
       "wss://hk.p.bifrost-rpc.liebi.com/ws",
       "wss://eu.bifrost-polkadot-rpc.liebi.com/ws",
-      "wss://bifrost-polkadot.api.onfinality.io/public-ws"
+      "wss://bifrost-polkadot.ibp.network",
+      "wss://bifrost-polkadot.dotters.network"
     ],
     "alive": true,
     "existentialDeposit": "10000000000",
@@ -2383,7 +3010,7 @@
       "symbol": "BNC",
       "decimals": 12,
       "name": "Bifrost Polkadot",
-      "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-native-bnc.png",
+      "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-native-bnc.png",
       "priceId": "bifrost-native-coin",
       "minAmount": "10000000000",
       "xcmLocation": {
@@ -2405,7 +3032,7 @@
           "priceId": "bifrost-native-coin",
           "isNative": true,
           "reserveType": "local",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost-native-bnc.png",
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost-native-bnc.png",
           "xcmLocation": {
             "v1": {
               "parents": 1,
@@ -2430,7 +3057,7 @@
           "priceId": "bifrost-native-coin",
           "isNative": true,
           "reserveType": "local",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost-native-bnc.png",
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost-native-bnc.png",
           "xcmLocation": {
             "v1": {
               "parents": 1,
@@ -2455,7 +3082,7 @@
           "priceId": "bifrost-native-coin",
           "isNative": true,
           "reserveType": "local",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost-native-bnc.png",
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost-native-bnc.png",
           "xcmLocation": {
             "v1": {
               "parents": 1,
@@ -2500,7 +3127,7 @@
           }
         },
         "reserveType": "local",
-        "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vglmr.png",
+        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vglmr.png",
         "minAmount": "1000000000000",
         "priceId": "voucher-glmr",
         "registeredChains": {
@@ -2547,7 +3174,7 @@
           }
         },
         "reserveType": "local",
-        "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vbnc.png",
+        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vbnc.png",
         "minAmount": "10000000000",
         "priceId": "voucher-bnc",
         "registeredChains": {
@@ -2558,53 +3185,6 @@
             "decimals": 12,
             "minAmount": "10000000000",
             "priceId": "voucher-bnc"
-          }
-        }
-      },
-      {
-        "symbol": "vFIL",
-        "decimals": 18,
-        "assetId": {
-          "VToken2": "4"
-        },
-        "xcmLocation": {
-          "v1": {
-            "parents": 1,
-            "interior": {
-              "x2": [
-                {
-                  "parachain": 2030
-                },
-                {
-                  "generalKey": {
-                    "length": 2,
-                    "data": "0x0904000000000000000000000000000000000000000000000000000000000000"
-                  }
-                }
-              ]
-            }
-          }
-        },
-        "reserveType": "local",
-        "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vfil.png",
-        "minAmount": "1000000000000",
-        "priceId": null,
-        "registeredChains": {
-          "2004": {
-            "assetId": "272547899416482196831721420898811311297",
-            "symbol": "vFIL",
-            "name": "Voucher FIL",
-            "decimals": 18,
-            "minAmount": "1000000000000",
-            "priceId": null
-          },
-          "2006": {
-            "assetId": "18446744073709551640",
-            "symbol": "vFIL",
-            "name": "Voucher FIL",
-            "decimals": 18,
-            "minAmount": "1000000000000",
-            "priceId": null
           }
         }
       },
@@ -2633,7 +3213,7 @@
           }
         },
         "reserveType": "local",
-        "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-bncs.png",
+        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-bncs.png",
         "minAmount": "10000000000",
         "priceId": null,
         "registeredChains": {
@@ -2644,44 +3224,6 @@
             "decimals": 12,
             "minAmount": "10000000000",
             "priceId": null
-          }
-        }
-      },
-      {
-        "symbol": "FIL",
-        "decimals": 18,
-        "assetId": {
-          "Token2": "4"
-        },
-        "xcmLocation": {
-          "v1": {
-            "parents": 1,
-            "interior": {
-              "x2": [
-                {
-                  "parachain": 2030
-                },
-                {
-                  "generalKey": {
-                    "length": 2,
-                    "data": "0x0804000000000000000000000000000000000000000000000000000000000000"
-                  }
-                }
-              ]
-            }
-          }
-        },
-        "reserveType": "local",
-        "registeredChains": {
-          "2004": {
-            "assetId": "144012926827374458669278577633504620722",
-            "symbol": "FIL",
-            "decimals": 18
-          },
-          "2006": {
-            "assetId": "18446744073709551639",
-            "symbol": "FIL",
-            "decimals": 18
           }
         }
       },
@@ -2710,7 +3252,7 @@
           }
         },
         "reserveType": "local",
-        "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vmanta.png",
+        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vmanta.png",
         "minAmount": "10000000000000",
         "priceId": "bifrost-voucher-manta",
         "registeredChains": {
@@ -2781,7 +3323,7 @@
           }
         },
         "reserveType": "local",
-        "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vastr.png",
+        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vastr.png",
         "minAmount": "10000000000000000",
         "priceId": "bifrost-voucher-astr",
         "registeredChains": {
@@ -2836,7 +3378,7 @@
           }
         },
         "reserveType": "local",
-        "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vdot.png",
+        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vdot.png",
         "minAmount": "1000000",
         "priceId": "voucher-dot",
         "registeredChains": {
@@ -2867,6 +3409,91 @@
         }
       },
       {
+        "symbol": "vFIL",
+        "decimals": 18,
+        "assetId": {
+          "VToken2": "4"
+        },
+        "xcmLocation": {
+          "v1": {
+            "parents": 1,
+            "interior": {
+              "x2": [
+                {
+                  "parachain": 2030
+                },
+                {
+                  "generalKey": {
+                    "length": 2,
+                    "data": "0x0904000000000000000000000000000000000000000000000000000000000000"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "reserveType": "local",
+        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vfil.png",
+        "minAmount": "1000000000000",
+        "priceId": null,
+        "registeredChains": {
+          "2004": {
+            "assetId": "272547899416482196831721420898811311297",
+            "symbol": "vFIL",
+            "name": "Voucher FIL",
+            "decimals": 18,
+            "minAmount": "1000000000000",
+            "priceId": null
+          },
+          "2006": {
+            "assetId": "18446744073709551640",
+            "symbol": "vFIL",
+            "name": "Voucher FIL",
+            "decimals": 18,
+            "minAmount": "1000000000000",
+            "priceId": null
+          }
+        }
+      },
+      {
+        "symbol": "FIL",
+        "decimals": 18,
+        "assetId": {
+          "Token2": "4"
+        },
+        "xcmLocation": {
+          "v1": {
+            "parents": 1,
+            "interior": {
+              "x2": [
+                {
+                  "parachain": 2030
+                },
+                {
+                  "generalKey": {
+                    "length": 2,
+                    "data": "0x0804000000000000000000000000000000000000000000000000000000000000"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "reserveType": "local",
+        "registeredChains": {
+          "2004": {
+            "assetId": "144012926827374458669278577633504620722",
+            "symbol": "FIL",
+            "decimals": 18
+          },
+          "2006": {
+            "assetId": "18446744073709551639",
+            "symbol": "FIL",
+            "decimals": 18
+          }
+        }
+      },
+      {
         "symbol": "vsDOT",
         "decimals": 10,
         "assetId": {
@@ -2888,7 +3515,7 @@
           }
         },
         "reserveType": "local",
-        "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vsdot.png",
+        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vsdot.png",
         "minAmount": "1000000",
         "priceId": null,
         "registeredChains": {
@@ -2923,7 +3550,7 @@
           "minAmount": "1000000",
           "priceId": "polkadot",
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-dot.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-dot.png"
         }
       ],
       "1000": [
@@ -2955,7 +3582,7 @@
           "minAmount": "1000",
           "priceId": "tether",
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-usdt.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-usdt.png"
         },
         {
           "assetId": {
@@ -2984,7 +3611,7 @@
           },
           "priceId": "usd-coin",
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/statemint-local-usdc.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-usdc.png"
         },
         {
           "assetId": {
@@ -3013,7 +3640,7 @@
           },
           "priceId": "dot-is-ded",
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/statemint-local-ded.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/statemint-local-ded.png"
         },
         {
           "assetId": {
@@ -3043,7 +3670,7 @@
           "minAmount": "100000000",
           "priceId": null,
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-pink.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-pink.png"
         }
       ],
       "2004": [
@@ -3071,7 +3698,7 @@
           },
           "priceId": "moonbeam",
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/moonbeam-native-glmr.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/moonbeam-native-glmr.png"
         }
       ],
       "2030": [
@@ -3103,7 +3730,7 @@
           "minAmount": "1000000000000",
           "priceId": "voucher-glmr",
           "reserveType": "local",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vglmr.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vglmr.png"
         },
         {
           "assetId": {
@@ -3133,36 +3760,7 @@
           "minAmount": "10000000000",
           "priceId": "voucher-bnc",
           "reserveType": "local",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vbnc.png"
-        },
-        {
-          "assetId": {
-            "VToken2": "4"
-          },
-          "symbol": "vFIL",
-          "name": "Voucher FIL",
-          "decimals": 18,
-          "xcmLocation": {
-            "v1": {
-              "parents": 1,
-              "interior": {
-                "x2": [
-                  {
-                    "parachain": 2030
-                  },
-                  {
-                    "generalKey": {
-                      "length": 2,
-                      "data": "0x0904000000000000000000000000000000000000000000000000000000000000"
-                    }
-                  }
-                ]
-              }
-            }
-          },
-          "minAmount": "1000000000000",
-          "reserveType": "local",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vfil.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vbnc.png"
         },
         {
           "assetId": {
@@ -3191,34 +3789,7 @@
           },
           "minAmount": "10000000000",
           "reserveType": "local",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-bncs.png"
-        },
-        {
-          "assetId": {
-            "Token2": "4"
-          },
-          "symbol": "FIL",
-          "name": "FIL",
-          "decimals": 18,
-          "xcmLocation": {
-            "v1": {
-              "parents": 1,
-              "interior": {
-                "x2": [
-                  {
-                    "parachain": 2030
-                  },
-                  {
-                    "generalKey": {
-                      "length": 2,
-                      "data": "0x0804000000000000000000000000000000000000000000000000000000000000"
-                    }
-                  }
-                ]
-              }
-            }
-          },
-          "reserveType": "local"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-bncs.png"
         },
         {
           "assetId": {
@@ -3248,7 +3819,7 @@
           "minAmount": "10000000000000",
           "priceId": "bifrost-voucher-manta",
           "reserveType": "local",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vmanta.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vmanta.png"
         },
         {
           "assetId": {
@@ -3302,37 +3873,7 @@
           "minAmount": "10000000000000000",
           "priceId": "bifrost-voucher-astr",
           "reserveType": "local",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vastr.png"
-        },
-        {
-          "assetId": {
-            "Native": "BNC"
-          },
-          "symbol": "BNC",
-          "name": "Bifrost Polkadot",
-          "decimals": 12,
-          "xcmLocation": {
-            "v1": {
-              "parents": 1,
-              "interior": {
-                "x2": [
-                  {
-                    "parachain": 2030
-                  },
-                  {
-                    "generalKey": {
-                      "length": 2,
-                      "data": "0x0001000000000000000000000000000000000000000000000000000000000000"
-                    }
-                  }
-                ]
-              }
-            }
-          },
-          "minAmount": "10000000000",
-          "priceId": "bifrost-native-coin",
-          "reserveType": "local",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-native-bnc.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vastr.png"
         },
         {
           "assetId": {
@@ -3362,7 +3903,93 @@
           "minAmount": "1000000",
           "priceId": "voucher-dot",
           "reserveType": "local",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vdot.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vdot.png"
+        },
+        {
+          "assetId": {
+            "VToken2": "4"
+          },
+          "symbol": "vFIL",
+          "name": "Voucher FIL",
+          "decimals": 18,
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "x2": [
+                  {
+                    "parachain": 2030
+                  },
+                  {
+                    "generalKey": {
+                      "length": 2,
+                      "data": "0x0904000000000000000000000000000000000000000000000000000000000000"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "minAmount": "1000000000000",
+          "reserveType": "local",
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vfil.png"
+        },
+        {
+          "assetId": {
+            "Token2": "4"
+          },
+          "symbol": "FIL",
+          "name": "FIL",
+          "decimals": 18,
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "x2": [
+                  {
+                    "parachain": 2030
+                  },
+                  {
+                    "generalKey": {
+                      "length": 2,
+                      "data": "0x0804000000000000000000000000000000000000000000000000000000000000"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "reserveType": "local"
+        },
+        {
+          "assetId": {
+            "Native": "BNC"
+          },
+          "symbol": "BNC",
+          "name": "Bifrost Polkadot",
+          "decimals": 12,
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "x2": [
+                  {
+                    "parachain": 2030
+                  },
+                  {
+                    "generalKey": {
+                      "length": 2,
+                      "data": "0x0001000000000000000000000000000000000000000000000000000000000000"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "minAmount": "10000000000",
+          "priceId": "bifrost-native-coin",
+          "reserveType": "local",
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-native-bnc.png"
         },
         {
           "assetId": {
@@ -3388,7 +4015,7 @@
           },
           "minAmount": "1000000",
           "reserveType": "local",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-local-vsdot.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/bifrost_dot-local-vsdot.png"
         }
       ]
     }
@@ -3396,12 +4023,14 @@
   "2034": {
     "name": "Hydration",
     "slug": "hydradx_main",
-    "icon": "https://chain-list-assets.subwallet.app/assets/chains/hydradx_main.png",
+    "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chains/hydradx_main.png",
     "addressPrefix": 63,
     "providers": [
       "wss://rpc.hydradx.cloud",
-      "wss://hydradx-rpc.dwellir.com",
-      "wss://rpc.helikon.io/hydradx"
+      "wss://rpc.helikon.io/hydradx",
+      "wss://hydration-rpc.n.dwellir.com",
+      "wss://hydration.ibp.network",
+      "wss://hydration.dotters.network"
     ],
     "alive": true,
     "existentialDeposit": "1000000000000",
@@ -3530,6 +4159,26 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000104
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 50000068
                 }
               ]
@@ -3571,6 +4220,26 @@
                 },
                 {
                   "generalIndex": 50000084
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 20090138
                 }
               ]
             }
@@ -3969,6 +4638,26 @@
                 },
                 {
                   "generalIndex": 78
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000096
                 }
               ]
             }
@@ -4544,6 +5233,46 @@
                 },
                 {
                   "generalIndex": 2000
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000111
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000091
                 }
               ]
             }
@@ -5349,6 +6078,46 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000094
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000108
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 22222042
                 }
               ]
@@ -5781,6 +6550,26 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000102
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 16
                 }
               ]
@@ -5874,6 +6663,26 @@
                 },
                 {
                   "generalIndex": 50000002
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000090
                 }
               ]
             }
@@ -6105,6 +6914,18 @@
           "concrete": {
             "parents": 1,
             "interior": {
+              "x1": {
+                "parachain": 3370
+              }
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
               "x3": [
                 {
                   "parachain": 1000
@@ -6257,6 +7078,23 @@
                 },
                 {
                   "generalIndex": 22222076
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x2": [
+                {
+                  "parachain": 2046
+                },
+                {
+                  "palletInstance": 5
                 }
               ]
             }
@@ -7486,6 +8324,26 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 482
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 50000005
                 }
               ]
@@ -7527,6 +8385,26 @@
                 },
                 {
                   "generalIndex": 22222029
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000110
                 }
               ]
             }
@@ -7630,6 +8508,26 @@
                 },
                 {
                   "generalIndex": 62
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000100
                 }
               ]
             }
@@ -8264,6 +9162,26 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000107
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 669
                 }
               ]
@@ -8285,6 +9203,26 @@
                 },
                 {
                   "generalIndex": 22222088
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000103
                 }
               ]
             }
@@ -8408,6 +9346,29 @@
                 },
                 {
                   "generalIndex": 8886
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 2004
+                },
+                {
+                  "palletInstance": 110
+                },
+                {
+                  "accountKey20": {
+                    "network": null,
+                    "key": "0x75614cc5446d8fab47b01520bf54f698cb14406d"
+                  }
                 }
               ]
             }
@@ -8712,6 +9673,26 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000105
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 50000017
                 }
               ]
@@ -8753,6 +9734,26 @@
                 },
                 {
                   "generalIndex": 22222033
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000099
                 }
               ]
             }
@@ -9032,6 +10033,26 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000092
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 22222012
                 }
               ]
@@ -9073,6 +10094,26 @@
                 },
                 {
                   "generalIndex": 22222087
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000106
                 }
               ]
             }
@@ -9190,6 +10231,26 @@
                 },
                 {
                   "generalIndex": 50000074
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000112
                 }
               ]
             }
@@ -9425,6 +10486,21 @@
       {
         "v3": {
           "concrete": {
+            "parents": 0,
+            "interior": {
+              "x1": {
+                "accountKey20": {
+                  "network": null,
+                  "key": "0x34d5ffb83d14d82f87aaf2f13be895a3c814c2ad"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
             "parents": 1,
             "interior": {
               "x3": [
@@ -9648,6 +10724,26 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000101
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 22222067
                 }
               ]
@@ -9708,9 +10804,44 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000098
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 223
                 }
               ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 0,
+            "interior": {
+              "x1": {
+                "accountKey20": {
+                  "network": null,
+                  "key": "0x69003a65189f6ed993d3bd3e2b74f1db39f405ce"
+                }
+              }
             }
           }
         }
@@ -9889,6 +11020,26 @@
                 },
                 {
                   "generalIndex": 22222084
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000109
                 }
               ]
             }
@@ -10193,7 +11344,7 @@
       "symbol": "HDX",
       "decimals": 12,
       "name": "Hydration",
-      "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/hydradx_main-native-hdx.png",
+      "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/hydradx_main-native-hdx.png",
       "priceId": "hydradx",
       "minAmount": "1000000000000",
       "xcmLocation": {
@@ -10215,7 +11366,7 @@
           "priceId": "hydradx",
           "isNative": true,
           "reserveType": "local",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/hydradx_main-native-hdx.png",
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/hydradx_main-native-hdx.png",
           "xcmLocation": {
             "v1": {
               "parents": 1,
@@ -10240,7 +11391,7 @@
           "priceId": "hydradx",
           "isNative": true,
           "reserveType": "local",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/hydradx_main-native-hdx.png",
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/hydradx_main-native-hdx.png",
           "xcmLocation": {
             "v1": {
               "parents": 1,
@@ -10276,6 +11427,31 @@
                   "accountKey20": {
                     "network": null,
                     "key": "0x02639ec01313c8775fae74f2dad1118c8a8a86da"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "reserveType": "local",
+        "registeredChains": {}
+      },
+      {
+        "symbol": "atBTC",
+        "decimals": 18,
+        "assetId": "1006",
+        "xcmLocation": {
+          "v1": {
+            "parents": 1,
+            "interior": {
+              "x2": [
+                {
+                  "parachain": 2034
+                },
+                {
+                  "accountKey20": {
+                    "network": null,
+                    "key": "0x69003a65189f6ed993d3bd3e2b74f1db39f405ce"
                   }
                 }
               ]
@@ -10384,6 +11560,34 @@
         },
         "reserveType": "local",
         "registeredChains": {}
+      },
+      {
+        "symbol": "GDOT",
+        "decimals": 18,
+        "assetId": "69",
+        "xcmLocation": {
+          "v1": {
+            "parents": 1,
+            "interior": {
+              "x2": [
+                {
+                  "parachain": 2034
+                },
+                {
+                  "accountKey20": {
+                    "network": null,
+                    "key": "0x34d5ffb83d14d82f87aaf2f13be895a3c814c2ad"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "reserveType": "local",
+        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/hydradx_main-local-gdot.png",
+        "minAmount": "0",
+        "priceId": null,
+        "registeredChains": {}
       }
     ],
     "xcAssetsData": {
@@ -10404,7 +11608,7 @@
           "minAmount": "17540000",
           "priceId": "polkadot",
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/hydradx_main-local-dot.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/hydradx_main-local-dot.png"
         }
       ],
       "1000": [
@@ -10434,7 +11638,7 @@
           "minAmount": "10000",
           "priceId": "tether",
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/hydradx_main-local-usdt.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/hydradx_main-local-usdt.png"
         },
         {
           "assetId": "1000085",
@@ -10462,7 +11666,7 @@
           "minAmount": "200000000000000",
           "priceId": "gavun-wud",
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/hydradx_main-local-wud.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/hydradx_main-local-wud.png"
         },
         {
           "assetId": "22",
@@ -10490,7 +11694,7 @@
           "minAmount": "10000",
           "priceId": "usd-coin",
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/hydradx_main-local-usdc.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/hydradx_main-local-usdc.png"
         }
       ],
       "2004": [
@@ -10523,7 +11727,7 @@
           "minAmount": "10000",
           "priceId": "usd-coin",
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/hydradx_main-local-usdc.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/hydradx_main-local-usdc.png"
         },
         {
           "assetId": "20",
@@ -10554,7 +11758,7 @@
           "minAmount": "5390835579515",
           "priceId": "ethereum",
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/hydradx_main-local-weth.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/hydradx_main-local-weth.png"
         },
         {
           "assetId": "16",
@@ -10579,7 +11783,7 @@
           "minAmount": "34854864344868000",
           "priceId": "moonbeam",
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/hydradx_main-local-glmr.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/hydradx_main-local-glmr.png"
         },
         {
           "assetId": "19",
@@ -10610,7 +11814,7 @@
           "minAmount": "44",
           "priceId": "wrapped-bitcoin",
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/hydradx_main-local-wbtc.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/hydradx_main-local-wbtc.png"
         },
         {
           "assetId": "1000745",
@@ -10697,7 +11901,7 @@
           "minAmount": "10000000000000000",
           "priceId": "dai",
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/hydradx_main-local-dai.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/hydradx_main-local-dai.png"
         },
         {
           "assetId": "23",
@@ -10728,12 +11932,12 @@
           "minAmount": "10000",
           "priceId": "tether",
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/hydradx_main-local-usdt.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/hydradx_main-local-usdt.png"
         },
         {
           "assetId": "1000752",
           "symbol": "SOL",
-          "name": "SOL",
+          "name": "Solana",
           "decimals": 9,
           "xcmLocation": {
             "v1": {
@@ -10756,7 +11960,10 @@
               }
             }
           },
-          "reserveType": "foreign"
+          "minAmount": "46339",
+          "priceId": "solana",
+          "reserveType": "foreign",
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/hydradx_main-local-sol.png"
         }
       ],
       "2006": [
@@ -10778,7 +11985,7 @@
           "minAmount": "147058823529412000",
           "priceId": "astar",
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/hydradx_main-local-astr.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/hydradx_main-local-astr.png"
         }
       ],
       "2030": [
@@ -10805,7 +12012,7 @@
           "minAmount": "68795189840",
           "priceId": "bifrost-native-coin",
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/hydradx_main-local-bnc.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/hydradx_main-local-bnc.png"
         },
         {
           "assetId": "33",
@@ -10830,7 +12037,7 @@
           "minAmount": "133689839572193000",
           "priceId": "bifrost-voucher-astr",
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/hydradx_main-local-vastr.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/hydradx_main-local-vastr.png"
         },
         {
           "assetId": "15",
@@ -10855,7 +12062,7 @@
           "minAmount": "18761726",
           "priceId": "voucher-dot",
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/hydradx_main-local-vdot.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/hydradx_main-local-vdot.png"
         }
       ],
       "2034": [
@@ -10876,6 +12083,31 @@
                     "accountKey20": {
                       "network": null,
                       "key": "0x02639ec01313c8775fae74f2dad1118c8a8a86da"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "reserveType": "local"
+        },
+        {
+          "assetId": "1006",
+          "symbol": "atBTC",
+          "name": "atBTC",
+          "decimals": 18,
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "x2": [
+                  {
+                    "parachain": 2034
+                  },
+                  {
+                    "accountKey20": {
+                      "network": null,
+                      "key": "0x69003a65189f6ed993d3bd3e2b74f1db39f405ce"
                     }
                   }
                 ]
@@ -10983,6 +12215,60 @@
             }
           },
           "reserveType": "local"
+        },
+        {
+          "assetId": "69",
+          "symbol": "GDOT",
+          "name": "GIGADOT",
+          "decimals": 18,
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "x2": [
+                  {
+                    "parachain": 2034
+                  },
+                  {
+                    "accountKey20": {
+                      "network": null,
+                      "key": "0x34d5ffb83d14d82f87aaf2f13be895a3c814c2ad"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "minAmount": "0",
+          "reserveType": "local",
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/hydradx_main-local-gdot.png"
+        }
+      ],
+      "2046": [
+        {
+          "assetId": "31",
+          "symbol": "RING",
+          "name": "Darwinia Network",
+          "decimals": 18,
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "x2": [
+                  {
+                    "parachain": 2046
+                  },
+                  {
+                    "palletInstance": 5
+                  }
+                ]
+              }
+            }
+          },
+          "minAmount": "1000000000000000000",
+          "priceId": "darwinia-network-native-token",
+          "reserveType": "foreign",
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/hydradx_main-local-ring.png"
         }
       ],
       "3344": [
@@ -11003,41 +12289,56 @@
           },
           "priceId": "polimec",
           "reserveType": "foreign",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/polimec-native-plmc.png"
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/polimec-native-plmc.png"
+        }
+      ],
+      "3370": [
+        {
+          "assetId": "3370",
+          "symbol": "LAOS",
+          "name": "LAOS",
+          "decimals": 18,
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "x1": {
+                  "parachain": 3370
+                }
+              }
+            }
+          },
+          "priceId": "laos-network",
+          "reserveType": "foreign",
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/laos_network-native-laos.png"
         }
       ]
     }
   },
-  "3344": {
-    "name": "Polimec",
-    "slug": "polimec",
-    "icon": "https://chain-list-assets.subwallet.app/assets/chains/polimec.png",
-    "addressPrefix": 41,
+  "2046": {
+    "name": "Darwinia 2",
+    "slug": "darwinia2",
+    "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chains/darwinia2.png",
+    "addressPrefix": 18,
     "providers": [
-      "wss://rpc.polimec.org",
-      "wss://polimec.rpc.amforc.com"
+      "wss://rpc.darwinia.network",
+      "wss://darwinia-rpc.dwellir.com",
+      "wss://darwinia.rpc.subquery.network/public/ws"
     ],
     "alive": true,
-    "existentialDeposit": "100000000",
-    "isEvm": false,
-    "explorer": "https://explorer.polimec.org/polimec",
+    "existentialDeposit": "0",
+    "isEvm": true,
+    "explorer": "https://darwinia.subscan.io/",
+    "evmChainId": 46,
     "xcmPaymentAcceptTokens": [
       {
         "v3": {
           "concrete": {
             "parents": 0,
             "interior": {
-              "here": null
-            }
-          }
-        }
-      },
-      {
-        "v3": {
-          "concrete": {
-            "parents": 1,
-            "interior": {
-              "here": null
+              "x1": {
+                "palletInstance": 5
+              }
             }
           }
         }
@@ -11067,6 +12368,233 @@
           "concrete": {
             "parents": 1,
             "interior": {
+              "here": null
+            }
+          }
+        }
+      }
+    ],
+    "nativeToken": {
+      "symbol": "RING",
+      "decimals": 18,
+      "name": "Darwinia Network",
+      "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/darwinia2-native-ring.png",
+      "priceId": "darwinia-network-native-token",
+      "minAmount": "0",
+      "xcmLocation": {
+        "v1": {
+          "parents": 0,
+          "interior": {
+            "here": null
+          }
+        }
+      },
+      "isNative": true,
+      "reserveType": "local",
+      "registeredChains": {
+        "2004": {
+          "assetId": "125699734534028342599692732320197985871",
+          "symbol": "RING",
+          "name": "RING",
+          "decimals": 18,
+          "priceId": "darwinia-network-native-token",
+          "isNative": true,
+          "reserveType": "local",
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/darwinia2-native-ring.png",
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "x2": [
+                  {
+                    "parachain": 2046
+                  },
+                  {
+                    "palletInstance": 5
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "2006": {
+          "assetId": "18446744073709551627",
+          "symbol": "RING",
+          "name": "RING",
+          "decimals": 18,
+          "priceId": "darwinia-network-native-token",
+          "isNative": true,
+          "reserveType": "local",
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/darwinia2-native-ring.png",
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "x2": [
+                  {
+                    "parachain": 2046
+                  },
+                  {
+                    "palletInstance": 5
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "2034": {
+          "assetId": "31",
+          "symbol": "RING",
+          "name": "RING",
+          "decimals": 18,
+          "priceId": "darwinia-network-native-token",
+          "isNative": true,
+          "reserveType": "local",
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/darwinia2-native-ring.png",
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "x2": [
+                  {
+                    "parachain": 2046
+                  },
+                  {
+                    "palletInstance": 5
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "xcAssetsData": {
+      "0": [
+        {
+          "assetId": "1029",
+          "symbol": "DOT",
+          "name": "Polkadot",
+          "decimals": 10,
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "here": null
+              }
+            }
+          },
+          "priceId": "polkadot",
+          "reserveType": "foreign",
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/polkadot-native-dot.png"
+        }
+      ],
+      "1000": [
+        {
+          "assetId": "1027",
+          "symbol": "ahUSDT",
+          "name": "ahUSDT",
+          "decimals": 6,
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "x3": [
+                  {
+                    "parachain": 1000
+                  },
+                  {
+                    "palletInstance": 50
+                  },
+                  {
+                    "generalIndex": 1984
+                  }
+                ]
+              }
+            }
+          },
+          "reserveType": "foreign"
+        },
+        {
+          "assetId": "1028",
+          "symbol": "ahPINK",
+          "name": "ahPINK",
+          "decimals": 10,
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "x3": [
+                  {
+                    "parachain": 1000
+                  },
+                  {
+                    "palletInstance": 50
+                  },
+                  {
+                    "generalIndex": 23
+                  }
+                ]
+              }
+            }
+          },
+          "reserveType": "foreign"
+        }
+      ]
+    }
+  },
+  "3344": {
+    "name": "Polimec",
+    "slug": "polimec",
+    "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chains/polimec.png",
+    "addressPrefix": 41,
+    "providers": [
+      "wss://rpc.polimec.org",
+      "wss://polimec.rpc.amforc.com",
+      "wss://rpc.helikon.io/polimec",
+      "wss://polimec.ibp.network",
+      "wss://polimec.dotters.network"
+    ],
+    "alive": true,
+    "existentialDeposit": "100000000",
+    "isEvm": false,
+    "explorer": "https://polimec.statescan.io/",
+    "xcmPaymentAcceptTokens": [
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 1984
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "here": null
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
               "x3": [
                 {
                   "parachain": 1000
@@ -11081,13 +12609,23 @@
             }
           }
         }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 0,
+            "interior": {
+              "here": null
+            }
+          }
+        }
       }
     ],
     "nativeToken": {
       "symbol": "PLMC",
       "decimals": 10,
       "name": "Polimec",
-      "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/polimec-native-plmc.png",
+      "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/polimec-native-plmc.png",
       "priceId": "polimec",
       "minAmount": "100000000",
       "xcmLocation": {
@@ -11109,13 +12647,80 @@
           "priceId": "polimec",
           "isNative": true,
           "reserveType": "local",
-          "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/polimec-native-plmc.png",
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/polimec-native-plmc.png",
           "xcmLocation": {
             "v1": {
               "parents": 1,
               "interior": {
                 "x1": {
                   "parachain": 3344
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "xcAssetsData": {}
+  },
+  "3370": {
+    "name": "LAOS Network",
+    "slug": "laos_network",
+    "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chains/laos_network.png",
+    "addressPrefix": 42,
+    "providers": [
+      "wss://rpc.laos.laosfoundation.io",
+      "wss://laos-rpc.dwellir.com"
+    ],
+    "alive": true,
+    "existentialDeposit": "0",
+    "isEvm": false,
+    "explorer": "https://laos.statescan.io/",
+    "xcmPaymentAcceptTokens": [
+      {
+        "v3": {
+          "concrete": {
+            "parents": 0,
+            "interior": {
+              "here": null
+            }
+          }
+        }
+      }
+    ],
+    "nativeToken": {
+      "symbol": "LAOS",
+      "decimals": 18,
+      "name": "LAOS",
+      "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/laos_network-native-laos.png",
+      "priceId": "laos-network",
+      "minAmount": "0",
+      "xcmLocation": {
+        "v1": {
+          "parents": 0,
+          "interior": {
+            "here": null
+          }
+        }
+      },
+      "isNative": true,
+      "reserveType": "local",
+      "registeredChains": {
+        "2034": {
+          "assetId": "3370",
+          "symbol": "LAOS",
+          "name": "LAOS",
+          "decimals": 18,
+          "priceId": "laos-network",
+          "isNative": true,
+          "reserveType": "local",
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/laos_network-native-laos.png",
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "x1": {
+                  "parachain": 3370
                 }
               }
             }
