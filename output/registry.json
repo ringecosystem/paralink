@@ -555,7 +555,10 @@
       "50000115": "TESTV4",
       "50000116": "TESTV5",
       "50000117": "TEST6",
-      "50000118": "HELLOWORLD"
+      "50000118": "HELLOWORLD",
+      "50000119": "JAM",
+      "50000120": "gg",
+      "50000121": "EMBRE"
     },
     "nativeToken": {
       "symbol": "DOT",
