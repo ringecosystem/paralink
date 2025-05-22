@@ -1667,7 +1667,7 @@
       "relaySlug": "polkadot",
       "paraId": 2034,
       "genesisHash": "0xafdc188f45c71dacbaa0b62e16a91f726c7b8699a9748cdf715459de6b7f366d",
-      "addressPrefix": 63,
+      "addressPrefix": 0,
       "chainType": "PARACHAIN",
       "crowdloanUrl": "https://loan.hydradx.io/",
       "blockExplorer": "https://hydration.subscan.io/",

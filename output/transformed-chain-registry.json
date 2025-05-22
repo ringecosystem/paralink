@@ -4024,7 +4024,7 @@
     "name": "Hydration",
     "slug": "hydradx_main",
     "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chains/hydradx_main.png",
-    "addressPrefix": 63,
+    "addressPrefix": 0,
     "providers": [
       "wss://rpc.hydradx.cloud",
       "wss://rpc.helikon.io/hydradx",
