@@ -12215,128 +12215,7 @@
         }
       }
     },
-    "localAssets": [
-      {
-        "symbol": "USDT",
-        "decimals": 6,
-        "xcmLocation": {
-          "v3": {
-            "concrete": {
-              "parents": 1,
-              "interior": {
-                "x3": [
-                  {
-                    "parachain": 1000
-                  },
-                  {
-                    "palletInstance": 50
-                  },
-                  {
-                    "generalIndex": 1337
-                  }
-                ]
-              }
-            }
-          }
-        },
-        "reserveType": "local",
-        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/polimec-local-usdt.png",
-        "minAmount": "70000",
-        "priceId": "tether",
-        "registeredChains": {}
-      },
-      {
-        "symbol": "USDC",
-        "decimals": 6,
-        "xcmLocation": {
-          "v3": {
-            "concrete": {
-              "parents": 1,
-              "interior": {
-                "x3": [
-                  {
-                    "parachain": 1000
-                  },
-                  {
-                    "palletInstance": 50
-                  },
-                  {
-                    "generalIndex": 1337
-                  }
-                ]
-              }
-            }
-          }
-        },
-        "reserveType": "local",
-        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/polimec-local-usdc.png",
-        "minAmount": "70000",
-        "priceId": "usd-coin",
-        "registeredChains": {}
-      }
-    ],
-    "xcAssetsData": {
-      "3344": [
-        {
-          "symbol": "USDT",
-          "name": "Tether USD",
-          "decimals": 6,
-          "xcmLocation": {
-            "v3": {
-              "concrete": {
-                "parents": 1,
-                "interior": {
-                  "x3": [
-                    {
-                      "parachain": 1000
-                    },
-                    {
-                      "palletInstance": 50
-                    },
-                    {
-                      "generalIndex": 1337
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "minAmount": "70000",
-          "priceId": "tether",
-          "reserveType": "remote",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/polimec-local-usdt.png"
-        },
-        {
-          "symbol": "USDC",
-          "name": "USD Coin",
-          "decimals": 6,
-          "xcmLocation": {
-            "v3": {
-              "concrete": {
-                "parents": 1,
-                "interior": {
-                  "x3": [
-                    {
-                      "parachain": 1000
-                    },
-                    {
-                      "palletInstance": 50
-                    },
-                    {
-                      "generalIndex": 1337
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "minAmount": "70000",
-          "priceId": "usd-coin",
-          "reserveType": "remote",
-          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/polimec-local-usdc.png"
-        }
-      ]
-    }
+    "xcAssetsData": {}
   },
   "3370": {
     "name": "LAOS Network",
@@ -12488,6 +12367,63 @@
       "reserveType": "local",
       "registeredChains": null
     },
-    "xcAssetsData": {}
+    "localAssets": [
+      {
+        "symbol": "USDT",
+        "decimals": 6,
+        "xcmLocation": {
+          "v3": {
+            "concrete": {
+              "parents": 1,
+              "interior": {
+                "x3": [
+                  {
+                    "parachain": 1000
+                  },
+                  {
+                    "palletInstance": 50
+                  },
+                  {
+                    "generalIndex": 1337
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "reserveType": "local",
+        "registeredChains": {}
+      }
+    ],
+    "xcAssetsData": {
+      "3397": [
+        {
+          "symbol": "USDT",
+          "name": "USDT",
+          "decimals": 6,
+          "xcmLocation": {
+            "v3": {
+              "concrete": {
+                "parents": 1,
+                "interior": {
+                  "x3": [
+                    {
+                      "parachain": 1000
+                    },
+                    {
+                      "palletInstance": 50
+                    },
+                    {
+                      "generalIndex": 1337
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "reserveType": "remote"
+        }
+      ]
+    }
   }
 }
