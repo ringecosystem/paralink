@@ -3542,6 +3542,26 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000143
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 22222059
                 }
               ]
@@ -3642,6 +3662,26 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000150
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 22222079
                 }
               ]
@@ -3682,6 +3722,26 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000151
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 17
                 }
               ]
@@ -3703,6 +3763,26 @@
                 },
                 {
                   "generalIndex": 50000139
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000158
                 }
               ]
             }
@@ -4495,6 +4575,26 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000144
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 22222056
                 }
               ]
@@ -4576,6 +4676,26 @@
                 },
                 {
                   "generalIndex": 696969
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000145
                 }
               ]
             }
@@ -5861,6 +5981,26 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000149
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 9000
                 }
               ]
@@ -6285,6 +6425,26 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000148
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 20090105
                 }
               ]
@@ -6601,6 +6761,26 @@
                 },
                 {
                   "generalIndex": 50000060
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000141
                 }
               ]
             }
@@ -7407,6 +7587,26 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000156
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 22222071
                 }
               ]
@@ -7547,7 +7747,47 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000155
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 8889
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000146
                 }
               ]
             }
@@ -8270,6 +8510,26 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000147
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 22222085
                 }
               ]
@@ -8411,6 +8671,26 @@
                 },
                 {
                   "generalIndex": 45
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000157
                 }
               ]
             }
@@ -8806,6 +9086,26 @@
                 },
                 {
                   "generalIndex": 50000103
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000154
                 }
               ]
             }
@@ -9416,6 +9716,26 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000142
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 20090110
                 }
               ]
@@ -9768,6 +10088,26 @@
           "concrete": {
             "parents": 1,
             "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000152
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
               "x2": [
                 {
                   "parachain": 1000
@@ -9917,6 +10257,26 @@
                     "length": 2,
                     "data": "0x0900000000000000000000000000000000000000000000000000000000000000"
                   }
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000153
                 }
               ]
             }
@@ -12215,7 +12575,128 @@
         }
       }
     },
-    "xcAssetsData": {}
+    "localAssets": [
+      {
+        "symbol": "USDT",
+        "decimals": 6,
+        "xcmLocation": {
+          "v3": {
+            "concrete": {
+              "parents": 1,
+              "interior": {
+                "x3": [
+                  {
+                    "parachain": 1000
+                  },
+                  {
+                    "palletInstance": 50
+                  },
+                  {
+                    "generalIndex": 1337
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "reserveType": "local",
+        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/polimec-local-usdt.png",
+        "minAmount": "70000",
+        "priceId": "tether",
+        "registeredChains": {}
+      },
+      {
+        "symbol": "USDC",
+        "decimals": 6,
+        "xcmLocation": {
+          "v3": {
+            "concrete": {
+              "parents": 1,
+              "interior": {
+                "x3": [
+                  {
+                    "parachain": 1000
+                  },
+                  {
+                    "palletInstance": 50
+                  },
+                  {
+                    "generalIndex": 1337
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "reserveType": "local",
+        "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/polimec-local-usdc.png",
+        "minAmount": "70000",
+        "priceId": "usd-coin",
+        "registeredChains": {}
+      }
+    ],
+    "xcAssetsData": {
+      "3344": [
+        {
+          "symbol": "USDT",
+          "name": "Tether USD",
+          "decimals": 6,
+          "xcmLocation": {
+            "v3": {
+              "concrete": {
+                "parents": 1,
+                "interior": {
+                  "x3": [
+                    {
+                      "parachain": 1000
+                    },
+                    {
+                      "palletInstance": 50
+                    },
+                    {
+                      "generalIndex": 1337
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "minAmount": "70000",
+          "priceId": "tether",
+          "reserveType": "remote",
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/polimec-local-usdt.png"
+        },
+        {
+          "symbol": "USDC",
+          "name": "USD Coin",
+          "decimals": 6,
+          "xcmLocation": {
+            "v3": {
+              "concrete": {
+                "parents": 1,
+                "interior": {
+                  "x3": [
+                    {
+                      "parachain": 1000
+                    },
+                    {
+                      "palletInstance": 50
+                    },
+                    {
+                      "generalIndex": 1337
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "minAmount": "70000",
+          "priceId": "usd-coin",
+          "reserveType": "remote",
+          "icon": "https://dev.sw-chain-list-assets.pages.dev/assets/chain-assets/polimec-local-usdc.png"
+        }
+      ]
+    }
   },
   "3370": {
     "name": "LAOS Network",
@@ -12367,63 +12848,6 @@
       "reserveType": "local",
       "registeredChains": null
     },
-    "localAssets": [
-      {
-        "symbol": "USDT",
-        "decimals": 6,
-        "xcmLocation": {
-          "v3": {
-            "concrete": {
-              "parents": 1,
-              "interior": {
-                "x3": [
-                  {
-                    "parachain": 1000
-                  },
-                  {
-                    "palletInstance": 50
-                  },
-                  {
-                    "generalIndex": 1337
-                  }
-                ]
-              }
-            }
-          }
-        },
-        "reserveType": "local",
-        "registeredChains": {}
-      }
-    ],
-    "xcAssetsData": {
-      "3397": [
-        {
-          "symbol": "USDT",
-          "name": "USDT",
-          "decimals": 6,
-          "xcmLocation": {
-            "v3": {
-              "concrete": {
-                "parents": 1,
-                "interior": {
-                  "x3": [
-                    {
-                      "parachain": 1000
-                    },
-                    {
-                      "palletInstance": 50
-                    },
-                    {
-                      "generalIndex": 1337
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "reserveType": "remote"
-        }
-      ]
-    }
+    "xcAssetsData": {}
   }
 }
