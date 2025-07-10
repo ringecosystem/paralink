@@ -4,7 +4,7 @@
     "name": "Polkadot",
     "isTestnet": false,
     "chainStatus": "ACTIVE",
-    "icon": "https://chain-list-assets.subwallet.app/assets/chains/polkadot.png",
+    "icon": "/assets/chains/polkadot.png",
     "providers": {
       "Dwellir": "wss://polkadot-rpc.dwellir.com",
       "RadiumBlock": "wss://polkadot.public.curie.radiumblock.co/ws",
@@ -52,7 +52,7 @@
       "symbol": "DOT",
       "decimals": 10,
       "name": "Polkadot",
-      "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/polkadot-native-dot.png",
+      "icon": "/assets/chain-assets/polkadot-native-dot.png",
       "priceId": "polkadot",
       "minAmount": "10000000000",
       "xcmLocation": {
@@ -67,7 +67,7 @@
     "name": "Polkadot Asset Hub",
     "isTestnet": false,
     "chainStatus": "ACTIVE",
-    "icon": "https://chain-list-assets.subwallet.app/assets/chains/statemint.png",
+    "icon": "/assets/chains/statemint.png",
     "providers": {
       "Dwellir Tunisia": "wss://statemint-rpc-tn.dwellir.com",
       "IBP-GeoDNS1": "wss://sys.ibp.network/statemint",
@@ -579,7 +579,7 @@
       "symbol": "DOT",
       "decimals": 10,
       "name": "Polkadot",
-      "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/statemint-native-dot.png",
+      "icon": "/assets/chain-assets/statemint-native-dot.png",
       "priceId": "polkadot",
       "minAmount": "100000000",
       "xcmLocation": {
@@ -594,7 +594,7 @@
     "name": "Moonbeam",
     "isTestnet": false,
     "chainStatus": "ACTIVE",
-    "icon": "https://chain-list-assets.subwallet.app/assets/chains/moonbeam.png",
+    "icon": "/assets/chains/moonbeam.png",
     "providers": {
       "Moonbeam Foundation": "wss://wss.api.moonbeam.network",
       "Blast": "wss://moonbeam.public.blastapi.io",
@@ -690,7 +690,7 @@
       "symbol": "GLMR",
       "decimals": 18,
       "name": "Moonbeam",
-      "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/moonbeam-native-glmr.png",
+      "icon": "/assets/chain-assets/moonbeam-native-glmr.png",
       "priceId": "moonbeam",
       "minAmount": "0",
       "xcmLocation": {
@@ -705,7 +705,7 @@
     "name": "Astar",
     "isTestnet": false,
     "chainStatus": "ACTIVE",
-    "icon": "https://chain-list-assets.subwallet.app/assets/chains/astar.png",
+    "icon": "/assets/chains/astar.png",
     "providers": {
       "Astar": "wss://rpc.astar.network",
       "OnFinality": "wss://astar.api.onfinality.io/public-ws",
@@ -1034,7 +1034,7 @@
       "symbol": "ASTR",
       "decimals": 18,
       "name": "Astar",
-      "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/astar-native-astr.png",
+      "icon": "/assets/chain-assets/astar-native-astr.png",
       "priceId": "astar",
       "minAmount": "1000000",
       "xcmLocation": {
@@ -1049,7 +1049,7 @@
     "name": "Bifrost Polkadot",
     "isTestnet": false,
     "chainStatus": "ACTIVE",
-    "icon": "https://chain-list-assets.subwallet.app/assets/chains/bifrost_dot.png",
+    "icon": "/assets/chains/bifrost_dot.png",
     "providers": {
       "Liebi": "wss://hk.p.bifrost-rpc.liebi.com/ws",
       "LiebiEU": "wss://eu.bifrost-polkadot-rpc.liebi.com/ws",
@@ -1347,7 +1347,7 @@
       "symbol": "BNC",
       "decimals": 12,
       "name": "Bifrost Polkadot",
-      "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/bifrost_dot-native-bnc.png",
+      "icon": "/assets/chain-assets/bifrost_dot-native-bnc.png",
       "priceId": "bifrost-native-coin",
       "minAmount": "10000000000",
       "xcmLocation": null
@@ -1359,7 +1359,7 @@
     "name": "Hydration",
     "isTestnet": false,
     "chainStatus": "ACTIVE",
-    "icon": "https://chain-list-assets.subwallet.app/assets/chains/hydradx_main.png",
+    "icon": "/assets/chains/hydradx_main.png",
     "providers": {
       "Galactic Council": "wss://rpc.hydradx.cloud",
       "Helikon": "wss://rpc.helikon.io/hydradx",
@@ -1939,7 +1939,7 @@
       "symbol": "HDX",
       "decimals": 12,
       "name": "Hydration",
-      "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/hydradx_main-native-hdx.png",
+      "icon": "/assets/chain-assets/hydradx_main-native-hdx.png",
       "priceId": "hydradx",
       "minAmount": "1000000000000",
       "xcmLocation": null
@@ -1951,7 +1951,7 @@
     "name": "Darwinia 2",
     "isTestnet": false,
     "chainStatus": "ACTIVE",
-    "icon": "https://chain-list-assets.subwallet.app/assets/chains/darwinia2.png",
+    "icon": "/assets/chains/darwinia2.png",
     "providers": {
       "Darwinia Network": "wss://rpc.darwinia.network",
       "Dwellir": "wss://darwinia-rpc.dwellir.com",
@@ -2029,7 +2029,7 @@
       "symbol": "RING",
       "decimals": 18,
       "name": "Darwinia Network",
-      "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/darwinia2-native-ring.png",
+      "icon": "/assets/chain-assets/darwinia2-native-ring.png",
       "priceId": "darwinia-network-native-token",
       "minAmount": "0",
       "xcmLocation": null
@@ -2041,7 +2041,7 @@
     "name": "Polimec",
     "isTestnet": false,
     "chainStatus": "ACTIVE",
-    "icon": "https://chain-list-assets.subwallet.app/assets/chains/polimec.png",
+    "icon": "/assets/chains/polimec.png",
     "providers": {
       "Polimec": "wss://rpc.polimec.org",
       "Amforc": "wss://polimec.rpc.amforc.com",
@@ -2089,7 +2089,7 @@
       "symbol": "PLMC",
       "decimals": 10,
       "name": "Polimec",
-      "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/polimec-native-plmc.png",
+      "icon": "/assets/chain-assets/polimec-native-plmc.png",
       "priceId": "polimec",
       "minAmount": "100000000",
       "xcmLocation": null
@@ -2101,7 +2101,7 @@
     "name": "LAOS Network",
     "isTestnet": false,
     "chainStatus": "ACTIVE",
-    "icon": "https://chain-list-assets.subwallet.app/assets/chains/laos_network.png",
+    "icon": "/assets/chains/laos_network.png",
     "providers": {
       "LaosFoundation": "wss://rpc.laos.laosfoundation.io",
       "Dwellir": "wss://laos-rpc.dwellir.com"
@@ -2145,7 +2145,7 @@
       "symbol": "LAOS",
       "decimals": 18,
       "name": "LAOS",
-      "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/laos_network-native-laos.png",
+      "icon": "/assets/chain-assets/laos_network-native-laos.png",
       "priceId": "laos-network",
       "minAmount": "0",
       "xcmLocation": null
@@ -2157,7 +2157,7 @@
     "name": "JAMTON",
     "isTestnet": false,
     "chainStatus": "ACTIVE",
-    "icon": "https://chain-list-assets.subwallet.app/assets/chains/jamton.png",
+    "icon": "/assets/chains/jamton.png",
     "providers": {
       "Jamton": "wss://rpc.jamton.network"
     },
@@ -2199,7 +2199,7 @@
       "symbol": "DOTON",
       "decimals": 18,
       "name": "DOTON",
-      "icon": "https://chain-list-assets.subwallet.app/assets/chain-assets/jamton-native-doton.png",
+      "icon": "/assets/chain-assets/jamton-native-doton.png",
       "priceId": null,
       "minAmount": "1000000000000000",
       "xcmLocation": null
