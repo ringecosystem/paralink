@@ -12936,6 +12936,58 @@
     "existentialDeposit": "1000000000000000",
     "isEvm": false,
     "explorer": null,
+    "xcmPaymentAcceptTokens": [
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "here": null
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 31337
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 1984
+                }
+              ]
+            }
+          }
+        }
+      }
+    ],
     "nativeToken": {
       "symbol": "DOTON",
       "decimals": 18,
