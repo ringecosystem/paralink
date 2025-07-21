@@ -176,7 +176,6 @@
       "wss://rpc-asset-hub-polkadot.luckyfriday.io",
       "wss://polkadot-asset-hub-rpc.polkadot.io",
       "wss://dot-rpc.stakeworld.io/assethub",
-      "wss://statemint.api.onfinality.io/public-ws",
       "wss://polkadot-assethub-rpc.blockops.network/ws",
       "wss://asset-hub-polkadot-rpc.dwellir.com",
       "wss://sys.ibp.network/asset-hub-polkadot",
@@ -11726,7 +11725,7 @@
         },
         "reserveType": "local",
         "icon": "/assets/chain-assets/hydradx_main-local-gdot.png",
-        "minAmount": "0",
+        "minAmount": "5290724013368937",
         "priceId": "gigadot",
         "registeredChains": {}
       }
@@ -12457,7 +12456,7 @@
               }
             }
           },
-          "minAmount": "0",
+          "minAmount": "5290724013368937",
           "priceId": "gigadot",
           "reserveType": "local",
           "icon": "/assets/chain-assets/hydradx_main-local-gdot.png"

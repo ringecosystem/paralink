@@ -74,7 +74,6 @@
       "Lucky Friday": "wss://rpc-asset-hub-polkadot.luckyfriday.io",
       "Parity": "wss://polkadot-asset-hub-rpc.polkadot.io",
       "StakeWorld": "wss://dot-rpc.stakeworld.io/assethub",
-      "OnFinality": "wss://statemint.api.onfinality.io/public-ws",
       "Blockops": "wss://polkadot-assethub-rpc.blockops.network/ws",
       "Dwellir": "wss://asset-hub-polkadot-rpc.dwellir.com",
       "IBP1": "wss://sys.ibp.network/asset-hub-polkadot",
