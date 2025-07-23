@@ -6100,6 +6100,26 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000192
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 420
                 }
               ]
@@ -6353,6 +6373,26 @@
                 },
                 {
                   "parachain": 16
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000213
                 }
               ]
             }
@@ -7306,6 +7346,26 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000211
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 50000013
                 }
               ]
@@ -7986,6 +8046,26 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000214
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 50000155
                 }
               ]
@@ -8506,6 +8586,26 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000215
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 22222029
                 }
               ]
@@ -8750,6 +8850,26 @@
                 },
                 {
                   "generalIndex": 82
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000196
                 }
               ]
             }
@@ -9705,6 +9825,26 @@
           "concrete": {
             "parents": 1,
             "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000195
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
               "x2": [
                 {
                   "parachain": 2030
@@ -10111,6 +10251,26 @@
                 },
                 {
                   "generalIndex": 50000142
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000197
                 }
               ]
             }
@@ -11211,6 +11371,26 @@
       {
         "v3": {
           "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000210
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
             "parents": 0,
             "interior": {
               "x1": {
@@ -11487,6 +11667,26 @@
                 },
                 {
                   "generalIndex": 50000024
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000212
                 }
               ]
             }
@@ -11877,6 +12077,31 @@
                   "accountKey20": {
                     "network": null,
                     "key": "0x02639ec01313c8775fae74f2dad1118c8a8a86da"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "reserveType": "local",
+        "registeredChains": {}
+      },
+      {
+        "symbol": "a3-Pool",
+        "decimals": 18,
+        "assetId": "1008",
+        "xcmLocation": {
+          "v1": {
+            "parents": 1,
+            "interior": {
+              "x2": [
+                {
+                  "parachain": 2034
+                },
+                {
+                  "accountKey20": {
+                    "network": null,
+                    "key": "0xc09cf2f85367f3c2ab66e094283de3a499cb9108"
                   }
                 }
               ]
@@ -12619,6 +12844,31 @@
           "reserveType": "local"
         },
         {
+          "assetId": "1008",
+          "symbol": "a3-Pool",
+          "name": "a3-Pool",
+          "decimals": 18,
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "x2": [
+                  {
+                    "parachain": 2034
+                  },
+                  {
+                    "accountKey20": {
+                      "network": null,
+                      "key": "0xc09cf2f85367f3c2ab66e094283de3a499cb9108"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "reserveType": "local"
+        },
+        {
           "assetId": "1006",
           "symbol": "atBTC",
           "name": "atBTC",
@@ -13189,7 +13439,128 @@
         }
       }
     },
-    "xcAssetsData": {}
+    "localAssets": [
+      {
+        "symbol": "USDT",
+        "decimals": 6,
+        "xcmLocation": {
+          "v3": {
+            "concrete": {
+              "parents": 1,
+              "interior": {
+                "x3": [
+                  {
+                    "parachain": 1000
+                  },
+                  {
+                    "palletInstance": 50
+                  },
+                  {
+                    "generalIndex": 1337
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "reserveType": "local",
+        "icon": "/assets/chain-assets/polimec-local-usdt.png",
+        "minAmount": "70000",
+        "priceId": "tether",
+        "registeredChains": {}
+      },
+      {
+        "symbol": "USDC",
+        "decimals": 6,
+        "xcmLocation": {
+          "v3": {
+            "concrete": {
+              "parents": 1,
+              "interior": {
+                "x3": [
+                  {
+                    "parachain": 1000
+                  },
+                  {
+                    "palletInstance": 50
+                  },
+                  {
+                    "generalIndex": 1337
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "reserveType": "local",
+        "icon": "/assets/chain-assets/polimec-local-usdc.png",
+        "minAmount": "70000",
+        "priceId": "usd-coin",
+        "registeredChains": {}
+      }
+    ],
+    "xcAssetsData": {
+      "3344": [
+        {
+          "symbol": "USDT",
+          "name": "Tether USD",
+          "decimals": 6,
+          "xcmLocation": {
+            "v3": {
+              "concrete": {
+                "parents": 1,
+                "interior": {
+                  "x3": [
+                    {
+                      "parachain": 1000
+                    },
+                    {
+                      "palletInstance": 50
+                    },
+                    {
+                      "generalIndex": 1337
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "minAmount": "70000",
+          "priceId": "tether",
+          "reserveType": "remote",
+          "icon": "/assets/chain-assets/polimec-local-usdt.png"
+        },
+        {
+          "symbol": "USDC",
+          "name": "USD Coin",
+          "decimals": 6,
+          "xcmLocation": {
+            "v3": {
+              "concrete": {
+                "parents": 1,
+                "interior": {
+                  "x3": [
+                    {
+                      "parachain": 1000
+                    },
+                    {
+                      "palletInstance": 50
+                    },
+                    {
+                      "generalIndex": 1337
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "minAmount": "70000",
+          "priceId": "usd-coin",
+          "reserveType": "remote",
+          "icon": "/assets/chain-assets/polimec-local-usdc.png"
+        }
+      ]
+    }
   },
   "3370": {
     "name": "LAOS Network",
@@ -13341,63 +13712,6 @@
       "reserveType": "local",
       "registeredChains": null
     },
-    "localAssets": [
-      {
-        "symbol": "USDT",
-        "decimals": 6,
-        "xcmLocation": {
-          "v3": {
-            "concrete": {
-              "parents": 1,
-              "interior": {
-                "x3": [
-                  {
-                    "parachain": 1000
-                  },
-                  {
-                    "palletInstance": 50
-                  },
-                  {
-                    "generalIndex": 1337
-                  }
-                ]
-              }
-            }
-          }
-        },
-        "reserveType": "local",
-        "registeredChains": {}
-      }
-    ],
-    "xcAssetsData": {
-      "3397": [
-        {
-          "symbol": "USDT",
-          "name": "USDT",
-          "decimals": 6,
-          "xcmLocation": {
-            "v3": {
-              "concrete": {
-                "parents": 1,
-                "interior": {
-                  "x3": [
-                    {
-                      "parachain": 1000
-                    },
-                    {
-                      "palletInstance": 50
-                    },
-                    {
-                      "generalIndex": 1337
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "reserveType": "remote"
-        }
-      ]
-    }
+    "xcAssetsData": {}
   }
 }
