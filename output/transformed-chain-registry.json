@@ -626,6 +626,26 @@
           "concrete": {
             "parents": 1,
             "interior": {
+              "x2": [
+                {
+                  "parachain": 2030
+                },
+                {
+                  "generalKey": {
+                    "length": 2,
+                    "data": "0x0900000000000000000000000000000000000000000000000000000000000000"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
               "x1": {
                 "parachain": 3370
               }
