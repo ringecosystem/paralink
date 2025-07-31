@@ -644,18 +644,6 @@
       {
         "v3": {
           "concrete": {
-            "parents": 1,
-            "interior": {
-              "x1": {
-                "parachain": 3370
-              }
-            }
-          }
-        }
-      },
-      {
-        "v3": {
-          "concrete": {
             "parents": 0,
             "interior": {
               "x2": [
@@ -1109,18 +1097,6 @@
                   "generalIndex": 1984
                 }
               ]
-            }
-          }
-        }
-      },
-      {
-        "v3": {
-          "concrete": {
-            "parents": 1,
-            "interior": {
-              "x1": {
-                "parachain": 3370
-              }
             }
           }
         }
@@ -7167,18 +7143,6 @@
                   "generalIndex": 50000226
                 }
               ]
-            }
-          }
-        }
-      },
-      {
-        "v3": {
-          "concrete": {
-            "parents": 1,
-            "interior": {
-              "x1": {
-                "parachain": 3370
-              }
             }
           }
         }
@@ -13574,27 +13538,6 @@
           "reserveType": "foreign",
           "icon": "/assets/chain-assets/polimec-native-plmc.png"
         }
-      ],
-      "3370": [
-        {
-          "assetId": "3370",
-          "symbol": "LAOS",
-          "name": "LAOS",
-          "decimals": 18,
-          "xcmLocation": {
-            "v1": {
-              "parents": 1,
-              "interior": {
-                "x1": {
-                  "parachain": 3370
-                }
-              }
-            }
-          },
-          "priceId": "laos-network",
-          "reserveType": "foreign",
-          "icon": "/assets/chain-assets/laos_network-native-laos.png"
-        }
       ]
     }
   },
@@ -13912,73 +13855,6 @@
               "interior": {
                 "x1": {
                   "parachain": 3344
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "xcAssetsData": {}
-  },
-  "3370": {
-    "name": "LAOS Network",
-    "slug": "laos_network",
-    "icon": "/assets/chains/laos_network.png",
-    "addressPrefix": 42,
-    "providers": [
-      "wss://rpc.laos.laosfoundation.io",
-      "wss://laos-rpc.dwellir.com"
-    ],
-    "alive": true,
-    "existentialDeposit": "0",
-    "isEvm": false,
-    "explorer": "https://laos.statescan.io/",
-    "xcmPaymentAcceptTokens": [
-      {
-        "v3": {
-          "concrete": {
-            "parents": 0,
-            "interior": {
-              "here": null
-            }
-          }
-        }
-      }
-    ],
-    "nativeToken": {
-      "symbol": "LAOS",
-      "decimals": 18,
-      "name": "LAOS",
-      "icon": "/assets/chain-assets/laos_network-native-laos.png",
-      "priceId": "laos-network",
-      "minAmount": "0",
-      "xcmLocation": {
-        "v1": {
-          "parents": 0,
-          "interior": {
-            "here": null
-          }
-        }
-      },
-      "isNative": true,
-      "reserveType": "local",
-      "registeredChains": {
-        "2034": {
-          "assetId": "3370",
-          "symbol": "LAOS",
-          "name": "LAOS",
-          "decimals": 18,
-          "priceId": "laos-network",
-          "isNative": true,
-          "reserveType": "local",
-          "icon": "/assets/chain-assets/laos_network-native-laos.png",
-          "xcmLocation": {
-            "v1": {
-              "parents": 1,
-              "interior": {
-                "x1": {
-                  "parachain": 3370
                 }
               }
             }
