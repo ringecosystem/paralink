@@ -1026,7 +1026,7 @@
     "alive": true,
     "existentialDeposit": "0",
     "isEvm": true,
-    "explorer": "https://moonbeam.subscan.io/",
+    "explorer": "https://moonscan.io/",
     "evmChainId": 1284,
     "xcmPaymentAcceptTokens": [
       {
@@ -13198,7 +13198,7 @@
         "reserveType": "local",
         "icon": "/assets/chain-assets/hydradx_main-local-geth.png",
         "minAmount": "8202803876747",
-        "priceId": null,
+        "priceId": "gigaeth",
         "registeredChains": {}
       },
       {
@@ -13955,6 +13955,7 @@
             }
           },
           "minAmount": "8202803876747",
+          "priceId": "gigaeth",
           "reserveType": "local",
           "icon": "/assets/chain-assets/hydradx_main-local-geth.png"
         },
