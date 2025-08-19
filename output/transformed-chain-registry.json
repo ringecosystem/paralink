@@ -14668,5 +14668,147 @@
       }
     },
     "xcAssetsData": {}
+  },
+  "3397": {
+    "name": "JAMTON",
+    "slug": "jamton",
+    "icon": "/assets/chains/jamton.png",
+    "addressPrefix": 5589,
+    "providers": [
+      "wss://rpc.jamton.network"
+    ],
+    "alive": true,
+    "existentialDeposit": "1000000000000000",
+    "isEvm": false,
+    "explorer": null,
+    "xcmPaymentAcceptTokens": [
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "here": null
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 31337
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 1984
+                }
+              ]
+            }
+          }
+        }
+      }
+    ],
+    "nativeToken": {
+      "symbol": "DOTON",
+      "decimals": 18,
+      "name": "DOTON",
+      "icon": "/assets/chain-assets/jamton-native-doton.png",
+      "priceId": null,
+      "minAmount": "1000000000000000",
+      "xcmLocation": {
+        "v1": {
+          "parents": 0,
+          "interior": {
+            "here": null
+          }
+        }
+      },
+      "isNative": true,
+      "reserveType": "local",
+      "registeredChains": null
+    },
+    "localAssets": [
+      {
+        "symbol": "USDT",
+        "decimals": 6,
+        "xcmLocation": {
+          "v3": {
+            "concrete": {
+              "parents": 1,
+              "interior": {
+                "x3": [
+                  {
+                    "parachain": 1000
+                  },
+                  {
+                    "palletInstance": 50
+                  },
+                  {
+                    "generalIndex": 1337
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "reserveType": "local",
+        "registeredChains": {}
+      }
+    ],
+    "xcAssetsData": {
+      "3397": [
+        {
+          "symbol": "USDT",
+          "name": "USDT",
+          "decimals": 6,
+          "xcmLocation": {
+            "v3": {
+              "concrete": {
+                "parents": 1,
+                "interior": {
+                  "x3": [
+                    {
+                      "parachain": 1000
+                    },
+                    {
+                      "palletInstance": 50
+                    },
+                    {
+                      "generalIndex": 1337
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "reserveType": "remote"
+        }
+      ]
+    }
   }
 }
