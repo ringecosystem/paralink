@@ -12,7 +12,6 @@
       "wss://polkadot-rpc-tn.dwellir.com",
       "wss://rpc.ibp.network/polkadot",
       "wss://polkadot-public-rpc.blockops.network/ws",
-      "wss://rockx-dot.w3node.com/polka-public-dot/ws",
       "wss://polkadot-rpc.publicnode.com",
       "wss://polkadot.api.onfinality.io/public-ws",
       "wss://rpc-polkadot.helixstreet.io",
@@ -1020,8 +1019,7 @@
       "wss://moonbeam-rpc.publicnode.com",
       "wss://moonbeam-rpc.n.dwellir.com",
       "wss://moonbeam.ibp.network",
-      "wss://moonbeam.dotters.network",
-      "wss://moonbeam.public.curie.radiumblock.co/ws"
+      "wss://moonbeam.dotters.network"
     ],
     "alive": true,
     "existentialDeposit": "0",
@@ -2159,7 +2157,6 @@
     "icon": "/assets/chains/bifrost_dot.png",
     "addressPrefix": 0,
     "providers": [
-      "wss://hk.p.bifrost-rpc.liebi.com/ws",
       "wss://eu.bifrost-polkadot-rpc.liebi.com/ws",
       "wss://bifrost-polkadot.ibp.network",
       "wss://bifrost-polkadot.dotters.network"
