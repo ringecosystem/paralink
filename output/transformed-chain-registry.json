@@ -3898,6 +3898,26 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000307
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 50000158
                 }
               ]
@@ -4417,6 +4437,26 @@
                 },
                 {
                   "generalIndex": 22222019
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000299
                 }
               ]
             }
@@ -5371,6 +5411,26 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000312
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 50000254
                 }
               ]
@@ -5595,6 +5655,26 @@
                 },
                 {
                   "generalIndex": 50000185
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000311
                 }
               ]
             }
@@ -6118,6 +6198,26 @@
                 },
                 {
                   "generalIndex": 2828
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000306
                 }
               ]
             }
@@ -6697,6 +6797,26 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000308
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 50000126
                 }
               ]
@@ -7041,7 +7161,47 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000298
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 22222068
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000300
                 }
               ]
             }
@@ -7102,6 +7262,26 @@
                 },
                 {
                   "generalIndex": 50000090
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000313
                 }
               ]
             }
@@ -7773,6 +7953,26 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000301
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 5318008
                 }
               ]
@@ -8143,6 +8343,26 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000309
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 22222027
                 }
               ]
@@ -8263,6 +8483,26 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000297
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 73
                 }
               ]
@@ -8324,6 +8564,26 @@
                 },
                 {
                   "generalIndex": 35
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000302
                 }
               ]
             }
@@ -8724,6 +8984,26 @@
                 },
                 {
                   "generalIndex": 50000214
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000304
                 }
               ]
             }
@@ -10361,6 +10641,26 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000303
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 22222088
                 }
               ]
@@ -10663,6 +10963,26 @@
                 },
                 {
                   "generalIndex": 50
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000305
                 }
               ]
             }
@@ -12419,6 +12739,26 @@
                 },
                 {
                   "generalIndex": 50000258
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000310
                 }
               ]
             }
@@ -14665,147 +15005,5 @@
       }
     },
     "xcAssetsData": {}
-  },
-  "3397": {
-    "name": "JAMTON",
-    "slug": "jamton",
-    "icon": "/assets/chains/jamton.png",
-    "addressPrefix": 5589,
-    "providers": [
-      "wss://rpc.jamton.network"
-    ],
-    "alive": true,
-    "existentialDeposit": "1000000000000000",
-    "isEvm": false,
-    "explorer": null,
-    "xcmPaymentAcceptTokens": [
-      {
-        "v3": {
-          "concrete": {
-            "parents": 1,
-            "interior": {
-              "here": null
-            }
-          }
-        }
-      },
-      {
-        "v3": {
-          "concrete": {
-            "parents": 1,
-            "interior": {
-              "x3": [
-                {
-                  "parachain": 1000
-                },
-                {
-                  "palletInstance": 50
-                },
-                {
-                  "generalIndex": 31337
-                }
-              ]
-            }
-          }
-        }
-      },
-      {
-        "v3": {
-          "concrete": {
-            "parents": 1,
-            "interior": {
-              "x3": [
-                {
-                  "parachain": 1000
-                },
-                {
-                  "palletInstance": 50
-                },
-                {
-                  "generalIndex": 1984
-                }
-              ]
-            }
-          }
-        }
-      }
-    ],
-    "nativeToken": {
-      "symbol": "DOTON",
-      "decimals": 18,
-      "name": "DOTON",
-      "icon": "/assets/chain-assets/jamton-native-doton.png",
-      "priceId": null,
-      "minAmount": "1000000000000000",
-      "xcmLocation": {
-        "v1": {
-          "parents": 0,
-          "interior": {
-            "here": null
-          }
-        }
-      },
-      "isNative": true,
-      "reserveType": "local",
-      "registeredChains": null
-    },
-    "localAssets": [
-      {
-        "symbol": "USDT",
-        "decimals": 6,
-        "xcmLocation": {
-          "v3": {
-            "concrete": {
-              "parents": 1,
-              "interior": {
-                "x3": [
-                  {
-                    "parachain": 1000
-                  },
-                  {
-                    "palletInstance": 50
-                  },
-                  {
-                    "generalIndex": 1337
-                  }
-                ]
-              }
-            }
-          }
-        },
-        "reserveType": "local",
-        "registeredChains": {}
-      }
-    ],
-    "xcAssetsData": {
-      "3397": [
-        {
-          "symbol": "USDT",
-          "name": "USDT",
-          "decimals": 6,
-          "xcmLocation": {
-            "v3": {
-              "concrete": {
-                "parents": 1,
-                "interior": {
-                  "x3": [
-                    {
-                      "parachain": 1000
-                    },
-                    {
-                      "palletInstance": 50
-                    },
-                    {
-                      "generalIndex": 1337
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "reserveType": "remote"
-        }
-      ]
-    }
   }
 }

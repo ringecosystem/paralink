@@ -2167,59 +2167,5 @@
       "xcmLocation": null
     },
     "isEvm": false
-  },
-  {
-    "slug": "jamton",
-    "name": "JAMTON",
-    "isTestnet": false,
-    "chainStatus": "ACTIVE",
-    "icon": "/assets/chains/jamton.png",
-    "providers": {
-      "Jamton": "wss://rpc.jamton.network"
-    },
-    "evmInfo": null,
-    "substrateInfo": {
-      "relaySlug": "polkadot",
-      "paraId": 3397,
-      "genesisHash": "0xbb9233e202ec014707f82ddb90e84ee9efece8fefee287ad4ad646d869a6c24a",
-      "addressPrefix": 5589,
-      "chainType": "PARACHAIN",
-      "crowdloanUrl": null,
-      "blockExplorer": null,
-      "existentialDeposit": "1000000000000000",
-      "symbol": "DOTON",
-      "decimals": 18,
-      "hasNativeNft": null,
-      "supportStaking": null,
-      "supportSmartContract": null,
-      "crowdloanParaId": null,
-      "crowdloanFunds": []
-    },
-    "extraInfo": null,
-    "bitcoinInfo": null,
-    "tonInfo": null,
-    "cardanoInfo": null,
-    "id": "3397",
-    "assetsInfo": {},
-    "xcAssetsData": [
-      {
-        "paraID": 3397,
-        "nativeChainID": "asset-hub-polkadot",
-        "symbol": "USDT",
-        "decimals": 6,
-        "xcmV1MultiLocation": "{\"v3\":{\"concrete\":{\"parents\":1,\"interior\":{\"x3\":[{\"parachain\":1000},{\"palletInstance\":50},{\"generalIndex\":1337}]}}}}",
-        "assetHubReserveLocation": "{\"parents\":\"0\",\"interior\":{\"Here\":\"\"}}"
-      }
-    ],
-    "nativeToken": {
-      "symbol": "DOTON",
-      "decimals": 18,
-      "name": "DOTON",
-      "icon": "/assets/chain-assets/jamton-native-doton.png",
-      "priceId": null,
-      "minAmount": "1000000000000000",
-      "xcmLocation": null
-    },
-    "isEvm": false
   }
 ]
