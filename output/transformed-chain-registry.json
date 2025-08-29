@@ -12418,18 +12418,6 @@
     "existentialDeposit": "0",
     "isEvm": false,
     "explorer": "https://laos.statescan.io/",
-    "xcmPaymentAcceptTokens": [
-      {
-        "v3": {
-          "concrete": {
-            "parents": 0,
-            "interior": {
-              "here": null
-            }
-          }
-        }
-      }
-    ],
     "nativeToken": {
       "symbol": "LAOS",
       "decimals": 18,
