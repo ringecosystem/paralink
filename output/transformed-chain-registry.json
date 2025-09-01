@@ -569,18 +569,6 @@
       {
         "v3": {
           "concrete": {
-            "parents": 1,
-            "interior": {
-              "x1": {
-                "parachain": 3370
-              }
-            }
-          }
-        }
-      },
-      {
-        "v3": {
-          "concrete": {
             "parents": 0,
             "interior": {
               "x2": [
@@ -825,18 +813,6 @@
                   "generalIndex": 1984
                 }
               ]
-            }
-          }
-        }
-      },
-      {
-        "v3": {
-          "concrete": {
-            "parents": 1,
-            "interior": {
-              "x1": {
-                "parachain": 3370
-              }
             }
           }
         }
@@ -6052,18 +6028,6 @@
                   "generalIndex": 50000226
                 }
               ]
-            }
-          }
-        }
-      },
-      {
-        "v3": {
-          "concrete": {
-            "parents": 1,
-            "interior": {
-              "x1": {
-                "parachain": 3370
-              }
             }
           }
         }
@@ -12138,52 +12102,6 @@
       "icon": "/assets/chain-assets/polimec-native-plmc.png",
       "priceId": "polimec",
       "minAmount": "100000000",
-      "xcmLocation": {
-        "v1": {
-          "parents": 0,
-          "interior": {
-            "here": null
-          }
-        }
-      },
-      "isNative": true,
-      "reserveType": "local",
-      "registeredChains": null
-    },
-    "xcAssetsData": {}
-  },
-  "3370": {
-    "name": "LAOS Network",
-    "slug": "laos_network",
-    "icon": "/assets/chains/laos_network.png",
-    "addressPrefix": 42,
-    "providers": [
-      "wss://rpc.laos.laosfoundation.io",
-      "wss://laos-rpc.dwellir.com"
-    ],
-    "alive": true,
-    "existentialDeposit": "0",
-    "isEvm": false,
-    "explorer": "https://laos.statescan.io/",
-    "xcmPaymentAcceptTokens": [
-      {
-        "v3": {
-          "concrete": {
-            "parents": 0,
-            "interior": {
-              "here": null
-            }
-          }
-        }
-      }
-    ],
-    "nativeToken": {
-      "symbol": "LAOS",
-      "decimals": 18,
-      "name": "LAOS",
-      "icon": "/assets/chain-assets/laos_network-native-laos.png",
-      "priceId": "laos-network",
-      "minAmount": "0",
       "xcmLocation": {
         "v1": {
           "parents": 0,
