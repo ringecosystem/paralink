@@ -73,7 +73,6 @@
       "Lucky Friday": "wss://rpc-asset-hub-polkadot.luckyfriday.io",
       "Parity": "wss://polkadot-asset-hub-rpc.polkadot.io",
       "StakeWorld": "wss://dot-rpc.stakeworld.io/assethub",
-      "Blockops": "wss://polkadot-assethub-rpc.blockops.network/ws",
       "Dwellir": "wss://asset-hub-polkadot-rpc.dwellir.com",
       "IBP1": "wss://sys.ibp.network/asset-hub-polkadot",
       "IBP2": "wss://asset-hub-polkadot.dotters.network"
@@ -1242,7 +1241,7 @@
     "slug": "polimec",
     "name": "Polimec",
     "isTestnet": false,
-    "chainStatus": "ACTIVE",
+    "chainStatus": "INACTIVE",
     "icon": "/assets/chains/polimec.png",
     "providers": {
       "Polimec": "wss://rpc.polimec.org",
