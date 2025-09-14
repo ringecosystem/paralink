@@ -1804,7 +1804,122 @@
       "reserveType": "local",
       "registeredChains": null
     },
-    "xcAssetsData": {}
+    "localAssets": [
+      {
+        "symbol": "USDT",
+        "decimals": 6,
+        "xcmLocation": {
+          "v3": {
+            "concrete": {
+              "parents": 1,
+              "interior": {
+                "x3": [
+                  {
+                    "parachain": 1000
+                  },
+                  {
+                    "palletInstance": 50
+                  },
+                  {
+                    "generalIndex": 1337
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "reserveType": "local",
+        "icon": "/assets/chain-assets/bifrost_dot-local-usdt.png",
+        "minAmount": "1000",
+        "priceId": "tether",
+        "registeredChains": {}
+      },
+      {
+        "symbol": "USDC",
+        "decimals": 6,
+        "xcmLocation": {
+          "v3": {
+            "concrete": {
+              "parents": 1,
+              "interior": {
+                "x3": [
+                  {
+                    "parachain": 1000
+                  },
+                  {
+                    "palletInstance": 50
+                  },
+                  {
+                    "generalIndex": 1337
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "reserveType": "local",
+        "registeredChains": {}
+      }
+    ],
+    "xcAssetsData": {
+      "2030": [
+        {
+          "symbol": "USDT",
+          "name": "Tether USD",
+          "decimals": 6,
+          "xcmLocation": {
+            "v3": {
+              "concrete": {
+                "parents": 1,
+                "interior": {
+                  "x3": [
+                    {
+                      "parachain": 1000
+                    },
+                    {
+                      "palletInstance": 50
+                    },
+                    {
+                      "generalIndex": 1337
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "minAmount": "1000",
+          "priceId": "tether",
+          "reserveType": "remote",
+          "icon": "/assets/chain-assets/bifrost_dot-local-usdt.png"
+        },
+        {
+          "symbol": "USDC",
+          "name": "USDC",
+          "decimals": 6,
+          "xcmLocation": {
+            "v3": {
+              "concrete": {
+                "parents": 1,
+                "interior": {
+                  "x3": [
+                    {
+                      "parachain": 1000
+                    },
+                    {
+                      "palletInstance": 50
+                    },
+                    {
+                      "generalIndex": 1337
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "reserveType": "remote"
+        }
+      ]
+    }
   },
   "2034": {
     "name": "Hydration",
@@ -12010,7 +12125,128 @@
       "reserveType": "local",
       "registeredChains": null
     },
-    "xcAssetsData": {}
+    "localAssets": [
+      {
+        "symbol": "USDC",
+        "decimals": 6,
+        "xcmLocation": {
+          "v3": {
+            "concrete": {
+              "parents": 1,
+              "interior": {
+                "x3": [
+                  {
+                    "parachain": 1000
+                  },
+                  {
+                    "palletInstance": 50
+                  },
+                  {
+                    "generalIndex": 1337
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "reserveType": "local",
+        "icon": "/assets/chain-assets/hydradx_main-local-usdc.png",
+        "minAmount": "10000",
+        "priceId": "usd-coin",
+        "registeredChains": {}
+      },
+      {
+        "symbol": "USDT",
+        "decimals": 6,
+        "xcmLocation": {
+          "v3": {
+            "concrete": {
+              "parents": 1,
+              "interior": {
+                "x3": [
+                  {
+                    "parachain": 1000
+                  },
+                  {
+                    "palletInstance": 50
+                  },
+                  {
+                    "generalIndex": 1337
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "reserveType": "local",
+        "icon": "/assets/chain-assets/hydradx_main-local-usdt.png",
+        "minAmount": "10000",
+        "priceId": "tether",
+        "registeredChains": {}
+      }
+    ],
+    "xcAssetsData": {
+      "2034": [
+        {
+          "symbol": "USDC",
+          "name": "USDC (Polkadot Asset Hub)",
+          "decimals": 6,
+          "xcmLocation": {
+            "v3": {
+              "concrete": {
+                "parents": 1,
+                "interior": {
+                  "x3": [
+                    {
+                      "parachain": 1000
+                    },
+                    {
+                      "palletInstance": 50
+                    },
+                    {
+                      "generalIndex": 1337
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "minAmount": "10000",
+          "priceId": "usd-coin",
+          "reserveType": "remote",
+          "icon": "/assets/chain-assets/hydradx_main-local-usdc.png"
+        },
+        {
+          "symbol": "USDT",
+          "name": "Statemint USDT",
+          "decimals": 6,
+          "xcmLocation": {
+            "v3": {
+              "concrete": {
+                "parents": 1,
+                "interior": {
+                  "x3": [
+                    {
+                      "parachain": 1000
+                    },
+                    {
+                      "palletInstance": 50
+                    },
+                    {
+                      "generalIndex": 1337
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "minAmount": "10000",
+          "priceId": "tether",
+          "reserveType": "remote",
+          "icon": "/assets/chain-assets/hydradx_main-local-usdt.png"
+        }
+      ]
+    }
   },
   "2046": {
     "name": "Darwinia 2",
@@ -12090,7 +12326,64 @@
       "reserveType": "local",
       "registeredChains": null
     },
-    "xcAssetsData": {}
+    "localAssets": [
+      {
+        "symbol": "USDT",
+        "decimals": 6,
+        "xcmLocation": {
+          "v3": {
+            "concrete": {
+              "parents": 1,
+              "interior": {
+                "x3": [
+                  {
+                    "parachain": 1000
+                  },
+                  {
+                    "palletInstance": 50
+                  },
+                  {
+                    "generalIndex": 1337
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "reserveType": "local",
+        "registeredChains": {}
+      }
+    ],
+    "xcAssetsData": {
+      "2046": [
+        {
+          "symbol": "USDT",
+          "name": "USDT",
+          "decimals": 6,
+          "xcmLocation": {
+            "v3": {
+              "concrete": {
+                "parents": 1,
+                "interior": {
+                  "x3": [
+                    {
+                      "parachain": 1000
+                    },
+                    {
+                      "palletInstance": 50
+                    },
+                    {
+                      "generalIndex": 1337
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "reserveType": "remote"
+        }
+      ]
+    }
   },
   "3344": {
     "name": "Polimec",
@@ -12320,6 +12613,63 @@
       "reserveType": "local",
       "registeredChains": null
     },
-    "xcAssetsData": {}
+    "localAssets": [
+      {
+        "symbol": "USDT",
+        "decimals": 6,
+        "xcmLocation": {
+          "v3": {
+            "concrete": {
+              "parents": 1,
+              "interior": {
+                "x3": [
+                  {
+                    "parachain": 1000
+                  },
+                  {
+                    "palletInstance": 50
+                  },
+                  {
+                    "generalIndex": 1337
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "reserveType": "local",
+        "registeredChains": {}
+      }
+    ],
+    "xcAssetsData": {
+      "3397": [
+        {
+          "symbol": "USDT",
+          "name": "USDT",
+          "decimals": 6,
+          "xcmLocation": {
+            "v3": {
+              "concrete": {
+                "parents": 1,
+                "interior": {
+                  "x3": [
+                    {
+                      "parachain": 1000
+                    },
+                    {
+                      "palletInstance": 50
+                    },
+                    {
+                      "generalIndex": 1337
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "reserveType": "remote"
+        }
+      ]
+    }
   }
 }
