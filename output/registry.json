@@ -713,7 +713,8 @@
       "238111524681612888331172110363070489924": "xcNEURO",
       "112679793397406599376365943185137098326": "xcSTINK",
       "132685552157663328694213725410064821485": "xcPHA",
-      "164507627753062513353393042023152019483": "USDT.e"
+      "164507627753062513353393042023152019483": "USDT.e",
+      "112675423039561305557350799263187182338": "MOVR.mr"
     },
     "xcAssetsData": [
       {
@@ -971,24 +972,6 @@
       "18": "ARB_ETH",
       "19": "OP_ETH"
     },
-    "xcAssetsData": [
-      {
-        "paraID": 2030,
-        "nativeChainID": "asset-hub-polkadot",
-        "symbol": "USDT",
-        "decimals": 6,
-        "xcmV1MultiLocation": "{\"v3\":{\"concrete\":{\"parents\":1,\"interior\":{\"x3\":[{\"parachain\":1000},{\"palletInstance\":50},{\"generalIndex\":1337}]}}}}",
-        "assetHubReserveLocation": "{\"parents\":\"0\",\"interior\":{\"Here\":\"\"}}"
-      },
-      {
-        "paraID": 2030,
-        "nativeChainID": "asset-hub-polkadot",
-        "symbol": "USDC",
-        "decimals": 6,
-        "xcmV1MultiLocation": "{\"v3\":{\"concrete\":{\"parents\":1,\"interior\":{\"x3\":[{\"parachain\":1000},{\"palletInstance\":50},{\"generalIndex\":1337}]}}}}",
-        "assetHubReserveLocation": "{\"parents\":\"0\",\"interior\":{\"Here\":\"\"}}"
-      }
-    ],
     "nativeToken": {
       "symbol": "BNC",
       "decimals": 12,
@@ -1052,7 +1035,6 @@
     "cardanoInfo": null,
     "id": "2034",
     "assetsInfo": {
-      "0": "HDX",
       "1": "H2O",
       "2": "DAI",
       "3": "WBTC",
@@ -1133,24 +1115,6 @@
       "1000809": "wstETH",
       "1000851": "LBTC"
     },
-    "xcAssetsData": [
-      {
-        "paraID": 2034,
-        "nativeChainID": "asset-hub-polkadot",
-        "symbol": "USDC",
-        "decimals": 6,
-        "xcmV1MultiLocation": "{\"v3\":{\"concrete\":{\"parents\":1,\"interior\":{\"x3\":[{\"parachain\":1000},{\"palletInstance\":50},{\"generalIndex\":1337}]}}}}",
-        "assetHubReserveLocation": "{\"parents\":\"0\",\"interior\":{\"Here\":\"\"}}"
-      },
-      {
-        "paraID": 2034,
-        "nativeChainID": "asset-hub-polkadot",
-        "symbol": "USDT",
-        "decimals": 6,
-        "xcmV1MultiLocation": "{\"v3\":{\"concrete\":{\"parents\":1,\"interior\":{\"x3\":[{\"parachain\":1000},{\"palletInstance\":50},{\"generalIndex\":1337}]}}}}",
-        "assetHubReserveLocation": "{\"parents\":\"0\",\"interior\":{\"Here\":\"\"}}"
-      }
-    ],
     "nativeToken": {
       "symbol": "HDX",
       "decimals": 12,
@@ -1216,16 +1180,6 @@
       "1028": "ahPINK",
       "1029": "DOT"
     },
-    "xcAssetsData": [
-      {
-        "paraID": 2046,
-        "nativeChainID": "asset-hub-polkadot",
-        "symbol": "USDT",
-        "decimals": 6,
-        "xcmV1MultiLocation": "{\"v3\":{\"concrete\":{\"parents\":1,\"interior\":{\"x3\":[{\"parachain\":1000},{\"palletInstance\":50},{\"generalIndex\":1337}]}}}}",
-        "assetHubReserveLocation": "{\"parents\":\"0\",\"interior\":{\"Here\":\"\"}}"
-      }
-    ],
     "nativeToken": {
       "symbol": "RING",
       "decimals": 18,
@@ -1386,16 +1340,6 @@
     "cardanoInfo": null,
     "id": "3397",
     "assetsInfo": {},
-    "xcAssetsData": [
-      {
-        "paraID": 3397,
-        "nativeChainID": "asset-hub-polkadot",
-        "symbol": "USDT",
-        "decimals": 6,
-        "xcmV1MultiLocation": "{\"v3\":{\"concrete\":{\"parents\":1,\"interior\":{\"x3\":[{\"parachain\":1000},{\"palletInstance\":50},{\"generalIndex\":1337}]}}}}",
-        "assetHubReserveLocation": "{\"parents\":\"0\",\"interior\":{\"Here\":\"\"}}"
-      }
-    ],
     "nativeToken": {
       "symbol": "DOTON",
       "decimals": 18,
