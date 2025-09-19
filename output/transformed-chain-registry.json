@@ -497,6 +497,18 @@
       {
         "v3": {
           "concrete": {
+            "parents": 1,
+            "interior": {
+              "x1": {
+                "parachain": 2051
+              }
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
             "parents": 0,
             "interior": {
               "x2": [
@@ -6372,6 +6384,26 @@
           "concrete": {
             "parents": 1,
             "interior": {
+              "x2": [
+                {
+                  "parachain": 2051
+                },
+                {
+                  "generalKey": {
+                    "length": 4,
+                    "data": "0x414a554e00000000000000000000000000000000000000000000000000000000"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
               "x3": [
                 {
                   "parachain": 0
@@ -12118,6 +12150,62 @@
       "icon": "/assets/chain-assets/darwinia2-native-ring.png",
       "priceId": "darwinia-network-native-token",
       "minAmount": "0",
+      "xcmLocation": {
+        "v1": {
+          "parents": 0,
+          "interior": {
+            "here": null
+          }
+        }
+      },
+      "isNative": true,
+      "reserveType": "local",
+      "registeredChains": null
+    },
+    "xcAssetsData": {}
+  },
+  "2051": {
+    "name": "Ajuna Network",
+    "slug": "ajunaPolkadot",
+    "icon": "/assets/chains/ajunapolkadot.png",
+    "addressPrefix": 1328,
+    "providers": [
+      "wss://ajuna.ibp.network",
+      "wss://ajuna.dotters.network"
+    ],
+    "alive": true,
+    "existentialDeposit": "1000000000",
+    "isEvm": false,
+    "explorer": "https://ajuna.subscan.io/",
+    "xcmPaymentAcceptTokens": [
+      {
+        "v3": {
+          "concrete": {
+            "parents": 0,
+            "interior": {
+              "here": null
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "here": null
+            }
+          }
+        }
+      }
+    ],
+    "nativeToken": {
+      "symbol": "AJUN",
+      "decimals": 12,
+      "name": "Ajuna Network",
+      "icon": "/assets/chain-assets/ajunapolkadot-native-ajun.png",
+      "priceId": "ajuna-network-2",
+      "minAmount": "1000000000",
       "xcmLocation": {
         "v1": {
           "parents": 0,
