@@ -597,7 +597,6 @@
       "Moonbeam Foundation": "wss://wss.api.moonbeam.network",
       "Blast": "wss://moonbeam.public.blastapi.io",
       "OnFinality": "wss://moonbeam.api.onfinality.io/public-ws",
-      "UnitedBloc": "wss://moonbeam.unitedbloc.com",
       "Allnodes": "wss://moonbeam-rpc.publicnode.com",
       "Dwellir": "wss://moonbeam-rpc.n.dwellir.com",
       "IBP1": "wss://moonbeam.ibp.network",
@@ -769,7 +768,6 @@
     "providers": {
       "Astar": "wss://rpc.astar.network",
       "OnFinality": "wss://astar.api.onfinality.io/public-ws",
-      "Dwellir": "wss://astar-rpc.dwellir.com",
       "Blast": "wss://astar.public.blastapi.io",
       "Light Client": "light://substrate-connect/polkadot/astar",
       "RadiumBlock": "wss://astar.public.curie.radiumblock.co/ws"
@@ -1143,7 +1141,6 @@
     "icon": "/assets/chains/darwinia2.png",
     "providers": {
       "Darwinia Network": "wss://rpc.darwinia.network",
-      "Dwellir": "wss://darwinia-rpc.dwellir.com",
       "Subquery": "wss://darwinia.rpc.subquery.network/public/ws"
     },
     "evmInfo": {

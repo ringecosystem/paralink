@@ -744,7 +744,6 @@
       "wss://wss.api.moonbeam.network",
       "wss://moonbeam.public.blastapi.io",
       "wss://moonbeam.api.onfinality.io/public-ws",
-      "wss://moonbeam.unitedbloc.com",
       "wss://moonbeam-rpc.publicnode.com",
       "wss://moonbeam-rpc.n.dwellir.com",
       "wss://moonbeam.ibp.network",
@@ -1040,7 +1039,6 @@
     "providers": [
       "wss://rpc.astar.network",
       "wss://astar.api.onfinality.io/public-ws",
-      "wss://astar-rpc.dwellir.com",
       "wss://astar.public.blastapi.io",
       "wss://astar.public.curie.radiumblock.co/ws"
     ],
@@ -12246,7 +12244,6 @@
     "addressPrefix": 18,
     "providers": [
       "wss://rpc.darwinia.network",
-      "wss://darwinia-rpc.dwellir.com",
       "wss://darwinia.rpc.subquery.network/public/ws"
     ],
     "alive": true,
