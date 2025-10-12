@@ -1266,66 +1266,6 @@
     "isEvm": false
   },
   {
-    "slug": "polimec",
-    "name": "Polimec",
-    "isTestnet": false,
-    "chainStatus": "INACTIVE",
-    "icon": "/assets/chains/polimec.png",
-    "providers": {
-      "Polimec": "wss://rpc.polimec.org",
-      "Amforc": "wss://polimec.rpc.amforc.com",
-      "Helikon": "wss://rpc.helikon.io/polimec",
-      "IBP1": "wss://polimec.ibp.network",
-      "IBP2": "wss://polimec.dotters.network"
-    },
-    "evmInfo": null,
-    "substrateInfo": {
-      "relaySlug": "polkadot",
-      "paraId": 3344,
-      "genesisHash": "0x7eb9354488318e7549c722669dcbdcdc526f1fef1420e7944667212f3601fdbd",
-      "addressPrefix": 41,
-      "chainType": "PARACHAIN",
-      "crowdloanUrl": null,
-      "blockExplorer": "https://polimec.statescan.io/",
-      "existentialDeposit": "100000000",
-      "symbol": "PLMC",
-      "decimals": 10,
-      "hasNativeNft": false,
-      "supportStaking": true,
-      "supportSmartContract": null,
-      "crowdloanParaId": null,
-      "crowdloanFunds": [
-        {
-          "relayChain": "polkadot",
-          "fundId": "3344-71",
-          "paraId": 3344,
-          "status": "won",
-          "startTime": "2023-10-24T01:48:00.000Z",
-          "endTime": "2025-08-26T01:48:00.000Z",
-          "auctionIndex": 51,
-          "firstPeriod": 14,
-          "lastPeriod": 21
-        }
-      ]
-    },
-    "extraInfo": null,
-    "bitcoinInfo": null,
-    "tonInfo": null,
-    "cardanoInfo": null,
-    "id": "3344",
-    "assetsInfo": {},
-    "nativeToken": {
-      "symbol": "PLMC",
-      "decimals": 10,
-      "name": "Polimec",
-      "icon": "/assets/chain-assets/polimec-native-plmc.png",
-      "priceId": "polimec",
-      "minAmount": "100000000",
-      "xcmLocation": null
-    },
-    "isEvm": false
-  },
-  {
     "slug": "laos_network",
     "name": "LAOS Network",
     "isTestnet": false,
