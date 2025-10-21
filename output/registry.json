@@ -1174,6 +1174,61 @@
     "isEvm": false
   },
   {
+    "slug": "opal",
+    "name": "Opal",
+    "isTestnet": true,
+    "chainStatus": "INACTIVE",
+    "icon": "/assets/chains/opal.png",
+    "providers": {
+      "Unique": "wss://ws-opal.unique.network",
+      "Europe": "wss://eu-ws-opal.unique.network",
+      "NA": "wss://us-ws-opal.unique.network",
+      "Asia": "wss://asia-ws-opal.unique.network"
+    },
+    "evmInfo": null,
+    "substrateInfo": {
+      "relaySlug": null,
+      "paraId": 2037,
+      "genesisHash": "0xc87870ef90a438d574b8e320f17db372c50f62beb52e479c8ff6ee5b460670b9",
+      "addressPrefix": 42,
+      "chainType": "PARACHAIN",
+      "crowdloanUrl": null,
+      "blockExplorer": "https://opal.subscan.io/",
+      "existentialDeposit": "0",
+      "symbol": "OPL",
+      "decimals": 18,
+      "hasNativeNft": true,
+      "supportStaking": false,
+      "supportSmartContract": null,
+      "crowdloanParaId": null,
+      "crowdloanFunds": []
+    },
+    "extraInfo": {
+      "subscanSlug": "opal",
+      "chainBalanceSlug": null
+    },
+    "bitcoinInfo": null,
+    "tonInfo": null,
+    "cardanoInfo": null,
+    "id": "2037",
+    "assetsInfo": {
+      "437": "DOT",
+      "459": "PINK",
+      "473": "USDt",
+      "498": "GLMR"
+    },
+    "nativeToken": {
+      "symbol": "OPL",
+      "decimals": 18,
+      "name": "Opal",
+      "icon": "/assets/chain-assets/opal-native-opl.png",
+      "priceId": null,
+      "minAmount": "0",
+      "xcmLocation": null
+    },
+    "isEvm": false
+  },
+  {
     "slug": "darwinia2",
     "name": "Darwinia 2",
     "isTestnet": false,

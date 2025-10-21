@@ -792,6 +792,18 @@
           "concrete": {
             "parents": 1,
             "interior": {
+              "x1": {
+                "parachain": 2037
+              }
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
               "x3": [
                 {
                   "parachain": 1000
@@ -1053,6 +1065,18 @@
             "parents": 0,
             "interior": {
               "here": null
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x1": {
+                "parachain": 2037
+              }
             }
           }
         }
@@ -4887,6 +4911,18 @@
                   "generalIndex": 22222010
                 }
               ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x1": {
+                "parachain": 2037
+              }
             }
           }
         }
@@ -12472,6 +12508,64 @@
         }
       ]
     }
+  },
+  "2037": {
+    "name": "Opal",
+    "slug": "opal",
+    "icon": "/assets/chains/opal.png",
+    "addressPrefix": 42,
+    "providers": [
+      "wss://ws-opal.unique.network",
+      "wss://eu-ws-opal.unique.network",
+      "wss://us-ws-opal.unique.network",
+      "wss://asia-ws-opal.unique.network"
+    ],
+    "alive": false,
+    "existentialDeposit": "0",
+    "isEvm": false,
+    "explorer": "https://opal.subscan.io/",
+    "xcmPaymentAcceptTokens": [
+      {
+        "v3": {
+          "concrete": {
+            "parents": 0,
+            "interior": {
+              "here": null
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "here": null
+            }
+          }
+        }
+      }
+    ],
+    "nativeToken": {
+      "symbol": "OPL",
+      "decimals": 18,
+      "name": "Opal",
+      "icon": "/assets/chain-assets/opal-native-opl.png",
+      "priceId": null,
+      "minAmount": "0",
+      "xcmLocation": {
+        "v1": {
+          "parents": 0,
+          "interior": {
+            "here": null
+          }
+        }
+      },
+      "isNative": true,
+      "reserveType": "local",
+      "registeredChains": null
+    },
+    "xcAssetsData": {}
   },
   "2046": {
     "name": "Darwinia 2",
