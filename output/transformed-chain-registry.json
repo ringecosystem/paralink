@@ -533,6 +533,23 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000324
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 0,
+            "interior": {
+              "x2": [
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 2361
                 }
               ]
@@ -3928,6 +3945,29 @@
                 },
                 {
                   "generalIndex": 50000254
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 2004
+                },
+                {
+                  "palletInstance": 110
+                },
+                {
+                  "accountKey20": {
+                    "network": null,
+                    "key": "0xe9f9a2e3deae4093c00fbc57b22bb51a4c05ad88"
+                  }
                 }
               ]
             }
@@ -8540,26 +8580,6 @@
                 },
                 {
                   "generalIndex": 22222039
-                }
-              ]
-            }
-          }
-        }
-      },
-      {
-        "v3": {
-          "concrete": {
-            "parents": 1,
-            "interior": {
-              "x2": [
-                {
-                  "parachain": 2004
-                },
-                {
-                  "accountKey20": {
-                    "network": null,
-                    "key": "0xe9f9a2e3deae4093c00fbc57b22bb51a4c05ad88"
-                  }
                 }
               ]
             }
