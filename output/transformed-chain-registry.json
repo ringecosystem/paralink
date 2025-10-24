@@ -656,6 +656,23 @@
             }
           }
         }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 0,
+            "interior": {
+              "x2": [
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000325
+                }
+              ]
+            }
+          }
+        }
       }
     ],
     "nativeToken": {
