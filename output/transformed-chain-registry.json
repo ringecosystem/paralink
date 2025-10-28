@@ -12399,50 +12399,6 @@
     "isEvm": true,
     "explorer": "https://darwinia.subscan.io/",
     "evmChainId": 46,
-    "xcmPaymentAcceptTokens": [
-      {
-        "v3": {
-          "concrete": {
-            "parents": 0,
-            "interior": {
-              "x1": {
-                "palletInstance": 5
-              }
-            }
-          }
-        }
-      },
-      {
-        "v3": {
-          "concrete": {
-            "parents": 1,
-            "interior": {
-              "x3": [
-                {
-                  "parachain": 1000
-                },
-                {
-                  "palletInstance": 50
-                },
-                {
-                  "generalIndex": 1984
-                }
-              ]
-            }
-          }
-        }
-      },
-      {
-        "v3": {
-          "concrete": {
-            "parents": 1,
-            "interior": {
-              "here": null
-            }
-          }
-        }
-      }
-    ],
     "nativeToken": {
       "symbol": "RING",
       "decimals": 18,
