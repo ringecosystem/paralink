@@ -711,6 +711,46 @@
     },
     "localAssets": [
       {
+        "assetId": "50000028",
+        "symbol": "LOVA",
+        "name": "AIWeb3",
+        "decimals": 12,
+        "icon": "/assets/chain-assets/statemint-local-lova.png",
+        "priceId": null,
+        "minAmount": "1000000000000",
+        "reserveType": "local",
+        "xcmLocation": {
+          "v1": {
+            "parents": 0,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000028
+                }
+              ]
+            }
+          }
+        },
+        "registeredChains": {
+          "2000": {
+            "assetId": {
+              "ForeignAsset": "18"
+            },
+            "symbol": "LOVA",
+            "name": "AIWeb3",
+            "decimals": 12,
+            "minAmount": "1",
+            "priceId": null
+          }
+        }
+      },
+      {
         "assetId": "1337",
         "symbol": "USDC",
         "name": "USD Coin",
@@ -738,6 +778,15 @@
           }
         },
         "registeredChains": {
+          "2000": {
+            "assetId": {
+              "ForeignAsset": "14"
+            },
+            "symbol": "USDC",
+            "name": "USD Coin",
+            "decimals": 6,
+            "priceId": "usd-coin"
+          },
           "2004": {
             "assetId": "166377000701797186346254371275954761085",
             "symbol": "USDC",
@@ -775,6 +824,16 @@
           }
         },
         "registeredChains": {
+          "2000": {
+            "assetId": {
+              "ForeignAsset": "12"
+            },
+            "symbol": "USDT",
+            "name": "Tether USD",
+            "decimals": 6,
+            "minAmount": "10000",
+            "priceId": "tether"
+          },
           "2004": {
             "assetId": "311091173110107856861649819128533077277",
             "symbol": "USDT",
@@ -783,8 +842,569 @@
             "priceId": "tether"
           }
         }
+      },
+      {
+        "assetId": "23",
+        "symbol": "PINK",
+        "name": "Statemint Pink",
+        "decimals": 10,
+        "icon": "/assets/chain-assets/statemint-local-pink.png",
+        "priceId": null,
+        "minAmount": "1",
+        "reserveType": "local",
+        "xcmLocation": {
+          "v1": {
+            "parents": 0,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 23
+                }
+              ]
+            }
+          }
+        },
+        "registeredChains": {
+          "2000": {
+            "assetId": {
+              "ForeignAsset": "13"
+            },
+            "symbol": "PINK",
+            "name": "Pink",
+            "decimals": 10,
+            "minAmount": "1000000000",
+            "priceId": null
+          }
+        }
+      },
+      {
+        "assetId": 100,
+        "symbol": "WETH",
+        "name": "Wrapped ETH",
+        "decimals": 18,
+        "icon": "/assets/chain-assets/statemint-local-weth.png",
+        "priceId": "ethereum",
+        "minAmount": "1",
+        "reserveType": "local",
+        "xcmLocation": {
+          "v1": {
+            "parents": 0,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 100
+                }
+              ]
+            }
+          }
+        },
+        "registeredChains": {}
+      },
+      {
+        "assetId": 21,
+        "symbol": "WBTC",
+        "name": "Wrapped BTC",
+        "decimals": 8,
+        "icon": "/assets/chain-assets/statemint-local-wbtc.png",
+        "priceId": "wrapped-bitcoin",
+        "minAmount": "1",
+        "reserveType": "local",
+        "xcmLocation": {
+          "v1": {
+            "parents": 0,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 21
+                }
+              ]
+            }
+          }
+        },
+        "registeredChains": {
+          "2000": {
+            "assetId": {
+              "ForeignAsset": "5"
+            },
+            "symbol": "WBTC",
+            "name": "Wrapped BTC",
+            "decimals": 8,
+            "priceId": "wrapped-bitcoin"
+          }
+        }
+      },
+      {
+        "assetId": 22222012,
+        "symbol": "DAMN",
+        "name": "DAMN",
+        "decimals": 12,
+        "reserveType": "local",
+        "xcmLocation": {
+          "v1": {
+            "parents": 0,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 22222012
+                }
+              ]
+            }
+          }
+        },
+        "registeredChains": {
+          "2000": {
+            "assetId": {
+              "ForeignAsset": "19"
+            },
+            "symbol": "DAMN",
+            "name": "DAMN",
+            "decimals": 12
+          }
+        }
+      },
+      {
+        "assetId": 50000069,
+        "symbol": "LOTY",
+        "name": "LOTY",
+        "decimals": 12,
+        "reserveType": "local",
+        "xcmLocation": {
+          "v1": {
+            "parents": 0,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000069
+                }
+              ]
+            }
+          }
+        },
+        "registeredChains": {
+          "2000": {
+            "assetId": {
+              "ForeignAsset": "20"
+            },
+            "symbol": "LOTY",
+            "name": "LOTY",
+            "decimals": 12
+          }
+        }
       }
     ]
+  },
+  "2000": {
+    "name": "Acala",
+    "slug": "acala",
+    "icon": "/assets/chains/acala.png",
+    "addressPrefix": 10,
+    "providers": [
+      "wss://acala-rpc-0.aca-api.network",
+      "wss://acala-rpc-1.aca-api.network",
+      "wss://acala-rpc-3.aca-api.network/ws",
+      "wss://acala.ibp.network",
+      "wss://acala.dotters.network"
+    ],
+    "alive": true,
+    "existentialDeposit": "100000000000",
+    "isEvm": false,
+    "explorer": "https://acala.subscan.io/",
+    "xcmPaymentAcceptTokens": [
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x1": {
+                "parachain": 2000
+              }
+            }
+          }
+        }
+      }
+    ],
+    "nativeToken": {
+      "symbol": "ACA",
+      "decimals": 12,
+      "name": "Acala",
+      "icon": "/assets/chain-assets/acala-native-aca.png",
+      "priceId": "acala",
+      "minAmount": "100000000000",
+      "xcmLocation": {
+        "v1": {
+          "parents": 0,
+          "interior": "Here"
+        }
+      },
+      "isNative": true,
+      "reserveType": "local",
+      "registeredChains": null
+    },
+    "xcAssetsData": {
+      "1000": [
+        {
+          "assetId": {
+            "ForeignAsset": "18"
+          },
+          "symbol": "LOVA",
+          "name": "AIWeb3",
+          "decimals": 12,
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "x3": [
+                  {
+                    "parachain": 1000
+                  },
+                  {
+                    "palletInstance": 50
+                  },
+                  {
+                    "generalIndex": 50000028
+                  }
+                ]
+              }
+            }
+          },
+          "minAmount": "1",
+          "priceId": null,
+          "reserveType": "foreign",
+          "icon": "/assets/chain-assets/acala-local-lova.png"
+        },
+        {
+          "assetId": {
+            "ForeignAsset": "14"
+          },
+          "symbol": "USDC",
+          "name": "USD Coin",
+          "decimals": 6,
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "x3": [
+                  {
+                    "parachain": 1000
+                  },
+                  {
+                    "palletInstance": 50
+                  },
+                  {
+                    "generalIndex": 1337
+                  }
+                ]
+              }
+            }
+          },
+          "priceId": "usd-coin",
+          "reserveType": "foreign",
+          "icon": "/assets/chain-assets/statemint-local-usdc.png"
+        },
+        {
+          "assetId": {
+            "ForeignAsset": "12"
+          },
+          "symbol": "USDT",
+          "name": "Tether USD",
+          "decimals": 6,
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "x3": [
+                  {
+                    "parachain": 1000
+                  },
+                  {
+                    "palletInstance": 50
+                  },
+                  {
+                    "generalIndex": 1984
+                  }
+                ]
+              }
+            }
+          },
+          "minAmount": "10000",
+          "priceId": "tether",
+          "reserveType": "foreign",
+          "icon": "/assets/chain-assets/acala-local-usdt.png"
+        },
+        {
+          "assetId": {
+            "ForeignAsset": "13"
+          },
+          "symbol": "PINK",
+          "name": "Pink",
+          "decimals": 10,
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "x3": [
+                  {
+                    "parachain": 1000
+                  },
+                  {
+                    "palletInstance": 50
+                  },
+                  {
+                    "generalIndex": 23
+                  }
+                ]
+              }
+            }
+          },
+          "minAmount": "1000000000",
+          "priceId": null,
+          "reserveType": "foreign",
+          "icon": "/assets/chain-assets/acala-local-pink.png"
+        },
+        {
+          "assetId": {
+            "ForeignAsset": "6"
+          },
+          "symbol": "WETHah",
+          "name": "WETHah",
+          "decimals": 18,
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "x3": [
+                  {
+                    "parachain": 1000
+                  },
+                  {
+                    "palletInstance": 50
+                  },
+                  {
+                    "generalIndex": 100
+                  }
+                ]
+              }
+            }
+          },
+          "reserveType": "foreign"
+        },
+        {
+          "assetId": {
+            "ForeignAsset": "5"
+          },
+          "symbol": "WBTC",
+          "name": "Wrapped BTC",
+          "decimals": 8,
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "x3": [
+                  {
+                    "parachain": 1000
+                  },
+                  {
+                    "palletInstance": 50
+                  },
+                  {
+                    "generalIndex": 21
+                  }
+                ]
+              }
+            }
+          },
+          "priceId": "wrapped-bitcoin",
+          "reserveType": "foreign",
+          "icon": "/assets/chain-assets/statemint-local-wbtc.png"
+        },
+        {
+          "assetId": {
+            "ForeignAsset": "19"
+          },
+          "symbol": "DAMN",
+          "name": "DAMN",
+          "decimals": 12,
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "x3": [
+                  {
+                    "parachain": 1000
+                  },
+                  {
+                    "palletInstance": 50
+                  },
+                  {
+                    "generalIndex": 22222012
+                  }
+                ]
+              }
+            }
+          },
+          "reserveType": "foreign"
+        },
+        {
+          "assetId": {
+            "ForeignAsset": "20"
+          },
+          "symbol": "LOTY",
+          "name": "LOTY",
+          "decimals": 12,
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "x3": [
+                  {
+                    "parachain": 1000
+                  },
+                  {
+                    "palletInstance": 50
+                  },
+                  {
+                    "generalIndex": 50000069
+                  }
+                ]
+              }
+            }
+          },
+          "reserveType": "foreign"
+        }
+      ],
+      "2004": [
+        {
+          "assetId": {
+            "ForeignAsset": "0"
+          },
+          "symbol": "GLMR",
+          "name": "Moonbeam",
+          "decimals": 18,
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "x2": [
+                  {
+                    "parachain": 2004
+                  },
+                  {
+                    "palletInstance": 10
+                  }
+                ]
+              }
+            }
+          },
+          "minAmount": "100000000000000000",
+          "priceId": "moonbeam",
+          "reserveType": "foreign",
+          "icon": "/assets/chain-assets/acala-local-glmr.png"
+        }
+      ],
+      "2006": [
+        {
+          "assetId": {
+            "ForeignAsset": "2"
+          },
+          "symbol": "ASTR",
+          "name": "Astar",
+          "decimals": 18,
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "x1": {
+                  "parachain": 2006
+                }
+              }
+            }
+          },
+          "minAmount": "100000000000000000",
+          "priceId": "astar",
+          "reserveType": "foreign",
+          "icon": "/assets/chain-assets/acala-local-astr.png"
+        }
+      ],
+      "2034": [
+        {
+          "assetId": {
+            "ForeignAsset": "17"
+          },
+          "symbol": "HDX",
+          "name": "Hydration",
+          "decimals": 12,
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "x2": [
+                  {
+                    "parachain": 2034
+                  },
+                  {
+                    "generalIndex": 0
+                  }
+                ]
+              }
+            }
+          },
+          "priceId": "hydradx",
+          "reserveType": "foreign",
+          "icon": "/assets/chain-assets/hydradx_main-native-hdx.png"
+        }
+      ],
+      "2037": [
+        {
+          "assetId": {
+            "ForeignAsset": "10"
+          },
+          "symbol": "UNQ",
+          "name": "UNQ",
+          "decimals": 18,
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "x1": {
+                  "parachain": 2037
+                }
+              }
+            }
+          },
+          "reserveType": "foreign"
+        }
+      ]
+    }
   },
   "2004": {
     "name": "Moonbeam",
@@ -814,6 +1434,46 @@
               "x1": {
                 "palletInstance": 10
               }
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x2": [
+                {
+                  "parachain": 2000
+                },
+                {
+                  "generalKey": {
+                    "length": 2,
+                    "data": "0x0003000000000000000000000000000000000000000000000000000000000000"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x2": [
+                {
+                  "parachain": 2000
+                },
+                {
+                  "generalKey": {
+                    "length": 2,
+                    "data": "0x0000000000000000000000000000000000000000000000000000000000000000"
+                  }
+                }
+              ]
             }
           }
         }
@@ -864,6 +1524,26 @@
                 },
                 {
                   "generalIndex": 1337
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x2": [
+                {
+                  "parachain": 2000
+                },
+                {
+                  "generalKey": {
+                    "length": 2,
+                    "data": "0x0001000000000000000000000000000000000000000000000000000000000000"
+                  }
                 }
               ]
             }
@@ -1014,7 +1694,35 @@
       },
       "isNative": true,
       "reserveType": "local",
-      "registeredChains": null
+      "registeredChains": {
+        "2000": {
+          "assetId": {
+            "ForeignAsset": "0"
+          },
+          "symbol": "GLMR",
+          "name": "GLMR",
+          "decimals": 18,
+          "priceId": "moonbeam",
+          "isNative": true,
+          "reserveType": "local",
+          "icon": "/assets/chain-assets/moonbeam-native-glmr.png",
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "x2": [
+                  {
+                    "parachain": 2004
+                  },
+                  {
+                    "palletInstance": 10
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
     },
     "xcAssetsData": {
       "0": [
@@ -1309,10 +2017,50 @@
             "interior": {
               "x2": [
                 {
+                  "parachain": 2000
+                },
+                {
+                  "generalKey": {
+                    "length": 2,
+                    "data": "0x0000000000000000000000000000000000000000000000000000000000000000"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x2": [
+                {
                   "parachain": 2046
                 },
                 {
                   "palletInstance": 5
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x2": [
+                {
+                  "parachain": 2000
+                },
+                {
+                  "generalKey": {
+                    "length": 2,
+                    "data": "0x0001000000000000000000000000000000000000000000000000000000000000"
+                  }
                 }
               ]
             }
@@ -1332,6 +2080,26 @@
                   "generalKey": {
                     "length": 2,
                     "data": "0x0904000000000000000000000000000000000000000000000000000000000000"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x2": [
+                {
+                  "parachain": 2000
+                },
+                {
+                  "generalKey": {
+                    "length": 2,
+                    "data": "0x0003000000000000000000000000000000000000000000000000000000000000"
                   }
                 }
               ]
@@ -1449,7 +2217,30 @@
       },
       "isNative": true,
       "reserveType": "local",
-      "registeredChains": null
+      "registeredChains": {
+        "2000": {
+          "assetId": {
+            "ForeignAsset": "2"
+          },
+          "symbol": "ASTR",
+          "name": "ASTR",
+          "decimals": 18,
+          "priceId": "astar",
+          "isNative": true,
+          "reserveType": "local",
+          "icon": "/assets/chain-assets/astar-native-astr.png",
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "x1": {
+                  "parachain": 2006
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "localAssets": [
       {
@@ -3210,6 +4001,26 @@
           "concrete": {
             "parents": 1,
             "interior": {
+              "x2": [
+                {
+                  "parachain": 2000
+                },
+                {
+                  "generalKey": {
+                    "length": 2,
+                    "data": "0x0003000000000000000000000000000000000000000000000000000000000000"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
               "x3": [
                 {
                   "parachain": 1000
@@ -3514,6 +4325,26 @@
                 },
                 {
                   "generalIndex": 22222056
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x2": [
+                {
+                  "parachain": 2000
+                },
+                {
+                  "generalKey": {
+                    "length": 2,
+                    "data": "0x0000000000000000000000000000000000000000000000000000000000000000"
+                  }
                 }
               ]
             }
@@ -7882,6 +8713,26 @@
           "concrete": {
             "parents": 1,
             "interior": {
+              "x2": [
+                {
+                  "parachain": 2000
+                },
+                {
+                  "generalKey": {
+                    "length": 21,
+                    "data": "0x02c80084af223c8b598536178d9361dc55bfda68180000000000000000000000"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
               "x3": [
                 {
                   "parachain": 1000
@@ -8568,6 +9419,26 @@
                   "accountKey20": {
                     "network": null,
                     "key": "0xda430218862d3db25de9f61458645dde49a9e9c1"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x2": [
+                {
+                  "parachain": 2000
+                },
+                {
+                  "generalKey": {
+                    "length": 21,
+                    "data": "0x0254a37a01cd75b616d63e0ab665bffdb0143c52ae0000000000000000000000"
                   }
                 }
               ]
@@ -9335,6 +10206,26 @@
           "concrete": {
             "parents": 1,
             "interior": {
+              "x2": [
+                {
+                  "parachain": 2000
+                },
+                {
+                  "generalKey": {
+                    "length": 21,
+                    "data": "0x025a4d6acdc4e3e5ab15717f407afe957f7a2425780000000000000000000000"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
               "x3": [
                 {
                   "parachain": 1000
@@ -9464,6 +10355,26 @@
                 },
                 {
                   "generalIndex": 669
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x2": [
+                {
+                  "parachain": 2000
+                },
+                {
+                  "generalKey": {
+                    "length": 21,
+                    "data": "0x02f4c723e61709d90f89939c1852f516e373d418a80000000000000000000000"
+                  }
                 }
               ]
             }
@@ -12172,6 +13083,26 @@
           "concrete": {
             "parents": 1,
             "interior": {
+              "x2": [
+                {
+                  "parachain": 2000
+                },
+                {
+                  "generalKey": {
+                    "length": 21,
+                    "data": "0x0207df96d1341a7d16ba1ad431e2c847d978bc2bce0000000000000000000000"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
               "x3": [
                 {
                   "parachain": 1000
@@ -12438,7 +13369,35 @@
       },
       "isNative": true,
       "reserveType": "local",
-      "registeredChains": null
+      "registeredChains": {
+        "2000": {
+          "assetId": {
+            "ForeignAsset": "17"
+          },
+          "symbol": "HDX",
+          "name": "HDX",
+          "decimals": 12,
+          "priceId": "hydradx",
+          "isNative": true,
+          "reserveType": "local",
+          "icon": "/assets/chain-assets/hydradx_main-native-hdx.png",
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "x2": [
+                  {
+                    "parachain": 2034
+                  },
+                  {
+                    "generalIndex": 0
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
     },
     "localAssets": [
       {
