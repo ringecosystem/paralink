@@ -1534,6 +1534,80 @@
     "isEvm": false
   },
   {
+    "slug": "origintrail",
+    "name": "NeuroWeb Mainnet",
+    "isTestnet": false,
+    "chainStatus": "ACTIVE",
+    "icon": "/assets/chains/origintrail.png",
+    "providers": {
+      "TraceLabs": "wss://parachain-rpc.origin-trail.network",
+      "Dwellir": "wss://neuroweb-rpc.dwellir.com"
+    },
+    "evmInfo": null,
+    "substrateInfo": {
+      "relaySlug": "polkadot",
+      "paraId": 2043,
+      "genesisHash": "0xe7e0962324a3b86c83404dbea483f25fb5dab4c224791c81b756cfc948006174",
+      "addressPrefix": 101,
+      "chainType": "PARACHAIN",
+      "crowdloanUrl": null,
+      "blockExplorer": "https://neuroweb.subscan.io/",
+      "existentialDeposit": "100000000000",
+      "symbol": "NEURO",
+      "decimals": 12,
+      "hasNativeNft": false,
+      "supportStaking": false,
+      "supportSmartContract": null,
+      "crowdloanParaId": null,
+      "crowdloanFunds": [
+        {
+          "relayChain": "polkadot",
+          "fundId": "2043-38",
+          "paraId": 2043,
+          "status": "won",
+          "startTime": "2022-06-07T01:48:00.000Z",
+          "endTime": "2024-04-09T01:48:00.000Z",
+          "auctionIndex": 17,
+          "firstPeriod": 8,
+          "lastPeriod": 15
+        }
+      ]
+    },
+    "extraInfo": {
+      "subscanSlug": "neuroweb",
+      "chainBalanceSlug": "origintrail"
+    },
+    "bitcoinInfo": null,
+    "tonInfo": null,
+    "cardanoInfo": null,
+    "id": "2043",
+    "assetsInfo": {
+      "1": "TRAC"
+    },
+    "xcAssetsData": [
+      {
+        "paraID": 2043,
+        "nativeChainID": "origintrail-parachain",
+        "symbol": "TRAC",
+        "decimals": 18,
+        "xcmV1MultiLocation": "{\"v1\":{\"parents\":1,\"interior\":{\"x2\":[{\"parachain\":2043},{\"generalIndex\":1}]}}}",
+        "asset": "1",
+        "assetHubReserveLocation": "{\"parents\":\"1\",\"interior\":{\"X1\":{\"Parachain\":\"1000\"}}}",
+        "originChainReserveLocation": "{\"parents\":\"0\",\"interior\":{\"Here\":\"\"}}"
+      }
+    ],
+    "nativeToken": {
+      "symbol": "NEURO",
+      "decimals": 12,
+      "name": "OriginTrail",
+      "icon": "/assets/chain-assets/origintrail-native-neuro.png",
+      "priceId": "neurowebai",
+      "minAmount": "100000000000",
+      "xcmLocation": null
+    },
+    "isEvm": false
+  },
+  {
     "slug": "darwinia2",
     "name": "Darwinia 2",
     "isTestnet": false,

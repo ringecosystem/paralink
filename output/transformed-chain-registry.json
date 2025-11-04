@@ -246,6 +246,23 @@
             "interior": {
               "x2": [
                 {
+                  "parachain": 2043
+                },
+                {
+                  "palletInstance": 10
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x2": [
+                {
                   "parachain": 2004
                 },
                 {
@@ -1674,6 +1691,23 @@
             "parents": 1,
             "interior": {
               "here": null
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x2": [
+                {
+                  "parachain": 2043
+                },
+                {
+                  "palletInstance": 10
+                }
+              ]
             }
           }
         }
@@ -13043,6 +13077,23 @@
           "concrete": {
             "parents": 1,
             "interior": {
+              "x2": [
+                {
+                  "parachain": 2043
+                },
+                {
+                  "palletInstance": 10
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
               "x3": [
                 {
                   "parachain": 1000
@@ -13579,6 +13630,117 @@
       "registeredChains": null
     },
     "xcAssetsData": {}
+  },
+  "2043": {
+    "name": "NeuroWeb Mainnet",
+    "slug": "origintrail",
+    "icon": "/assets/chains/origintrail.png",
+    "addressPrefix": 101,
+    "providers": [
+      "wss://parachain-rpc.origin-trail.network",
+      "wss://neuroweb-rpc.dwellir.com"
+    ],
+    "alive": true,
+    "existentialDeposit": "100000000000",
+    "isEvm": false,
+    "explorer": "https://neuroweb.subscan.io/",
+    "xcmPaymentAcceptTokens": [
+      {
+        "v4": {
+          "parents": 0,
+          "interior": {
+            "x1": [
+              {
+                "palletInstance": 10
+              }
+            ]
+          }
+        }
+      },
+      {
+        "v4": {
+          "parents": 1,
+          "interior": {
+            "here": null
+          }
+        }
+      }
+    ],
+    "nativeToken": {
+      "symbol": "NEURO",
+      "decimals": 12,
+      "name": "OriginTrail",
+      "icon": "/assets/chain-assets/origintrail-native-neuro.png",
+      "priceId": "neurowebai",
+      "minAmount": "100000000000",
+      "xcmLocation": {
+        "v1": {
+          "parents": 0,
+          "interior": {
+            "here": null
+          }
+        }
+      },
+      "isNative": true,
+      "reserveType": "local",
+      "registeredChains": null
+    },
+    "localAssets": [
+      {
+        "symbol": "TRAC",
+        "decimals": 18,
+        "assetId": "1",
+        "xcmLocation": {
+          "v1": {
+            "parents": 1,
+            "interior": {
+              "x2": [
+                {
+                  "parachain": 2043
+                },
+                {
+                  "generalIndex": 1
+                }
+              ]
+            }
+          }
+        },
+        "reserveType": "local",
+        "icon": "/assets/chain-assets/origintrail-local-trac.png",
+        "minAmount": "1",
+        "priceId": "origintrail",
+        "registeredChains": {}
+      }
+    ],
+    "xcAssetsData": {
+      "2043": [
+        {
+          "assetId": "1",
+          "symbol": "TRAC",
+          "name": "OriginTrail",
+          "decimals": 18,
+          "xcmLocation": {
+            "v1": {
+              "parents": 1,
+              "interior": {
+                "x2": [
+                  {
+                    "parachain": 2043
+                  },
+                  {
+                    "generalIndex": 1
+                  }
+                ]
+              }
+            }
+          },
+          "minAmount": "1",
+          "priceId": "origintrail",
+          "reserveType": "local",
+          "icon": "/assets/chain-assets/origintrail-local-trac.png"
+        }
+      ]
+    }
   },
   "2046": {
     "name": "Darwinia 2",
