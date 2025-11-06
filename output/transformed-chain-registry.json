@@ -2714,7 +2714,122 @@
       "reserveType": "local",
       "registeredChains": null
     },
-    "xcAssetsData": {}
+    "localAssets": [
+      {
+        "symbol": "USDT",
+        "decimals": 6,
+        "xcmLocation": {
+          "v3": {
+            "concrete": {
+              "parents": 1,
+              "interior": {
+                "x3": [
+                  {
+                    "parachain": 1000
+                  },
+                  {
+                    "palletInstance": 50
+                  },
+                  {
+                    "generalIndex": 1337
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "reserveType": "local",
+        "icon": "/assets/chain-assets/bifrost_dot-local-usdt.png",
+        "minAmount": "1000",
+        "priceId": "tether",
+        "registeredChains": {}
+      },
+      {
+        "symbol": "USDC",
+        "decimals": 6,
+        "xcmLocation": {
+          "v3": {
+            "concrete": {
+              "parents": 1,
+              "interior": {
+                "x3": [
+                  {
+                    "parachain": 1000
+                  },
+                  {
+                    "palletInstance": 50
+                  },
+                  {
+                    "generalIndex": 1337
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "reserveType": "local",
+        "registeredChains": {}
+      }
+    ],
+    "xcAssetsData": {
+      "2030": [
+        {
+          "symbol": "USDT",
+          "name": "Tether USD",
+          "decimals": 6,
+          "xcmLocation": {
+            "v3": {
+              "concrete": {
+                "parents": 1,
+                "interior": {
+                  "x3": [
+                    {
+                      "parachain": 1000
+                    },
+                    {
+                      "palletInstance": 50
+                    },
+                    {
+                      "generalIndex": 1337
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "minAmount": "1000",
+          "priceId": "tether",
+          "reserveType": "remote",
+          "icon": "/assets/chain-assets/bifrost_dot-local-usdt.png"
+        },
+        {
+          "symbol": "USDC",
+          "name": "USDC",
+          "decimals": 6,
+          "xcmLocation": {
+            "v3": {
+              "concrete": {
+                "parents": 1,
+                "interior": {
+                  "x3": [
+                    {
+                      "parachain": 1000
+                    },
+                    {
+                      "palletInstance": 50
+                    },
+                    {
+                      "generalIndex": 1337
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "reserveType": "remote"
+        }
+      ]
+    }
   },
   "2034": {
     "name": "Hydration",
@@ -2993,6 +3108,26 @@
                   "key": "0x35774c305aaf441a102d47988d35f0f5428471b3"
                 }
               }
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000362
+                }
+              ]
             }
           }
         }
@@ -3546,6 +3681,26 @@
                 },
                 {
                   "generalIndex": 86
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000365
                 }
               ]
             }
@@ -4764,6 +4919,26 @@
                 },
                 {
                   "generalIndex": 50000189
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000360
                 }
               ]
             }
@@ -6397,6 +6572,26 @@
                 },
                 {
                   "generalIndex": 50000164
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000358
                 }
               ]
             }
@@ -8741,6 +8936,26 @@
                 },
                 {
                   "generalIndex": 50000146
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000361
                 }
               ]
             }
@@ -11459,6 +11674,26 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000364
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 20090110
                 }
               ]
@@ -11480,6 +11715,26 @@
                 },
                 {
                   "generalIndex": 8277
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000357
                 }
               ]
             }
@@ -12060,6 +12315,26 @@
                     "length": 2,
                     "data": "0x0900000000000000000000000000000000000000000000000000000000000000"
                   }
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000359
                 }
               ]
             }
@@ -13460,6 +13735,26 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000363
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 20090112
                 }
               ]
@@ -13515,7 +13810,128 @@
         }
       }
     },
-    "xcAssetsData": {}
+    "localAssets": [
+      {
+        "symbol": "USDC",
+        "decimals": 6,
+        "xcmLocation": {
+          "v3": {
+            "concrete": {
+              "parents": 1,
+              "interior": {
+                "x3": [
+                  {
+                    "parachain": 1000
+                  },
+                  {
+                    "palletInstance": 50
+                  },
+                  {
+                    "generalIndex": 1337
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "reserveType": "local",
+        "icon": "/assets/chain-assets/hydradx_main-local-usdc.png",
+        "minAmount": "10000",
+        "priceId": "usd-coin",
+        "registeredChains": {}
+      },
+      {
+        "symbol": "USDT",
+        "decimals": 6,
+        "xcmLocation": {
+          "v3": {
+            "concrete": {
+              "parents": 1,
+              "interior": {
+                "x3": [
+                  {
+                    "parachain": 1000
+                  },
+                  {
+                    "palletInstance": 50
+                  },
+                  {
+                    "generalIndex": 1337
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "reserveType": "local",
+        "icon": "/assets/chain-assets/hydradx_main-local-usdt.png",
+        "minAmount": "10000",
+        "priceId": "tether",
+        "registeredChains": {}
+      }
+    ],
+    "xcAssetsData": {
+      "2034": [
+        {
+          "symbol": "USDC",
+          "name": "USDC (Polkadot Asset Hub)",
+          "decimals": 6,
+          "xcmLocation": {
+            "v3": {
+              "concrete": {
+                "parents": 1,
+                "interior": {
+                  "x3": [
+                    {
+                      "parachain": 1000
+                    },
+                    {
+                      "palletInstance": 50
+                    },
+                    {
+                      "generalIndex": 1337
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "minAmount": "10000",
+          "priceId": "usd-coin",
+          "reserveType": "remote",
+          "icon": "/assets/chain-assets/hydradx_main-local-usdc.png"
+        },
+        {
+          "symbol": "USDT",
+          "name": "Statemint USDT",
+          "decimals": 6,
+          "xcmLocation": {
+            "v3": {
+              "concrete": {
+                "parents": 1,
+                "interior": {
+                  "x3": [
+                    {
+                      "parachain": 1000
+                    },
+                    {
+                      "palletInstance": 50
+                    },
+                    {
+                      "generalIndex": 1337
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "minAmount": "10000",
+          "priceId": "tether",
+          "reserveType": "remote",
+          "icon": "/assets/chain-assets/hydradx_main-local-usdt.png"
+        }
+      ]
+    }
   },
   "2037": {
     "name": "Opal",
@@ -13763,7 +14179,64 @@
       "reserveType": "local",
       "registeredChains": null
     },
-    "xcAssetsData": {}
+    "localAssets": [
+      {
+        "symbol": "USDT",
+        "decimals": 6,
+        "xcmLocation": {
+          "v3": {
+            "concrete": {
+              "parents": 1,
+              "interior": {
+                "x3": [
+                  {
+                    "parachain": 1000
+                  },
+                  {
+                    "palletInstance": 50
+                  },
+                  {
+                    "generalIndex": 1337
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "reserveType": "local",
+        "registeredChains": {}
+      }
+    ],
+    "xcAssetsData": {
+      "2046": [
+        {
+          "symbol": "USDT",
+          "name": "USDT",
+          "decimals": 6,
+          "xcmLocation": {
+            "v3": {
+              "concrete": {
+                "parents": 1,
+                "interior": {
+                  "x3": [
+                    {
+                      "parachain": 1000
+                    },
+                    {
+                      "palletInstance": 50
+                    },
+                    {
+                      "generalIndex": 1337
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "reserveType": "remote"
+        }
+      ]
+    }
   },
   "2051": {
     "name": "Ajuna Network",
@@ -14049,6 +14522,63 @@
       "reserveType": "local",
       "registeredChains": null
     },
-    "xcAssetsData": {}
+    "localAssets": [
+      {
+        "symbol": "USDT",
+        "decimals": 6,
+        "xcmLocation": {
+          "v3": {
+            "concrete": {
+              "parents": 1,
+              "interior": {
+                "x3": [
+                  {
+                    "parachain": 1000
+                  },
+                  {
+                    "palletInstance": 50
+                  },
+                  {
+                    "generalIndex": 1337
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "reserveType": "local",
+        "registeredChains": {}
+      }
+    ],
+    "xcAssetsData": {
+      "3397": [
+        {
+          "symbol": "USDT",
+          "name": "USDT",
+          "decimals": 6,
+          "xcmLocation": {
+            "v3": {
+              "concrete": {
+                "parents": 1,
+                "interior": {
+                  "x3": [
+                    {
+                      "parachain": 1000
+                    },
+                    {
+                      "palletInstance": 50
+                    },
+                    {
+                      "generalIndex": 1337
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "reserveType": "remote"
+        }
+      ]
+    }
   }
 }
