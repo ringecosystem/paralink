@@ -22,18 +22,6 @@
     "existentialDeposit": "10000000000",
     "isEvm": false,
     "explorer": "https://polkadot.subscan.io/",
-    "xcmPaymentAcceptTokens": [
-      {
-        "v3": {
-          "concrete": {
-            "parents": 0,
-            "interior": {
-              "here": null
-            }
-          }
-        }
-      }
-    ],
     "nativeToken": {
       "symbol": "DOT",
       "decimals": 10,
@@ -2765,122 +2753,7 @@
       "reserveType": "local",
       "registeredChains": null
     },
-    "localAssets": [
-      {
-        "symbol": "USDT",
-        "decimals": 6,
-        "xcmLocation": {
-          "v3": {
-            "concrete": {
-              "parents": 1,
-              "interior": {
-                "x3": [
-                  {
-                    "parachain": 1000
-                  },
-                  {
-                    "palletInstance": 50
-                  },
-                  {
-                    "generalIndex": 1337
-                  }
-                ]
-              }
-            }
-          }
-        },
-        "reserveType": "local",
-        "icon": "/assets/chain-assets/bifrost_dot-local-usdt.png",
-        "minAmount": "1000",
-        "priceId": "tether",
-        "registeredChains": {}
-      },
-      {
-        "symbol": "USDC",
-        "decimals": 6,
-        "xcmLocation": {
-          "v3": {
-            "concrete": {
-              "parents": 1,
-              "interior": {
-                "x3": [
-                  {
-                    "parachain": 1000
-                  },
-                  {
-                    "palletInstance": 50
-                  },
-                  {
-                    "generalIndex": 1337
-                  }
-                ]
-              }
-            }
-          }
-        },
-        "reserveType": "local",
-        "registeredChains": {}
-      }
-    ],
-    "xcAssetsData": {
-      "2030": [
-        {
-          "symbol": "USDT",
-          "name": "Tether USD",
-          "decimals": 6,
-          "xcmLocation": {
-            "v3": {
-              "concrete": {
-                "parents": 1,
-                "interior": {
-                  "x3": [
-                    {
-                      "parachain": 1000
-                    },
-                    {
-                      "palletInstance": 50
-                    },
-                    {
-                      "generalIndex": 1337
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "minAmount": "1000",
-          "priceId": "tether",
-          "reserveType": "remote",
-          "icon": "/assets/chain-assets/bifrost_dot-local-usdt.png"
-        },
-        {
-          "symbol": "USDC",
-          "name": "USDC",
-          "decimals": 6,
-          "xcmLocation": {
-            "v3": {
-              "concrete": {
-                "parents": 1,
-                "interior": {
-                  "x3": [
-                    {
-                      "parachain": 1000
-                    },
-                    {
-                      "palletInstance": 50
-                    },
-                    {
-                      "generalIndex": 1337
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "reserveType": "remote"
-        }
-      ]
-    }
+    "xcAssetsData": {}
   },
   "2034": {
     "name": "Hydration",
@@ -4369,6 +4242,26 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000382
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 404
                 }
               ]
@@ -5030,6 +4923,26 @@
                 },
                 {
                   "generalIndex": 2222
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000386
                 }
               ]
             }
@@ -6874,6 +6787,26 @@
           "concrete": {
             "parents": 1,
             "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000387
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
               "x1": {
                 "parachain": 3344
               }
@@ -8027,6 +7960,26 @@
                 },
                 {
                   "generalIndex": 50000013
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000379
                 }
               ]
             }
@@ -9764,6 +9717,26 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000383
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 22222053
                 }
               ]
@@ -10065,6 +10038,26 @@
                 },
                 {
                   "generalIndex": 22222024
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000384
                 }
               ]
             }
@@ -10917,7 +10910,47 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000388
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 20090134
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000380
                 }
               ]
             }
@@ -11106,6 +11139,26 @@
                     },
                     "key": "0xcd3b51d98478d53f4515a306be565c6eebef1d58"
                   }
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000385
                 }
               ]
             }
@@ -13861,128 +13914,7 @@
         }
       }
     },
-    "localAssets": [
-      {
-        "symbol": "USDC",
-        "decimals": 6,
-        "xcmLocation": {
-          "v3": {
-            "concrete": {
-              "parents": 1,
-              "interior": {
-                "x3": [
-                  {
-                    "parachain": 1000
-                  },
-                  {
-                    "palletInstance": 50
-                  },
-                  {
-                    "generalIndex": 1337
-                  }
-                ]
-              }
-            }
-          }
-        },
-        "reserveType": "local",
-        "icon": "/assets/chain-assets/hydradx_main-local-usdc.png",
-        "minAmount": "10000",
-        "priceId": "usd-coin",
-        "registeredChains": {}
-      },
-      {
-        "symbol": "USDT",
-        "decimals": 6,
-        "xcmLocation": {
-          "v3": {
-            "concrete": {
-              "parents": 1,
-              "interior": {
-                "x3": [
-                  {
-                    "parachain": 1000
-                  },
-                  {
-                    "palletInstance": 50
-                  },
-                  {
-                    "generalIndex": 1337
-                  }
-                ]
-              }
-            }
-          }
-        },
-        "reserveType": "local",
-        "icon": "/assets/chain-assets/hydradx_main-local-usdt.png",
-        "minAmount": "10000",
-        "priceId": "tether",
-        "registeredChains": {}
-      }
-    ],
-    "xcAssetsData": {
-      "2034": [
-        {
-          "symbol": "USDC",
-          "name": "USDC (Polkadot Asset Hub)",
-          "decimals": 6,
-          "xcmLocation": {
-            "v3": {
-              "concrete": {
-                "parents": 1,
-                "interior": {
-                  "x3": [
-                    {
-                      "parachain": 1000
-                    },
-                    {
-                      "palletInstance": 50
-                    },
-                    {
-                      "generalIndex": 1337
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "minAmount": "10000",
-          "priceId": "usd-coin",
-          "reserveType": "remote",
-          "icon": "/assets/chain-assets/hydradx_main-local-usdc.png"
-        },
-        {
-          "symbol": "USDT",
-          "name": "Statemint USDT",
-          "decimals": 6,
-          "xcmLocation": {
-            "v3": {
-              "concrete": {
-                "parents": 1,
-                "interior": {
-                  "x3": [
-                    {
-                      "parachain": 1000
-                    },
-                    {
-                      "palletInstance": 50
-                    },
-                    {
-                      "generalIndex": 1337
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "minAmount": "10000",
-          "priceId": "tether",
-          "reserveType": "remote",
-          "icon": "/assets/chain-assets/hydradx_main-local-usdt.png"
-        }
-      ]
-    }
+    "xcAssetsData": {}
   },
   "2037": {
     "name": "Opal",
@@ -14230,64 +14162,7 @@
       "reserveType": "local",
       "registeredChains": null
     },
-    "localAssets": [
-      {
-        "symbol": "USDT",
-        "decimals": 6,
-        "xcmLocation": {
-          "v3": {
-            "concrete": {
-              "parents": 1,
-              "interior": {
-                "x3": [
-                  {
-                    "parachain": 1000
-                  },
-                  {
-                    "palletInstance": 50
-                  },
-                  {
-                    "generalIndex": 1337
-                  }
-                ]
-              }
-            }
-          }
-        },
-        "reserveType": "local",
-        "registeredChains": {}
-      }
-    ],
-    "xcAssetsData": {
-      "2046": [
-        {
-          "symbol": "USDT",
-          "name": "USDT",
-          "decimals": 6,
-          "xcmLocation": {
-            "v3": {
-              "concrete": {
-                "parents": 1,
-                "interior": {
-                  "x3": [
-                    {
-                      "parachain": 1000
-                    },
-                    {
-                      "palletInstance": 50
-                    },
-                    {
-                      "generalIndex": 1337
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "reserveType": "remote"
-        }
-      ]
-    }
+    "xcAssetsData": {}
   },
   "2051": {
     "name": "Ajuna Network",
@@ -14573,63 +14448,6 @@
       "reserveType": "local",
       "registeredChains": null
     },
-    "localAssets": [
-      {
-        "symbol": "USDT",
-        "decimals": 6,
-        "xcmLocation": {
-          "v3": {
-            "concrete": {
-              "parents": 1,
-              "interior": {
-                "x3": [
-                  {
-                    "parachain": 1000
-                  },
-                  {
-                    "palletInstance": 50
-                  },
-                  {
-                    "generalIndex": 1337
-                  }
-                ]
-              }
-            }
-          }
-        },
-        "reserveType": "local",
-        "registeredChains": {}
-      }
-    ],
-    "xcAssetsData": {
-      "3397": [
-        {
-          "symbol": "USDT",
-          "name": "USDT",
-          "decimals": 6,
-          "xcmLocation": {
-            "v3": {
-              "concrete": {
-                "parents": 1,
-                "interior": {
-                  "x3": [
-                    {
-                      "parachain": 1000
-                    },
-                    {
-                      "palletInstance": 50
-                    },
-                    {
-                      "generalIndex": 1337
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "reserveType": "remote"
-        }
-      ]
-    }
+    "xcAssetsData": {}
   }
 }
