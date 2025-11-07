@@ -902,7 +902,6 @@
       "Blast": "wss://moonbeam.public.blastapi.io",
       "OnFinality": "wss://moonbeam.api.onfinality.io/public-ws",
       "Allnodes": "wss://moonbeam-rpc.publicnode.com",
-      "Dwellir": "wss://moonbeam-rpc.n.dwellir.com",
       "IBP1": "wss://moonbeam.ibp.network",
       "IBP2": "wss://moonbeam.dotters.network"
     },
