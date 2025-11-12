@@ -22,18 +22,6 @@
     "existentialDeposit": "10000000000",
     "isEvm": false,
     "explorer": "https://polkadot.subscan.io/",
-    "xcmPaymentAcceptTokens": [
-      {
-        "v3": {
-          "concrete": {
-            "parents": 0,
-            "interior": {
-              "here": null
-            }
-          }
-        }
-      }
-    ],
     "nativeToken": {
       "symbol": "DOT",
       "decimals": 10,
