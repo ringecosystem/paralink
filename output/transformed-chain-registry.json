@@ -5,7 +5,6 @@
     "icon": "/assets/chains/polkadot.png",
     "addressPrefix": 0,
     "providers": [
-      "wss://polkadot-rpc.dwellir.com",
       "wss://polkadot.public.curie.radiumblock.co/ws",
       "wss://dot-rpc.stakeworld.io",
       "wss://rpc-polkadot.luckyfriday.io",
@@ -97,13 +96,14 @@
     "addressPrefix": 0,
     "providers": [
       "wss://statemint-rpc-tn.dwellir.com",
-      "wss://sys.ibp.network/statemint",
+      "wss://asset-hub-polkadot-rpc.n.dwellir.com",
       "wss://rpc-asset-hub-polkadot.luckyfriday.io",
       "wss://polkadot-asset-hub-rpc.polkadot.io",
       "wss://dot-rpc.stakeworld.io/assethub",
-      "wss://asset-hub-polkadot-rpc.dwellir.com",
       "wss://sys.ibp.network/asset-hub-polkadot",
-      "wss://asset-hub-polkadot.dotters.network"
+      "wss://asset-hub-polkadot.dotters.network",
+      "wss://statemint.api.onfinality.io/public-ws",
+      "wss://statemint.public.curie.radiumblock.co/ws"
     ],
     "alive": true,
     "existentialDeposit": "100000000",
@@ -1569,7 +1569,6 @@
     "addressPrefix": 1284,
     "providers": [
       "wss://wss.api.moonbeam.network",
-      "wss://moonbeam.public.blastapi.io",
       "wss://moonbeam.api.onfinality.io/public-ws",
       "wss://moonbeam-rpc.publicnode.com",
       "wss://moonbeam.ibp.network",
@@ -1982,7 +1981,6 @@
     "providers": [
       "wss://rpc.astar.network",
       "wss://astar.api.onfinality.io/public-ws",
-      "wss://astar.public.blastapi.io",
       "wss://astar.public.curie.radiumblock.co/ws"
     ],
     "alive": true,

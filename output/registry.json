@@ -6,7 +6,6 @@
     "chainStatus": "ACTIVE",
     "icon": "/assets/chains/polkadot.png",
     "providers": {
-      "Dwellir": "wss://polkadot-rpc.dwellir.com",
       "RadiumBlock": "wss://polkadot.public.curie.radiumblock.co/ws",
       "Stakeworld": "wss://dot-rpc.stakeworld.io",
       "LuckyFriday": "wss://rpc-polkadot.luckyfriday.io",
@@ -69,13 +68,14 @@
     "icon": "/assets/chains/statemint.png",
     "providers": {
       "Dwellir Tunisia": "wss://statemint-rpc-tn.dwellir.com",
-      "IBP-GeoDNS1": "wss://sys.ibp.network/statemint",
+      "Dwellir": "wss://asset-hub-polkadot-rpc.n.dwellir.com",
       "Lucky Friday": "wss://rpc-asset-hub-polkadot.luckyfriday.io",
       "Parity": "wss://polkadot-asset-hub-rpc.polkadot.io",
       "StakeWorld": "wss://dot-rpc.stakeworld.io/assethub",
-      "Dwellir": "wss://asset-hub-polkadot-rpc.dwellir.com",
       "IBP1": "wss://sys.ibp.network/asset-hub-polkadot",
-      "IBP2": "wss://asset-hub-polkadot.dotters.network"
+      "IBP2": "wss://asset-hub-polkadot.dotters.network",
+      "OnFinality": "wss://statemint.api.onfinality.io/public-ws",
+      "Radiumblock": "wss://statemint.public.curie.radiumblock.co/ws"
     },
     "evmInfo": null,
     "substrateInfo": {
@@ -900,7 +900,6 @@
     "icon": "/assets/chains/moonbeam.png",
     "providers": {
       "Moonbeam Foundation": "wss://wss.api.moonbeam.network",
-      "Blast": "wss://moonbeam.public.blastapi.io",
       "OnFinality": "wss://moonbeam.api.onfinality.io/public-ws",
       "Allnodes": "wss://moonbeam-rpc.publicnode.com",
       "IBP1": "wss://moonbeam.ibp.network",
@@ -1072,7 +1071,6 @@
     "providers": {
       "Astar": "wss://rpc.astar.network",
       "OnFinality": "wss://astar.api.onfinality.io/public-ws",
-      "Blast": "wss://astar.public.blastapi.io",
       "Light Client": "light://substrate-connect/polkadot/astar",
       "RadiumBlock": "wss://astar.public.curie.radiumblock.co/ws"
     },
