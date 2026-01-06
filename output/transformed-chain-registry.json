@@ -14,8 +14,7 @@
       "wss://polkadot-rpc.publicnode.com",
       "wss://polkadot.api.onfinality.io/public-ws",
       "wss://rpc-polkadot.helixstreet.io",
-      "wss://polkadot.dotters.network",
-      "wss://polkadot.rpc.permanence.io"
+      "wss://polkadot.dotters.network"
     ],
     "alive": true,
     "existentialDeposit": "10000000000",
@@ -100,7 +99,6 @@
       "wss://rpc-asset-hub-polkadot.luckyfriday.io",
       "wss://polkadot-asset-hub-rpc.polkadot.io",
       "wss://dot-rpc.stakeworld.io/assethub",
-      "wss://sys.ibp.network/asset-hub-polkadot",
       "wss://asset-hub-polkadot.dotters.network",
       "wss://statemint.api.onfinality.io/public-ws",
       "wss://statemint.public.curie.radiumblock.co/ws"
@@ -15013,8 +15011,7 @@
     "icon": "/assets/chains/origintrail.png",
     "addressPrefix": 101,
     "providers": [
-      "wss://parachain-rpc.origin-trail.network",
-      "wss://neuroweb-rpc.dwellir.com"
+      "wss://parachain-rpc.origin-trail.network"
     ],
     "alive": true,
     "existentialDeposit": "100000000000",
@@ -15259,8 +15256,7 @@
     "icon": "/assets/chains/laos_network.png",
     "addressPrefix": 42,
     "providers": [
-      "wss://rpc.laos.laosfoundation.io",
-      "wss://laos-rpc.dwellir.com"
+      "wss://rpc.laos.laosfoundation.io"
     ],
     "alive": true,
     "existentialDeposit": "0",
