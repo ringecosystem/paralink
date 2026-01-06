@@ -3298,6 +3298,26 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000422
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 50000084
                 }
               ]
@@ -3339,6 +3359,26 @@
                 },
                 {
                   "generalIndex": 50000033
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000411
                 }
               ]
             }
@@ -3478,6 +3518,26 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000414
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 50000260
                 }
               ]
@@ -3519,6 +3579,26 @@
                 },
                 {
                   "generalIndex": 50000139
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000416
                 }
               ]
             }
@@ -3794,6 +3874,26 @@
                 },
                 {
                   "generalIndex": 50000219
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000419
                 }
               ]
             }
@@ -4451,6 +4551,26 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000430
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 50000065
                 }
               ]
@@ -4712,6 +4832,26 @@
                 },
                 {
                   "generalIndex": 50000145
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000421
                 }
               ]
             }
@@ -7144,6 +7284,26 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000418
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 21
                 }
               ]
@@ -7405,6 +7565,26 @@
                 },
                 {
                   "generalIndex": 63
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000412
                 }
               ]
             }
@@ -7868,6 +8048,26 @@
           "concrete": {
             "parents": 1,
             "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000427
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
               "x2": [
                 {
                   "parachain": 2051
@@ -7972,6 +8172,26 @@
                 },
                 {
                   "generalIndex": 5318008
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000432
                 }
               ]
             }
@@ -8157,6 +8377,26 @@
                 },
                 {
                   "generalIndex": 50000229
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000415
                 }
               ]
             }
@@ -8496,6 +8736,26 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000406
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 50000043
                 }
               ]
@@ -8636,6 +8896,26 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000429
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 22222046
                 }
               ]
@@ -8697,6 +8977,26 @@
                 },
                 {
                   "generalIndex": 1180
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000407
                 }
               ]
             }
@@ -8997,6 +9297,26 @@
                     "network": null,
                     "key": "0x9c4c6eaad9b926ba09f702f4ad880ef71998ef18"
                   }
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000408
                 }
               ]
             }
@@ -9451,6 +9771,26 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000431
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 50000233
                 }
               ]
@@ -9747,6 +10087,26 @@
                 },
                 {
                   "generalIndex": 50000277
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000413
                 }
               ]
             }
@@ -10509,6 +10869,26 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000410
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 20090109
                 }
               ]
@@ -10784,6 +11164,46 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000434
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000424
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 22222034
                 }
               ]
@@ -11004,6 +11424,26 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000409
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 50000103
                 }
               ]
@@ -11143,6 +11583,26 @@
                 },
                 {
                   "generalIndex": 50000249
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000420
                 }
               ]
             }
@@ -11326,6 +11786,26 @@
                 },
                 {
                   "generalIndex": 50000261
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000428
                 }
               ]
             }
@@ -11810,6 +12290,26 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000435
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 50000105
                 }
               ]
@@ -12150,6 +12650,26 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000417
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 22222077
                 }
               ]
@@ -12390,6 +12910,26 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000426
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 50000106
                 }
               ]
@@ -12548,6 +13088,26 @@
                 },
                 {
                   "generalIndex": 50000074
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000423
                 }
               ]
             }
@@ -12851,6 +13411,26 @@
                 },
                 {
                   "generalIndex": 50000053
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000433
                 }
               ]
             }
@@ -14132,6 +14712,26 @@
                     "network": null,
                     "key": "0xcd3b51d98478d53f4515a306be565c6eebef1d58"
                   }
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000425
                 }
               ]
             }
