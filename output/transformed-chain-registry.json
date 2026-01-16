@@ -4073,6 +4073,29 @@
                 {
                   "accountKey20": {
                     "network": null,
+                    "key": "0x52b2f622f5676e92dbea3092004eb9ffb85a8d07"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 2004
+                },
+                {
+                  "palletInstance": 110
+                },
+                {
+                  "accountKey20": {
+                    "network": null,
                     "key": "0x2758b57e3c052ae2b66be2e175c8f1980723d7af"
                   }
                 }
