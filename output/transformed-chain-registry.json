@@ -13465,6 +13465,29 @@
             "interior": {
               "x3": [
                 {
+                  "parachain": 2004
+                },
+                {
+                  "palletInstance": 110
+                },
+                {
+                  "accountKey20": {
+                    "network": null,
+                    "key": "0x3f9610a50630bc7d4530736942ee2bc9e00e8de8"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
                   "parachain": 1000
                 },
                 {
