@@ -1620,6 +1620,77 @@
     "isEvm": false
   },
   {
+    "slug": "darwinia2",
+    "name": "Darwinia 2",
+    "isTestnet": false,
+    "chainStatus": "ACTIVE",
+    "icon": "/assets/chains/darwinia2.png",
+    "providers": {
+      "Darwinia Network": "wss://rpc.darwinia.network",
+      "Subquery": "wss://darwinia.rpc.subquery.network/public/ws"
+    },
+    "evmInfo": {
+      "evmChainId": 46,
+      "blockExplorer": "https://darwinia.subscan.io/",
+      "existentialDeposit": "0",
+      "symbol": "RING",
+      "decimals": 18,
+      "supportSmartContract": [
+        "ERC20",
+        "ERC721"
+      ],
+      "abiExplorer": null
+    },
+    "substrateInfo": {
+      "relaySlug": "polkadot",
+      "paraId": 2046,
+      "genesisHash": "0xf0b8924b12e8108550d28870bc03f7b45a947e1b2b9abf81bfb0b89ecb60570e",
+      "addressPrefix": 18,
+      "chainType": "PARACHAIN",
+      "crowdloanUrl": "https://darwinia.network/plo_contribute",
+      "blockExplorer": "https://darwinia.subscan.io/",
+      "existentialDeposit": "0",
+      "symbol": "RING",
+      "decimals": 18,
+      "hasNativeNft": false,
+      "supportStaking": false,
+      "supportSmartContract": null,
+      "crowdloanParaId": null,
+      "supportProxy": true,
+      "supportMultisig": null,
+      "crowdloanFunds": []
+    },
+    "extraInfo": {
+      "subscanSlug": "darwinia",
+      "chainBalanceSlug": "darwinia2"
+    },
+    "bitcoinInfo": null,
+    "tonInfo": null,
+    "cardanoInfo": null,
+    "id": "2046",
+    "assetsInfo": {},
+    "xcAssetsData": [
+      {
+        "paraID": 2046,
+        "nativeChainID": "asset-hub-polkadot",
+        "symbol": "USDT",
+        "decimals": 6,
+        "xcmV1MultiLocation": "{\"v3\":{\"concrete\":{\"parents\":1,\"interior\":{\"x3\":[{\"parachain\":1000},{\"palletInstance\":50},{\"generalIndex\":1337}]}}}}",
+        "assetHubReserveLocation": "{\"parents\":\"0\",\"interior\":{\"Here\":\"\"}}"
+      }
+    ],
+    "nativeToken": {
+      "symbol": "RING",
+      "decimals": 18,
+      "name": "Darwinia Network",
+      "icon": "/assets/chain-assets/darwinia2-native-ring.png",
+      "priceId": "darwinia-network-native-token",
+      "minAmount": "0",
+      "xcmLocation": null
+    },
+    "isEvm": true
+  },
+  {
     "slug": "ajunaPolkadot",
     "name": "Ajuna Network",
     "isTestnet": false,
@@ -1680,66 +1751,6 @@
       "xcmLocation": null
     },
     "isEvm": false
-  },
-  {
-    "slug": "mythos",
-    "name": "Mythos",
-    "isTestnet": false,
-    "chainStatus": "ACTIVE",
-    "icon": "/assets/chains/mythos.png",
-    "providers": {
-      "Parity": "wss://polkadot-mythos-rpc.polkadot.io"
-    },
-    "evmInfo": {
-      "evmChainId": -1,
-      "blockExplorer": null,
-      "existentialDeposit": "0",
-      "symbol": "MYTH",
-      "decimals": 18,
-      "supportSmartContract": null,
-      "abiExplorer": null
-    },
-    "substrateInfo": {
-      "relaySlug": "polkadot",
-      "paraId": 3369,
-      "genesisHash": "0xf6ee56e9c5277df5b4ce6ae9983ee88f3cbed27d31beeb98f9f84f997a1ab0b9",
-      "addressPrefix": 29972,
-      "chainType": "PARACHAIN",
-      "crowdloanUrl": null,
-      "blockExplorer": "https://mythos.subscan.io/",
-      "existentialDeposit": "10000000000000000",
-      "symbol": "MYTH",
-      "decimals": 18,
-      "hasNativeNft": null,
-      "supportStaking": null,
-      "supportSmartContract": null,
-      "crowdloanParaId": null,
-      "supportProxy": false,
-      "supportMultisig": null,
-      "crowdloanFunds": []
-    },
-    "extraInfo": {
-      "subscanSlug": "mythos",
-      "chainBalanceSlug": "mythos"
-    },
-    "bitcoinInfo": null,
-    "tonInfo": null,
-    "cardanoInfo": null,
-    "id": "3369",
-    "assetsInfo": {},
-    "nativeToken": {
-      "symbol": "MYTH",
-      "decimals": 18,
-      "name": "Mythos",
-      "icon": "/assets/chain-assets/mythos-native-myth.png",
-      "priceId": "mythos",
-      "minAmount": "10000000000000000",
-      "xcmLocation": {
-        "parents": 0,
-        "interior": "Here"
-      }
-    },
-    "isEvm": true
   },
   {
     "slug": "laos_network",
