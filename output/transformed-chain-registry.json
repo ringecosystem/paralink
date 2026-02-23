@@ -1770,6 +1770,23 @@
             "interior": {
               "x2": [
                 {
+                  "parachain": 2046
+                },
+                {
+                  "palletInstance": 5
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x2": [
+                {
                   "parachain": 2030
                 },
                 {
@@ -2192,6 +2209,23 @@
                     "length": 2,
                     "data": "0x0000000000000000000000000000000000000000000000000000000000000000"
                   }
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x2": [
+                {
+                  "parachain": 2046
+                },
+                {
+                  "palletInstance": 5
                 }
               ]
             }
@@ -7982,6 +8016,23 @@
                 },
                 {
                   "generalIndex": 22222076
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x2": [
+                {
+                  "parachain": 2046
+                },
+                {
+                  "palletInstance": 5
                 }
               ]
             }
@@ -15205,6 +15256,98 @@
       ]
     }
   },
+  "2046": {
+    "name": "Darwinia 2",
+    "slug": "darwinia2",
+    "icon": "/assets/chains/darwinia2.png",
+    "addressPrefix": 18,
+    "providers": [
+      "wss://rpc.darwinia.network",
+      "wss://darwinia.rpc.subquery.network/public/ws"
+    ],
+    "alive": true,
+    "existentialDeposit": "0",
+    "isEvm": true,
+    "explorer": "https://darwinia.subscan.io/",
+    "evmChainId": 46,
+    "nativeToken": {
+      "symbol": "RING",
+      "decimals": 18,
+      "name": "Darwinia Network",
+      "icon": "/assets/chain-assets/darwinia2-native-ring.png",
+      "priceId": "darwinia-network-native-token",
+      "minAmount": "0",
+      "xcmLocation": {
+        "v1": {
+          "parents": 0,
+          "interior": {
+            "here": null
+          }
+        }
+      },
+      "isNative": true,
+      "reserveType": "local",
+      "registeredChains": null
+    },
+    "localAssets": [
+      {
+        "symbol": "USDT",
+        "decimals": 6,
+        "xcmLocation": {
+          "v3": {
+            "concrete": {
+              "parents": 1,
+              "interior": {
+                "x3": [
+                  {
+                    "parachain": 1000
+                  },
+                  {
+                    "palletInstance": 50
+                  },
+                  {
+                    "generalIndex": 1337
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "reserveType": "local",
+        "registeredChains": {}
+      }
+    ],
+    "xcAssetsData": {
+      "2046": [
+        {
+          "symbol": "USDT",
+          "name": "USDT",
+          "decimals": 6,
+          "xcmLocation": {
+            "v3": {
+              "concrete": {
+                "parents": 1,
+                "interior": {
+                  "x3": [
+                    {
+                      "parachain": 1000
+                    },
+                    {
+                      "palletInstance": 50
+                    },
+                    {
+                      "generalIndex": 1337
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "reserveType": "remote"
+        }
+      ]
+    }
+  },
   "2051": {
     "name": "Ajuna Network",
     "slug": "ajunaPolkadot",
@@ -15389,63 +15532,6 @@
       "reserveType": "local",
       "registeredChains": null
     },
-    "localAssets": [
-      {
-        "symbol": "USDT",
-        "decimals": 6,
-        "xcmLocation": {
-          "v3": {
-            "concrete": {
-              "parents": 1,
-              "interior": {
-                "x3": [
-                  {
-                    "parachain": 1000
-                  },
-                  {
-                    "palletInstance": 50
-                  },
-                  {
-                    "generalIndex": 1337
-                  }
-                ]
-              }
-            }
-          }
-        },
-        "reserveType": "local",
-        "registeredChains": {}
-      }
-    ],
-    "xcAssetsData": {
-      "3397": [
-        {
-          "symbol": "USDT",
-          "name": "USDT",
-          "decimals": 6,
-          "xcmLocation": {
-            "v3": {
-              "concrete": {
-                "parents": 1,
-                "interior": {
-                  "x3": [
-                    {
-                      "parachain": 1000
-                    },
-                    {
-                      "palletInstance": 50
-                    },
-                    {
-                      "generalIndex": 1337
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "reserveType": "remote"
-        }
-      ]
-    }
+    "xcAssetsData": {}
   }
 }
