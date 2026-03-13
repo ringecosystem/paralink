@@ -774,6 +774,23 @@
       {
         "v3": {
           "concrete": {
+            "parents": 0,
+            "interior": {
+              "x2": [
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000460
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
             "parents": 1,
             "interior": {
               "x2": [
