@@ -633,6 +633,23 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000468
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 0,
+            "interior": {
+              "x2": [
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 222
                 }
               ]
@@ -782,6 +799,23 @@
                 },
                 {
                   "generalIndex": 888
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 0,
+            "interior": {
+              "x2": [
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000467
                 }
               ]
             }
