@@ -6766,6 +6766,21 @@
       {
         "v3": {
           "concrete": {
+            "parents": 0,
+            "interior": {
+              "x1": {
+                "accountKey20": {
+                  "network": null,
+                  "key": "0xca30f9ff99394c55deda293df223e3740635c72e"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
             "parents": 1,
             "interior": {
               "x3": [
@@ -15330,6 +15345,21 @@
                   "generalIndex": 50000032
                 }
               ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 0,
+            "interior": {
+              "x1": {
+                "accountKey20": {
+                  "network": null,
+                  "key": "0x49f925bf72718f4abbc57adef1b705931f928a2a"
+                }
+              }
             }
           }
         }
