@@ -497,6 +497,23 @@
                   "palletInstance": 50
                 },
                 {
+                  "generalIndex": 50000481
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 0,
+            "interior": {
+              "x2": [
+                {
+                  "palletInstance": 50
+                },
+                {
                   "generalIndex": 112233
                 }
               ]
@@ -779,6 +796,23 @@
       {
         "v3": {
           "concrete": {
+            "parents": 0,
+            "interior": {
+              "x2": [
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000482
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
             "parents": 1,
             "interior": {
               "x1": {
@@ -918,6 +952,23 @@
                 },
                 {
                   "generalIndex": 50000460
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 0,
+            "interior": {
+              "x2": [
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 50000483
                 }
               ]
             }
