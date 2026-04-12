@@ -15976,28 +15976,6 @@
     "existentialDeposit": "100000000000",
     "isEvm": false,
     "explorer": "https://neuroweb.subscan.io/",
-    "xcmPaymentAcceptTokens": [
-      {
-        "v4": {
-          "parents": 0,
-          "interior": {
-            "x1": [
-              {
-                "palletInstance": 10
-              }
-            ]
-          }
-        }
-      },
-      {
-        "v4": {
-          "parents": 1,
-          "interior": {
-            "here": null
-          }
-        }
-      }
-    ],
     "nativeToken": {
       "symbol": "NEURO",
       "decimals": 12,
