@@ -16223,28 +16223,6 @@
     "existentialDeposit": "1000000000",
     "isEvm": false,
     "explorer": "https://ajuna.subscan.io/",
-    "xcmPaymentAcceptTokens": [
-      {
-        "v3": {
-          "concrete": {
-            "parents": 0,
-            "interior": {
-              "here": null
-            }
-          }
-        }
-      },
-      {
-        "v3": {
-          "concrete": {
-            "parents": 1,
-            "interior": {
-              "here": null
-            }
-          }
-        }
-      }
-    ],
     "nativeToken": {
       "symbol": "AJUN",
       "decimals": 12,
