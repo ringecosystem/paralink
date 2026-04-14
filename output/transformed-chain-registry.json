@@ -291,23 +291,6 @@
       {
         "v3": {
           "concrete": {
-            "parents": 1,
-            "interior": {
-              "x2": [
-                {
-                  "parachain": 2043
-                },
-                {
-                  "palletInstance": 10
-                }
-              ]
-            }
-          }
-        }
-      },
-      {
-        "v3": {
-          "concrete": {
             "parents": 0,
             "interior": {
               "x2": [
@@ -857,18 +840,6 @@
                   "generalIndex": 50000482
                 }
               ]
-            }
-          }
-        }
-      },
-      {
-        "v3": {
-          "concrete": {
-            "parents": 1,
-            "interior": {
-              "x1": {
-                "parachain": 2051
-              }
             }
           }
         }
@@ -2229,23 +2200,6 @@
             "parents": 1,
             "interior": {
               "here": null
-            }
-          }
-        }
-      },
-      {
-        "v3": {
-          "concrete": {
-            "parents": 1,
-            "interior": {
-              "x2": [
-                {
-                  "parachain": 2043
-                },
-                {
-                  "palletInstance": 10
-                }
-              ]
             }
           }
         }
@@ -8684,26 +8638,6 @@
                 },
                 {
                   "generalIndex": 50000427
-                }
-              ]
-            }
-          }
-        }
-      },
-      {
-        "v3": {
-          "concrete": {
-            "parents": 1,
-            "interior": {
-              "x2": [
-                {
-                  "parachain": 2051
-                },
-                {
-                  "generalKey": {
-                    "length": 4,
-                    "data": "0x414a554e00000000000000000000000000000000000000000000000000000000"
-                  }
                 }
               ]
             }
@@ -15335,23 +15269,6 @@
           "concrete": {
             "parents": 1,
             "interior": {
-              "x2": [
-                {
-                  "parachain": 2043
-                },
-                {
-                  "palletInstance": 10
-                }
-              ]
-            }
-          }
-        }
-      },
-      {
-        "v3": {
-          "concrete": {
-            "parents": 1,
-            "interior": {
               "x3": [
                 {
                   "parachain": 1000
@@ -15964,116 +15881,6 @@
     },
     "xcAssetsData": {}
   },
-  "2043": {
-    "name": "NeuroWeb Mainnet",
-    "slug": "origintrail",
-    "icon": "/assets/chains/origintrail.png",
-    "addressPrefix": 101,
-    "providers": [
-      "wss://parachain-rpc.origin-trail.network"
-    ],
-    "alive": true,
-    "existentialDeposit": "100000000000",
-    "isEvm": false,
-    "explorer": "https://neuroweb.subscan.io/",
-    "xcmPaymentAcceptTokens": [
-      {
-        "v4": {
-          "parents": 0,
-          "interior": {
-            "x1": [
-              {
-                "palletInstance": 10
-              }
-            ]
-          }
-        }
-      },
-      {
-        "v4": {
-          "parents": 1,
-          "interior": {
-            "here": null
-          }
-        }
-      }
-    ],
-    "nativeToken": {
-      "symbol": "NEURO",
-      "decimals": 12,
-      "name": "OriginTrail",
-      "icon": "/assets/chain-assets/origintrail-native-neuro.png",
-      "priceId": "neurowebai",
-      "minAmount": "100000000000",
-      "xcmLocation": {
-        "v1": {
-          "parents": 0,
-          "interior": {
-            "here": null
-          }
-        }
-      },
-      "isNative": true,
-      "reserveType": "local",
-      "registeredChains": null
-    },
-    "localAssets": [
-      {
-        "symbol": "TRAC",
-        "decimals": 18,
-        "assetId": "1",
-        "xcmLocation": {
-          "v1": {
-            "parents": 1,
-            "interior": {
-              "x2": [
-                {
-                  "parachain": 2043
-                },
-                {
-                  "generalIndex": 1
-                }
-              ]
-            }
-          }
-        },
-        "reserveType": "local",
-        "icon": "/assets/chain-assets/origintrail-local-trac.png",
-        "minAmount": "1",
-        "priceId": "origintrail",
-        "registeredChains": {}
-      }
-    ],
-    "xcAssetsData": {
-      "2043": [
-        {
-          "assetId": "1",
-          "symbol": "TRAC",
-          "name": "OriginTrail",
-          "decimals": 18,
-          "xcmLocation": {
-            "v1": {
-              "parents": 1,
-              "interior": {
-                "x2": [
-                  {
-                    "parachain": 2043
-                  },
-                  {
-                    "generalIndex": 1
-                  }
-                ]
-              }
-            }
-          },
-          "minAmount": "1",
-          "priceId": "origintrail",
-          "reserveType": "local",
-          "icon": "/assets/chain-assets/origintrail-local-trac.png"
-        }
-      ]
-    }
-  },
   "2046": {
     "name": "Darwinia 2",
     "slug": "darwinia2",
@@ -16209,62 +16016,6 @@
         }
       ]
     }
-  },
-  "2051": {
-    "name": "Ajuna Network",
-    "slug": "ajunaPolkadot",
-    "icon": "/assets/chains/ajunapolkadot.png",
-    "addressPrefix": 1328,
-    "providers": [
-      "wss://ajuna.ibp.network",
-      "wss://ajuna.dotters.network"
-    ],
-    "alive": true,
-    "existentialDeposit": "1000000000",
-    "isEvm": false,
-    "explorer": "https://ajuna.subscan.io/",
-    "xcmPaymentAcceptTokens": [
-      {
-        "v3": {
-          "concrete": {
-            "parents": 0,
-            "interior": {
-              "here": null
-            }
-          }
-        }
-      },
-      {
-        "v3": {
-          "concrete": {
-            "parents": 1,
-            "interior": {
-              "here": null
-            }
-          }
-        }
-      }
-    ],
-    "nativeToken": {
-      "symbol": "AJUN",
-      "decimals": 12,
-      "name": "Ajuna Network",
-      "icon": "/assets/chain-assets/ajunapolkadot-native-ajun.png",
-      "priceId": "ajuna-network-2",
-      "minAmount": "1000000000",
-      "xcmLocation": {
-        "v1": {
-          "parents": 0,
-          "interior": {
-            "here": null
-          }
-        }
-      },
-      "isNative": true,
-      "reserveType": "local",
-      "registeredChains": null
-    },
-    "xcAssetsData": {}
   },
   "3369": {
     "name": "Mythos",
