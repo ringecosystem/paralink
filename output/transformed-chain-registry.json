@@ -16279,6 +16279,18 @@
     "isEvm": true,
     "explorer": null,
     "evmChainId": -1,
+    "xcmPaymentAcceptTokens": [
+      {
+        "v3": {
+          "concrete": {
+            "parents": 0,
+            "interior": {
+              "here": null
+            }
+          }
+        }
+      }
+    ],
     "nativeToken": {
       "symbol": "MYTH",
       "decimals": 18,
