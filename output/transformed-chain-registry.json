@@ -461,18 +461,6 @@
       {
         "v3": {
           "concrete": {
-            "parents": 1,
-            "interior": {
-              "x1": {
-                "parachain": 3369
-              }
-            }
-          }
-        }
-      },
-      {
-        "v3": {
-          "concrete": {
             "parents": 0,
             "interior": {
               "x2": [
@@ -13869,18 +13857,6 @@
           "concrete": {
             "parents": 1,
             "interior": {
-              "x1": {
-                "parachain": 3369
-              }
-            }
-          }
-        }
-      },
-      {
-        "v3": {
-          "concrete": {
-            "parents": 1,
-            "interior": {
               "x3": [
                 {
                   "parachain": 1000
@@ -16266,38 +16242,6 @@
     },
     "xcAssetsData": {}
   },
-  "3369": {
-    "name": "Mythos",
-    "slug": "mythos",
-    "icon": "/assets/chains/mythos.png",
-    "addressPrefix": 29972,
-    "providers": [
-      "wss://polkadot-mythos-rpc.polkadot.io"
-    ],
-    "alive": true,
-    "existentialDeposit": "10000000000000000",
-    "isEvm": true,
-    "explorer": null,
-    "evmChainId": -1,
-    "nativeToken": {
-      "symbol": "MYTH",
-      "decimals": 18,
-      "name": "Mythos",
-      "icon": "/assets/chain-assets/mythos-native-myth.png",
-      "priceId": "mythos",
-      "minAmount": "10000000000000000",
-      "xcmLocation": {
-        "v1": {
-          "parents": 0,
-          "interior": "Here"
-        }
-      },
-      "isNative": true,
-      "reserveType": "local",
-      "registeredChains": null
-    },
-    "xcAssetsData": {}
-  },
   "3370": {
     "name": "LAOS Network",
     "slug": "laos_network",
@@ -16426,63 +16370,6 @@
       "reserveType": "local",
       "registeredChains": null
     },
-    "localAssets": [
-      {
-        "symbol": "USDT",
-        "decimals": 6,
-        "xcmLocation": {
-          "v3": {
-            "concrete": {
-              "parents": 1,
-              "interior": {
-                "x3": [
-                  {
-                    "parachain": 1000
-                  },
-                  {
-                    "palletInstance": 50
-                  },
-                  {
-                    "generalIndex": 1337
-                  }
-                ]
-              }
-            }
-          }
-        },
-        "reserveType": "local",
-        "registeredChains": {}
-      }
-    ],
-    "xcAssetsData": {
-      "3397": [
-        {
-          "symbol": "USDT",
-          "name": "USDT",
-          "decimals": 6,
-          "xcmLocation": {
-            "v3": {
-              "concrete": {
-                "parents": 1,
-                "interior": {
-                  "x3": [
-                    {
-                      "parachain": 1000
-                    },
-                    {
-                      "palletInstance": 50
-                    },
-                    {
-                      "generalIndex": 1337
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "reserveType": "remote"
-        }
-      ]
-    }
+    "xcAssetsData": {}
   }
 }
