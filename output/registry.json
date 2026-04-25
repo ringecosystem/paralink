@@ -1,5 +1,67 @@
 [
   {
+    "slug": "polkadot",
+    "name": "Polkadot",
+    "isTestnet": false,
+    "chainStatus": "ACTIVE",
+    "icon": "/assets/chains/polkadot.png",
+    "providers": {
+      "RadiumBlock": "wss://polkadot.public.curie.radiumblock.co/ws",
+      "Stakeworld": "wss://dot-rpc.stakeworld.io",
+      "LuckyFriday": "wss://rpc-polkadot.luckyfriday.io",
+      "Dwellir Tunisia": "wss://polkadot-rpc-tn.dwellir.com",
+      "IBP-GeoDNS1": "wss://rpc.ibp.network/polkadot",
+      "Light Client": "light://substrate-connect/polkadot",
+      "BlockOps": "wss://polkadot-public-rpc.blockops.network/ws",
+      "Allnodes": "wss://polkadot-rpc.publicnode.com",
+      "Onfinality": "wss://polkadot.api.onfinality.io/public-ws",
+      "Helixstreet": "wss://rpc-polkadot.helixstreet.io",
+      "IBP2": "wss://polkadot.dotters.network"
+    },
+    "evmInfo": null,
+    "substrateInfo": {
+      "relaySlug": null,
+      "paraId": 0,
+      "genesisHash": "0x91b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3",
+      "addressPrefix": 0,
+      "chainType": "RELAYCHAIN",
+      "crowdloanUrl": null,
+      "blockExplorer": "https://polkadot.subscan.io/",
+      "existentialDeposit": "10000000000",
+      "symbol": "DOT",
+      "decimals": 10,
+      "hasNativeNft": false,
+      "supportStaking": true,
+      "supportSmartContract": null,
+      "crowdloanParaId": null,
+      "supportProxy": true,
+      "supportMultisig": null,
+      "crowdloanFunds": []
+    },
+    "extraInfo": {
+      "subscanSlug": "polkadot",
+      "chainBalanceSlug": "polkadot"
+    },
+    "bitcoinInfo": null,
+    "tonInfo": null,
+    "cardanoInfo": null,
+    "id": "0",
+    "assetsInfo": {},
+    "nativeToken": {
+      "symbol": "DOT",
+      "decimals": 10,
+      "name": "Polkadot",
+      "icon": "/assets/chain-assets/polkadot-native-dot.png",
+      "priceId": "polkadot",
+      "minAmount": "10000000000",
+      "xcmLocation": {
+        "parents": 0,
+        "interior": "Here"
+      }
+    },
+    "isEvm": false
+  },
+  {
     "slug": "statemint",
     "name": "Polkadot Asset Hub",
     "isTestnet": false,
