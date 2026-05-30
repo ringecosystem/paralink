@@ -5312,6 +5312,21 @@
       {
         "v3": {
           "concrete": {
+            "parents": 0,
+            "interior": {
+              "x1": {
+                "accountKey20": {
+                  "network": null,
+                  "key": "0xcec8977efb147760919b983a952033f936c590df"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
             "parents": 1,
             "interior": {
               "x3": [
