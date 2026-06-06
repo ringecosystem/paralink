@@ -1691,68 +1691,6 @@
     "isEvm": true
   },
   {
-    "slug": "energy_web_x",
-    "name": "Energy Web X",
-    "isTestnet": false,
-    "chainStatus": "ACTIVE",
-    "icon": "/assets/chains/energy_web_x.png",
-    "providers": {
-      "Energy Web": "wss://public-rpc.mainnet.energywebx.com/",
-      "WNP": "wss://wnp-rpc.mainnet.energywebx.com/"
-    },
-    "evmInfo": null,
-    "substrateInfo": {
-      "relaySlug": "polkadot",
-      "paraId": 3345,
-      "genesisHash": "0x5a51e04b88a4784d205091aa7bada002f3e5da3045e5b05655ee4db2589c33b5",
-      "addressPrefix": 42,
-      "chainType": "PARACHAIN",
-      "crowdloanUrl": null,
-      "blockExplorer": "https://energywebx.subscan.io/",
-      "existentialDeposit": "0",
-      "symbol": "EWT",
-      "decimals": 18,
-      "hasNativeNft": false,
-      "supportStaking": false,
-      "supportSmartContract": null,
-      "crowdloanParaId": null,
-      "supportProxy": true,
-      "supportMultisig": true,
-      "crowdloanFunds": [
-        {
-          "relayChain": "polkadot",
-          "fundId": "3345-70",
-          "paraId": 3345,
-          "status": "won",
-          "startTime": "2023-10-24T01:48:00.000Z",
-          "endTime": "2025-08-26T01:48:00.000Z",
-          "auctionIndex": 49,
-          "firstPeriod": 14,
-          "lastPeriod": 21
-        }
-      ]
-    },
-    "extraInfo": {
-      "subscanSlug": "energywebx",
-      "chainBalanceSlug": "energywebx"
-    },
-    "bitcoinInfo": null,
-    "tonInfo": null,
-    "cardanoInfo": null,
-    "id": "3345",
-    "assetsInfo": {},
-    "nativeToken": {
-      "symbol": "EWT",
-      "decimals": 18,
-      "name": "EWT",
-      "icon": "/assets/chain-assets/energy_web_x-native-ewt.png",
-      "priceId": "energy-web-token",
-      "minAmount": "0",
-      "xcmLocation": null
-    },
-    "isEvm": false
-  },
-  {
     "slug": "jamton",
     "name": "JAMTON",
     "isTestnet": false,

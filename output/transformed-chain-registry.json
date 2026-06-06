@@ -7507,18 +7507,6 @@
           "concrete": {
             "parents": 1,
             "interior": {
-              "x1": {
-                "parachain": 3345
-              }
-            }
-          }
-        }
-      },
-      {
-        "v3": {
-          "concrete": {
-            "parents": 1,
-            "interior": {
               "x3": [
                 {
                   "parachain": 1000
@@ -16356,72 +16344,6 @@
         }
       ]
     }
-  },
-  "3345": {
-    "name": "Energy Web X",
-    "slug": "energy_web_x",
-    "icon": "/assets/chains/energy_web_x.png",
-    "addressPrefix": 42,
-    "providers": [
-      "wss://public-rpc.mainnet.energywebx.com/",
-      "wss://wnp-rpc.mainnet.energywebx.com/"
-    ],
-    "alive": true,
-    "existentialDeposit": "0",
-    "isEvm": false,
-    "explorer": "https://energywebx.subscan.io/",
-    "xcmPaymentAcceptTokens": [
-      {
-        "v3": {
-          "concrete": {
-            "parents": 0,
-            "interior": {
-              "here": null
-            }
-          }
-        }
-      },
-      {
-        "v3": {
-          "concrete": {
-            "parents": 1,
-            "interior": {
-              "x3": [
-                {
-                  "parachain": 1000
-                },
-                {
-                  "palletInstance": 50
-                },
-                {
-                  "generalIndex": 1337
-                }
-              ]
-            }
-          }
-        }
-      }
-    ],
-    "nativeToken": {
-      "symbol": "EWT",
-      "decimals": 18,
-      "name": "EWT",
-      "icon": "/assets/chain-assets/energy_web_x-native-ewt.png",
-      "priceId": "energy-web-token",
-      "minAmount": "0",
-      "xcmLocation": {
-        "v1": {
-          "parents": 0,
-          "interior": {
-            "here": null
-          }
-        }
-      },
-      "isNative": true,
-      "reserveType": "local",
-      "registeredChains": null
-    },
-    "xcAssetsData": {}
   },
   "3397": {
     "name": "JAMTON",
