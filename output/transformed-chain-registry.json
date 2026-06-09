@@ -16370,6 +16370,38 @@
     "existentialDeposit": "0",
     "isEvm": false,
     "explorer": "https://energywebx.subscan.io/",
+    "xcmPaymentAcceptTokens": [
+      {
+        "v3": {
+          "concrete": {
+            "parents": 0,
+            "interior": {
+              "here": null
+            }
+          }
+        }
+      },
+      {
+        "v3": {
+          "concrete": {
+            "parents": 1,
+            "interior": {
+              "x3": [
+                {
+                  "parachain": 1000
+                },
+                {
+                  "palletInstance": 50
+                },
+                {
+                  "generalIndex": 1337
+                }
+              ]
+            }
+          }
+        }
+      }
+    ],
     "nativeToken": {
       "symbol": "EWT",
       "decimals": 18,
