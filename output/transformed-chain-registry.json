@@ -1577,20 +1577,6 @@
     "existentialDeposit": "100000000000",
     "isEvm": false,
     "explorer": "https://acala.subscan.io/",
-    "xcmPaymentAcceptTokens": [
-      {
-        "v3": {
-          "concrete": {
-            "parents": 1,
-            "interior": {
-              "x1": {
-                "parachain": 2000
-              }
-            }
-          }
-        }
-      }
-    ],
     "nativeToken": {
       "symbol": "ACA",
       "decimals": 12,
